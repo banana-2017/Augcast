@@ -1,17 +1,17 @@
-var path = require('path');
-var webpack = require('webpack');
+var webpack = require ('webpack');
 
 module.exports = {
+    context: __dirname,
     entry: './react/index.js',
     output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'index.bundle.js'
+        path: __dirname+'/build',
+        publicPath: '/build/',
+        filename: 'bundle.js'
     },
     module: {
         loaders: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
+                test: /\.jsx?$/,
                 loader: 'babel-loader',
                 query: {
                     presets: ['es2015', 'react']
@@ -22,5 +22,8 @@ module.exports = {
     stats: {
         colors: true
     },
-    devtool: 'source-map'
+    devtool: 'source-map',
+    devServer: {
+        contentBase: __dirname
+    }
 };

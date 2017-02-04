@@ -4,7 +4,7 @@
   "description": "An augmented podcast experience!",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack"
+    "dev": "./node_modules/.bin/webpack-dev-server --inline --hot"
   },
   "repository": {
     "type": "git",
@@ -23,9 +23,12 @@
     "babel-preset-react": "^6.22.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0"
   },
   "dependencies": {
-    "express": "^4.14.1"
+    "express": "^4.14.1",
+    "react-dom": "^15.4.2",
+    "webpack-dev-server": "^2.3.0"
   }
 }
