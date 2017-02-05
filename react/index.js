@@ -1,28 +1,15 @@
 const React = require ('react');
 const ReactDOM = require ('react-dom');
-var firebase = require('firebase/app');
-require('firebase/database');
+var database = require('../database/database_init')();
 
-// Get credentials
-var conf = require('../database/credentials.json');
-var config = {
-    apiKey: conf.apiKey,
-    authDomain: conf.authDomain,
-    databaseURL: conf.databaseURL,
-    storageBucket: conf.storageBucket
-};
-
-// Log in the current app to firebase
-firebase.initializeApp(config);
-var database = firebase.database();
-
-// Write to the database
+// Write a test JSON object to the database
 database.ref('test').set({
     status: "Live",
     appName: "Augcast"
 });
 console.log("Writing to DB complete");
 
+// React main class
 var Main = React.createClass ({
     render: function () {
         return (
