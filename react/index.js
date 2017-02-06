@@ -9,6 +9,7 @@ database.ref('test').set({
 });
 console.log("Writing to DB complete");
 
+
 // React main class
 var Main = React.createClass ({
     render: function () {
