@@ -25,4 +25,4 @@ module.exports = function() {
 
     // Return a reference to the database
     return firebase.database();
-}
+};

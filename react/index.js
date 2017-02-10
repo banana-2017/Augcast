@@ -1,31 +1,40 @@
-const React = require ('react');
-const ReactDOM = require ('react-dom');
-var database = require('../database/database_init')();
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Router, Route, browserHistory, IndexRoute} from 'react-router';
+
+import database from '../database/database_init';
+import Home from './components/Home';
+import App from './components/App';
 
 // Write a test JSON object to the database
+/*
 database.ref('test').set({
-    status: "Live",
-    appName: "Augcast"
+status: 'Live',
+appName: 'Augcast'
 });
-console.log("Writing to DB complete");
+console.log('Writing to DB complete');
+*/
 
-
-// React main class
-var Main = React.createClass ({
-    render: function () {
+// React main class and router
+class Augcast extends React.Component {
+    render () {
         return (
-            <div>
-            <h1>Hello world!</h1>
-            <h2>Firebase "test" object: </h2>
-            <h4>{this.props.dbRead}</h4>
-            </div>
-        )
+            <Router history={browserHistory}>
+                <Route path="/" component = {App}>
+                    <IndexRoute component = {Home}/>
+                </Route>
+            </Router>
+        );
     }
-});
+}
 
 // Example of reading the value of the "test" JSON object from the DB
 // and then displaying it with React
+/*
 database.ref('/test').once('value').then(function(snapshot) {
-    ReactDOM.render (<Main dbRead= {JSON.stringify(snapshot.val())} />,
-    document.getElementById('app'));
+ReactDOM.render (<App dbRead= {JSON.stringify(snapshot.val())} />,
+document.getElementById('app'));
 });
+*/
+
+ReactDOM.render (<Augcast/>, document.getElementById('app'));

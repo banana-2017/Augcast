@@ -1,11 +1,14 @@
+var webpack = require ('webpack');
+
 module.exports = {
-    context: __dirname,
-    entry: './react/index.js',
+    entry: __dirname+'/react/index.js',
+
     output: {
-        path: __dirname+'/build',
-        publicPath: '/build/',
-        filename: 'bundle.js'
+        path: __dirname+'/public',
+        filename: 'bundle.js',
+        publicPath: '/'
     },
+
     module: {
         loaders: [
             {
@@ -18,11 +21,19 @@ module.exports = {
             }
         ]
     },
+
     stats: {
         colors: true
     },
-    devtool: 'source-map',
+
     devServer: {
-        contentBase: __dirname
-    }
+        contentBase: 'public'
+    },
+
+    // production settings (minify, dedupe)
+    plugins: process.env.NODE_ENV === 'production' ? [
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.UglifyJsPlugin()
+    ] : []
 };
