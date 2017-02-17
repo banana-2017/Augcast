@@ -34,6 +34,7 @@
     "firebase": "^3.6.8",
     "firebase-admin": "^4.1.0",
     "react-dom": "^15.4.2",
+    "react-html5video": "^1.4.0",
     "webpack-dev-server": "^2.3.0"
   }
 }

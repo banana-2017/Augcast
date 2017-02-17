@@ -3,16 +3,16 @@ import React from 'react';
 /**
  Home module - to be displayed on the side
  */
-class Home extends React.Component {
+class Video extends React.Component {
 
     render () {
         return (
             <div>
-            <h1>Home</h1>
-            <Link to="/video">Video</Link>
+            <h1>Vide page!</h1>
+            <Link to="/home">Back home</Link>
             </div>
         );
     }
 }
 
-export default Home;
+export default Video;
