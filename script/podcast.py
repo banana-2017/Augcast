@@ -90,7 +90,7 @@ for eachCourse in currentCourse.find_all('tr'):
     courseNumber = courseNumber + 1
 
     table["courses"] = courseDic
-    table["lecture"] = lectureDic
+    table["lectures"] = lectureDic
 
 # write to json file
 with open('table.json', 'w') as outfile:
@@ -102,5 +102,5 @@ with open('table.json', 'w') as outfile:
 print "unauthenticated course: "
 print courseNumber
 print '\n'
-print "total lecuture: "
+print "total lecture: "
 print lectureNumber
