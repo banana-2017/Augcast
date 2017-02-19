@@ -2,16 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 
-//import Database from '../database/database_init';
+import database from '../database/database_init';
 import Home from './components/Home';
 import App from './components/App';
-import VideoPlayer from './components/Video';
-
 
 // Write a test JSON object to the database
 /*
-database.ref('test').update({
-time: 5
+database.ref('test').set({
+status: 'Live',
+appName: 'Augcast'
 });
 console.log('Writing to DB complete');
 */
@@ -24,11 +23,14 @@ class Augcast extends React.Component {
                 <Route path="/" component = {App}>
                     <IndexRoute component = {Home}/>
                 </Route>
-                <Route path="/videoplayer" component={VideoPlayer} />
             </Router>
         );
     }
 }
+render(
+  <Router routes={routes} history={browserHistory}/>,
+  document.getElementById('app')
+)
 
 // Example of reading the value of the "test" JSON object from the DB
 // and then displaying it with React
