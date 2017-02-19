@@ -1,6 +1,6 @@
 import subprocess
 
-page = 2
+page = 1
 filename = "hashing.pdf"
 
 pageContent = (subprocess.check_output(["pdf2txt.py", "-p", str(page), filename]))
