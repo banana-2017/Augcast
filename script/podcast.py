@@ -77,7 +77,6 @@ for eachCourse in currentCourse.find_all('tr'):
 
         lectureID = courseID + " LE" + str(lectureNum)
 
-        # TODO change lecture ID
         lectureDic[lectureID] = eachLectureDic
 
         # store the lecture information to the lecture list
@@ -93,6 +92,7 @@ for eachCourse in currentCourse.find_all('tr'):
     table["courses"] = courseDic
     table["lecture"] = lectureDic
 
+# write to json file
 with open('table.json', 'w') as outfile:
     # for eachCourseList in courseList:
         json.dump(table, outfile)
