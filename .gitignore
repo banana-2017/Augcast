@@ -1,6 +1,8 @@
 node_modules
+bundle.js
 .swp
 .swo
-labeler
 database/credentials.json
 *.log
+labeler
+.DS_Store

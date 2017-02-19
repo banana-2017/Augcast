@@ -26,3 +26,24 @@ module.exports = function() {
     // Return a reference to the database
     return firebase.database();
 };
+
+
+// Write a test JSON object to the database
+/*
+database.ref('test').set({
+status: 'Live',
+appName: 'Augcast'
+});
+console.log('Writing to DB complete');
+*/
+
+
+
+// Example of reading the value of the "test" JSON object from the DB
+// and then displaying it with React
+/*
+database.ref('/test').once('value').then(function(snapshot) {
+ReactDOM.render (<App dbRead= {JSON.stringify(snapshot.val())} />,
+document.getElementById('app'));
+});
+*/
