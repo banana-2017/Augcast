@@ -1,19 +1,38 @@
 import React from 'react';
 import Button from './../button/Button';
 import { Link } from 'react-router';
-import { default as Video, Controls, Overlay } from 'react-html5video';
+//import { default as Video, Controls, Overlay } from 'react-html5video';
 
 
 /**
 VideoPlayer - to be displayed on the side
 */
-var VideoPlayer = React.createClass ({
+class VideoPlayer extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            playbackRate: 1
+        };
+
+        this.togglePlay = this.togglePlay.bind(this);
+        this.increasePlaybackRate = this.increasePlaybackRate.bind(this);
+    }
 
     togglePlay() {
         var vid = this.refs.basicvideo;
         if (vid.paused) vid.play();
         else vid.pause();
-    },
+    }
+
+    increasePlaybackRate() {
+        var curRate = this.state.playbackRate;
+        curRate++;
+        this.setState({playbackRate: curRate});
+        this.refs.basicvideo.playbackRate = curRate;
+
+    }
 
     render () {
         return (
@@ -27,42 +46,26 @@ var VideoPlayer = React.createClass ({
                         width="560"
                         id="basicvideo"
                         ref="basicvideo"
-                        autoplay
+                        autoPlay
                         controls>
                         Your browser does not support the video tag.
                     </video>
-
-
-                    <Video
-                        className="custom-class"
-                        controls
-                        autoPlay
-                        loop
-                        muted
-                        ref="video"
-                        width="560">
-                        <source src="https://podcast.ucsd.edu/Podcasts//bibc120_wi17/bibc120_wi17-02162017-1230.mp4" type="video/mp4" />
-                    </Video>
-
                 </div>
-
                 <div className="column">
-                    <button onClick={this.togglePlay}>Play/Pause</button>
                     <h2 className="main__h2">Video API</h2>
                         <ul className="main__ul">
                             <li>
-                                <Button onClick={this.togglePlay}>togglePlay</Button>
+                                <Button onClick={this.togglePlay}>Play/Pause</Button>
                             </li>
                             <li>
-                                <Button onClick={this.seek}>seek</Button>
-                                <input className="main__input" defaultValue="30" ref={(c) => this._seekInput = c} type="number" min="0" max="30" step="1" />
+                                <Button onClick={this.increasePlaybackRate}>Increase Speed</Button>
+                                Current speed: {this.state.playbackRate}x
                             </li>
-
                         </ul>
                 </div>
             </div>
         );
     }
-});
+}
 
 export default VideoPlayer;
