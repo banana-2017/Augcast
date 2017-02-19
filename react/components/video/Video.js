@@ -18,6 +18,7 @@ class VideoPlayer extends React.Component {
 
         this.togglePlay = this.togglePlay.bind(this);
         this.increasePlaybackRate = this.increasePlaybackRate.bind(this);
+        this.decreasePlaybackRate = this.decreasePlaybackRate.bind(this);
     }
 
     togglePlay() {
@@ -28,17 +29,23 @@ class VideoPlayer extends React.Component {
 
     increasePlaybackRate() {
         var curRate = this.state.playbackRate;
-        curRate++;
+        curRate += 0.1;
         this.setState({playbackRate: curRate});
         this.refs.basicvideo.playbackRate = curRate;
+    }
 
+    decreasePlaybackRate() {
+        var curRate = this.state.playbackRate;
+        curRate -= 0.1;
+        this.setState({playbackRate: curRate});
+        this.refs.basicvideo.playbackRate = curRate;
     }
 
     render () {
         return (
             <div>
                 <div>
-                    <h1>Video page!</h1>
+                    <h1>Video page</h1>
                     <Link to="/">Back home</Link>
                     <br />
                     <video
@@ -58,8 +65,10 @@ class VideoPlayer extends React.Component {
                                 <Button onClick={this.togglePlay}>Play/Pause</Button>
                             </li>
                             <li>
-                                <Button onClick={this.increasePlaybackRate}>Increase Speed</Button>
-                                Current speed: {this.state.playbackRate}x
+                                Playback rate:
+                                <Button onClick={this.decreasePlaybackRate}>-</Button>
+                                 {this.state.playbackRate.toFixed(1)}x
+                                <Button onClick={this.increasePlaybackRate}>+</Button>
                             </li>
                         </ul>
                 </div>
