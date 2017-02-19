@@ -5,7 +5,7 @@ import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 //import Database from '../database/database_init';
 import Home from './components/Home';
 import App from './components/App';
-import VideoPlayer from './components/video/Video';
+import VideoPlayer from './components/Video';
 
 
 // Write a test JSON object to the database

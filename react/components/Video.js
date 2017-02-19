@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { database } from './../../../database/database_init';
+import { database } from './../../database/database_init';
+
 
 /**
 VideoPlayer - to be displayed on the side
@@ -36,7 +37,8 @@ class VideoPlayer extends React.Component {
 
     increasePlaybackRate() {
         var curRate = this.state.playbackRate;
-        curRate += 0.1;
+        // Add upper limit 2.0
+        if (curRate < 2.0) curRate += 0.1;
         this.setState({
             playbackRate: curRate,
             status: 'Increased playback rate to ' + curRate
@@ -46,7 +48,9 @@ class VideoPlayer extends React.Component {
 
     decreasePlaybackRate() {
         var curRate = this.state.playbackRate;
-        curRate -= 0.1;
+
+        if (curRate > 0.1) curRate -= 0.1;
+
         this.setState({
             playbackRate: curRate,
             status: 'Decreased playback rate to ' + curRate
