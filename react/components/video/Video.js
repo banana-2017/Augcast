@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { db } from './../../../database/database_init';
+import { database } from './../../../database/database_init';
 
 /**
 VideoPlayer - to be displayed on the side
@@ -66,7 +66,7 @@ class VideoPlayer extends React.Component {
         var that = this;    // Maintain current "this" in Firebase callback
 
         // Fetch value from db and set currentTime
-        db.ref('/test/time').once('value').then(function(snapshot) {
+        database.ref('/test/time').once('value').then(function(snapshot) {
             that.refs.basicvideo.currentTime = Number(snapshot.val());
             that.setState({
                 status: 'fetched value from db, seeking playhead to ' + snapshot.val()

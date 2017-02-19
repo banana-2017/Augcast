@@ -6,4 +6,4 @@ if (firebase.apps.length === 0) {
     firebase.initializeApp(conf);
 }
 
-export let db = firebase.database();
+export let database = firebase.database();
