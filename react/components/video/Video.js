@@ -10,7 +10,9 @@ VideoPlayer - to be displayed on the side
 var VideoPlayer = React.createClass ({
 
     togglePlay() {
-        this.refs.video.togglePlay();
+        var vid = this.refs.basicvideo;
+        if (vid.paused) vid.play();
+        else vid.pause();
     },
 
     render () {
@@ -19,11 +21,13 @@ var VideoPlayer = React.createClass ({
                 <div>
                     <h1>Video page!</h1>
                     <Link to="/">Back home</Link>
-
+                    <br />
                     <video
                         src="http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_60fps_normal.mp4"
-                        width="320"
-                        ref="video"
+                        width="560"
+                        id="basicvideo"
+                        ref="basicvideo"
+                        autoplay
                         controls>
                         Your browser does not support the video tag.
                     </video>
@@ -35,6 +39,7 @@ var VideoPlayer = React.createClass ({
                         autoPlay
                         loop
                         muted
+                        ref="video"
                         width="560">
                         <source src="https://podcast.ucsd.edu/Podcasts//bibc120_wi17/bibc120_wi17-02162017-1230.mp4" type="video/mp4" />
                     </Video>
@@ -42,7 +47,7 @@ var VideoPlayer = React.createClass ({
                 </div>
 
                 <div className="column">
-                    <button onClick={() => this.togglePlay}>Play/Pause</button>
+                    <button onClick={this.togglePlay}>Play/Pause</button>
                     <h2 className="main__h2">Video API</h2>
                         <ul className="main__ul">
                             <li>
