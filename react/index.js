@@ -5,7 +5,8 @@ import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 //import database from '../database/database_init';
 import Home from './components/Home';
 import App from './components/App';
-import VideoPlayer from './components/Video';
+import VideoPlayer from './components/video/Video';
+
 
 // Write a test JSON object to the database
 /*
@@ -24,7 +25,7 @@ class Augcast extends React.Component {
                 <Route path="/" component = {App}>
                     <IndexRoute component = {Home}/>
                 </Route>
-                <Route path="/video" component={VideoPlayer} />
+                <Route path="/videoplayer" component={VideoPlayer} />
             </Router>
         );
     }

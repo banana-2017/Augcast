@@ -10,7 +10,7 @@ class Home extends React.Component {
         return (
             <div>
             <h1>Home</h1>
-            <Link to="/video">VideoPlayer</Link>
+            <Link to="/videoplayer">VideoPlayer</Link>
             </div>
         );
     }
