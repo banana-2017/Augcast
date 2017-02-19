@@ -13,38 +13,58 @@ class VideoPlayer extends React.Component {
         super(props);
 
         this.state = {
-            playbackRate: 1
+            playbackRate: 1,
+            status: 'Initialized'
         };
 
         this.togglePlay = this.togglePlay.bind(this);
         this.increasePlaybackRate = this.increasePlaybackRate.bind(this);
         this.decreasePlaybackRate = this.decreasePlaybackRate.bind(this);
+        this.updateCurTime = this.updateCurTime.bind(this);
     }
 
     togglePlay() {
         var vid = this.refs.basicvideo;
         if (vid.paused) vid.play();
         else vid.pause();
+
+        this.setState({
+            status: 'Toggled play/pause'
+        });
     }
 
     increasePlaybackRate() {
         var curRate = this.state.playbackRate;
         curRate += 0.1;
-        this.setState({playbackRate: curRate});
+        this.setState({
+            playbackRate: curRate,
+            status: 'Increased playback rate to ' + curRate
+        });
         this.refs.basicvideo.playbackRate = curRate;
     }
 
     decreasePlaybackRate() {
         var curRate = this.state.playbackRate;
         curRate -= 0.1;
-        this.setState({playbackRate: curRate});
+        this.setState({
+            playbackRate: curRate,
+            status: 'Decreased playback rate to ' + curRate
+        });
         this.refs.basicvideo.playbackRate = curRate;
+    }
+
+    updateCurTime(evt) {
+        var numberStatus = !isNaN(evt.target.value) ? evt.target.value : 'Not a number';
+        this.setState({
+            status: 'Seeking playhead to ' + numberStatus
+        });
+        this.refs.basicvideo.currentTime = Number(evt.target.value);
     }
 
     render () {
         return (
             <div>
-                <div>
+                <div className="video_player_container">
                     <h1>Video page</h1>
                     <Link to="/">Back home</Link>
                     <br />
@@ -53,13 +73,13 @@ class VideoPlayer extends React.Component {
                         width="560"
                         id="basicvideo"
                         ref="basicvideo"
-                        autoPlay
                         controls>
                         Your browser does not support the video tag.
                     </video>
                 </div>
-                <div className="column">
+                <div className="video_api_container">
                     <h2 className="main__h2">Video API</h2>
+                    <h3 className="main__h2">Current status: {this.state.status}</h3>
                         <ul className="main__ul">
                             <li>
                                 <Button onClick={this.togglePlay}>Play/Pause</Button>
@@ -69,6 +89,10 @@ class VideoPlayer extends React.Component {
                                 <Button onClick={this.decreasePlaybackRate}>-</Button>
                                  {this.state.playbackRate.toFixed(1)}x
                                 <Button onClick={this.increasePlaybackRate}>+</Button>
+                            </li>
+                            <li>
+                                Skip to time (seconds):
+                                <input onChange={this.updateCurTime}/>
                             </li>
                         </ul>
                 </div>
