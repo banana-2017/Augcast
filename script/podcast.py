@@ -10,6 +10,7 @@ courseNumber = 0
 
 courseDic = {}
 lectureDic = {}
+table = {}
 
 # url and the HTML text of podcast
 urlPodcast = "https://podcast.ucsd.edu/"
@@ -73,7 +74,7 @@ for eachCourse in currentCourse.find_all('tr'):
         if "[" not in lectureDate:
             lectureNum = lectureNum + 1
 
-        print lectureNum
+
         lectureID = courseID + " LE" + str(lectureNum)
 
         # TODO change lecture ID
@@ -89,17 +90,12 @@ for eachCourse in currentCourse.find_all('tr'):
     courseDic[courseID] = eachCourseDic
     courseNumber = courseNumber + 1
 
-print courseDic
+    table["courses"] = courseDic
+    table["lecture"] = lectureDic
 
-with open('course.json', 'w') as outfile:
+with open('table.json', 'w') as outfile:
     # for eachCourseList in courseList:
-        json.dump(courseDic, outfile)
-        outfile.write('\n')
-
-
-with open('lecuture.json', 'w') as outfile:
-    # for eachLecutureList in lectureList:
-        json.dump(lectureDic, outfile)
+        json.dump(table, outfile)
         outfile.write('\n')
 
 
