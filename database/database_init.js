@@ -24,5 +24,6 @@ module.exports = function() {
     }
 
     // Return a reference to the database
+    console.log(JSON.stringify(firebase.database()));
     return firebase.database();
 };
