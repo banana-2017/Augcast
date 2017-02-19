@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 lectureNumber = 0
 courseNumber = 0
 
-courseList = []
+courseDic = {}
 lectureList = []
 
 
@@ -31,20 +31,26 @@ for eachCourse in currentCourse.find_all('tr'):
 
     # get the course podcast url and course name
     courseInfo = eachCourse.find('a', {"class": "PodcastLink"})
-    courseUrl = "https://podcast.ucsd.edu" + courseInfo['href']
-    courseTitle = courseInfo.text
+    courseUrl = str("https://podcast.ucsd.edu" + courseInfo['href'])
+    courseTitle = str(courseInfo.text)
 
     # get the course professor
     courseProf = eachCourse.find('td', {"class": "prof"}).text
 
+    # refine the keyword
+    courseNum = courseTitle.split('-')[0]
+    courseSection = courseTitle.split('-')[-1]
+    courseID = courseNum + courseSection
+    courseName = "".join(courseTitle.split('-')[1:-1])
+
     # store the individual course information to the dictionary
     eachCourseDic = {}
-    eachCourseDic['title'] = courseTitle
+    eachCourseDic['name'] = courseName
     eachCourseDic['url'] = courseUrl
     eachCourseDic['professor'] = courseProf
 
-    # store the course information to the course list
-    courseList.append(eachCourseDic)
+    # store the course information to the course dictionary
+    courseDic[courseID] = eachCourseDic
 
 
     ###################################### Lecture Information ###################################################
@@ -73,11 +79,11 @@ for eachCourse in currentCourse.find_all('tr'):
 
     courseNumber = courseNumber + 1
 
-
+print courseDic
 
 with open('course.json', 'w') as outfile:
     # for eachCourseList in courseList:
-        json.dump(courseList, outfile)
+        json.dump(courseDic, outfile)
         outfile.write('\n')
 
 
