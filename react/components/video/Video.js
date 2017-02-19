@@ -1,31 +1,6 @@
 import React from 'react';
-import Button from './../button/Button';
 import { Link } from 'react-router';
-var firebase = require('firebase/app');
-require('firebase/database');
-var conf = require('./../../../database/credentials.json');
-var config = {
-    apiKey: conf.apiKey,
-    authDomain: conf.authDomain,
-    databaseURL: conf.databaseURL,
-    storageBucket: conf.storageBucket
-};
-
-// Log in to Firebase if not logged in
-if (firebase.apps.length === 0) {
-    firebase.initializeApp(config);
-}
-
-firebase.database().ref('test').update({
-    time: 6
-});
-
-
-
-
-
-//import { default as Video, Controls, Overlay } from 'react-html5video';
-
+import { db } from './../../../database/database_init';
 
 /**
 VideoPlayer - to be displayed on the side
@@ -88,8 +63,10 @@ class VideoPlayer extends React.Component {
     }
 
     updateCurTimeFromDB() {
-        var that = this;
-        firebase.database().ref('/test/time').once('value').then(function(snapshot) {
+        var that = this;    // Maintain current "this" in Firebase callback
+
+        // Fetch value from db and set currentTime
+        db.ref('/test/time').once('value').then(function(snapshot) {
             that.refs.basicvideo.currentTime = Number(snapshot.val());
             that.setState({
                 status: 'fetched value from db, seeking playhead to ' + snapshot.val()
@@ -118,13 +95,13 @@ class VideoPlayer extends React.Component {
                     <h3 className="main__h2">Current status: {this.state.status}</h3>
                         <ul className="main__ul">
                             <li>
-                                <Button onClick={this.togglePlay}>Play/Pause</Button>
+                                <button onClick={this.togglePlay}>Play/Pause</button>
                             </li>
                             <li>
                                 Playback rate:
-                                <Button onClick={this.decreasePlaybackRate}>-</Button>
+                                <button onClick={this.decreasePlaybackRate}>-</button>
                                  {this.state.playbackRate.toFixed(1)}x
-                                <Button onClick={this.increasePlaybackRate}>+</Button>
+                                <button onClick={this.increasePlaybackRate}>+</button>
                             </li>
                             <li>
                                 Skip to time (seconds):
@@ -132,7 +109,7 @@ class VideoPlayer extends React.Component {
                             </li>
                             <li>
                                 Skip to time from Firebase: test/time:
-                                <Button onClick={this.updateCurTimeFromDB}>Update</Button>
+                                <button onClick={this.updateCurTimeFromDB}>Update</button>
                             </li>
                         </ul>
                 </div>

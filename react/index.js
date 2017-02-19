@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 
-//import database from '../database/database_init';
+//import Database from '../database/database_init';
 import Home from './components/Home';
 import App from './components/App';
 import VideoPlayer from './components/video/Video';
@@ -10,9 +10,8 @@ import VideoPlayer from './components/video/Video';
 
 // Write a test JSON object to the database
 /*
-database.ref('test').set({
-status: 'Live',
-appName: 'Augcast'
+database.ref('test').update({
+time: 5
 });
 console.log('Writing to DB complete');
 */
