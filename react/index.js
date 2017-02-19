@@ -4,9 +4,19 @@ import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-import database from '../database/database_init';
+//import Database from '../database/database_init';
 import Home from './components/Home';
 import App from './components/App';
+import VideoPlayer from './components/Video';
+
+
+// Write a test JSON object to the database
+/*
+database.ref('test').update({
+time: 5
+});
+console.log('Writing to DB complete');
+*/
 import Login from './components/Login';
 import appReducers from './redux/reducers';
 
@@ -32,8 +42,6 @@ function authenticate (nextState, replace, transition) {
     transition();
 }
 
-
-
 // React main class and router
 class Augcast extends React.Component {
     render () {
@@ -42,6 +50,7 @@ class Augcast extends React.Component {
                 <Router history={browserHistory}>
                     <Route path="/" component = {App} onEnter={authenticate}>
                         <IndexRoute component = {Home}/>
+                        <Route path="/videoplayer" component={VideoPlayer} />
                     </Route>
                     <Route path="/login" component = {Login}/>
                 </Router>
