@@ -30,11 +30,16 @@
     "webpack-dev-server": "^2.3.0"
   },
   "dependencies": {
+    "activedirectory2": "^1.2.1",
     "express": "^4.14.1",
     "firebase": "^3.6.8",
     "firebase-admin": "^4.1.0",
+    "ldapjs": "^1.0.1",
+    "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",
     "react-html5video": "^1.4.0",
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0",
     "webpack-dev-server": "^2.3.0"
   }
 }
