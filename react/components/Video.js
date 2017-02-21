@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { database } from './../../database/database_init';
+import { Button, Glyphicon } from 'react-bootstrap';
 
 
 /**
@@ -38,7 +39,7 @@ class VideoPlayer extends React.Component {
     increasePlaybackRate() {
         var curRate = this.state.playbackRate;
         // Add upper limit 2.0
-        if (curRate < 2.0) curRate += 0.1;
+        if (curRate < 2.0) curRate += 0.05;
         this.setState({
             playbackRate: curRate,
             status: 'Increased playback rate to ' + curRate
@@ -49,7 +50,7 @@ class VideoPlayer extends React.Component {
     decreasePlaybackRate() {
         var curRate = this.state.playbackRate;
 
-        if (curRate > 0.1) curRate -= 0.1;
+        if (curRate > 0) curRate -= 0.05;
 
         this.setState({
             playbackRate: curRate,
@@ -88,6 +89,7 @@ class VideoPlayer extends React.Component {
                     <video
                         src="http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_60fps_normal.mp4"
                         width="560"
+                        style={{margin:'10px'}}
                         id="basicvideo"
                         ref="basicvideo"
                         controls>
@@ -99,21 +101,27 @@ class VideoPlayer extends React.Component {
                     <h3 className="main__h2">Current status: {this.state.status}</h3>
                         <ul className="main__ul">
                             <li>
-                                <button onClick={this.togglePlay}>Play/Pause</button>
+                                <Button
+                                    bsStyle="primary"
+                                    onClick={this.togglePlay}>
+                                        <Glyphicon glyph="play" />
+                                        <Glyphicon glyph="pause" />
+                                        Play/Pause
+                                </Button>
                             </li>
                             <li>
                                 Playback rate:
-                                <button onClick={this.decreasePlaybackRate}>-</button>
-                                 {this.state.playbackRate.toFixed(1)}x
-                                <button onClick={this.increasePlaybackRate}>+</button>
+                                <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.decreasePlaybackRate}>-</Button>
+                                 {Math.abs(this.state.playbackRate).toFixed(2)}x
+                                <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.increasePlaybackRate}>+</Button>
                             </li>
                             <li>
                                 Skip to time (seconds):
                                 <input onChange={this.updateCurTime}/>
                             </li>
                             <li>
-                                Skip to time from Firebase: test/time:
-                                <button onClick={this.updateCurTimeFromDB}>Update</button>
+                                Skip to time from Firebase path "test/time":
+                                <Button style={{margin:'10px'}} bsStyle="success" onClick={this.updateCurTimeFromDB}><Glyphicon glyph="save" /> Update</Button>
                             </li>
                         </ul>
                 </div>
