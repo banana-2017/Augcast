@@ -4,10 +4,9 @@ import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-//import Database from '../database/database_init';
 import Home from './components/Home';
 import App from './components/App';
-import VideoPlayer from './components/Video';
+import VideoView from './components/VideoView';
 
 
 // Write a test JSON object to the database
@@ -50,8 +49,8 @@ class Augcast extends React.Component {
                 <Router history={browserHistory}>
                     <Route path="/" component = {App} onEnter={authenticate}>
                         <IndexRoute component = {Home}/>
-                        <Route path="/videoplayer" component={VideoPlayer} />
                     </Route>
+                    <Route path="/videoplayer" component={VideoView} />
                     <Route path="/login" component = {Login}/>
                 </Router>
             </Provider>
