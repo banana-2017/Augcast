@@ -6,7 +6,7 @@ import {LOG_OUT, LOG_IN, UPDATE_COURSE, IS_INSTRUCTOR} from './actions';
 * currentCourse: ID of the course currently selected
 */
 const initialState = {
-    loggedIn : true,
+    loggedIn : false,
     currentCourse: undefined,
     userType: 'STUDENT',
     username: undefined,
