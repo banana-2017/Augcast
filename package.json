@@ -4,7 +4,10 @@
   "description": "An augmented podcast experience!",
   "main": "index.js",
   "scripts": {
-    "dev": "./node_modules/.bin/webpack-dev-server --inline --hot --history-api-fallback"
+    "dev": "./node_modules/.bin/webpack-dev-server --inline --hot --history-api-fallback",
+    "build:client": "webpack",
+    "build:server": "webpack --config webpack.server.config.js",
+    "build": "npm run build:client && npm run build:server"
   },
   "repository": {
     "type": "git",
@@ -34,6 +37,10 @@
     "express": "^4.14.1",
     "firebase": "^3.6.8",
     "firebase-admin": "^4.1.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router": "^3.0.2",
+    "webpack": "^2.2.1",
     "ldapjs": "^1.0.1",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",
