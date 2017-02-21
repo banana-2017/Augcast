@@ -5,3 +5,5 @@ import conf from './credentials.json';
 if (firebase.apps.length === 0) {
     firebase.initializeApp(conf);
 }
+
+export let database = firebase.database();
