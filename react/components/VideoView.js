@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import VideoPlayer from './VideoPlayer';
 //import { database } from './../../database/database_init';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 /**
     VideoView - Will contain VideoPlayer
