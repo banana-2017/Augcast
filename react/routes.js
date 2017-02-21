@@ -1,10 +1,42 @@
-import React from 'react'
-import { Route, IndexRoute } from 'react-router'
-import App from './components/App'
-import Home from './components/Home'
+import { Route, IndexRoute } from 'react-router';
+import App from './components/App';
+import Home from './components/Home';
+import Login from './components/Login';
+import { createStore } from 'redux';
+import VideoPlayer from './components/Video';
+import appReducers from './redux/reducers';
 
+// eslint-disable-next-line
+import React from 'react';      // used for jsx
+
+
+
+let store = createStore (appReducers);
 module.exports = (
-	<Route path="/" component = {App}>
-		<IndexRoute component = {Home}/>
-	</Route>
+    <Route path="/" component = {App}>
+        <IndexRoute component = {Home} onEnter = {authenticate}>
+            <Route path="/videoplayer" component={VideoPlayer} />
+        </IndexRoute>
+        <Route path="/login" component = {Login}/>
+    </Route>
 );
+
+
+/**
+ * gets login state from store and redirects route
+ *
+ * nextState: current state of the router
+ * replace: triggers transition to different URL
+ * callback: continues transition
+ */
+function authenticate (nextState, replace, transition) {
+    let {loggedIn} = store.getState();
+    console.log (loggedIn);
+
+    if (!loggedIn) {
+        replace ('/login');
+    }
+
+
+    transition();
+}

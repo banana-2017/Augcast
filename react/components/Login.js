@@ -20,7 +20,6 @@ class Login extends React.Component {
                 <FormGroup controlId="email" validationState={this.emailValidation()}>
                     <FormControl
                         type="text"
-                        value={this.state.email}
                         placeholder="@ucsd.edu"
                         onChange={this.handleChange}
                         style= {
@@ -34,7 +33,6 @@ class Login extends React.Component {
                 <FormGroup controlId="password">
                     <FormControl
                         type="text"
-                        value={this.state.password}
                         style= {
                         {   padding: '20px',
                             margin: '20px',
