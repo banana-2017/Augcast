@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-Augcast is a website that augments the functionality of [podcast.ucsd.edu](podcast.ucsd.edu). Augcast improves upon traditional podcasts by offering a instant search through a podcast’s content, and skipping to the exact lecture and timestamp where a certain phrase is discussed. This is done by Optical Character Recognition on a given podcast’s PDF slides. Once the slides have been uploaded to our website, the contents will be indexed and mapped to the exact times where the words appear on the video podcast. Thus, users can search any term that appears in their lecture notes and will be taken to the exact time their professor was discussing it in class, eliminating the need to skim through several podcasts trying to find the exact time a topic was covered.
+Augcast is a website that augments the functionality of [podcast.ucsd.edu](podcast.ucsd.edu). Augcast improves upon traditional podcasts by offering a instant search through a podcast’s content, and skipping to the exact lecture and timestamp where a certain phrase is discussed. This is done by Optical Character Recognition on a given podcast’s video frames. Once the slides have been uploaded to our website, the contents will be indexed and mapped to the exact times where the words appear on the video podcast. Then, users can search any term that appears in their lecture notes and will be taken to the exact time their professor was discussing it in class, eliminating the need to skim through several podcasts trying to find the exact time a topic was covered.
 
 ## Usage
 
