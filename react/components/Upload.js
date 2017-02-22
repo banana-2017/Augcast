@@ -14,7 +14,9 @@ class Upload extends React.Component {
         // Initial state
         this.state = {
             uploadProgress: 0,
-            downloadURL: ''
+            uploadStarted: false,
+            downloadURL: '',
+            error: ''
         };
 
         // Bind all functions so they can refer to "this" correctly
@@ -29,9 +31,28 @@ class Upload extends React.Component {
      */
     handleFile() {
         let that = this;
-        var file = this.refs.inputBox.value='';
+
+        // The inputted file
+        var file = this.refs.inputBox.files[0];
+
+        // Ignore click if no file chosen
+        if (file === undefined) {
+            return;
+        }
+
+        // Check for .pdf extension. Weak method of checking filetype, but it's
+        // the best we can do in the front end.
+        if (!file.name.endsWith('.pdf')) {
+            console.log('This is not a PDF file');
+            this.setState({error: 'The input is not a PDF file!'});
+            return;
+        }
 
         console.log('User inputted file:' + file.name);
+        this.setState({
+            uploadStarted: true,
+            error: ''
+        });
 
         // Declare file to be PDF
         var metadata = {
@@ -44,7 +65,6 @@ class Upload extends React.Component {
         uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED,
             function(snapshot) {
                 var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
                 that.setState({
                     uploadProgress: progress
                 });
@@ -66,23 +86,31 @@ class Upload extends React.Component {
 
     handleClear() {
         this.refs.inputForm.reset();
+        this.setState({
+            uploadProgress: 0,
+            uploadStarted: false,
+            downloadURL: '',
+            error: ''
+        });
     }
 
     render () {
         return (
             <div
-            style={{maxWidth: '500px'}}>
+            style={{maxWidth: '500px', margin:'0 auto'}}>
 
-                <h1> Upload a file </h1>
+                <h1
+                    style={{margin:'10px'}}>
+                    Upload a PDF file
+                </h1>
+
                 <form
-                ref='inputForm'
-                >
+                    ref='inputForm'>
                 <input
-                ref='inputBox'
-                type='file'
-                accept='application/pdf'
-                />
-                <br/>
+                    ref='inputBox'
+                    type='file'
+                    style={{margin:'10px'}}
+                    accept='application/pdf'/>
 
                 <Button
                     bsStyle="default"
@@ -90,7 +118,7 @@ class Upload extends React.Component {
                     style={{margin:'10px'}}
                     active={this.state.curSource == 2}
                     onClick={this.handleClear}>
-                        Remove
+                        Clear
                 </Button>
                 <Button
                     bsStyle="success"
@@ -102,14 +130,15 @@ class Upload extends React.Component {
                         Upload
                 </Button>
                 </form>
+                {this.state.error}
 
-                <ProgressBar
-                active
-                now={this.state.uploadProgress}
-                label={`${(this.state.uploadProgress).toFixed(2)}%`} />
+                {this.state.uploadStarted != 0 ? <ProgressBar
+                    active
+                    now={this.state.uploadProgress}
+                    label={`${(this.state.uploadProgress).toFixed(2)}%`} /> : ''}
 
-                <h3> Download URL from Firebase: </h3>
-                <h4> {this.state.downloadURL} </h4>
+                <h3> {this.state.downloadURL != '' ? 'Download URL from Firebase:' : ''} </h3>
+                <a href={this.state.downloadURL}> {this.state.downloadURL} </a>
             </div>
         );
     }
