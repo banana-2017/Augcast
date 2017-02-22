@@ -4,7 +4,7 @@
 //const isBrowser = typeof window !== 'undefined';
 //const PDF = isBrowser ? require('react-pdf-js') : undefined;
 import React from 'react';
-//import PDF from 'react-pdf-js';
+import PDF from 'react-pdf-js';
 //import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
 const CORSProxy = 'http://cors-anywhere.herokuapp.com/';
@@ -82,7 +82,6 @@ class PDFDisplay extends React.Component {
         if (this.state.pages) {
             pagination = this.renderPagination(this.state.page, this.state.pages);
         }
-        const PDF = require('react-pdf-js');
         return (
             <div
                 style={{maxWidth: '500px', margin:'0 auto'}}>
