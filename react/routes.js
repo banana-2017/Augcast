@@ -3,8 +3,9 @@ import App from './components/App';
 import Home from './components/Home';
 import Login from './components/Login';
 import { createStore } from 'redux';
-import VideoPlayer from './components/Video';
+import VideoView from './components/VideoView';
 import appReducers from './redux/reducers';
+
 
 // eslint-disable-next-line
 import React from 'react';      // used for jsx
@@ -15,11 +16,12 @@ let store = createStore (appReducers);
 module.exports = (
     <Route path="/" component = {App}>
         <IndexRoute component = {Home} onEnter = {authenticate}>
-            <Route path="/videoplayer" component={VideoPlayer} />
         </IndexRoute>
+        <Route path="/videoview" component={VideoView} />
         <Route path="/login" component = {Login}/>
     </Route>
 );
+
 
 
 /**
