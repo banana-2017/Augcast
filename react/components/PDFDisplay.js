@@ -1,11 +1,14 @@
 // PDFDisplay.js
 // Responsible for displaying the PDF
 
+//const isBrowser = typeof window !== 'undefined';
+//const PDF = isBrowser ? require('react-pdf-js') : undefined;
 import React from 'react';
-import PDF from 'react-pdf-js';
+//import PDF from 'react-pdf-js';
 //import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
 const CORSProxy = 'http://cors-anywhere.herokuapp.com/';
+const PDFSource = 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7';
 
 class PDFDisplay extends React.Component {
 
@@ -15,7 +18,7 @@ class PDFDisplay extends React.Component {
         // Initial state
         this.state = {
             page: 1,
-            file: CORSProxy + 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7',
+            file: CORSProxy + PDFSource,
             pages: 2
         };
 
@@ -31,6 +34,7 @@ class PDFDisplay extends React.Component {
      * Upload the inputted file to Firebase Storage.
      */
     onDocumentComplete() {
+        console.log('Triggered onDocumentComplete()');
         this.setState({ page: 1 });
     }
 
@@ -78,6 +82,7 @@ class PDFDisplay extends React.Component {
         if (this.state.pages) {
             pagination = this.renderPagination(this.state.page, this.state.pages);
         }
+        const PDF = require('react-pdf-js');
         return (
             <div
                 style={{maxWidth: '500px', margin:'0 auto'}}>
@@ -86,7 +91,8 @@ class PDFDisplay extends React.Component {
                     style={{margin:'10px'}}>
                     PDF Viewer
                 </h1>
-                Viewing https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7
+                Viewing
+                <br/> {PDFSource} <br/>
                 Through CORS proxy
                 {pagination}
                 <PDF
