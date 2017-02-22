@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { database } from './../../database/database_init';
 import { Button, Glyphicon } from 'react-bootstrap';
 
@@ -80,14 +79,15 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
+        console.log('Writing to DB complete');
         return (
             <div>
                 <div className="video_player_container">
-                    <h1>Video page</h1>
-                    <Link to="/">Back home</Link>
+
                     <br />
                     <video
-                        src="http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_60fps_normal.mp4"
+                        src={this.props.mediaURL}
+                        autoPlay
                         width="560"
                         style={{margin:'10px'}}
                         id="basicvideo"
@@ -97,8 +97,8 @@ class VideoPlayer extends React.Component {
                     </video>
                 </div>
                 <div className="video_api_container">
-                    <h2 className="main__h2">Video API</h2>
-                    <h3 className="main__h2">Current status: {this.state.status}</h3>
+                    <h3 className="main__h3">Video Controls</h3>
+                    <h4 className="main__h2">Current status: {this.state.status}</h4>
                         <ul className="main__ul">
                             <li>
                                 <Button
@@ -121,7 +121,7 @@ class VideoPlayer extends React.Component {
                             </li>
                             <li>
                                 Skip to time from Firebase path "test/time":
-                                <Button style={{margin:'10px'}} bsStyle="success" onClick={this.updateCurTimeFromDB}><Glyphicon glyph="save" /> Update</Button>
+                                <Button style={{margin:'10px'}} bsStyle="success" onClick={this.updateCurTimeFromDB}><Glyphicon glyph="cloud-download" /> Update</Button>
                             </li>
                         </ul>
                 </div>

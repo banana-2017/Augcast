@@ -11,17 +11,34 @@ class Login extends React.Component {
             email: '',
             password: ''
         };
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.emailValidation = this.emailValidation.bind(this);
+        this.authenticate = this.authenticate.bind(this);
+
+    }
+
+
+    handleEmailChange(e) {
+        this.setState({ email: e.target.value });
+    }
+
+    handlePasswordChange(e) {
+        this.setState({ password: e.target.value });
     }
 
     render () {
 
         return (
             <form>
-                <FormGroup controlId="email" validationState={this.emailValidation()}>
+                <FormGroup
+                    controlId="email"
+                    validationState={this.emailValidation()}>
                     <FormControl
                         type="text"
                         placeholder="@ucsd.edu"
-                        onChange={this.handleChange}
+                        value={this.state.email}
+                        onChange={this.handleEmailChange}
                         style= {
                         {   padding: '20px',
                             margin: '20px',
@@ -30,9 +47,12 @@ class Login extends React.Component {
                     }/>
                     <FormControl.Feedback />
                 </FormGroup>
-                <FormGroup controlId="password">
+                <FormGroup
+                    controlId="password">
                     <FormControl
-                        type="text"
+                        type='password'
+                        value={this.state.password}
+                        onChange={this.handlePasswordChange}
                         style= {
                         {   padding: '20px',
                             margin: '20px',
@@ -40,7 +60,7 @@ class Login extends React.Component {
                         }}
                         placeholder="password"/>
                     <FormControl.Feedback />
-                    <Button style={{margin:'20px'}} bsStyle="success">Login</Button>
+                    <Button style={{margin:'20px'}} bsStyle="success" onClick={this.authenticate}>Login</Button>
                 </FormGroup>
             </form>
         );
@@ -48,7 +68,16 @@ class Login extends React.Component {
 
     // return true if email id is a valid email
     emailValidation () {
+        const input = this.state.email;
+        if (input.endsWith('@ucsd.edu')) return 'success';
+        if (input.length != 0) return 'error';
+    }
 
+    authenticate() {
+        //const username = this.state.email;
+        //const password = this.state.password;
+        // set redux state to true
+        // link to new page
     }
 
 /*
