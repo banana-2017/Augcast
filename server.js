@@ -8,6 +8,7 @@ import React from 'react';     // jsx rendered as React.createElement
 let __dirname = path.resolve();
 
 var app = express();
+
 app.use('/css', express.static(__dirname + '/public/css/'));
 app.use(express.static(path.join(__dirname, 'public')));
 

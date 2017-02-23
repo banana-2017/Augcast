@@ -4,6 +4,8 @@ import Home from './components/Home';
 import Login from './components/Login';
 import { createStore } from 'redux';
 import VideoView from './components/VideoView';
+import Upload from './components/Upload';
+import PDFDisplay from './components/PDFDisplay';
 import appReducers from './redux/reducers';
 
 
@@ -19,6 +21,8 @@ module.exports = (
         </IndexRoute>
         <Route path="/videoview" component={VideoView} />
         <Route path="/login" component = {Login}/>
+        <Route path="/upload" component = {Upload}/>
+        <Route path="/pdf" component={PDFDisplay} />
     </Route>
 );
 

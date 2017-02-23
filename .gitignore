@@ -1,5 +1,6 @@
 node_modules
 bundle.js
+public/bundle.js
 server.bundle.js
 .swp
 .swo
