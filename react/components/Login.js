@@ -14,17 +14,34 @@ class Login extends React.Component {
             email: '',
             password: ''
         };
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.emailValidation = this.emailValidation.bind(this);
+        this.authenticate = this.authenticate.bind(this);
+
+    }
+
+
+    handleEmailChange(e) {
+        this.setState({ email: e.target.value });
+    }
+
+    handlePasswordChange(e) {
+        this.setState({ password: e.target.value });
     }
 
     // TODO: needs styling
     render () {
         return (
             <form>
-                <FormGroup controlId="email" validationState={this.emailValidation()}>
+                <FormGroup
+                    controlId="email"
+                    validationState={this.emailValidation()}>
                     <FormControl
                         type="text"
                         placeholder="@ucsd.edu"
                         onChange={this.emailChange}
+                        value={this.state.email}
                         style= {
                         {   padding: '20px',
                             margin: '20px',
@@ -33,10 +50,12 @@ class Login extends React.Component {
                     }/>
                     <FormControl.Feedback />
                 </FormGroup>
-                <FormGroup controlId="password">
+                <FormGroup
+                    controlId="password">
                     <FormControl
                         type="password"
                         onChange={this.passwordChange}
+                        value={this.state.password}
                         style= {
                         {   padding: '20px',
                             margin: '20px',
@@ -44,7 +63,7 @@ class Login extends React.Component {
                         }}
                         placeholder="password"/>
                     <FormControl.Feedback />
-                    <Button style={{margin:'20px'}} bsStyle="success">Login</Button>
+                    <Button style={{margin:'20px'}} bsStyle="success" onClick={this.authenticate}>Login</Button>
                 </FormGroup>
             </form>
         );
@@ -59,6 +78,13 @@ class Login extends React.Component {
         else {
             return 'error';
         }
+    }
+
+    authenticate() {
+        //const username = this.state.email;
+        //const password = this.state.password;
+        // set redux state to true
+        // link to new page
     }
 
     passwordChange (e) {
