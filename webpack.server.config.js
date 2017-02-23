@@ -19,8 +19,8 @@ module.exports = {
     }, {}),
 
     node: {
-        __filename: true,
-        __dirname: true
+        __filename: true
+
     },
 
     module: {
@@ -28,5 +28,4 @@ module.exports = {
             { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader?presets[]=es2015&presets[]=react' }
         ]
     }
-
 };

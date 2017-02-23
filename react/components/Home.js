@@ -12,6 +12,10 @@ class Home extends React.Component {
             <div>
             <h1>Home</h1>
             <Link to="/videoview">Open VideoView</Link>
+            <br/>
+            <Link to="/upload">Open Upload Page</Link>
+            <br/>
+            <Link to="/pdf">Open PDF Display Page</Link>
             </div>
         );
     }
