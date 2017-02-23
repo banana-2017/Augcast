@@ -8,7 +8,6 @@ import PDF from 'react-pdf-js';
 //const PDF = require('react-pdf');
 //import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
-const CORSProxy = 'http://cors-anywhere.herokuapp.com/';
 const PDFSource = 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7';
 
 class PDFDisplay extends React.Component {
@@ -19,7 +18,7 @@ class PDFDisplay extends React.Component {
         // Initial state
         this.state = {
             page: 1,
-            file: CORSProxy + PDFSource,
+            file: PDFSource,
             pages: 2
         };
 
