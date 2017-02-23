@@ -5,6 +5,7 @@
 //const PDF = isBrowser ? require('react-pdf-js') : undefined;
 import React from 'react';
 import PDF from 'react-pdf-js';
+//const PDF = require('react-pdf');
 //import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
 const CORSProxy = 'http://cors-anywhere.herokuapp.com/';

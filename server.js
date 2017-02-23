@@ -1,16 +1,24 @@
 import express from 'express';
-import { renderToString } from 'react-dom/server';  // render app to string
-import { match, RouterContext } from 'react-router'; // match url to route
-import routes from './react/routes.js';
-
-// eslint-disable-next-line 
+//import { renderToString } from 'react-dom/server';  // render app to string
+//import { match, RouterContext } from 'react-router'; // match url to route
+//import routes from './react/routes.js';
+import path from 'path';
+// eslint-disable-next-line
 import React from 'react';     // jsx rendered as React.createElement
 
 var app = express();
-app.use('/css', express.static(__dirname + '/public/css/'));
 
-app.get('*', (req, res) => {
+let __dirname = path.resolve();
+//app.use('/css', express.static(__dirname + '/public/css/'));
+app.use ('/', express.static(path.join(__dirname + '/public')));
+
+/*
+app.get('/', (req, res) => {
     console.log('GET request to path *');
+    res.sendFile(path.join(__dirname + '/public/index.html'));
+});
+*/
+    /*
     match({ routes: routes, location: req.url}, (err, redirect, props)=> {
         // in here we can make some decisions all at once
         if (err) {
@@ -28,8 +36,7 @@ app.get('*', (req, res) => {
             res.status(404).send('Not Found');
         }
     });
-});
-
+    *//*
 function renderPage(appHtml) {
     return `
         <!DOCTYPE html>
@@ -46,6 +53,8 @@ function renderPage(appHtml) {
         </html>
     `;
 }
+*/
+
 
 var PORT = process.env.PORT || 8080;
 app.listen(PORT, function() {

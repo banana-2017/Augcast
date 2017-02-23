@@ -95,6 +95,7 @@ class Upload extends React.Component {
     }
 
     render () {
+        console.log('Rendering Upload page');
         return (
             <div
             style={{maxWidth: '500px', margin:'0 auto'}}>
