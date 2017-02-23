@@ -7,6 +7,9 @@ class Login extends React.Component {
 
     constructor (props) {
         super (props);
+        this.emailChange = this.emailChange.bind(this);
+        this.passwordChange = this.passwordChange.bind(this);
+        this.emailValidation = this.emailValidation.bind(this);
         this.state = {
             email: '',
             password: ''
@@ -27,8 +30,8 @@ class Login extends React.Component {
         this.setState({ password: e.target.value });
     }
 
+    // TODO: needs styling
     render () {
-
         return (
             <form>
                 <FormGroup
@@ -37,8 +40,8 @@ class Login extends React.Component {
                     <FormControl
                         type="text"
                         placeholder="@ucsd.edu"
+                        onChange={this.emailChange}
                         value={this.state.email}
-                        onChange={this.handleEmailChange}
                         style= {
                         {   padding: '20px',
                             margin: '20px',
@@ -50,9 +53,9 @@ class Login extends React.Component {
                 <FormGroup
                     controlId="password">
                     <FormControl
-                        type='password'
+                        type="password"
+                        onChange={this.passwordChange}
                         value={this.state.password}
-                        onChange={this.handlePasswordChange}
                         style= {
                         {   padding: '20px',
                             margin: '20px',
@@ -68,9 +71,13 @@ class Login extends React.Component {
 
     // return true if email id is a valid email
     emailValidation () {
-        const input = this.state.email;
-        if (input.endsWith('@ucsd.edu')) return 'success';
-        if (input.length != 0) return 'error';
+        let email = this.state.email;
+        if (email.includes ('@ucsd.edu')) {
+            return 'success';
+        }
+        else {
+            return 'error';
+        }
     }
 
     authenticate() {
@@ -80,29 +87,19 @@ class Login extends React.Component {
         // link to new page
     }
 
-/*
-    authenticate (username, password) {
-
-        var config = { url: 'ldap://ad.ucsd.edu',
-            baseDN: '',
-            username: 'pkela@ad.ucsd.edu',
-            password: 'pass' };
-        var ad = new ActiveDirectory(config);
-
-        ad.authenticate(username, password, function(err, auth) {
-            if (err) {
-                console.log('ERROR: '+JSON.stringify(err));
-            }
-
-            if (auth) {
-                console.log('Authenticated with ' + username);
-            }
-            else {
-                console.log('Authentication failed!');
-            }
+    passwordChange (e) {
+        this.setState ({
+            password: e.target.value
         });
     }
-    */
+
+    emailChange (e) {
+        this.setState ({
+            email: e.target.value
+        });
+        console.log (this.state.email);
+    }
+
 
 }
 
