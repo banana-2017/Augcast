@@ -5,7 +5,6 @@
 //const PDF = isBrowser ? require('react-pdf-js') : undefined;
 import React from 'react';
 import PDF from 'react-pdf-js';
-//const PDF = require('react-pdf');
 //import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
 const PDFSource = 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7';
@@ -33,13 +32,13 @@ class PDFDisplay extends React.Component {
     /**
      * Upload the inputted file to Firebase Storage.
      */
-    onDocumentComplete() {
-        console.log('Triggered onDocumentComplete()');
-        this.setState({ page: 1 });
+    onDocumentComplete(pages) {
+        console.log('Triggered onDocumentComplete(): ' + JSON.stringify((JSON.parse(pages))));
+        this.setState({ page: pages });
     }
 
-    onPageComplete() {
-        console.log('Triggered onPageComplete()');
+    onPageComplete(page) {
+        console.log('Triggered onPageComplete()' + JSON.stringify((JSON.parse(page))));
         //this.setState({ page: 1, pages: '' });
     }
 
@@ -84,7 +83,10 @@ class PDFDisplay extends React.Component {
         }
         return (
             <div
-                style={{maxWidth: '500px', margin:'0 auto'}}>
+                style={{
+                    textAlign: 'center',
+                    margin: '0 auto',
+                }}>
 
                 <h1
                     style={{margin:'10px'}}>
@@ -92,12 +94,12 @@ class PDFDisplay extends React.Component {
                 </h1>
                 Viewing
                 <br/> {PDFSource} <br/>
-                Through CORS proxy
                 {pagination}
                 <PDF
                     file={this.state.file}
                     onDocumentComplete={this.onDocumentComplete}
                     onPageComplete={this.onPageComplete}
+
                     page={this.state.page} />
                 {pagination}
             </div>

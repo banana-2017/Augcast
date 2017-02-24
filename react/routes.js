@@ -3,7 +3,7 @@ import App from './components/App';
 import Home from './components/Home';
 import Login from './components/Login';
 import { createStore } from 'redux';
-import VideoView from './components/VideoView';
+import PodcastView from './components/PodcastView';
 import Upload from './components/Upload';
 import PDFDisplay from './components/PDFDisplay';
 import appReducers from './redux/reducers';
@@ -19,10 +19,10 @@ module.exports = (
     <Route path="/" component = {App}>
         <IndexRoute component = {Home} onEnter = {authenticate}>
         </IndexRoute>
-        <Route path="/videoview" component={VideoView} />
+        <Route path="/podcastview" component={PodcastView} />
         <Route path="/login" component = {Login}/>
         <Route path="/upload" component = {Upload}/>
-        <Route path="/pdf" component={PDFDisplay} />
+        <Route path="/pdfdisplay" component={PDFDisplay} />
     </Route>
 );
 
