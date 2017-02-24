@@ -1,25 +1,33 @@
 // PDFDisplay.js
 // Responsible for displaying the PDF
 
-//const isBrowser = typeof window !== 'undefined';
-//const PDF = isBrowser ? require('react-pdf-js') : undefined;
 import React from 'react';
 import PDF from 'react-pdf-js';
+import { database } from './../../database/database_init';
+
 //import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
-const PDFSource = 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7';
+//const PDFSource = 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7';
 
 class PDFDisplay extends React.Component {
 
     constructor(props) {
         super(props);
+        var that = this;
 
         // Initial state
         this.state = {
             page: 1,
-            file: PDFSource,
+            file: props.pdfURL,
             pages: 2
         };
+
+        database.ref('/test/time').once('value').then(function(snapshot) {
+            that.refs.basicvideo.currentTime = Number(snapshot.val());
+            that.state.url = snapshot.val();
+        });
+
+
 
         // Bind all functions so they can refer to "this" correctly
         this.onDocumentComplete = this.onDocumentComplete.bind(this);
@@ -34,7 +42,7 @@ class PDFDisplay extends React.Component {
      */
     onDocumentComplete(pages) {
         console.log('Triggered onDocumentComplete(): ' + JSON.stringify((JSON.parse(pages))));
-        this.setState({ page: pages });
+        //this.setState({ page: pages });
     }
 
     onPageComplete(page) {
@@ -93,7 +101,7 @@ class PDFDisplay extends React.Component {
                     PDF Viewer
                 </h1>
                 Viewing
-                <br/> {PDFSource} <br/>
+                <br/> {this.state.file} <br/>
                 {pagination}
                 <PDF
                     file={this.state.file}

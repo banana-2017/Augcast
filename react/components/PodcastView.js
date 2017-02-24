@@ -5,6 +5,9 @@ import PDFDisplay from './PDFDisplay';
 //import { database } from './../../database/database_init';
 //import { Button } from 'react-bootstrap';
 
+const PDF_URL = 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7';
+const MEDIA_URL = 'http://techslides.com/demos/sample-videos/small.mp4';
+
 /**
     VideoView - Will contain VideoPlayer
 */
@@ -15,28 +18,7 @@ class PodcastView extends React.Component {
 
         // Initial state
         this.state = {
-            mediaURL: 'http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_60fps_normal.mp4',
-            curSource: 1
         };
-
-        // Bind all functions so they can refer to "this" correctly
-        //this.togglePlay = this.togglePlay.bind(this);
-        this.handleSource1 = this.handleSource1.bind(this);
-        this.handleSource2 = this.handleSource2.bind(this);
-    }
-
-    handleSource1() {
-        this.setState({
-            curSource: 1,
-            mediaURL: 'http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_60fps_normal.mp4'
-        });
-    }
-
-    handleSource2() {
-        this.setState({
-            curSource: 2,
-            mediaURL: 'http://techslides.com/demos/sample-videos/small.mp4'
-        });
     }
 
     render () {
@@ -50,16 +32,15 @@ class PodcastView extends React.Component {
                         margin: '0 auto',
                         height: '100%'
                     }}>
-                    <h3>Source Controller</h3>
                     <Link to="/">Back home</Link>
                     <br />
 
-                    <PDFDisplay lectureID={'CSE 12  LE A00 LE1'}/>
+                    <PDFDisplay pdfURL={PDF_URL}/>
 
                 </div>
 
                 <div className = "video-view">
-                    <VideoPlayer lectureIDL={'CSE 12  LE A00 LE1'}/>
+                    <VideoPlayer mediaURL={MEDIA_URL}/>
                 </div>
 
             </div>

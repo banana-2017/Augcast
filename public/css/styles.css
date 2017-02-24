@@ -10,7 +10,7 @@ html,body,.podcast-container, .pdf-view, .video-view
 .pdf-view
 {
     float:left;
-    width: 400px;
+    width: 600px;
     /*background: gainsboro;*/
     overflow:hidden;
 
