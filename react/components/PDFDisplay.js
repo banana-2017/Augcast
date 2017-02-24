@@ -19,70 +19,22 @@ class PDFDisplay extends React.Component {
 
         // Bind all functions so they can refer to "this" correctly
         this.onDocumentComplete = this.onDocumentComplete.bind(this);
-        this.onPageComplete = this.onPageComplete.bind(this);
-        this.handlePrevious = this.handlePrevious.bind(this);
-        this.handleNext = this.handleNext.bind(this);
-
     }
 
-    /**
-     * Upload the inputted file to Firebase Storage.
-     */
     onDocumentComplete(length) {
-        console.log('Triggered onDocumentComplete(): ' + JSON.stringify((JSON.parse(length))));
         this.setState({ pages: length });
 
     }
 
-    onPageComplete(page) {
-        console.log('Triggered onPageComplete()' + JSON.stringify((JSON.parse(page))));
-        //this.setState({ page: 1, pages: '' });
-    }
-
-    handlePrevious() {
-        this.setState({ page: this.state.page - 1 });
-    }
-
-    handleNext() {
-        this.setState({ page: this.state.page + 1 });
-    }
-
-    renderPagination(page, pages) {
-        let previousButton =
-        <li
-            className="previous"
-            onClick={this.handlePrevious}>
-            <a href="#">
-                <i className="fa fa-arrow-left"></i> Previous
-            </a>
-        </li>;
-        if (page === 1) {
-            previousButton = <li className="previous disabled"><a href="#"><i className="fa fa-arrow-left"></i> Previous</a></li>;
-        }
-        let nextButton = <li className="next" onClick={this.handleNext}><a href="#">Next <i className="fa fa-arrow-right"></i></a></li>;
-        if (page === pages) {
-            nextButton = <li className="next disabled"><a href="#">Next <i className="fa fa-arrow-right"></i></a></li>;
-        }
-        return (
-            <nav>
-                <ul className="pager">
-                    {previousButton}
-                    {nextButton}
-                </ul>
-            </nav>
-        );
-    }
-
     render() {
         var that = this;
-        var sentinelArray = Array.apply(null, Array(this.state.pages)).map(function () {});
+        var sentinelArray = Array.from(Array(this.state.pages));
         var PDFpages = sentinelArray.map(function(x, i){
             return (
                 <PDF
                     key={i}
                     file={that.state.file}
                     onDocumentComplete={that.onDocumentComplete}
-                    onPageComplete={that.onPageComplete}
                     scale={0.5}
                     page= {i + 1} />
             );
