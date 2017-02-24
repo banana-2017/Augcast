@@ -4,6 +4,7 @@ html,body,.podcast-container, .pdf-view, .video-view
 }
 .podcast-container
 {
+    overflow:auto;
 }
 [data-reactroot] { height: 100% }
 
@@ -12,11 +13,13 @@ html,body,.podcast-container, .pdf-view, .video-view
     float:left;
     width: 600px;
     /*background: gainsboro;*/
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
 
 }
 .video-view
 {
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
     /*background: lightgray;*/
 }

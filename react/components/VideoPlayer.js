@@ -133,7 +133,6 @@ class VideoPlayer extends React.Component {
                         <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.increasePlaybackRate}><Glyphicon glyph="chevron-right" /></Button>
 
                         <br />
-                        <Button style={{margin:'10px'}} bsStyle="success" onClick={this.updateCurTimeFromDB}><Glyphicon glyph="cloud-download" /> Skip to time from Firebase</Button>
 
                         <h4 className="main__h2">Current status: {this.state.status}</h4>
 

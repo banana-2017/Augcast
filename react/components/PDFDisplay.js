@@ -5,29 +5,17 @@ import React from 'react';
 import PDF from 'react-pdf-js';
 import { database } from './../../database/database_init';
 
-//import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
-
-//const PDFSource = 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7';
-
 class PDFDisplay extends React.Component {
 
     constructor(props) {
         super(props);
-        var that = this;
 
         // Initial state
         this.state = {
             page: 1,
             file: props.pdfURL,
-            pages: 2
+            pages: 1
         };
-
-        database.ref('/test/time').once('value').then(function(snapshot) {
-            that.refs.basicvideo.currentTime = Number(snapshot.val());
-            that.state.url = snapshot.val();
-        });
-
-
 
         // Bind all functions so they can refer to "this" correctly
         this.onDocumentComplete = this.onDocumentComplete.bind(this);
@@ -40,9 +28,10 @@ class PDFDisplay extends React.Component {
     /**
      * Upload the inputted file to Firebase Storage.
      */
-    onDocumentComplete(pages) {
-        console.log('Triggered onDocumentComplete(): ' + JSON.stringify((JSON.parse(pages))));
-        //this.setState({ page: pages });
+    onDocumentComplete(length) {
+        console.log('Triggered onDocumentComplete(): ' + JSON.stringify((JSON.parse(length))));
+        this.setState({ pages: length });
+
     }
 
     onPageComplete(page) {
@@ -85,6 +74,20 @@ class PDFDisplay extends React.Component {
     }
 
     render() {
+        var that = this;
+        var sentinelArray = Array.apply(null, Array(this.state.pages)).map(function () {});
+        var PDFpages = sentinelArray.map(function(x, i){
+            return (
+                <PDF
+                    key={i}
+                    file={that.state.file}
+                    onDocumentComplete={that.onDocumentComplete}
+                    onPageComplete={that.onPageComplete}
+                    scale={0.5}
+                    page= {i + 1} />
+            );
+        });
+
         let pagination = null;
         if (this.state.pages) {
             pagination = this.renderPagination(this.state.page, this.state.pages);
@@ -96,20 +99,20 @@ class PDFDisplay extends React.Component {
                     margin: '0 auto',
                 }}>
 
-                <h1
-                    style={{margin:'10px'}}>
+                <h2>
                     PDF Viewer
-                </h1>
+                </h2>
                 Viewing
                 <br/> {this.state.file} <br/>
-                {pagination}
-                <PDF
-                    file={this.state.file}
-                    onDocumentComplete={this.onDocumentComplete}
-                    onPageComplete={this.onPageComplete}
+                <div
+                    style= {{
+                        overflowY: 'auto',
+                        height:'400px',
+                    }}
+                    className="pdf-slides">
+                    {PDFpages}
+                </div>
 
-                    page={this.state.page} />
-                {pagination}
             </div>
         );
     }
