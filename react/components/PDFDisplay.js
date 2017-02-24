@@ -3,7 +3,7 @@
 
 import React from 'react';
 import PDF from 'react-pdf-js';
-import { database } from './../../database/database_init';
+//import { database } from './../../database/database_init';
 
 class PDFDisplay extends React.Component {
 
@@ -88,10 +88,6 @@ class PDFDisplay extends React.Component {
             );
         });
 
-        let pagination = null;
-        if (this.state.pages) {
-            pagination = this.renderPagination(this.state.page, this.state.pages);
-        }
         return (
             <div
                 style={{
@@ -107,7 +103,7 @@ class PDFDisplay extends React.Component {
                 <div
                     style= {{
                         overflowY: 'auto',
-                        height:'400px',
+                        height:'600px',
                     }}
                     className="pdf-slides">
                     {PDFpages}
