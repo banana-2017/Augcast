@@ -3,8 +3,8 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
-import { firebaseApp, storageRef } from './../../database/database_init';
-import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
+import { firebaseApp } from './../../database/database_init';
+//import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
 
 class Sidebar extends React.Component {
@@ -56,7 +56,7 @@ class Sidebar extends React.Component {
         return (
             <div className="nav">
                 <ul className="unpinned-list">
-                    {this.state.dataRetrieved ? this.courseNum.map(listItem) : "wait"}
+                    {this.state.dataRetrieved ? this.courseNum.map(listItem) : 'wait'}
                 </ul>
             </div>
         );
