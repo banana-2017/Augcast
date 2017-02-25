@@ -16,6 +16,8 @@ class Home extends React.Component {
             <Link to="/upload">Open Upload Page</Link>
             <br/>
             <Link to="/pdf">Open PDF Display Page</Link>
+            <br/>
+            <Link to="/sidebar">Inspect Sidebar</Link>
             </div>
         );
     }

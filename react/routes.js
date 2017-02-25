@@ -6,6 +6,7 @@ import { createStore } from 'redux';
 import VideoView from './components/VideoView';
 import Upload from './components/Upload';
 import PDFDisplay from './components/PDFDisplay';
+import Test from './components/Test';
 import appReducers from './redux/reducers';
 
 
@@ -23,6 +24,7 @@ module.exports = (
         <Route path="/login" component = {Login}/>
         <Route path="/upload" component = {Upload}/>
         <Route path="/pdf" component={PDFDisplay} />
+        <Route path="/test" component={Test} />
     </Route>
 );
 
