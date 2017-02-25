@@ -3,7 +3,7 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
-import FormControl from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import { database } from './../../database/database_init';
 import Spinner from 'react-spinkit';
 import Fuse from 'fuse.js';
@@ -112,8 +112,8 @@ class Sidebar extends React.Component {
 
         return (
             <div className="nav">
-                <FA name='search' size='2x'/>
                 <div className="search-bar">
+                    <div className="search-icon"><FA name='search' size='1x'/></div>
                     <FormControl type="text"
                                  placeholder="Search"
                                  onChange={this.searchInput}

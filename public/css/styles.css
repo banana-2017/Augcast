@@ -25,18 +25,38 @@ html,body,.podcast-container, .pdf-view, .video-view {
     width: 100%;
 }
 
+.search-icon {
+    position: absolute;
+    z-index: 200;
+    float: left;
+    width: 48px;
+    height: 100%;
+    text-align: center;
+    font-size:16pt;
+    color: lightgray;
+    vertical-align: bottom;
+    line-height: inherit;
+}
+
+.search-icon > .fa {
+}
+
 .search-box {
     display: block;
     position: relative;
     float: left;
     height: 100%;
     width: 100%;
-    padding: 0;
     border-radius:0;
     border: 0;
+    padding: 0 0 0 48px;
     background: gray;
     font-size: 14pt;
     color: white;
+}
+
+.search-box:placeholder {
+    color: lightgray
 }
 
 .course-list {
@@ -101,7 +121,6 @@ html,body,.podcast-container, .pdf-view, .video-view {
     vertical-align: middle;
     line-height: inherit;
 }
-
 
 .expand-button {
     display:flex;
