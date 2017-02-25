@@ -57,7 +57,7 @@ class Sidebar extends React.Component {
             shouldSort: true,
             threshold: 0.6,
             location: 0,
-            distance: 56,
+            distance: 70,
             maxPatternLength: 32,
             minMatchCharLength: 1,
             keys: ['key', 'professor', 'title']
@@ -118,6 +118,7 @@ class Sidebar extends React.Component {
                             type="text"
                             placeholder="Search"
                             onChange={this.searchInput}
+                            className="courseSearchBar"
                           />
                 <ul className="unpinned-list">
                     {this.state.dataRetrieved ? this.state.visibleCourses.map(listItem) : <Spinner className="loadingSideBar" spinnerName="three-bounce" /> }

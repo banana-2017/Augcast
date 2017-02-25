@@ -85,6 +85,13 @@ ul {
     width: 100%;
 }
 
+.courseSearchBar {
+    z-index: 1;
+    width:100%;
+}
+.unpinned-list {
+    top: 30px;
+}
 /* main canvas */
 
 .main {
