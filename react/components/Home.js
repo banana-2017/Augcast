@@ -11,7 +11,7 @@ class Home extends React.Component {
         return (
             <div>
             <h1>Home</h1>
-            <Link to="/videoview">Open VideoView</Link>
+            <Link to="/podcastview">Open PodcastView</Link>
             <br/>
             <Link to="/upload">Open Upload Page</Link>
             <br/>
