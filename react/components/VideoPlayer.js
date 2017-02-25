@@ -16,7 +16,8 @@ class VideoPlayer extends React.Component {
         this.state = {
             playbackRate: 1,
             status: 'Initialized',
-            playing: true
+            playing: true,
+            timeToSkipTo: this.props.timestamp
         };
 
         // Bind all functions so they can refer to "this" correctly
@@ -26,6 +27,10 @@ class VideoPlayer extends React.Component {
         this.updateCurTime = this.updateCurTime.bind(this);
         this.updateCurTimeFromDB = this.updateCurTimeFromDB.bind(this);
 
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({timeToSkipTo: nextProps.timestamp});
     }
 
     togglePlay() {
@@ -87,7 +92,6 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
-        console.log('Writing to DB complete');
         return (
             <div
                 style={{
@@ -134,7 +138,7 @@ class VideoPlayer extends React.Component {
 
                         <br />
 
-                        <h4 className="main__h2">Current status: {this.state.status}</h4>
+                        <h4 className="main__h2">Timestamp: {this.props.timestamp}</h4>
 
                     </div>
                 </div>

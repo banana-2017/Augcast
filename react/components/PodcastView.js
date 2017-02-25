@@ -18,7 +18,15 @@ class PodcastView extends React.Component {
 
         // Initial state
         this.state = {
+            timestamp: 0
         };
+
+        this.handleSkipToTime = this.handleSkipToTime.bind(this);
+    }
+
+    handleSkipToTime(time) {
+        console.log('PodcastView handleSkipToTime: ' + time);
+        this.setState({timestamp: time});
     }
 
     render () {
@@ -32,12 +40,16 @@ class PodcastView extends React.Component {
                         margin: '0 auto',
                         height: '100%'
                     }}>
-                    <PDFDisplay pdfURL={PDF_URL}/>
+                    <PDFDisplay
+                        onSkipToTime={this.handleSkipToTime}
+                        pdfURL={PDF_URL}/>
 
                 </div>
 
                 <div className = "video-view">
-                    <VideoPlayer mediaURL={MEDIA_URL}/>
+                    <VideoPlayer
+                        timestamp={this.state.timestamp}
+                        mediaURL={MEDIA_URL}/>
                 </div>
 
             </div>

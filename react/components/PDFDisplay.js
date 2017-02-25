@@ -3,6 +3,7 @@
 
 import React from 'react';
 import PDF from 'react-pdf-js';
+import { Button } from 'react-bootstrap';
 //import { database } from './../../database/database_init';
 
 class PDFDisplay extends React.Component {
@@ -19,11 +20,17 @@ class PDFDisplay extends React.Component {
 
         // Bind all functions so they can refer to "this" correctly
         this.onDocumentComplete = this.onDocumentComplete.bind(this);
+        this.skipToTime = this.skipToTime.bind(this);
     }
 
-    onDocumentComplete(length) {
-        this.setState({ pages: length });
+    onDocumentComplete(documentLength) {
+        this.setState({ pages: documentLength });
 
+    }
+
+    skipToTime(timestamp) {
+        console.log('PDFDisplay skipToTime: ' + timestamp);
+        this.props.onSkipToTime(timestamp);
     }
 
     render() {
@@ -46,7 +53,7 @@ class PDFDisplay extends React.Component {
                     textAlign: 'center',
                     margin: '0 auto',
                 }}>
-
+                <Button onClick={() => {this.skipToTime(23);}}>Skip to 23</Button>
                 <h2>
                     PDF Viewer
                 </h2>
@@ -58,7 +65,7 @@ class PDFDisplay extends React.Component {
                         height:'600px',
                     }}
                     className="pdf-slides">
-                    {PDFpages}
+                    PDFpages
                 </div>
 
             </div>
