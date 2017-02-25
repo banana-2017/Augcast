@@ -38,13 +38,17 @@ class PDFDisplay extends React.Component {
         var sentinelArray = Array.from(Array(this.state.pages));
         var PDFpages = sentinelArray.map(function(x, i){
             return (
-                <div>
-                    <Button onClick={() => {that.skipToTime(i);}}>
+                <div
+                    key={'ButtonPageCombo' + i}
+                    >
+                    <Button
+                        key={'Button' + i}
+                        onClick={() => {that.skipToTime(i);}}>
                         Skip to {i}
                     </Button>
                     <br/>
                     <PDF
-                        key={i}
+                        key={'PDFPage' + i}
                         file={that.state.file}
                         onDocumentComplete={that.onDocumentComplete}
                         scale={0.5}
@@ -62,8 +66,6 @@ class PDFDisplay extends React.Component {
                 <h2>
                     PDF Viewer
                 </h2>
-                Viewing
-                <br/> {this.state.file} <br/>
                 <div
                     style= {{
                         overflowY: 'auto',

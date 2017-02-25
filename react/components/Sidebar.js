@@ -3,8 +3,8 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
-import { firebaseApp, storageRef } from './../../database/database_init';
-import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
+import { database } from './../../database/database_init';
+//import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 import Spinner from 'react-spinkit';
 
 
@@ -20,7 +20,6 @@ class Sidebar extends React.Component {
         var courseData = undefined;
         var courseNum = undefined;
 
-        var database = firebaseApp.database();
         var that = this;
         database.ref('courses').once('value').then(function(snapshot) {
             that.courseData = snapshot.val();
