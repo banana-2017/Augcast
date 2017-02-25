@@ -4,6 +4,7 @@
 
 export const LOG_OUT = 'LOG_OUT';
 export const LOG_IN = 'LOG_IN';
+
 export const UPDATE_COURSE = 'UPDATE_COURSE';
 export const IS_INSTRUCTOR = 'IS_INSTRUCTOR';
 
@@ -11,10 +12,23 @@ export const IS_INSTRUCTOR = 'IS_INSTRUCTOR';
 /**
  * action creators
  */
-export function logIn () {
-    return {
-        type: LOG_IN
+
+
+// async, returns function that takes a dispatch
+export function logIn (email, password, router) {
+
+    let config = {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email,
+            password
+        })
     };
+
+
+
 }
 
 export function logOut () {
