@@ -33,8 +33,8 @@ ul {
     height: 72px;
     background: white;
     list-style: none;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top:12px;
+    padding-bottom:12px;
 }
 
 .course-item:hover {
@@ -42,36 +42,52 @@ ul {
 }
 
 .course-title {
-    font-size: 16pt;
+    display: flex;
+    font-size: 14pt;
+    white-space:nowrap;
 }
 
-.course-name {
-    bottom: 0px;
+.course-section {
+    padding-left:8px;
+}
+
+.course-prof {
+    bottom:0px;
     width: 100%;
-    text-overflow: ellipsis
     font-size: 12pt;
+    white-space: nowrap;
 }
 
 .pin-button {
     float: left;
-    width: 64px;
+    width: 48px;
     height: 100%;
 }
 
 .expand-button {
+    display:flex;
     float: right;
     width: 32px;
     height: 100%;
 }
 
+.fa {
+    height: 100%;
+    width: 100%;
+}
+
+/* main canvas */
+
 .main {
     display: flex;
     float: right;
 }
+
 .podcast-container
 {
     overflow:auto;
 }
+
 [data-reactroot] { height: 100% }
 
 .pdf-view

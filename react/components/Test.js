@@ -5,7 +5,7 @@ import React from 'react';
 import { firebaseApp, storageRef } from './../../database/database_init';
 import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 import Sidebar from './Sidebar.js';
-import Upload from './Upload.js';
+import PodcastView from './PodcastView.js';
 
 
 class Test extends React.Component {
@@ -20,7 +20,7 @@ class Test extends React.Component {
             <div>
                 <Sidebar />
                 <div className="main">
-                    <Upload />
+                    <PodcastView />
                 </div>
             </div>
         );
