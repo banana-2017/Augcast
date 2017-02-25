@@ -6,7 +6,7 @@ import PDFDisplay from './PDFDisplay';
 //import { Button } from 'react-bootstrap';
 
 const PDF_URL = 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2F101w17day16.pdf?alt=media&token=b2ba3890-0d38-4722-a24c-740fce01dc0b';
-const MEDIA_URL = 'http://techslides.com/demos/sample-videos/small.mp4';
+const MEDIA_URL = 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4';
 
 /**
     VideoView - Will contain VideoPlayer

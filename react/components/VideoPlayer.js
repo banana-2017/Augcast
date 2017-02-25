@@ -16,8 +16,7 @@ class VideoPlayer extends React.Component {
         this.state = {
             playbackRate: 1,
             status: 'Initialized',
-            playing: true,
-            timeToSkipTo: this.props.timestamp
+            playing: true
         };
 
         // Bind all functions so they can refer to "this" correctly
@@ -30,7 +29,7 @@ class VideoPlayer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({timeToSkipTo: nextProps.timestamp});
+        this.refs.basicvideo.currentTime = nextProps.timestamp;
     }
 
     togglePlay() {

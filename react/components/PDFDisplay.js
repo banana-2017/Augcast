@@ -38,12 +38,18 @@ class PDFDisplay extends React.Component {
         var sentinelArray = Array.from(Array(this.state.pages));
         var PDFpages = sentinelArray.map(function(x, i){
             return (
-                <PDF
-                    key={i}
-                    file={that.state.file}
-                    onDocumentComplete={that.onDocumentComplete}
-                    scale={0.5}
-                    page= {i + 1} />
+                <div>
+                    <Button onClick={() => {that.skipToTime(i);}}>
+                        Skip to {i}
+                    </Button>
+                    <br/>
+                    <PDF
+                        key={i}
+                        file={that.state.file}
+                        onDocumentComplete={that.onDocumentComplete}
+                        scale={0.5}
+                        page= {i + 1} />
+                </div>
             );
         });
 
@@ -53,7 +59,6 @@ class PDFDisplay extends React.Component {
                     textAlign: 'center',
                     margin: '0 auto',
                 }}>
-                <Button onClick={() => {this.skipToTime(23);}}>Skip to 23</Button>
                 <h2>
                     PDF Viewer
                 </h2>
@@ -65,7 +70,7 @@ class PDFDisplay extends React.Component {
                         height:'600px',
                     }}
                     className="pdf-slides">
-                    PDFpages
+                    {PDFpages}
                 </div>
 
             </div>
