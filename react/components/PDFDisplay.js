@@ -1,14 +1,9 @@
 // PDFDisplay.js
 // Responsible for displaying the PDF
 
-//const isBrowser = typeof window !== 'undefined';
-//const PDF = isBrowser ? require('react-pdf-js') : undefined;
 import React from 'react';
 import PDF from 'react-pdf-js';
-//const PDF = require('react-pdf');
-//import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
-
-const PDFSource = 'https://firebasestorage.googleapis.com/v0/b/augcast-465ef.appspot.com/o/test%2Fpdf%2FCSE105Homework15.pdf?alt=media&token=9216ecf4-26f6-4a14-8095-b8a2ee1bb9d7';
+//import { database } from './../../database/database_init';
 
 class PDFDisplay extends React.Component {
 
@@ -18,88 +13,54 @@ class PDFDisplay extends React.Component {
         // Initial state
         this.state = {
             page: 1,
-            file: PDFSource,
-            pages: 2
+            file: props.pdfURL,
+            pages: 1
         };
 
         // Bind all functions so they can refer to "this" correctly
         this.onDocumentComplete = this.onDocumentComplete.bind(this);
-        this.onPageComplete = this.onPageComplete.bind(this);
-        this.handlePrevious = this.handlePrevious.bind(this);
-        this.handleNext = this.handleNext.bind(this);
-
     }
 
-    /**
-     * Upload the inputted file to Firebase Storage.
-     */
-    onDocumentComplete() {
-        console.log('Triggered onDocumentComplete()');
-        this.setState({ page: 1 });
-    }
+    onDocumentComplete(length) {
+        this.setState({ pages: length });
 
-    onPageComplete() {
-        console.log('Triggered onPageComplete()');
-        //this.setState({ page: 1, pages: '' });
-    }
-
-    handlePrevious() {
-        this.setState({ page: this.state.page - 1 });
-    }
-
-    handleNext() {
-        this.setState({ page: this.state.page + 1 });
-    }
-
-    renderPagination(page, pages) {
-        let previousButton =
-        <li
-            className="previous"
-            onClick={this.handlePrevious}>
-            <a href="#">
-                <i className="fa fa-arrow-left"></i> Previous
-            </a>
-        </li>;
-        if (page === 1) {
-            previousButton = <li className="previous disabled"><a href="#"><i className="fa fa-arrow-left"></i> Previous</a></li>;
-        }
-        let nextButton = <li className="next" onClick={this.handleNext}><a href="#">Next <i className="fa fa-arrow-right"></i></a></li>;
-        if (page === pages) {
-            nextButton = <li className="next disabled"><a href="#">Next <i className="fa fa-arrow-right"></i></a></li>;
-        }
-        return (
-            <nav>
-                <ul className="pager">
-                    {previousButton}
-                    {nextButton}
-                </ul>
-            </nav>
-        );
     }
 
     render() {
-        let pagination = null;
-        if (this.state.pages) {
-            pagination = this.renderPagination(this.state.page, this.state.pages);
-        }
+        var that = this;
+        var sentinelArray = Array.from(Array(this.state.pages));
+        var PDFpages = sentinelArray.map(function(x, i){
+            return (
+                <PDF
+                    key={i}
+                    file={that.state.file}
+                    onDocumentComplete={that.onDocumentComplete}
+                    scale={0.5}
+                    page= {i + 1} />
+            );
+        });
+
         return (
             <div
-                style={{maxWidth: '500px', margin:'0 auto'}}>
+                style={{
+                    textAlign: 'center',
+                    margin: '0 auto',
+                }}>
 
-                <h1
-                    style={{margin:'10px'}}>
+                <h2>
                     PDF Viewer
-                </h1>
+                </h2>
                 Viewing
-                <br/> {PDFSource} <br/>
-                Through CORS proxy
-                {pagination}
-                <PDF
-                    file={this.state.file}
-                    onDocumentComplete={this.onDocumentComplete}
-                    onPageComplete={this.onPageComplete}
-                    page={this.state.page} />
-                {pagination}
+                <br/> {this.state.file} <br/>
+                <div
+                    style= {{
+                        overflowY: 'auto',
+                        height:'600px',
+                    }}
+                    className="pdf-slides">
+                    {PDFpages}
+                </div>
+
             </div>
         );
     }
