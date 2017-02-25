@@ -4,7 +4,6 @@
 import React from 'react';
 import FA from 'react-fontawesome';
 import { database } from './../../database/database_init';
-//import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 import Spinner from 'react-spinkit';
 
 
