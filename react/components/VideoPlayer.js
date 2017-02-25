@@ -28,6 +28,10 @@ class VideoPlayer extends React.Component {
 
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.refs.basicvideo.currentTime = nextProps.timestamp;
+    }
+
     togglePlay() {
         var vid = this.refs.basicvideo;
         if (vid.paused) {
@@ -87,7 +91,6 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
-        console.log('Writing to DB complete');
         return (
             <div
                 style={{
@@ -134,7 +137,7 @@ class VideoPlayer extends React.Component {
 
                         <br />
 
-                        <h4 className="main__h2">Current status: {this.state.status}</h4>
+                        <h4 className="main__h2">Timestamp: {this.props.timestamp}</h4>
 
                     </div>
                 </div>
