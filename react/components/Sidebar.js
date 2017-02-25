@@ -42,7 +42,7 @@ class Sidebar extends React.Component {
             var prof = courseData[course].professor;
             return (
                 <li className="course-item" key={course}>
-                    <div className="pin-button"><FA name='rocket' size='2x'/></div>
+                    <div className="pin-button"><FA name="star-o" size="2x"/></div>
                     <div className="course-title">
                         <span className="course-number">{number}</span>
                         <span className="course-section">{section}</span>

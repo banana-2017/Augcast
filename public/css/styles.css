@@ -1,5 +1,4 @@
-html,body,.podcast-container, .pdf-view, .video-view
-{
+html,body,.podcast-container, .pdf-view, .video-view {
     height: 100%;
 }
 
@@ -62,7 +61,15 @@ ul {
     float: left;
     width: 48px;
     height: 100%;
+    text-align: center;
 }
+
+.pin-button > .fa {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 
 .expand-button {
     display:flex;
@@ -83,15 +90,13 @@ ul {
     float: right;
 }
 
-.podcast-container
-{
+.podcast-container {
     overflow:auto;
 }
 
 [data-reactroot] { height: 100% }
 
-.pdf-view
-{
+.pdf-view {
     float:left;
     width: 600px;
     /*background: gainsboro;*/
@@ -99,8 +104,7 @@ ul {
     overflow-y:auto;
 
 }
-.video-view
-{
+.video-view {
     overflow-x:hidden;
     overflow-y:auto;
     /*background: lightgray;*/
