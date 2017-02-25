@@ -3,8 +3,9 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
-import { firebaseApp } from './../../database/database_init';
+import { database } from './../../database/database_init';
 //import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
+import Spinner from 'react-spinkit';
 
 
 class Sidebar extends React.Component {
@@ -19,7 +20,6 @@ class Sidebar extends React.Component {
         var courseData = undefined;
         var courseNum = undefined;
 
-        var database = firebaseApp.database();
         var that = this;
         database.ref('courses').once('value').then(function(snapshot) {
             that.courseData = snapshot.val();
@@ -50,17 +50,18 @@ class Sidebar extends React.Component {
                     <div className="expand-button"></div>
                 </li>
             );
-        }
+        };
 
 
         return (
             <div className="nav">
                 <ul className="unpinned-list">
-                    {this.state.dataRetrieved ? this.courseNum.map(listItem) : 'wait'}
+                    {this.state.dataRetrieved ? this.courseNum.map(listItem) : <Spinner className="loadingSideBar" spinnerName="three-bounce" /> }
                 </ul>
             </div>
         );
     }
 }
+
 
 export default Sidebar;
