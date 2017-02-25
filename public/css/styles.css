@@ -58,6 +58,15 @@ ul {
     white-space: nowrap;
 }
 
+.loadingSideBar {
+    width:100px;
+    height:50px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin:-25px 0 -50px;
+}
+
 .pin-button {
     float: left;
     width: 48px;
@@ -104,13 +113,4 @@ ul {
     overflow-x:hidden;
     overflow-y:auto;
     /*background: lightgray;*/
-}
-
-.loadingSideBar {
-    width:100px;
-    height:50px;
-    position:absolute;
-    left:50%;
-    top:50%;
-    margin:-25px 0 -50px;
 }
