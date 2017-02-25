@@ -1,11 +1,11 @@
-html,body,.podcast-container, .pdf-view, .video-view
-{
+html,body,.podcast-container, .pdf-view, .video-view {
     height: 100%;
+    font-family: Roboto, sans-serif;
 }
 
 .nav {
     position: fixed;
-    width: 280px;;
+    width: 280px;
     float: left;
     top: 0px;
     left: 0px;
@@ -13,21 +13,69 @@ html,body,.podcast-container, .pdf-view, .video-view
     margin:0px;
     height: 100%;
     overflow: auto;
-    display: flex;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* sidebar elements */
 
-ul {
+.search-bar {
+    display: block;
+    position: fixed;
+    float: left;
+    height: 48px;
+    width: inherit;
+    z-index: 2;
+}
+
+.search-icon {
+    position: absolute;
+    display: table;
+    z-index: 200;
+    float: left;
+    width: 48px;
+    height: 100%;
+    text-align: center;
+    font-size:16pt;
+    color: lightgray;
+}
+
+.search-icon .fa {
+    margin: auto;
+    text-align: center;
+    display: table-cell;
+    vertical-align:middle;
+}
+
+.search-box {
+    display: block;
+    position: relative;
+    float: left;
+    height: 100%;
+    width: 100%;
+    border-radius:0;
+    border: 0;
+    padding: 0 0 0 48px;
+    background: gray;
+    font-size: 14pt;
+    color: white;
+}
+
+.search-box:placeholder {
+    color: lightgray
+}
+
+.course-list {
+    position: relative;
+    top: 48px;
+    height: 100%;
+    float: left;
     padding: 0px;
     margin: 0px;
     width: 100%;
-    position: relative;
+    display: block;
 }
 
 .course-item {
-    font-family: Roboto, sans-serif;
     position: relative;
     width: 100%;
     height: 72px;
@@ -38,7 +86,7 @@ ul {
 }
 
 .course-item:hover {
-    background: gray;
+    background: orange;
 }
 
 .course-title {
@@ -58,10 +106,26 @@ ul {
     white-space: nowrap;
 }
 
+.sidebar-loading {
+    width:100px;
+    height:50px;
+    position:relative;
+    left:50%;
+    top:50%;
+    margin:-25px 0 -50px;
+}
+
 .pin-button {
     float: left;
     width: 48px;
     height: 100%;
+    text-align: center;
+}
+
+.pin-button > .fa {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: inherit;
 }
 
 .expand-button {
@@ -76,6 +140,11 @@ ul {
     width: 100%;
 }
 
+.unpinned-list {
+    position: relative;
+    display: hidden;
+    padding: 0px;
+}
 /* main canvas */
 
 .main {
@@ -83,15 +152,13 @@ ul {
     float: right;
 }
 
-.podcast-container
-{
+.podcast-container {
     overflow:auto;
 }
 
 [data-reactroot] { height: 100% }
 
-.pdf-view
-{
+.pdf-view {
     float:left;
     width: 600px;
     /*background: gainsboro;*/
@@ -99,13 +166,11 @@ ul {
     overflow-y:auto;
 
 }
-.video-view
-{
+.video-view {
     overflow-x:hidden;
     overflow-y:auto;
     /*background: lightgray;*/
 }
-
 
 .loadingSideBar {
     width:100px;
