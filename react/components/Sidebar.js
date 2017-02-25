@@ -1,5 +1,5 @@
 // Sidebar.js
-// Responsible for uploading the PDF
+// Our Navigation Center
 
 import React from 'react';
 import FA from 'react-fontawesome';
@@ -113,20 +113,21 @@ class Sidebar extends React.Component {
 
         return (
             <div className="nav">
-
-                <FormControl
-                            type="text"
-                            placeholder="Search"
-                            onChange={this.searchInput}
-                            className="courseSearchBar"
-                          />
-                <ul className="unpinned-list">
-                    {this.state.dataRetrieved ? this.state.visibleCourses.map(listItem) : <Spinner className="loadingSideBar" spinnerName="three-bounce" /> }
-                </ul>
+                <FA name='search' size='2x'/>
+                <div className="search-bar">
+                    <FormControl type="text"
+                                 placeholder="Search"
+                                 onChange={this.searchInput}
+                                 className="search-box" />
+                </div>
+                <div className="course-list">
+                    <ul className="unpinned-list">
+                        {this.state.dataRetrieved ? this.state.visibleCourses.map(listItem) : <Spinner className="sidebar-loading" spinnerName="three-bounce" /> }
+                    </ul>
+                </div>
             </div>
         );
     }
 }
-
 
 export default Sidebar;

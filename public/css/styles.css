@@ -1,6 +1,6 @@
-html,body,.podcast-container, .pdf-view, .video-view
-{
+html,body,.podcast-container, .pdf-view, .video-view {
     height: 100%;
+    font-family: Roboto, sans-serif;
 }
 
 .nav {
@@ -12,22 +12,44 @@ html,body,.podcast-container, .pdf-view, .video-view
     padding: 0px;
     margin:0px;
     height: 100%;
-    overflow: auto;
-    display: flex;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* sidebar elements */
 
-ul {
+.search-bar {
+    display: block;
+    position: relative;
+    float: left;
+    height: 48px;
+    width: 100%;
+}
+
+.search-box {
+    display: block;
+    position: relative;
+    float: left;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    border-radius:0;
+    border: 0;
+    background: gray;
+    font-size: 14pt;
+    color: white;
+}
+
+.course-list {
+    position: relative;
+    height: 100%;
+    float: left;
     padding: 0px;
     margin: 0px;
     width: 100%;
-    position: relative;
+    display: block;
 }
 
 .course-item {
-    font-family: Roboto, sans-serif;
     position: relative;
     width: 100%;
     height: 72px;
@@ -38,7 +60,7 @@ ul {
 }
 
 .course-item:hover {
-    background: gray;
+    background: orange;
 }
 
 .course-title {
@@ -58,10 +80,10 @@ ul {
     white-space: nowrap;
 }
 
-.loadingSideBar {
+.sidebar-loading {
     width:100px;
     height:50px;
-    position:absolute;
+    position:relative;
     left:50%;
     top:50%;
     margin:-25px 0 -50px;
@@ -85,12 +107,10 @@ ul {
     width: 100%;
 }
 
-.courseSearchBar {
-    z-index: 1;
-    width:100%;
-}
 .unpinned-list {
-    top: 30px;
+    position: relative;
+    display: hidden;
+    padding: 0px;
 }
 /* main canvas */
 
@@ -99,15 +119,13 @@ ul {
     float: right;
 }
 
-.podcast-container
-{
+.podcast-container {
     overflow:auto;
 }
 
 [data-reactroot] { height: 100% }
 
-.pdf-view
-{
+.pdf-view {
     float:left;
     width: 600px;
     /*background: gainsboro;*/
@@ -115,8 +133,7 @@ ul {
     overflow-y:auto;
 
 }
-.video-view
-{
+.video-view {
     overflow-x:hidden;
     overflow-y:auto;
     /*background: lightgray;*/
