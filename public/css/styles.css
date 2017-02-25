@@ -5,13 +5,14 @@ html,body,.podcast-container, .pdf-view, .video-view {
 
 .nav {
     position: fixed;
-    width: 280px;;
+    width: 280px;
     float: left;
     top: 0px;
     left: 0px;
     padding: 0px;
     margin:0px;
     height: 100%;
+    overflow: auto;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
 }
 
@@ -19,14 +20,16 @@ html,body,.podcast-container, .pdf-view, .video-view {
 
 .search-bar {
     display: block;
-    position: relative;
+    position: fixed;
     float: left;
     height: 48px;
-    width: 100%;
+    width: inherit;
+    z-index: 2;
 }
 
 .search-icon {
     position: absolute;
+    display: table;
     z-index: 200;
     float: left;
     width: 48px;
@@ -34,11 +37,13 @@ html,body,.podcast-container, .pdf-view, .video-view {
     text-align: center;
     font-size:16pt;
     color: lightgray;
-    vertical-align: bottom;
-    line-height: inherit;
 }
 
-.search-icon > .fa {
+.search-icon .fa {
+    margin: auto;
+    text-align: center;
+    display: table-cell;
+    vertical-align:middle;
 }
 
 .search-box {
@@ -61,6 +66,7 @@ html,body,.podcast-container, .pdf-view, .video-view {
 
 .course-list {
     position: relative;
+    top: 48px;
     height: 100%;
     float: left;
     padding: 0px;
