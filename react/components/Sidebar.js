@@ -36,7 +36,7 @@ class Sidebar extends React.Component {
         // render single course item
         var listItem = function(course) {
             var number = course.substring(0, course.length - 6);
-            var section = course.substring(course.length - 3);
+            var section = course.substring(course.length - 6);
             var prof = courseData[course].professor;
             return (
                 <li className="course-item" key={course}>
