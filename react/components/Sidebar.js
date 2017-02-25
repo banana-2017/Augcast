@@ -3,8 +3,8 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
-import { firebaseApp} from './../../database/database_init';
-import {FormControl} from 'react-bootstrap';
+import FormControl from 'react-bootstrap';
+import { database } from './../../database/database_init';
 import Spinner from 'react-spinkit';
 import Fuse from 'fuse.js';
 
@@ -26,7 +26,6 @@ class Sidebar extends React.Component {
         this.courseNum = undefined;         // keys to all courses
         this.dataArray = [];
 
-        var database = firebaseApp.database();
         var that = this;
         database.ref('courses').once('value').then(function(snapshot) {
             that.courseData = snapshot.val();
@@ -96,11 +95,11 @@ class Sidebar extends React.Component {
         var listItem = function(course) {
             console.log ("called with" + course);
             var number = course.substring(0, course.length - 6);
-            var section = course.substring(course.length - 3);
+            var section = course.substring(course.length - 6);
             var prof = courseData[course].professor;
             return (
                 <li className="course-item" key={course}>
-                    <div className="pin-button"><FA name='rocket' size='2x'/></div>
+                    <div className="pin-button"><FA name="star-o" size="2x"/></div>
                     <div className="course-title">
                         <span className="course-number">{number}</span>
                         <span className="course-section">{section}</span>

@@ -93,7 +93,15 @@ html,body,.podcast-container, .pdf-view, .video-view {
     float: left;
     width: 48px;
     height: 100%;
+    text-align: center;
 }
+
+.pin-button > .fa {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: inherit;
+}
+
 
 .expand-button {
     display:flex;
@@ -137,4 +145,13 @@ html,body,.podcast-container, .pdf-view, .video-view {
     overflow-x:hidden;
     overflow-y:auto;
     /*background: lightgray;*/
+}
+
+.loadingSideBar {
+    width:100px;
+    height:50px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin:-25px 0 -50px;
 }
