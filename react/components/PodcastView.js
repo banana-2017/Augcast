@@ -34,12 +34,7 @@ class PodcastView extends React.Component {
             <div
                 className="podcast-container">
 
-                <div className="pdf-panel"
-                    style={{
-                        textAlign: 'center',
-                        margin: '0 auto',
-                        height: '100%'
-                    }}>
+                <div className="pdf-panel">
                     <PDFDisplay
                         onSkipToTime={this.handleSkipToTime}
                         pdfURL={PDF_URL}/>

@@ -14,6 +14,7 @@ html,body,.podcast-container, .pdf-view, .video-view {
     margin:0px;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     background: white;
+    z-index: 10;
 }
 
 /* sidebar elements */
@@ -59,9 +60,21 @@ html,body,.podcast-container, .pdf-view, .video-view {
     font-size: 14pt;
     color: white;
 }
-
-.search-box:placeholder {
-    color: lightgray
+/* Chrome/Opera/Safari */
+.search-box::-webkit-input-placeholder {
+    color: lightgray;
+}
+/* Firefox 19+ */
+.search-box::-moz-placeholder {
+    color: lightgray;
+}
+/* IE 10+ */
+.search-box:-ms-input-placeholder {
+    color: lightgray;
+}
+/* Firefox 18- */
+.search-box:-moz-placeholder {
+    color: lightgray;
 }
 
 .course-list {
@@ -82,6 +95,7 @@ html,body,.podcast-container, .pdf-view, .video-view {
     list-style: none;
     padding-top:12px;
     padding-bottom:12px;
+    cursor: pointer;
 }
 
 .course-item:hover {
@@ -124,12 +138,13 @@ html,body,.podcast-container, .pdf-view, .video-view {
     width: 48px;
     height: 100%;
     text-align: center;
+    display: table;
 }
 
 .pin-button > .fa {
-    display: inline-block;
     vertical-align: middle;
     line-height: inherit;
+    display: table-cell;
 }
 
 .expand-button {
@@ -146,7 +161,6 @@ html,body,.podcast-container, .pdf-view, .video-view {
 
 .unpinned-list {
     position: relative;
-    display: hidden;
     padding: 0px;
     height: inherit;
     overflow: auto;
@@ -164,14 +178,36 @@ html,body,.podcast-container, .pdf-view, .video-view {
 
 [data-reactroot] { height: 100% }
 
-.pdf-panel {
-    width: 600px;
-    /*background: gainsboro;*/
-    overflow-x:hidden;
-    overflow-y:auto;
+/* pdf panel */
 
+.pdf-panel {
+    position: fixed;
+    left: 280px;
+    top: 0;
+    width: 400px;
+    height: 100%;
 }
+
+.pdf-slides {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+
+.pdf-page {
+    position: relative;
+    height: 216px;
+    width: 100%;
+    cursor: pointer;
+    text-align: center;
+}
+
+.pdf-page canvas {
+    position: relative;
+}
+
 .video-panel {
+    float: right;
     overflow-x:hidden;
     overflow-y:auto;
     /*background: lightgray;*/

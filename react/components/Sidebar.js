@@ -115,7 +115,7 @@ class Sidebar extends React.Component {
                 <div className="search-bar">
                     <div className="search-icon"><FA name='search' size='1x'/></div>
                     <FormControl type="text"
-                                 placeholder="Search"
+                                 placeholder="Filter courses..."
                                  onChange={this.searchInput}
                                  className="search-box" />
                 </div>
