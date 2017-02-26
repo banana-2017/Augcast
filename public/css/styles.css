@@ -186,6 +186,7 @@ html,body,.podcast-container, .pdf-view, .video-view {
     top: 0;
     width: 400px;
     height: 100%;
+    background: darkgray;
 }
 
 .pdf-slides {
@@ -198,6 +199,7 @@ html,body,.podcast-container, .pdf-view, .video-view {
     position: relative;
     height: 216px;
     width: 100%;
+    margin: 10px 0 10px 0;
     cursor: pointer;
     text-align: center;
 }
