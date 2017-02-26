@@ -34,7 +34,7 @@ class PodcastView extends React.Component {
             <div
                 className="podcast-container">
 
-                <div className="pdf-view"
+                <div className="pdf-panel"
                     style={{
                         textAlign: 'center',
                         margin: '0 auto',
@@ -46,7 +46,7 @@ class PodcastView extends React.Component {
 
                 </div>
 
-                <div className = "video-view">
+                <div className = "video-panel">
                     <VideoPlayer
                         timestamp={this.state.timestamp}
                         mediaURL={MEDIA_URL}/>
