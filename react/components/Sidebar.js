@@ -2,6 +2,7 @@
 // Our Navigation Center
 
 import React from 'react';
+import { browserHistory } from 'react-router';
 import FA from 'react-fontawesome';
 import { FormControl } from 'react-bootstrap';
 import { database } from './../../database/database_init';
@@ -15,7 +16,7 @@ class Sidebar extends React.Component {
 
         // Initial state
         this.state = {
-            dataRetrieved: false,
+            display: 'loading courses data',
             visibleCourses:undefined    // keys to visible courses
         };
 
@@ -40,37 +41,31 @@ class Sidebar extends React.Component {
         // database query
         var that = this;
 
-        if (this.props.courseID == undefined) {
+        database.ref('courses').once('value').then(function(snapshot) {
+            that.courses.data = snapshot.val();
+            that.courses.keys = Object.keys(snapshot.val());
+            that.state.visibleCourses = that.courses.keys;
+            that.setState({display: 'courses'});
 
-            database.ref('courses').once('value').then(function(snapshot) {
-                that.courses.data = snapshot.val();
-                that.courses.keys = Object.keys(snapshot.val());
-                that.state.visibleCourses = that.courses.keys;
-                that.setState({dataRetrieved: true});
+            let arr = [];
 
-                let arr = [];
+            // populating array for search
+            for (var course in that.courses.data) {
+                let current = that.courses.data[course];
+                current.key = course;
+                arr.push(current);
+            }
 
-                // populating array for search
-                for (var course in that.courses.data) {
-                    let current = that.courses.data[course];
-                    current.key = course;
-                    arr.push(current);
-                }
+            that.dataArray = arr;
+        });
 
-                that.dataArray = arr;
-            });
-
-        } else {
-
-            database.ref('courses/' + this.props.courseID).once('value').then(function(snapshot) {
-                that.course = snapshot.val();
-            });
-
+        if (this.props.courseID != undefined) {
             database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
                 that.lectures = snapshot.val();
-                that.setState({dataRetrieved: true});
+                that.setState({display: that.props.courseID});
             });
         }
+
     }
 
     // search course
@@ -107,12 +102,28 @@ class Sidebar extends React.Component {
         this.setState({visibleCourses:visibleCourses});
     }
 
+    routeToLecture(id) {
+        this.setState({display: 'loading lectures data'});
+        browserHistory.push('/' + id);
+    }
+
 
     render () {
 
+        console.log('rendering sidebar');
+
+        if (this.state.display == 'loading courses data') {
+            return (
+                <Spinner className="sidebar-loading" spinnerName="three-bounce" />
+            );
+        }
+
+        console.log(this.state);
+        console.log(this.props);
+
         var that = this;
 
-        if (this.props.courseID == undefined) {
+        if (this.state.display == 'courses') {
 
             // make data accessible in subroutines
             var courseData = this.courses.data;
@@ -124,7 +135,7 @@ class Sidebar extends React.Component {
                 var section = course.section;
                 var prof = course.professor;
                 return (
-                    <li className="course-item" key={id}>
+                    <li className="course-item" key={id} onClick={() => {that.routeToLecture(id);}}>
                         <div className="pin-button"><FA name="star-o" size="2x"/></div>
                         <div className="course-title">
                             <span className="course-number">{number}</span>
@@ -147,7 +158,7 @@ class Sidebar extends React.Component {
                     </div>
                     <div className="course-list">
                         <ul className="unpinned-list">
-                            {this.state.dataRetrieved ? this.state.visibleCourses.map(listItem) : <Spinner className="sidebar-loading" spinnerName="three-bounce" /> }
+                            {this.state.visibleCourses.map(listItem)}
                         </ul>
                     </div>
                 </div>
@@ -156,40 +167,26 @@ class Sidebar extends React.Component {
         } else {
 
             // the selected course
+            this.course = this.courses.data[this.props.courseID];
             var courseData = this.course;
 
-            // render single course item
-            // var listItem = function(id) {
-            //     var course = courseData[id];
-            //     var number = course.dept + ' ' + course.num;
-            //     var section = course.section;
-            //     var prof = course.professor;
-            //     return (
-            //         <li className="course-item" key={id}>
-            //             <div className="pin-button"><FA name="star-o" size="2x"/></div>
-            //             <div className="course-title">
-            //                 <span className="course-number">{number}</span>
-            //                 <span className="course-section">{section}</span>
-            //             </div>
-            //             <div className="course-prof">{prof}</div>
-            //             <div className="expand-button"></div>
-            //         </li>
-            //     );
-            // };
-
-            //         <div className="search-bar">
-            //             <div className="search-icon"><FA name='search' /></div>
-            //             <FormControl type="text"
-            //                          placeholder="Filter courses..."
-            //                          onChange={this.searchInput}
-            //                          className="search-box" />
-            //         </div>
-            if (courseData != null) {
+            if (this.state.display == 'loading lectures data') {
+                database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
+                    that.lectures = snapshot.val();
+                    that.setState({display: that.props.courseID});
+                });
+                return (
+                    <Spinner className="sidebar-loading" spinnerName="three-bounce" />
+                );
+            } else {
                 var listItem = function(id) {
+                    var course = that.course
                     var lecture = that.lectures[id];
                     var month = that.calendar[lecture.month];
                     return (
                         <li key={id}>
+                        {course.dept} {course.num}<br/>
+                        Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                         </li>
                     );
                 }
@@ -208,10 +205,6 @@ class Sidebar extends React.Component {
                             </ul>
                         </div>
                     </div>
-                );
-            } else {
-                return (
-                    <div></div>
                 );
             }
         }
