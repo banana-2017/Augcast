@@ -23,15 +23,15 @@ class Sidebar extends React.Component {
         this.searchInput = this.searchInput.bind (this);
 
         this.courseData = undefined;
-        this.courseNum = undefined;         // keys to all courses
+        this.courseIDs = undefined;         // keys to all courses
         this.dataArray = [];
 
         // database query
         var that = this;
         database.ref('courses').once('value').then(function(snapshot) {
             that.courseData = snapshot.val();
-            that.courseNum = Object.keys(snapshot.val());
-            that.state.visibleCourses = that.courseNum;
+            that.courseIDs = Object.keys(snapshot.val());
+            that.state.visibleCourses = that.courseIDs;
             that.setState({dataRetrieved: true});
 
             let arr = [];
@@ -57,7 +57,7 @@ class Sidebar extends React.Component {
             distance: 70,
             maxPatternLength: 32,
             minMatchCharLength: 1,
-            keys: ['key', 'professor', 'title']
+            keys: ['key', 'dept', 'num', 'professor', 'title']
         };
 
         var fuse = new Fuse(this.dataArray, options);
@@ -70,7 +70,7 @@ class Sidebar extends React.Component {
 
         // empty query
         if (query === '') {
-            this.setState({visibleCourses:this.courseNum});
+            this.setState({visibleCourses:this.courseIDs});
             return;
         }
 
@@ -84,19 +84,20 @@ class Sidebar extends React.Component {
 
 
     render () {
-        if (this.props.courseNum == undefined) {
 
-            // make data accessible in subroutines
-            var courseData = this.courseData;
+        // make data accessible in subroutines
+        var courseData = this.courseData;
+
+        if (this.props.courseID == undefined) {
 
             // render single course item
-            var listItem = function(course) {
-                // console.log ('called with' + course);
-                var number = course.substring(0, course.length - 6);
-                var section = course.substring(course.length - 6);
-                var prof = courseData[course].professor;
+            var listItem = function(id) {
+                var course = courseData[id];
+                var number = course.dept + ' ' + course.num;
+                var section = course.section;
+                var prof = course.professor;
                 return (
-                    <li className="course-item" key={course}>
+                    <li className="course-item" key={id}>
                         <div className="pin-button"><FA name="star-o" size="2x"/></div>
                         <div className="course-title">
                             <span className="course-number">{number}</span>
@@ -124,12 +125,16 @@ class Sidebar extends React.Component {
                     </div>
                 </div>
             );
+
         } else {
-            console.log(this.props.courseNum);
+
+            console.log(this.props.courseID)
+
             return (
                 <div>
                 </div>
             );
+
         }
     }
 }
