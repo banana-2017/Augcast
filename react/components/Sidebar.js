@@ -22,37 +22,53 @@ class Sidebar extends React.Component {
         this.search = this.search.bind (this);
         this.searchInput = this.searchInput.bind (this);
 
-        this.courseData = undefined;
-        this.courseIDs = undefined;         // keys to all courses
+        // course slection variable
+        this.courses = {};
+
+        // lecture slection variable
+        this.course = undefined;
+        this.lectures = {};
         this.dataArray = [];
 
         // state to render lecture sidebar
         this.lectures = undefined;
 
+        // helper object
+        this.calendar = { 1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
+                          7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec' };
+
         // database query
         var that = this;
-        database.ref('courses').once('value').then(function(snapshot) {
-            that.courseData = snapshot.val();
-            that.courseIDs = Object.keys(snapshot.val());
-            that.state.visibleCourses = that.courseIDs;
-            that.setState({dataRetrieved: true});
 
-            let arr = [];
+        if (this.props.courseID == undefined) {
 
-            // populating array for search
-            for (var course in that.courseData) {
-                let current = that.courseData[course];
-                current.key = course;
-                arr.push(current);
-            }
+            database.ref('courses').once('value').then(function(snapshot) {
+                that.courses.data = snapshot.val();
+                that.courses.keys = Object.keys(snapshot.val());
+                that.state.visibleCourses = that.courses.keys;
+                that.setState({dataRetrieved: true});
 
-            that.dataArray = arr;
-        });
+                let arr = [];
 
-        if (this.props.courseID != undefined) {
-            console.log('lectures/' + this.props.courseID);
+                // populating array for search
+                for (var course in that.courses.data) {
+                    let current = that.courses.data[course];
+                    current.key = course;
+                    arr.push(current);
+                }
+
+                that.dataArray = arr;
+            });
+
+        } else {
+
+            database.ref('courses/' + this.props.courseID).once('value').then(function(snapshot) {
+                that.course = snapshot.val();
+            });
+
             database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
-                console.log(snapshot.val());
+                that.lectures = snapshot.val();
+                that.setState({dataRetrieved: true});
             });
         }
     }
@@ -94,10 +110,12 @@ class Sidebar extends React.Component {
 
     render () {
 
+        var that = this;
+
         if (this.props.courseID == undefined) {
 
             // make data accessible in subroutines
-            var courseData = this.courseData;
+            var courseData = this.courses.data;
 
             // render single course item
             var listItem = function(id) {
@@ -138,10 +156,9 @@ class Sidebar extends React.Component {
         } else {
 
             // the selected course
-            // var courseData = this.courseData[this.props.courseID];
-            console.log(this.courseData);
-            //
-            // // render single course item
+            var courseData = this.course;
+
+            // render single course item
             // var listItem = function(id) {
             //     var course = courseData[id];
             //     var number = course.dept + ' ' + course.num;
@@ -167,15 +184,36 @@ class Sidebar extends React.Component {
             //                          onChange={this.searchInput}
             //                          className="search-box" />
             //         </div>
-            //         <div className="course-list">
-            //             <ul className="unpinned-list">
-            //                 {this.state.dataRetrieved ? this.state.visibleCourses.map(listItem) : <Spinner className="sidebar-loading" spinnerName="three-bounce" /> }
-            //             </ul>
-            //         </div>
-            return (
-                <div className="nav">
-                </div>
-            );
+            if (courseData != null) {
+                var listItem = function(id) {
+                    var lecture = that.lectures[id];
+                    var month = that.calendar[lecture.month];
+                    return (
+                        <li key={id}>
+                        </li>
+                    );
+                }
+                return (
+                    <div className="nav">
+                        <div className="search-bar">
+                            <div className="search-icon"><FA name='search' /></div>
+                            <FormControl type="text"
+                                         placeholder={"Search " + this.course.dept + " " + this.course.num + "..."}
+                                         onChange={this.searchInput}
+                                         className="search-box" />
+                        </div>
+                        <div className="lectures-wrapper">
+                            <ul className="lecture-list">
+                                {this.course.lectures.map(listItem)}
+                            </ul>
+                        </div>
+                    </div>
+                );
+            } else {
+                return (
+                    <div></div>
+                );
+            }
         }
     }
 }
