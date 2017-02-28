@@ -3,7 +3,6 @@
 
 import React from 'react';
 import PDF from 'react-pdf-js';
-import { Button } from 'react-bootstrap';
 //import { database } from './../../database/database_init';
 
 class PDFDisplay extends React.Component {
@@ -38,20 +37,12 @@ class PDFDisplay extends React.Component {
         var sentinelArray = Array.from(Array(this.state.pages));
         var PDFpages = sentinelArray.map(function(x, i){
             return (
-                <div
-                    key={'ButtonPageCombo' + i}
-                    >
-                    <Button
-                        key={'Button' + i}
-                        onClick={() => {that.skipToTime(i);}}>
-                        Skip to {i}
-                    </Button>
-                    <br/>
+                <div key={'ButtonPageCombo' + i} className="pdf-page" onClick={() => {that.skipToTime(i);}}>
                     <PDF
                         key={'PDFPage' + i}
                         file={that.state.file}
                         onDocumentComplete={that.onDocumentComplete}
-                        scale={0.5}
+                        scale={0.3}
                         page= {i + 1} />
                 </div>
             );
@@ -59,22 +50,8 @@ class PDFDisplay extends React.Component {
 
         return (
             <div
-                style={{
-                    textAlign: 'center',
-                    margin: '0 auto',
-                }}>
-                <h2>
-                    PDF Viewer
-                </h2>
-                <div
-                    style= {{
-                        overflowY: 'auto',
-                        height:'600px',
-                    }}
-                    className="pdf-slides">
-                    {PDFpages}
-                </div>
-
+                className="pdf-slides">
+                {PDFpages}
             </div>
         );
     }

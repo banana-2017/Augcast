@@ -1,26 +1,50 @@
-html,body,.podcast-container, .pdf-view, .video-view {
+html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
     font-family: Roboto, sans-serif;
+}
+
+.app {
+    height: 100%;
+    width: 100%;
+}
+
+.main {
+    height: 100%;
+    width: 100%;
+}
+
+.fa {
+    height: 100%;
+    width: 100%;
+}
+
+[data-reactroot] {
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    margin: 0;
+    position: fixed;
 }
 
 .nav {
     position: fixed;
     width: 280px;
-    float: left;
+    height: 100%;
     top: 0px;
     left: 0px;
     padding: 0px;
     margin:0px;
-    height: 100%;
-    overflow: auto;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
+    background: white;
+    z-index: 10;
 }
 
 /* sidebar elements */
 
 .search-bar {
     display: block;
-    position: fixed;
+    position: absolute;
     float: left;
     height: 48px;
     width: inherit;
@@ -59,19 +83,30 @@ html,body,.podcast-container, .pdf-view, .video-view {
     font-size: 14pt;
     color: white;
 }
-
-.search-box:placeholder {
-    color: lightgray
+/* Chrome/Opera/Safari */
+.search-box::-webkit-input-placeholder {
+    color: lightgray;
+}
+/* Firefox 19+ */
+.search-box::-moz-placeholder {
+    color: lightgray;
+}
+/* IE 10+ */
+.search-box:-ms-input-placeholder {
+    color: lightgray;
+}
+/* Firefox 18- */
+.search-box:-moz-placeholder {
+    color: lightgray;
 }
 
 .course-list {
-    position: relative;
+    position: fixed;
     top: 48px;
     height: 100%;
-    float: left;
     padding: 0px;
     margin: 0px;
-    width: 100%;
+    width: inherit;
     display: block;
 }
 
@@ -83,6 +118,7 @@ html,body,.podcast-container, .pdf-view, .video-view {
     list-style: none;
     padding-top:12px;
     padding-bottom:12px;
+    cursor: pointer;
 }
 
 .course-item:hover {
@@ -93,6 +129,11 @@ html,body,.podcast-container, .pdf-view, .video-view {
     display: flex;
     font-size: 14pt;
     white-space:nowrap;
+}
+
+.course-number {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .course-section {
@@ -120,12 +161,13 @@ html,body,.podcast-container, .pdf-view, .video-view {
     width: 48px;
     height: 100%;
     text-align: center;
+    display: table;
 }
 
-.pin-button > .fa {
-    display: inline-block;
+.pin-button .fa {
     vertical-align: middle;
     line-height: inherit;
+    display: table-cell;
 }
 
 .expand-button {
@@ -135,41 +177,53 @@ html,body,.podcast-container, .pdf-view, .video-view {
     height: 100%;
 }
 
-.fa {
-    height: 100%;
-    width: 100%;
-}
-
 .unpinned-list {
     position: relative;
-    display: hidden;
     padding: 0px;
-}
-/* main canvas */
-
-.main {
-    display: flex;
-    float: right;
+    height: inherit;
+    overflow: auto;
 }
 
-.podcast-container {
-    overflow:auto;
+.content-panel {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 280px;
+    top: 0;
+    display: table-cell;
 }
 
-[data-reactroot] { height: 100% }
+/* pdf panel */
 
-.pdf-view {
-    float:left;
-    width: 600px;
-    /*background: gainsboro;*/
+.pdf-panel {
+    position: relative;
+    height: 100%;
+    background: darkgray;
+    display: inline-block;
+}
+
+.pdf-slides {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+
+.pdf-page {
+    position: relative;
+    margin: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.pdf-page canvas {
+    position: relative;
+}
+
+.video-panel {
+    position: relative;
+    display: inline-block;
     overflow-x:hidden;
     overflow-y:auto;
-
-}
-.video-view {
-    overflow-x:hidden;
-    overflow-y:auto;
-    /*background: lightgray;*/
 }
 
 .loadingSideBar {
