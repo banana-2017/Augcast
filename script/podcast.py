@@ -90,8 +90,10 @@ for eachCourse in currentCourse.find_all('tr'):
                 thisLecture['day'], thisLecture['month'], thisLecture['date'] = re.sub(r'(\w+) (\d+)/(\d+).*', r'\1 \2 \3', lectureDate).split()
                 thisLecture['week'] = week
 
-                if '[' not in lectureDate:
-                    lectureNum = lectureNum + 1
+                if '[' in lectureDate:
+                    continue
+
+                lectureNum = lectureNum + 1
 
                 lectureID = (courseID + '-' + sectionType + str('%02d' % lectureNum)).lower()
                 lectureDic[courseID][lectureID] = thisLecture
