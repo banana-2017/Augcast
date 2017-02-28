@@ -16,7 +16,7 @@ class Test extends React.Component {
     render () {
         return (
             <div className="main">
-                <Sidebar />
+                <Sidebar courseNum={this.props.params.courseNum}/>
                 <PodcastView />
             </div>
         );
