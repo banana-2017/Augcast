@@ -107,6 +107,10 @@ class Sidebar extends React.Component {
         browserHistory.push('/' + id);
     }
 
+    back() {
+        this.setState({display: 'courses'});
+        browserHistory.goBack();
+    }
 
     render () {
 
@@ -193,7 +197,7 @@ class Sidebar extends React.Component {
                 return (
                     <div className="nav">
                         <div className="search-bar">
-                            <div className="search-icon"><FA name='search' /></div>
+                            <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
                             <FormControl type="text"
                                          placeholder={"Search " + this.course.dept + " " + this.course.num + "..."}
                                          onChange={this.searchInput}
