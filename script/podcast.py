@@ -56,11 +56,15 @@ for eachCourse in currentCourse.find_all('tr'):
             continue
 
         courseID = (num + '-' + (sectionID[0] if sectionType == 'LE' else sectionID)).lower()
-        courseNum = re.sub(numberPattern, r'\1 \2', num)
+        courseDept, courseNum = re.sub(numberPattern, r'\1 \2', num).split()
 
+        thisCourse['dept']      = courseDept
+        thisCourse['num']       = courseNum
         thisCourse['subject']   = subject
         thisCourse['url']       = courseUrl
         thisCourse['professor'] = courseProf
+        thisCourse['type']      = sectionType
+        thisCourse['section']   = sectionID
 
         ###################################### Lecture Information ###################################################
         lectureList = []
