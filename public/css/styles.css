@@ -1,13 +1,36 @@
-html,body,.podcast-container, .pdf-view, .video-view {
+html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
     font-family: Roboto, sans-serif;
+}
+
+.app {
+    height: 100%;
+    width: 100%;
+}
+
+.main {
+    height: 100%;
+    width: 100%;
+}
+
+.fa {
+    height: 100%;
+    width: 100%;
+}
+
+[data-reactroot] {
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    margin: 0;
+    position: fixed;
 }
 
 .nav {
     position: fixed;
     width: 280px;
     height: 100%;
-    float: left;
     top: 0px;
     left: 0px;
     padding: 0px;
@@ -21,7 +44,7 @@ html,body,.podcast-container, .pdf-view, .video-view {
 
 .search-bar {
     display: block;
-    position: fixed;
+    position: absolute;
     float: left;
     height: 48px;
     width: inherit;
@@ -141,7 +164,7 @@ html,body,.podcast-container, .pdf-view, .video-view {
     display: table;
 }
 
-.pin-button > .fa {
+.pin-button .fa {
     vertical-align: middle;
     line-height: inherit;
     display: table-cell;
@@ -154,39 +177,29 @@ html,body,.podcast-container, .pdf-view, .video-view {
     height: 100%;
 }
 
-.fa {
-    height: 100%;
-    width: 100%;
-}
-
 .unpinned-list {
     position: relative;
     padding: 0px;
     height: inherit;
     overflow: auto;
 }
-/* main canvas */
 
-.main {
-    display: flex;
-    float: right;
+.content-panel {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 280px;
+    top: 0;
+    display: table-cell;
 }
-
-.podcast-container {
-    overflow:auto;
-}
-
-[data-reactroot] { height: 100% }
 
 /* pdf panel */
 
 .pdf-panel {
-    position: fixed;
-    left: 280px;
-    top: 0;
-    width: 400px;
+    position: relative;
     height: 100%;
     background: darkgray;
+    display: inline-block;
 }
 
 .pdf-slides {
@@ -197,9 +210,7 @@ html,body,.podcast-container, .pdf-view, .video-view {
 
 .pdf-page {
     position: relative;
-    height: 216px;
-    width: 100%;
-    margin: 10px 0 10px 0;
+    margin: 10px;
     cursor: pointer;
     text-align: center;
 }
@@ -209,10 +220,10 @@ html,body,.podcast-container, .pdf-view, .video-view {
 }
 
 .video-panel {
-    float: right;
+    position: relative;
+    display: inline-block;
     overflow-x:hidden;
     overflow-y:auto;
-    /*background: lightgray;*/
 }
 
 .loadingSideBar {

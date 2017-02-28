@@ -26,6 +26,7 @@ class Sidebar extends React.Component {
         this.courseNum = undefined;         // keys to all courses
         this.dataArray = [];
 
+        // database query
         var that = this;
         database.ref('courses').once('value').then(function(snapshot) {
             that.courseData = snapshot.val();

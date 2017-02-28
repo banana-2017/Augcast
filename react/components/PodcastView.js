@@ -31,9 +31,7 @@ class PodcastView extends React.Component {
 
     render () {
         return (
-            <div
-                className="podcast-container">
-
+            <div className="content-panel">
                 <div className="pdf-panel">
                     <PDFDisplay
                         onSkipToTime={this.handleSkipToTime}
@@ -46,7 +44,6 @@ class PodcastView extends React.Component {
                         timestamp={this.state.timestamp}
                         mediaURL={MEDIA_URL}/>
                 </div>
-
             </div>
         );
     }

@@ -17,11 +17,9 @@ class Test extends React.Component {
 
     render () {
         return (
-            <div>
+            <div className="main">
                 <Sidebar />
-                <div className="main">
-                    <PodcastView />
-                </div>
+                <PodcastView />
             </div>
         );
     }

@@ -44,7 +44,7 @@ class PDFDisplay extends React.Component {
                         key={'PDFPage' + i}
                         file={that.state.file}
                         onDocumentComplete={that.onDocumentComplete}
-                        scale={0.4}
+                        scale={0.3}
                         page= {i + 1} />
                 </div>
             );
