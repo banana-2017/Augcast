@@ -14,14 +14,10 @@ class ElabRequest extends React.Component {
         // Initial state
         this.state = {
         	id: NAME + num,
-            question: 'Please write your question here...',
             answer: '',
             endorsed: false,
-            resolved: true,
-            q_userName: '',
+            resolved: false,
             a_username: '',
-            question_editing: false,
-            answer_editing: false,
             dataRetrieved: false,
         };
 
@@ -36,52 +32,30 @@ class ElabRequest extends React.Component {
         });
 
         // Bind all functions so they can refer to "this" correctly
-        this.handleEdit = this.handleEdit.bind(this);
+        //this.handleEdit = this.handleEdit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         //this.updateIDFromDB = this.updateIDFromDB.bind(this);
     }
-
+/*
     handleEdit(event) {
         this.setState({question: event.target.value});
     }
+    */
 
     handleSubmit(event) {
-        alert('The question has been submitted: ');
-        event.preventDefault();
-        var newPostKey = database.ref().child('elab-request').push().key;
+        //var newPostKey = database.ref().child('elab-request').push().key;
         var updates = {};
-        updates['/elab-request/' + this.state.id] = this.state
         this.setState({
-                id: 'elaboration_id_' + (++num)
+                id: 'elaboration_id_' + num
         });
+        updates['/elab-request/' + this.state.id] = this.state.question
+        num++
         database.ref().update(updates);
     }
-/*
-    updateIDFromDB() {
-        var that = this;    // Maintain current "this" in Firebase callback
-
-        database.ref('/elab-request/' + that.state.id).once('value').then(function(snapshot) {
-            var parts = elaboration.split("_")
-            var id = parts[parts.length-1]
-            that.setState({
-                id: NAME + (Number(id)+1)
-            });
-        });
-    }*/
-/*
-    updateQuestionFromDB() {
-        var that = this;    // Maintain current "this" in Firebase callback
-
-        database.ref('/elab-request/' + that.state.id).once('value').then(function(snapshot) {
-            that.setState({
-                //testing: 'fetched question from db: ' + snapshot.val(
-            });
-        });
-    }*/
 
     render () {
-        var allRequests = this.allRequests;
 
+        var allRequests = this.allRequests;
 
         // render single elaboration item
         var requestList = function(elaboration) {
@@ -98,6 +72,8 @@ class ElabRequest extends React.Component {
                 </p>
             );
         };
+
+        console.log("testing in Elab: " + this.props.testing);
         return (
             <div>
             <div style={{
@@ -116,7 +92,7 @@ class ElabRequest extends React.Component {
                 <h2> Elaboration Request</h2>
                 <form onSubmit={this.handleSubmit}>
 	                <label>
-	                Question:<textarea value={this.state.question} onChange={this.handleEdit} />
+	                Question:<textarea value={this.props.testing} onChange={this.props.handleEdit} />
 	                </label>
 	                <input type="submit" value="Submit" />
                 </form>
