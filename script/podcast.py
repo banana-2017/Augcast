@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import urllib
 import re
 import json
@@ -13,14 +15,14 @@ lectureDic = {}
 table = {}
 
 # url and the HTML text of podcast
-urlPodcast = "https://podcast.ucsd.edu/"
+urlPodcast = 'https://podcast.ucsd.edu/'
 htmlTextPodcast = urllib.urlopen(urlPodcast).read()
 
 # convert to soup
-soupPodcast = BeautifulSoup(htmlTextPodcast, "html.parser", from_encoding='uft-8')
+soupPodcast = BeautifulSoup(htmlTextPodcast, 'html.parser', from_encoding='uft-8')
 
 # find course
-currentCourse = soupPodcast.find('div', id="courses_div")
+currentCourse = soupPodcast.find('div', id='courses_div')
 
 for eachCourse in currentCourse.find_all('tr'):
 
@@ -30,77 +32,85 @@ for eachCourse in currentCourse.find_all('tr'):
         continue
 
     # get the course podcast url and course name
-    courseInfo = eachCourse.find('a', {"class": "PodcastLink"})
-    courseUrl = str("https://podcast.ucsd.edu" + courseInfo['href'])
+    courseInfo = eachCourse.find('a', {'class': 'PodcastLink'})
+    courseUrl = str('https://podcast.ucsd.edu' + courseInfo['href'])
     courseTitle = str(courseInfo.text)
 
     # get the course professor
-    courseProf = eachCourse.find('td', {"class": "prof"}).text
+    courseProf = eachCourse.find('td', {'class': 'prof'}).text
 
-    # refine the keyword
-    courseNum = courseTitle.split('-')[0]
-    courseSection = courseTitle.split('-')[-1]
-    courseID = courseNum + courseSection.replace('[', '').replace(']', '')
-    courseName = "".join(courseTitle.split('-')[1:-1])
+    # explode
+    number, subject, section = courseTitle.split(' - ')
+    numberPattern = re.compile(r'([A-Z]+) ?(\d+[A-Z]?)+')
+    sectionPattern = re.compile(r'([A-Z]+) \[([A-Z]\d+)\]')
 
-    # store the individual course information to the dictionary
-    eachCourseDic = {}
-    lectureList = []
-    eachCourseDic['name'] = courseName
-    eachCourseDic['url'] = courseUrl
-    eachCourseDic['professor'] = courseProf
+    # in case of joint course number
+    for num in re.sub(numberPattern, r'\1\2', number).split():
+        # store the individual course information to the dictionary
+        thisCourse = {}
 
-    ###################################### Lecture Information ###################################################
+        sectionType, sectionID = re.sub(sectionPattern, r'\1 \2', section).split()
+        courseID = (num + '-' + (sectionID[0] if sectionType == 'LE' else sectionID)).lower()
+        courseNum = re.sub(numberPattern, r'\1 \2', num)
 
-    # open the url and of each course's podcast page
-    htmlTextCoursePodcast = urllib.urlopen(courseUrl).read()
+        thisCourse['subject']   = subject
+        thisCourse['url']       = courseUrl
+        thisCourse['professor'] = courseProf
 
-    # convert to soup
-    soupCoursePodcast = BeautifulSoup(htmlTextCoursePodcast, "html.parser", from_encoding='uft-8')
+        ###################################### Lecture Information ###################################################
+        lectureList = []
 
-    lectureInfo = soupCoursePodcast.find_all('div', {"class": "lecture"})
+        # open the url and of each course's podcast page
+        htmlTextCoursePodcast = urllib.urlopen(courseUrl).read()
 
-    lectureNum = 0
-    for eachLecutureInfo in lectureInfo:
-        eachLectureDic = {}
+        # convert to soup
+        soupCoursePodcast = BeautifulSoup(htmlTextCoursePodcast, 'html.parser', from_encoding='uft-8')
 
-        lectureMedia = "https://podcast.ucsd.edu/Podcasts//" + eachLecutureInfo.find('span')['forfile']
-        lectureDate = eachLecutureInfo.find('a').text.strip()
+        lectureInfo = soupCoursePodcast.find_all('div', {'class': 'lecture'})
 
-        # store the lecture information to the dictionary
-        eachLectureDic['video_url'] = lectureMedia
-        eachLectureDic['date'] = lectureDate
+        lectureNum = 0
+        for eachLecutureInfo in lectureInfo:
+            eachLectureDic = {}
 
-        if "[" not in lectureDate:
-            lectureNum = lectureNum + 1
+            lectureMedia = 'https://podcast.ucsd.edu/Podcasts//' + eachLecutureInfo.find('span')['forfile']
+            lectureDate = eachLecutureInfo.find('a').text.strip()
+
+            # store the lecture information to the dictionary
+            eachLectureDic['video_url'] = lectureMedia
+            eachLectureDic['date'] = lectureDate
+
+            if '[' not in lectureDate:
+                lectureNum = lectureNum + 1
 
 
-        lectureID = courseID + " LE" + str(lectureNum)
+            lectureID = (courseID + '-' + sectionType + str(lectureNum)).lower()
 
-        lectureDic[lectureID] = eachLectureDic
+            lectureDic[lectureID] = eachLectureDic
 
-        # store the lecture information to the lecture list
-        lectureList.append(lectureID)
-        lectureNumber = lectureNumber + 1
+            # store the lecture information to the lecture list
+            lectureList.append(lectureID)
+            lectureNumber = lectureNumber + 1
 
-    # add lecture list into eachCourseDic
-    eachCourseDic["lecture"] = lectureList
-    # store the course information to the course dictionary
-    courseDic[courseID] = eachCourseDic
-    courseNumber = courseNumber + 1
+        # add lecture list into eachCourseDic
+        thisCourse['lectures'] = lectureList
+        # store the course information to the course dictionary
+        courseDic[courseID] = thisCourse
+        courseNumber = courseNumber + 1
 
-    table["courses"] = courseDic
-    table["lectures"] = lectureDic
+        table['courses'] = courseDic
+        table['lectures'] = lectureDic
+
 
 # write to json file
 with open('table.json', 'w') as outfile:
     # for eachCourseList in courseList:
-        json.dump(table, outfile)
+        # json.dump(table, outfile)
+        json.dump(table, outfile, sort_keys=True, indent=4, separators=(',', ': '))
         outfile.write('\n')
 
 
-print "unauthenticated course: "
+print 'unauthenticated course: '
 print courseNumber
 print '\n'
-print "total lecture: "
+print 'total lecture: '
 print lectureNumber

@@ -8,3 +8,4 @@ database/credentials.json
 *.log
 labeler
 .DS_Store
+script/*.json
