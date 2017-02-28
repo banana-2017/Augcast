@@ -50,6 +50,11 @@ for eachCourse in currentCourse.find_all('tr'):
         thisCourse = {}
 
         sectionType, sectionID = re.sub(sectionPattern, r'\1 \2', section).split()
+
+        # no discussions -- just no
+        if sectionType != 'LE':
+            continue
+
         courseID = (num + '-' + (sectionID[0] if sectionType == 'LE' else sectionID)).lower()
         courseNum = re.sub(numberPattern, r'\1 \2', num)
 
@@ -81,7 +86,6 @@ for eachCourse in currentCourse.find_all('tr'):
 
             if '[' not in lectureDate:
                 lectureNum = lectureNum + 1
-
 
             lectureID = (courseID + '-' + sectionType + str(lectureNum)).lower()
 
