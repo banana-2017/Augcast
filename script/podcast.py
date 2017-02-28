@@ -67,6 +67,7 @@ for eachCourse in currentCourse.find_all('tr'):
         thisCourse['section']   = sectionID
 
         ###################################### Lecture Information ###################################################
+        lectureDic[courseID] = {}
         lectureList = []
 
         # open the url and of each course's podcast page
@@ -75,29 +76,29 @@ for eachCourse in currentCourse.find_all('tr'):
         # convert to soup
         soupCoursePodcast = BeautifulSoup(htmlTextCoursePodcast, 'html.parser', from_encoding='uft-8')
 
-        lectureInfo = soupCoursePodcast.find_all('div', {'class': 'lecture'})
-
         lectureNum = 0
-        for eachLecutureInfo in lectureInfo:
-            eachLectureDic = {}
+        weeks = soupCoursePodcast.find_all('div', {'class': 'week'})
+        for w in weeks:
+            week = w.find('h3').text.split()[1]
+            lectures = w.find_all('div', {'class': 'lecture'})
+            for lecture in lectures:
+                thisLecture = {}
+                lectureMedia = 'https://podcast.ucsd.edu/Podcasts//' + lecture.find('span')['forfile']
+                lectureDate = lecture.find('a').text.strip()
 
-            lectureMedia = 'https://podcast.ucsd.edu/Podcasts//' + eachLecutureInfo.find('span')['forfile']
-            lectureDate = eachLecutureInfo.find('a').text.strip()
+                thisLecture['video_url'] = lectureMedia
+                thisLecture['day'], thisLecture['month'], thisLecture['date'] = re.sub(r'(\w+) (\d+)/(\d+).*', r'\1 \2 \3', lectureDate).split()
+                thisLecture['week'] = week
 
-            # store the lecture information to the dictionary
-            eachLectureDic['video_url'] = lectureMedia
-            eachLectureDic['date'] = lectureDate
+                if '[' not in lectureDate:
+                    lectureNum = lectureNum + 1
 
-            if '[' not in lectureDate:
-                lectureNum = lectureNum + 1
+                lectureID = (courseID + '-' + sectionType + str('%02d' % lectureNum)).lower()
+                lectureDic[courseID][lectureID] = thisLecture
 
-            lectureID = (courseID + '-' + sectionType + str(lectureNum)).lower()
-
-            lectureDic[lectureID] = eachLectureDic
-
-            # store the lecture information to the lecture list
-            lectureList.append(lectureID)
-            lectureNumber = lectureNumber + 1
+                # store the lecture information to the lecture list
+                lectureList.append(lectureID)
+                lectureNumber = lectureNumber + 1
 
         # add lecture list into eachCourseDic
         thisCourse['lectures'] = lectureList
