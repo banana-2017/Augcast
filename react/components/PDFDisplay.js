@@ -3,8 +3,6 @@
 
 import React from 'react';
 import PDF from 'react-pdf-js';
-import { Button } from 'react-bootstrap';
-import FA from 'react-fontawesome';
 //import { database } from './../../database/database_init';
 
 class PDFDisplay extends React.Component {
