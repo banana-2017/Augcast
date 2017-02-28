@@ -109,7 +109,7 @@ class Sidebar extends React.Component {
 
     back() {
         this.setState({display: 'courses'});
-        browserHistory.goBack();
+        browserHistory.push('/test');
     }
 
     render () {
