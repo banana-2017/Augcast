@@ -1,4 +1,5 @@
-import {LOG_OUT, LOG_IN, UPDATE_COURSE, IS_INSTRUCTOR} from './actions';
+import {LOG_OUT, LOG_IN_SUCCESS,LOG_IN_FAILURE,
+        LOG_IN_REQUEST, UPDATE_COURSE, IS_INSTRUCTOR} from './actions';
 
 /**
 * state of the app
@@ -6,7 +7,8 @@ import {LOG_OUT, LOG_IN, UPDATE_COURSE, IS_INSTRUCTOR} from './actions';
 * currentCourse: ID of the course currently selected
 */
 const initialState = {
-    loggedIn : true,
+    isFetching: false,
+    loggedIn : false,
     currentCourse: undefined,
     userType: 'STUDENT',
     username: undefined,
@@ -33,9 +35,24 @@ function appReducers (state, action) {
         });
     }
 
-    case LOG_IN: {
+    case LOG_IN_SUCCESS: {
         return Object.assign ({}, state, {
-            loggedIn: true
+            loggedIn: true,
+            isFetching: false
+        });
+    }
+
+    case LOG_IN_FAILURE: {
+        return Object.assign ({}, state, {
+            loggedIn: false,
+            isFetching: false
+
+        });
+    }
+
+    case LOG_IN_REQUEST: {
+        return Object.assign ({}, state, {
+            isFetching: true
         });
     }
 
@@ -50,6 +67,7 @@ function appReducers (state, action) {
             userType: 'INSTRUCTOR'
         });
     }
+
 
     }
 
