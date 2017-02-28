@@ -1,19 +1,20 @@
 import React from 'react';
 import { database } from './../../database/database_init';
-import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
+//import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
 ElabRequest - to be displayed on the side
 */
-const NAME = 'elaboration_id_'
-var num = 0
+const NAME = 'elaboration_id_';
+var num = 0;
+
 class ElabRequest extends React.Component {
     constructor(props) {
         super(props);
 
         // Initial state
         this.state = {
-        	id: NAME + num,
+            id: NAME + num,
             answer: '',
             endorsed: false,
             resolved: false,
@@ -21,8 +22,8 @@ class ElabRequest extends React.Component {
             dataRetrieved: false,
         };
 
-        var allRequests = undefined;
-        var requestID = undefined;
+        this.allRequests = undefined;
+        this.requestID = undefined;
 
         var that = this;
         database.ref('/elab-request').once('value').then(function(snapshot) {
@@ -46,10 +47,10 @@ class ElabRequest extends React.Component {
         //var newPostKey = database.ref().child('elab-request').push().key;
         var updates = {};
         this.setState({
-                id: 'elaboration_id_' + num
+            id: 'elaboration_id_' + num
         });
-        updates['/elab-request/' + this.state.id] = this.state.question
-        num++
+        updates['/elab-request/' + this.state.id] = this.state.question;
+        num++;
         database.ref().update(updates);
     }
 

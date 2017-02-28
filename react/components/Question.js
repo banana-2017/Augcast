@@ -1,17 +1,18 @@
 import React from 'react';
-import { database } from './../../database/database_init';
-import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
+import ElabRequest from './ElabRequest';
+// import { database } from './../../database/database_init';
+// import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
 ElabRequest - to be displayed on the side
 */
-const NAME = 'elaboration_id_'
+//const NAME = 'elaboration_id_'
 class Question extends React.Component {
     constructor(props) {
         super(props);
         // Initial state
         this.state = {
-            testing: "for testing",
+            testing: 'for testing',
             question: 'Please write your question here...',
             endorsed: false,
             resolved: false,
@@ -40,10 +41,10 @@ class Question extends React.Component {
         database.ref().update(updates);
     }
 */
-    render: function() {
-        console.log("testing in question: " + testing);
+    render() {
+        console.log('testing in question: ' + this.state.testing);
         return <ElabRequest question={this.state.question} handleEdit={this.handleEdit} testing={this.state.testing}/>;
     }
 }
 //<Button style={{margin:'10px'}} bsStyle="success" onClick={this.updateQuestionFromDB}><Glyphicon glyph="save" /> Update</Button>
-export default ElabRequest;
+export default Question;
