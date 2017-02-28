@@ -26,6 +26,9 @@ class Sidebar extends React.Component {
         this.courseIDs = undefined;         // keys to all courses
         this.dataArray = [];
 
+        // state to render lecture sidebar
+        this.lectures = undefined;
+
         // database query
         var that = this;
         database.ref('courses').once('value').then(function(snapshot) {
@@ -44,8 +47,14 @@ class Sidebar extends React.Component {
             }
 
             that.dataArray = arr;
-
         });
+
+        if (this.props.courseID != undefined) {
+            console.log('lectures/' + this.props.courseID);
+            database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
+                console.log(snapshot.val());
+            });
+        }
     }
 
     // search course
@@ -85,10 +94,10 @@ class Sidebar extends React.Component {
 
     render () {
 
-        // make data accessible in subroutines
-        var courseData = this.courseData;
-
         if (this.props.courseID == undefined) {
+
+            // make data accessible in subroutines
+            var courseData = this.courseData;
 
             // render single course item
             var listItem = function(id) {
@@ -128,13 +137,45 @@ class Sidebar extends React.Component {
 
         } else {
 
-            console.log(this.props.courseID)
+            // the selected course
+            // var courseData = this.courseData[this.props.courseID];
+            console.log(this.courseData);
+            //
+            // // render single course item
+            // var listItem = function(id) {
+            //     var course = courseData[id];
+            //     var number = course.dept + ' ' + course.num;
+            //     var section = course.section;
+            //     var prof = course.professor;
+            //     return (
+            //         <li className="course-item" key={id}>
+            //             <div className="pin-button"><FA name="star-o" size="2x"/></div>
+            //             <div className="course-title">
+            //                 <span className="course-number">{number}</span>
+            //                 <span className="course-section">{section}</span>
+            //             </div>
+            //             <div className="course-prof">{prof}</div>
+            //             <div className="expand-button"></div>
+            //         </li>
+            //     );
+            // };
 
+            //         <div className="search-bar">
+            //             <div className="search-icon"><FA name='search' /></div>
+            //             <FormControl type="text"
+            //                          placeholder="Filter courses..."
+            //                          onChange={this.searchInput}
+            //                          className="search-box" />
+            //         </div>
+            //         <div className="course-list">
+            //             <ul className="unpinned-list">
+            //                 {this.state.dataRetrieved ? this.state.visibleCourses.map(listItem) : <Spinner className="sidebar-loading" spinnerName="three-bounce" /> }
+            //             </ul>
+            //         </div>
             return (
-                <div>
+                <div className="nav">
                 </div>
             );
-
         }
     }
 }
