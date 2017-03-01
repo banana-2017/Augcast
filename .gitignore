@@ -8,3 +8,4 @@ database/credentials.json
 *.log
 labeler/assets
 .DS_Store
+*.pyc
