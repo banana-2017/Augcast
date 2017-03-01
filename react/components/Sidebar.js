@@ -8,6 +8,7 @@ import { FormControl } from 'react-bootstrap';
 import { database } from './../../database/database_init';
 import Spinner from 'react-spinkit';
 import Fuse from 'fuse.js';
+import CourseList from './Sidebar/CourseList.js';
 
 
 class Sidebar extends React.Component {
@@ -17,7 +18,7 @@ class Sidebar extends React.Component {
         // Initial state
         this.state = {
             display: 'loading courses data',
-            visibleCourses:undefined    // keys to visible courses
+            visibleCourses: undefined    // keys to visible courses
         };
 
         this.search = this.search.bind (this);
@@ -129,43 +130,8 @@ class Sidebar extends React.Component {
 
         if (this.state.display == 'courses') {
 
-            // make data accessible in subroutines
-            var courseData = this.courses.data;
-
-            // render single course item
-            var listItem = function(id) {
-                var course = courseData[id];
-                var number = course.dept + ' ' + course.num;
-                var section = course.section;
-                var prof = course.professor;
-                return (
-                    <li className="course-item" key={id} onClick={() => {that.routeToLecture(id);}}>
-                        <div className="pin-button"><FA name="star-o" size="2x"/></div>
-                        <div className="course-title">
-                            <span className="course-number">{number}</span>
-                            <span className="course-section">{section}</span>
-                        </div>
-                        <div className="course-prof">{prof}</div>
-                        <div className="expand-button"></div>
-                    </li>
-                );
-            };
-
             return (
-                <div className="nav">
-                    <div className="search-bar">
-                        <div className="search-icon"><FA name='search' /></div>
-                        <FormControl type="text"
-                                     placeholder="Filter courses..."
-                                     onChange={this.searchInput}
-                                     className="search-box" />
-                    </div>
-                    <div className="course-list">
-                        <ul className="unpinned-list">
-                            {this.state.visibleCourses.map(listItem)}
-                        </ul>
-                    </div>
-                </div>
+                <CourseList courses={this.courses} />
             );
 
         } else {
