@@ -16,14 +16,15 @@ class Upload extends React.Component {
             uploadProgress: 0,
             uploadStarted: false,
             downloadURL: '',
-            error: ''
+            error: '',
+            APIresult: ''
         };
 
         // Bind all functions so they can refer to "this" correctly
         //this.togglePlay = this.togglePlay.bind(this);
         this.handleFile = this.handleFile.bind(this);
         this.handleClear = this.handleClear.bind(this);
-
+        this.callLabelAPI = this.callLabelAPI.bind(this);
     }
 
     /**
@@ -84,6 +85,24 @@ class Upload extends React.Component {
 
     }
 
+    callLabelAPI() {
+        var that = this;
+        fetch('http://localhost:8080/api/label', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'POST sent from button'
+            })
+        }).then(function(response) {
+            return response.json();
+        }).then(function(j) {
+            that.setState({APIresult: j.message});
+        });
+    }
+
     handleClear() {
         this.refs.inputForm.reset();
         this.setState({
@@ -140,6 +159,17 @@ class Upload extends React.Component {
 
                 <h3> {this.state.downloadURL != '' ? 'Download URL from Firebase:' : ''} </h3>
                 <a href={this.state.downloadURL}> {this.state.downloadURL} </a>
+
+                <h3> Call label API </h3>
+                <Button
+                    bsStyle="default"
+                    bsSize="small"
+                    style={{margin:'10px'}}
+                    active={this.state.curSource == 2}
+                    onClick={this.callLabelAPI}>
+                        POST
+                </Button>
+                <h4>Response received: </h4>{this.state.APIresult}
             </div>
         );
     }

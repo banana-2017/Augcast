@@ -23,7 +23,8 @@ router.get('/', function(req, res) {
 });
 
 router.route('/label').post(function(req, res) {
-    res.json({ message: 'req.body: ' + JSON.stringify(req.body)});
+    res.json({ message: 'Label API received request body at '
+        + new Date().toLocaleString() + ': ' + JSON.stringify(req.body)});
 });
 
 app.use('/api', router);
