@@ -1,7 +1,7 @@
 Libraries:
         PIL
         opencv
-        pytessseract
+        pytesseract
         pdfminer
 
 Tesseract.py connect image from opencv with pytesseract.

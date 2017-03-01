@@ -14,9 +14,9 @@ def similar(a, b):
 
 # constants
 '''
-time  = int(cap.get(cv2.CAP_PROP_POS_MSEC))
-frameindex = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
-fps    = int(cap.get(cv2.CAP_PROP_FPS))
+time  = int(cap.get(cv2.CV_CAP_PROP_POS_MSEC))
+frameindex = int(cap.get(cv2.CV_CAP_PROP_POS_FRAMES))
+fps    = int(cap.get(cv2.CV_CAP_PROP_FPS))
 print ("length", length)
 print ("time" , time)
 print ("frameindex" , frameindex)
@@ -33,7 +33,7 @@ def generateTimestamp(video, filename):
 
     # capture the video
     cap = cv2.VideoCapture(video)
-    length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    length = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_COUNT))
 
     tess = Tesseract()
 
@@ -50,12 +50,14 @@ def generateTimestamp(video, filename):
     quitAppending = False
     slides = []
 
+    print('starting')
+
     # while(cap.isOpened()):
     # iterate through video to generate time stamp based on text comparison
     # of slides and video frames
     while (index < length):
         # read from video
-        cap.set(cv2.CAP_PROP_POS_FRAMES, probeIndex)
+        cap.set(cv2.cv.CV_CAP_PROP_POS_FRAMES, probeIndex)
         ret, image = cap.read()
         if image == None:
             break
