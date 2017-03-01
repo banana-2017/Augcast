@@ -80,7 +80,6 @@ def generateTimestamp(video, filename):
 
         # comparison with slide
         if newSlide:
-            print ()
             if (similar(re.sub("[^0-9a-zA-Z]", " ", currentText), pdftext[slideIndex]) > 0.26 or
                     similar(re.sub("r\W", " ", currentText), pdftext[slideIndex]) > 0.3):
                 # duplicate slide
@@ -111,6 +110,28 @@ def generateTimestamp(video, filename):
                 if slideIndex == slideLength:
                     break
                     #currentText = nextText
+            elif (similar(re.sub("[^0-9a-zA-Z]", " ", currentText), pdftext[slideIndex+1]) > 0.4 or
+                similar(re.sub("r\W", " ", currentText), pdftext[slideIndex+1]) > 0.3):
+                for string in slides:
+                    print ("enter outer")
+                    if similar(string, currentText) > 0.8:
+                        print ("enter inner")
+                        quitAppending = True
+                        break
+                if quitAppending == False:
+                    print ("appending")
+                    slides.append("")
+                    slides.append(currentText)
+                    timestamp.append(-1)
+                    timestamp.append(index)
+                    slideIndex += 2
+                    newSlide = False
+                else:
+                    quitAppending = False
+                # done
+                if slideIndex == slideLength:
+                    break
+
             newSlide = False
 
 
