@@ -1,5 +1,5 @@
 from video import generateTimestamp
-
+import sys
 
 if __name__ == '__main__':
     filename = "test/test1.pdf"
