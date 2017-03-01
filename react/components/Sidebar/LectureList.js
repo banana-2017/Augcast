@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
+import PodcastView from '../PodcastView.js';
 // import Fuse from 'fuse.js';
 
 class LectureList extends React.Component {
@@ -15,7 +16,8 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
-            loading: true
+            loading: true,
+            render: false
             // visibleCourses: []    // keys to visible courses
         };
 
@@ -96,10 +98,12 @@ class LectureList extends React.Component {
     }
 
     renderLecture(id) {
-        console.log(id);
+        // browserHistory.push('/' + this.props.courseID + '/' + id);
+        this.setState({render: id});
     }
 
     render () {
+        console.log(this.state.render);
 
         // access to this
         var that = this;
@@ -121,19 +125,22 @@ class LectureList extends React.Component {
             );
         } else {
             return (
-                <div className="nav">
-                    <div className="search-bar">
-                        <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
-                        <FormControl type="text"
-                                     placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
-                                     onChange={this.searchInput}
-                                     className="search-box" />
+                <div>
+                    <div className="nav">
+                        <div className="search-bar">
+                            <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
+                            <FormControl type="text"
+                                         placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
+                                         onChange={this.searchInput}
+                                         className="search-box" />
+                        </div>
+                        <div className="lectures-wrapper">
+                            <ul className="lecture-list">
+                                {that.props.course.lectures.map(listItem)}
+                            </ul>
+                        </div>
                     </div>
-                    <div className="lectures-wrapper">
-                        <ul className="lecture-list">
-                            {that.props.course.lectures.map(listItem)}
-                        </ul>
-                    </div>
+                    {this.state.render && <PodcastView course={this.props.course} lecture={this.lectures[this.state.render]}/>}
                 </div>
             );
         }
