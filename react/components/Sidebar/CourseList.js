@@ -110,7 +110,7 @@ class CourseList extends React.Component {
                                  onChange={this.searchInput}
                                  className="search-box" />
                 </div>
-                <div className="course-list">
+                <div className="course-wrapper">
                     <ul className="unpinned-list">
                         {this.state.visibleCourses.map(listItem)}
                     </ul>

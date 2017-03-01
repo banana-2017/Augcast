@@ -100,7 +100,8 @@ html, body, .podcast-container, .pdf-view, .video-view {
     color: lightgray;
 }
 
-.course-list {
+/* course list */
+.course-wrapper {
     position: fixed;
     top: 48px;
     height: 100%;
@@ -108,6 +109,13 @@ html, body, .podcast-container, .pdf-view, .video-view {
     margin: 0px;
     width: inherit;
     display: block;
+}
+
+.unpinned-list {
+    position: relative;
+    padding: 0px;
+    height: inherit;
+    overflow: auto;
 }
 
 .course-item {
@@ -147,6 +155,38 @@ html, body, .podcast-container, .pdf-view, .video-view {
     white-space: nowrap;
 }
 
+/* lecture list */
+.lecture-wrapper {
+    position: fixed;
+    top: 48px;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    width: inherit;
+    display: block;
+}
+
+.lecture-list {
+    position: relative;
+    padding: 0px;
+    height: inherit;
+    overflow: auto;
+}
+
+.lecture-item {
+    position: relative;
+    width: 100%;
+    font-size:16pt;
+    background: white;
+    list-style: none;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.lecture-item:hover {
+    background: lightblue;
+}
+
 .sidebar-loading {
     width:100px;
     height:50px;
@@ -175,13 +215,6 @@ html, body, .podcast-container, .pdf-view, .video-view {
     float: right;
     width: 32px;
     height: 100%;
-}
-
-.unpinned-list {
-    position: relative;
-    padding: 0px;
-    height: inherit;
-    overflow: auto;
 }
 
 .content-panel {

@@ -7,7 +7,6 @@ import Spinner from 'react-spinkit';
 import CourseList from './CourseList.js';
 import LectureList from './LectureList.js';
 
-
 class Sidebar extends React.Component {
     constructor(props) {
         super(props);
@@ -29,7 +28,6 @@ class Sidebar extends React.Component {
     }
 
     render () {
-
 
         // loading
         if (this.state.loading) {

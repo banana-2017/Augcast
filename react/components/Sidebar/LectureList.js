@@ -95,6 +95,10 @@ class LectureList extends React.Component {
         browserHistory.push('/test');
     }
 
+    renderLecture(id) {
+        console.log(id);
+    }
+
     render () {
 
         // access to this
@@ -105,8 +109,7 @@ class LectureList extends React.Component {
             var lecture = that.lectures[id];
             var month = that.calendar[lecture.month];
             return (
-                <li key={id}>
-                    {course.dept} {course.num}<br/>
+                <li key={id} className="lecture-item" onClick={() => {that.renderLecture(id);}}>
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
             );
