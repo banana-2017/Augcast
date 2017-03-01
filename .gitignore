@@ -6,5 +6,5 @@ server.bundle.js
 .swo
 database/credentials.json
 *.log
-labeler
+labeler/assets
 .DS_Store
