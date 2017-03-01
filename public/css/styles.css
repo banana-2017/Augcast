@@ -212,7 +212,29 @@ html, body, .podcast-container, .pdf-view, .video-view {
     position: relative;
     margin: 10px;
     cursor: pointer;
+    display: table;
     text-align: center;
+}
+
+.pdf-timestamp {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    text-align: center;
+    background: rgba(42, 42, 42, 0.3);
+    color: white;
+    border: 0;
+    width: 100%;
+    margin: 0 0 5px 0;
+    padding: 2px;
+    font-size: 12pt;
+    vertical-align: middle;
+}
+
+.pdf-page:hover .pdf-timestamp {
+    background: rgba(120, 120, 120, 0.3);
+    display: block;
 }
 
 .pdf-page canvas {
