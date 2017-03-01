@@ -5,7 +5,6 @@ from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from difflib import SequenceMatcher
 import re
-from wand.image import Image
 
 # fuzzy text comparison
 def similar(a, b):
