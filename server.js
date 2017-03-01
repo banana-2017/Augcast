@@ -23,8 +23,18 @@ router.get('/', function(req, res) {
 });
 
 router.route('/label').post(function(req, res) {
-    res.json({ message: 'Label API received request body at '
-        + new Date().toLocaleString() + ': ' + JSON.stringify(req.body)});
+    var spawn = require('child_process').spawn;
+    var process = spawn('python', ['./labeler/test.py']);
+
+    console.log('API /label: ' + JSON.stringify(req.body));
+
+    process.stdout.on('data', function(data) {
+        console.log(data.toString());
+        res.json({ message: 'Label API received request body at '
+            + new Date().toLocaleString() + ': ' + JSON.stringify(req.body)});
+    });
+
+    //res.json({ message: 'Label API received request body at ' + new Date().toLocaleString() + ': ' + JSON.stringify(req.body)});
 });
 
 app.use('/api', router);
