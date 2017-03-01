@@ -7,7 +7,7 @@ import PodcastView from './components/PodcastView';
 import Upload from './components/Upload';
 import PDFDisplay from './components/PDFDisplay';
 import Test from './components/Test';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/Sidebar/Sidebar';
 import appReducers from './redux/reducers';
 
 

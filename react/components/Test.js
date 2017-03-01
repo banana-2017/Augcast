@@ -2,7 +2,7 @@
 // Responsible for uploading the PDF
 
 import React from 'react';
-import Sidebar from './Sidebar.js';
+import Sidebar from './Sidebar/Sidebar.js';
 import PodcastView from './PodcastView.js';
 
 
