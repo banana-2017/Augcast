@@ -3,9 +3,9 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
+import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 import { database } from './../../../database/database_init';
-import Spinner from 'react-spinkit';
 import Fuse from 'fuse.js';
 
 class CourseList extends React.Component {
@@ -18,19 +18,19 @@ class CourseList extends React.Component {
             visibleCourses: []    // keys to visible courses
         };
 
-        this.search = this.search.bind (this);
-        this.searchInput = this.searchInput.bind (this);
+        this.search = this.search.bind(this);
+        this.searchInput = this.searchInput.bind(this);
 
         // lecture slection variable
         this.dataArray = [];
 
         // inherit all course data
         this.courses = this.props.courses;
-        this.state.visibleCourses = this.courses.keys;
+        this.state.visibleCourses = Object.keys(this.courses)
 
         // populate array for search
-        for (var course in this.courses.data) {
-            let current = this.courses.data[course];
+        for (var course in this.courses) {
+            let current = this.courses[course];
             current.key = course;
             this.dataArray.push(current);
         }
@@ -78,14 +78,14 @@ class CourseList extends React.Component {
     render () {
 
         // make data accessible in subroutines
-        var courseData = this.courses.data;
+        var courses = this.courses;
 
         // access to this
         var that = this;
 
         // render single course item
         var listItem = function(id) {
-            var course = courseData[id];
+            var course = courses[id];
             var number = course.dept + ' ' + course.num;
             var section = course.section;
             var prof = course.professor;
