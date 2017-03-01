@@ -2,7 +2,7 @@
 // Our Navigation Center
 
 import React from 'react';
-import { database } from './../../database/database_init';
+import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
 import CourseList from './CourseList.js';
 import LectureList from './LectureList.js';
