@@ -22,7 +22,6 @@ class PodcastView extends React.Component {
         };
 
         this.handleSkipToTime = this.handleSkipToTime.bind(this);
-        this.lecture = this.props.lecture;
     }
 
     handleSkipToTime(time) {
@@ -31,7 +30,6 @@ class PodcastView extends React.Component {
     }
 
     render () {
-        console.log(this.lecture);
         return (
             <div className="content-panel">
                 <PDFDisplay
@@ -41,7 +39,7 @@ class PodcastView extends React.Component {
                 <div className = "video-panel">
                     <VideoPlayer
                         timestamp={this.state.timestamp}
-                        mediaURL={this.lecture.video_url}/>
+                        mediaURL={this.props.lecture.video_url}/>
                 </div>
             </div>
         );

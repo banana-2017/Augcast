@@ -17,7 +17,6 @@ class LectureList extends React.Component {
         // Initial state
         this.state = {
             loading: true,
-            render: false
             // visibleCourses: []    // keys to visible courses
         };
 
@@ -98,12 +97,11 @@ class LectureList extends React.Component {
     }
 
     renderLecture(id) {
-        // browserHistory.push('/' + this.props.courseID + '/' + id);
+        browserHistory.push('/' + this.props.courseID + '/' + id);
         this.setState({render: id});
     }
 
     render () {
-        console.log(this.state.render);
 
         // access to this
         var that = this;
@@ -140,7 +138,7 @@ class LectureList extends React.Component {
                             </ul>
                         </div>
                     </div>
-                    {this.state.render && <PodcastView course={this.props.course} lecture={this.lectures[this.state.render]}/>}
+                    {this.props.lectureID && <PodcastView course={this.props.course} lecture={this.lectures[this.state.render]}/>}
                 </div>
             );
         }
