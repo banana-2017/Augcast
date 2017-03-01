@@ -5,7 +5,6 @@ import React from 'react';
 import FA from 'react-fontawesome';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
-import { database } from './../../../database/database_init';
 import Fuse from 'fuse.js';
 
 class CourseList extends React.Component {
@@ -26,7 +25,7 @@ class CourseList extends React.Component {
 
         // inherit all course data
         this.courses = this.props.courses;
-        this.state.visibleCourses = Object.keys(this.courses)
+        this.state.visibleCourses = Object.keys(this.courses);
 
         // populate array for search
         for (var course in this.courses) {

@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
-import Fuse from 'fuse.js';
+// import Fuse from 'fuse.js';
 
 class LectureList extends React.Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
-            loading: true,
+            loading: true
             // visibleCourses: []    // keys to visible courses
         };
 
@@ -43,6 +43,12 @@ class LectureList extends React.Component {
             that.lectures = snapshot.val();
             that.setState({loading: false});
         });
+
+        // helper object
+        this.calendar = {
+            1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
+            7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
+        };
     }
 
     // // search course
@@ -84,13 +90,18 @@ class LectureList extends React.Component {
     //     browserHistory.push('/' + id);
     // }
 
+    back() {
+        this.setState({display: 'courses'});
+        browserHistory.push('/test');
+    }
+
     render () {
 
         // access to this
         var that = this;
 
         var listItem = function(id) {
-            var course = that.course
+            var course = that.course;
             var lecture = that.lectures[id];
             var month = that.calendar[lecture.month];
             return (
@@ -99,7 +110,7 @@ class LectureList extends React.Component {
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
             );
-        }
+        };
 
         if (this.state.loading) {
             return (
@@ -111,7 +122,7 @@ class LectureList extends React.Component {
                     <div className="search-bar">
                         <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
                         <FormControl type="text"
-                                     placeholder={"Search " + this.course.dept + " " + this.course.num + "..."}
+                                     placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
                                      onChange={this.searchInput}
                                      className="search-box" />
                     </div>
