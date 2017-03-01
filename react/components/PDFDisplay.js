@@ -51,7 +51,7 @@ class PDFDisplay extends React.Component {
 
         return (
             <div
-                className="pdf-slides">
+                className="pdf-panel">
                 {PDFpages}
             </div>
         );

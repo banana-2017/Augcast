@@ -32,12 +32,9 @@ class PodcastView extends React.Component {
     render () {
         return (
             <div className="content-panel">
-                <div className="pdf-panel">
-                    <PDFDisplay
-                        onSkipToTime={this.handleSkipToTime}
-                        pdfURL={PDF_URL}/>
-
-                </div>
+                <PDFDisplay
+                    onSkipToTime={this.handleSkipToTime}
+                    pdfURL={PDF_URL}/>
 
                 <div className = "video-panel">
                     <VideoPlayer
