@@ -7,22 +7,14 @@ import Home from './components/Home';
 import App from './components/App';
 
 // Write a test JSON object to the database
-/*
-database.ref('test').set({
-status: 'Live',
-appName: 'Augcast'
-});
-console.log('Writing to DB complete');
-*/
-
 // React main class and router
 class Augcast extends React.Component {
     render () {
         return (
             <Router history={browserHistory}>
-                <Route path="/" component = {App}>
-                    <IndexRoute component = {Home}/>
-                </Route>
+            <Route path="/" component = {App}>
+            <IndexRoute component = {Home}/>
+            </Route>
             </Router>
         );
     }
@@ -30,11 +22,13 @@ class Augcast extends React.Component {
 
 // Example of reading the value of the "test" JSON object from the DB
 // and then displaying it with React
-/*
-database.ref('/test').once('value').then(function(snapshot) {
-ReactDOM.render (<App dbRead= {JSON.stringify(snapshot.val())} />,
-document.getElementById('app'));
+
+var user_id = 'goo';
+
+database.ref('users/' + user_id).once('value')
+.then(function(snapshot) {
+    console.log(JSON.stringify( /** THE VALUE **/ snapshot.val() /** THE VALUE **/ ));
 });
-*/
+
 
 ReactDOM.render (<Augcast/>, document.getElementById('app'));
