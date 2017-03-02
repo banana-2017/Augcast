@@ -18,7 +18,7 @@ class Upload extends React.Component {
             downloadURL: '',
             error: '',
             APIresult: '',
-            courseID: ''
+            lectureID: ''
         };
 
         // Bind all functions so they can refer to "this" correctly
@@ -92,7 +92,7 @@ class Upload extends React.Component {
     callLabelAPI(url) {
 
         // Query for the course's media URL
-        database.ref('/courses/' + this.state.courseID + '').once('value')
+        database.ref('/lectures/' + this.state.lectureID + '').once('value')
         .then(function(snapshot) {
 
 
@@ -105,7 +105,8 @@ class Upload extends React.Component {
                 },
                 body: JSON.stringify({
                     pdf: url,
-                    media: snapshot.val()
+                    media: snapshot.val().mediaURL,
+                    lectureID: this.state.lectureID
                 })
             }).then(function(response) {
                 return response.json();
