@@ -1,12 +1,14 @@
 import React from 'react';
 import { database } from './../../database/database_init';
+import Question from './Question'
+import Answer from './Answer'
 //import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
-ElabRequest - to be displayed on the side
+ElabRequest 
 */
 const NAME = 'elaboration_id_';
-var num = 0;
+var num = 1;
 
 class ElabRequest extends React.Component {
     constructor(props) {
@@ -15,10 +17,11 @@ class ElabRequest extends React.Component {
         // Initial state
         this.state = {
             id: NAME + num,
-            answer: '',
-            endorsed: false,
-            resolved: false,
-            a_username: '',
+            question:'Please write your question here...',
+            answer: [],
+            endorsed:false,
+            q_username:'',
+            a_username:'',
             dataRetrieved: false,
         };
 
@@ -33,15 +36,15 @@ class ElabRequest extends React.Component {
         });
 
         // Bind all functions so they can refer to "this" correctly
-        //this.handleEdit = this.handleEdit.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         //this.updateIDFromDB = this.updateIDFromDB.bind(this);
     }
-/*
+
     handleEdit(event) {
         this.setState({question: event.target.value});
     }
-    */
+
 
     handleSubmit(event) {
         //var newPostKey = database.ref().child('elab-request').push().key;
@@ -49,7 +52,7 @@ class ElabRequest extends React.Component {
         this.setState({
             id: 'elaboration_id_' + num
         });
-        updates['/elab-request/' + this.state.id] = this.state.question;
+        updates['/elab-request/' + this.state.id] = this.state;
         num++;
         database.ref().update(updates);
     }
@@ -69,12 +72,13 @@ class ElabRequest extends React.Component {
                     Question {id}:<br/>
                     <p1 className="elaboration-question">{questions}</p1><br/>
                     Answer {id}:<br/>
-                    <p2 className="elaboration-answer">{answers}</p2><br/>
+                    <p2 className="elaboration-answer">{answers.map((k, index) => <li key={index}>{ `${k}` }</li>) }</p2><br/>
                 </p>
             );
         };
 
-        console.log("testing in Elab: " + this.props.testing);
+        console.log("question in Elab: " + this.state.question);
+        console.log("question in Elab: " + this.state.id);
         return (
             <div>
             <div style={{
@@ -84,20 +88,10 @@ class ElabRequest extends React.Component {
                 <h2>All Questions & Answers</h2>
                 {this.state.dataRetrieved ? this.requestID.map(requestList) : <p> Loading... </p> }
             </div>
-            <div
-                style={{
-                    textAlign: 'center',
-                    margin: '0 auto',
-                    width: '560px',
-                }} >
-                <h2> Elaboration Request</h2>
-                <form onSubmit={this.handleSubmit}>
-	                <label>
-	                Question:<textarea value={this.props.testing} onChange={this.props.handleEdit} />
-	                </label>
-	                <input type="submit" value="Submit" />
-                </form>
-            </div>
+            <Question question={this.state.question} handleEdit={this.handleEdit} endorsed={this.state.endorsed} 
+            q_username={this.state.q_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
+            <Answer answer={this.state.answer} handleEdit={this.handleEdit} 
+            a_username={this.state.a_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
             </div>
         );
     }

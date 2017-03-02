@@ -8,7 +8,7 @@ import Upload from './components/Upload';
 import PDFDisplay from './components/PDFDisplay';
 import Test from './components/Test';
 import appReducers from './redux/reducers';
-import Question from './components/Question';
+import ElabRequest from './components/ElabRequest';
 
 
 // eslint-disable-next-line
@@ -27,7 +27,7 @@ module.exports = (
         <Route path="/pdf" component={PDFDisplay} />
         <Route path="/test" component={Test} />
         <Route path="/pdfdisplay" component={PDFDisplay} />
-        <Route path="/question" component={Question} />
+        <Route path="/elab-request" component={ElabRequest} />
     </Route>
 );
 

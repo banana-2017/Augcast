@@ -17,7 +17,7 @@ class Home extends React.Component {
             <br/>
             <Link to="/pdf">Open PDF Display Page</Link>
             <br/>
-            <Link to="/question">Open Question Page</Link>
+            <Link to="/elab-request">Open Elab-Request Page</Link>
             </div>
         );
     }
