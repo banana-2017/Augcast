@@ -1,6 +1,7 @@
 import React from 'react';
 import { database } from './../../database/database_init';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 const SKIP_VALUE = 10;
 
@@ -93,7 +94,7 @@ class VideoPlayer extends React.Component {
     render () {
         return (
             <div>
-                <h2> CSE 110 Lecture A00 (Fri Mar 10)</h2>
+                <h2>{this.props.lecture}</h2>
                 <div className="video_player_container">
                     <br />
                     <video
@@ -139,4 +140,12 @@ class VideoPlayer extends React.Component {
     }
 }
 
-export default VideoPlayer;
+function mapStateToProps (state) {
+    return {
+        course: state.currentCourse,
+        lecture:state.currentLecture
+    };
+}
+
+const VideoPlayerContainer = connect (mapStateToProps)(VideoPlayer);
+export default VideoPlayerContainer;

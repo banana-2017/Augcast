@@ -43,7 +43,6 @@ class Sidebar extends React.Component {
 
         // render course list
         else {
-            console.log(this.props);
             return <CourseList courses={this.courses} />;
         }
     }
