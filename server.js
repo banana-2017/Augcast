@@ -37,7 +37,12 @@ router.route('/testadmindb').post(function(req, res) {
 router.route('/label').post(function(req, res) {
     // Create a new Python thread and run labeling script
     var PythonShell = require('python-shell');
-    var pyshell = new PythonShell('./labeler/stdoutTest.py', {mode: 'text'});
+    // Configure the python script's arguments
+    var options = {
+        mode: 'text',
+        args: [req.body.pdf, req.body.media, req.body.lectureID]
+    };
+    var pyshell = new PythonShell('./labeler/stdoutTest.py', options);
 
     // Listen to script's stdout, which outputs percentage of labeling complete.
     // Whenever updated, upload progress to Firebase so frontend can display
@@ -49,7 +54,7 @@ router.route('/label').post(function(req, res) {
 
         // If the stdout starts with {, that means the final result is being printed.
         // Upload the final timestamps to the timestamps key
-        if (pythonStdout.startsWith('{')) {
+        if (pythonStdout.startsWith('[')) {
             console.log('Updating test/python.timestamps: ' + JSON.stringify(JSON.parse(pythonStdout)));
             adminDatabase.ref('/test/python').update({
                 timestamps: JSON.parse(pythonStdout)

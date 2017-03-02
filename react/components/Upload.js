@@ -2,7 +2,7 @@
 // Responsible for uploading the PDF
 
 import React from 'react';
-import { firebaseApp, storageRef } from './../../database/database_init';
+import { firebaseApp, storageRef, database } from './../../database/database_init';
 import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
 
@@ -17,7 +17,8 @@ class Upload extends React.Component {
             uploadStarted: false,
             downloadURL: '',
             error: '',
-            APIresult: ''
+            APIresult: '',
+            courseID: ''
         };
 
         // Bind all functions so they can refer to "this" correctly
@@ -80,27 +81,40 @@ class Upload extends React.Component {
                 that.setState({
                     downloadURL: url
                 });
+
+                // Call the label API with the new download URL
+                that.callLabelAPI(url);
                 console.log('Download URL: ' + url);
             });
 
     }
 
-    callLabelAPI() {
-        var that = this;
-        fetch('http://localhost:8080/api/label', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: 'POST sent from button'
-            })
-        }).then(function(response) {
-            return response.json();
-        }).then(function(j) {
-            that.setState({APIresult: j.message});
+    callLabelAPI(url) {
+
+        // Query for the course's media URL
+        database.ref('/courses/' + this.state.courseID + '').once('value')
+        .then(function(snapshot) {
+
+
+            var that = this;
+            fetch('http://localhost:8080/api/label', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    pdf: url,
+                    media: snapshot.val()
+                })
+            }).then(function(response) {
+                return response.json();
+            }).then(function(j) {
+                that.setState({APIresult: j.message});
+            });
         });
+
+
     }
 
     handleClear() {
