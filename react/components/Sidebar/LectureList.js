@@ -3,12 +3,14 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
+import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
-import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
+
 import PodcastView from '../PodcastView.js';
-// import Fuse from 'fuse.js';
+import {updateCourse} from '../../redux/actions';
+import { database } from './../../../database/database_init';
 
 class LectureList extends React.Component {
     constructor(props) {
@@ -98,6 +100,7 @@ class LectureList extends React.Component {
 
     renderLecture(id) {
         browserHistory.push('/' + this.props.courseID + '/' + id);
+        this.props.updateCourseState (this.props.courseID, id);
         this.setState({render: id});
     }
 
@@ -145,4 +148,14 @@ class LectureList extends React.Component {
     }
 }
 
-export default LectureList;
+
+function mapDispatchToProps (dispatch) {
+    return {
+        updateCourseState: (courseId, lectureId) => {
+            dispatch (updateCourse (courseId, lectureId));
+        }
+    };
+}
+
+const LectureListContainer = connect (null, mapDispatchToProps)(LectureList);
+export default LectureListContainer;

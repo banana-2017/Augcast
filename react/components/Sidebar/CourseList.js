@@ -5,6 +5,8 @@ import React from 'react';
 import FA from 'react-fontawesome';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { updateCourse } from '../../redux/actions';
 import Fuse from 'fuse.js';
 
 class CourseList extends React.Component {
@@ -71,6 +73,7 @@ class CourseList extends React.Component {
 
     routeToLecture(id) {
         this.setState({display: 'loading lectures data'});
+        this.props.updateCourseState (id, undefined);
         browserHistory.push('/' + id);
     }
 
@@ -120,4 +123,13 @@ class CourseList extends React.Component {
     }
 }
 
-export default CourseList;
+function mapDispatchToProps (dispatch) {
+    return {
+        updateCourseState: (courseId, lectureId) => {
+            dispatch (updateCourse (courseId, lectureId));
+        }
+    };
+}
+
+const CourseListContainer = connect (null, mapDispatchToProps)(CourseList);
+export default CourseListContainer;
