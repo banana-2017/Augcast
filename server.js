@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
+import authentication from './routes/authentication';
 
 // eslint-disable-next-line
 import React from 'react';     // jsx rendered as React.createElement
@@ -10,6 +11,8 @@ let __dirname = path.resolve();
 var app = express();
 
 app.use('/css', express.static(__dirname + '/public/css/'));
+app.use('/api/login', authentication);
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // morgan logs requests to the console

@@ -1,13 +1,26 @@
+// react
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router, browserHistory} from 'react-router';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
 
-import routes from './routes';
+// redux
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
 import appReducers from './redux/reducers';
 
-let store = createStore (appReducers);
+// routing
+import routes from './routes';
+import {Router, browserHistory} from 'react-router';
+
+// setting up the redux store
+let store = createStore (appReducers,
+    applyMiddleware(
+        thunkMiddleware,
+        createLogger
+    )
+);
+
 
 // React main class and router
 class Augcast extends React.Component {
@@ -19,5 +32,7 @@ class Augcast extends React.Component {
         );
     }
 }
+
+
 
 ReactDOM.render (<Augcast/>, document.getElementById('app'));

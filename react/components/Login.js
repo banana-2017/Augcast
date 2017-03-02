@@ -1,6 +1,8 @@
 import React from 'react';
 import {FormGroup, FormControl, Button} from 'react-bootstrap';
-//import ActiveDirectory from 'activedirectory2';
+import {withRouter} from 'react-router';
+import {connect} from 'react-redux';
+import {logIn} from '../redux/actions';
 
 
 class Login extends React.Component {
@@ -10,14 +12,17 @@ class Login extends React.Component {
         this.emailChange = this.emailChange.bind(this);
         this.passwordChange = this.passwordChange.bind(this);
         this.emailValidation = this.emailValidation.bind(this);
-        this.state = {
-            email: '',
-            password: ''
-        };
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.emailValidation = this.emailValidation.bind(this);
         this.authenticate = this.authenticate.bind(this);
+
+        this.state = {
+            email: '',
+            password: '',
+            valid: false,
+            failureMessage: ''
+        }
 
     }
 
@@ -46,8 +51,7 @@ class Login extends React.Component {
                         {   padding: '20px',
                             margin: '20px',
                             width: '400px'
-                        }
-                    }/>
+                        }}/>
                     <FormControl.Feedback />
                 </FormGroup>
                 <FormGroup
@@ -63,6 +67,7 @@ class Login extends React.Component {
                         }}
                         placeholder="password"/>
                     <FormControl.Feedback />
+                    <div id="errorMessage">{this.state.failureMessage}</div>
                     <Button style={{margin:'20px'}} bsStyle="success" onClick={this.authenticate}>Login</Button>
                 </FormGroup>
             </form>
@@ -72,7 +77,7 @@ class Login extends React.Component {
     // return true if email id is a valid email
     emailValidation () {
         let email = this.state.email;
-        if (email.includes ('@ucsd.edu')) {
+        if (email.endsWith ('@ucsd.edu')) {
             return 'success';
         }
         else {
@@ -81,10 +86,19 @@ class Login extends React.Component {
     }
 
     authenticate() {
-        //const username = this.state.email;
-        //const password = this.state.password;
-        // set redux state to true
-        // link to new page
+        const email = this.state.email;
+        const password = this.state.password;
+        const {dispatch, router} = this.props;
+        if (email.endsWith ('@ucsd.edu')) {
+            dispatch (logIn (email, password, router)).then(
+                success => {
+                    console.log (success);
+                    if (!success) {
+                        console.log ('Login Failure');
+                    }
+                }
+            );
+        }
     }
 
     passwordChange (e) {
@@ -97,10 +111,11 @@ class Login extends React.Component {
         this.setState ({
             email: e.target.value
         });
-        console.log (this.state.email);
     }
 
 
 }
 
-export default Login;
+const LoginContainer = connect ()(withRouter(Login));
+
+export default LoginContainer;

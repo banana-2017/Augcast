@@ -43,11 +43,9 @@ module.exports = (
 function authenticate (nextState, replace, transition) {
     let {loggedIn} = store.getState();
     console.log (loggedIn);
-
     if (!loggedIn) {
         replace ('/login');
     }
-
 
     transition();
 }

@@ -35,16 +35,19 @@ export function logIn (email, password, router) {
 
         return fetch('/api/login', config)
         .then(response => {
+            console.log ('login response: ');
+            console.log (response);
             if (response.ok) {
                 dispatch(loginSuccess());
+                console.log ('Response ok! dispatching success');
                 setTimeout(() => router.push('/'), 100);
+                return true;
             } else {
-                dispatch(loginFailure('error'));
+                dispatch(loginFailure());
+                return false;
             }
-            return response.ok;
         });
     };
-
 }
 
 export function loginRequest () {
