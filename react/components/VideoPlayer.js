@@ -124,7 +124,7 @@ class VideoPlayer extends React.Component {
                         <br />
 
                         <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.decreasePlaybackRate}><Glyphicon glyph="chevron-left" /></Button>
-                        Rate: {Math.abs(this.state.playbackRate).toFixed(2)}x
+                        Speed: {Math.abs(this.state.playbackRate).toFixed(2)}x
                         <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.increasePlaybackRate}><Glyphicon glyph="chevron-right" /></Button>
 
                         <br />
