@@ -5,7 +5,9 @@ server.bundle.js
 .swp
 .swo
 database/credentials.json
+database/serviceAccountKey.json
 *.log
 labeler/assets
 .DS_Store
 *.pyc
+labeler/*.pyc
