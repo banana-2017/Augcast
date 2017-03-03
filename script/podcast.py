@@ -58,6 +58,7 @@ for eachCourse in currentCourse.find_all('tr'):
         courseID = (num + '-' + (sectionID[0] if sectionType == 'LE' else sectionID)).lower()
         courseDept, courseNum = re.sub(numberPattern, r'\1 \2', num).split()
 
+        thisCourse['id']        = courseID
         thisCourse['dept']      = courseDept
         thisCourse['num']       = courseNum
         thisCourse['subject']   = subject
@@ -86,6 +87,9 @@ for eachCourse in currentCourse.find_all('tr'):
                 lectureMedia = 'https://podcast.ucsd.edu/Podcasts//' + lecture.find('span')['forfile']
                 lectureDate = lecture.find('a').text.strip()
 
+                lectureID = (courseID + '-' + sectionType + str('%02d' % lectureNum)).lower()
+
+                thisLecture['id'] = lectureID
                 thisLecture['video_url'] = lectureMedia
                 thisLecture['day'], thisLecture['month'], thisLecture['date'] = re.sub(r'(\w+) (\d+)/(\d+).*', r'\1 \2 \3', lectureDate).split()
                 thisLecture['week'] = week
@@ -94,8 +98,6 @@ for eachCourse in currentCourse.find_all('tr'):
                     continue
 
                 lectureNum = lectureNum + 1
-
-                lectureID = (courseID + '-' + sectionType + str('%02d' % lectureNum)).lower()
                 lectureDic[courseID][lectureID] = thisLecture
 
                 # store the lecture information to the lecture list
