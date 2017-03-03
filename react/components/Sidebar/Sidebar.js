@@ -4,8 +4,8 @@
 import React from 'react';
 import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
-import CourseList from './CourseList.js';
-import LectureList from './LectureList.js';
+import CourseListContainer from './CourseList.js';
+import LectureListContainer from './LectureList.js';
 
 class Sidebar extends React.Component {
     constructor(props) {
@@ -36,14 +36,14 @@ class Sidebar extends React.Component {
 
         // render lecture list
         if (this.props.courseID) {
-            return <LectureList course={this.courses[this.props.courseID]}
+            return <LectureListContainer course={this.courses[this.props.courseID]}
                                 lectureID={this.props.lectureID}
                                 courseID={this.props.courseID} />;
         }
 
         // render course list
         else {
-            return <CourseList courses={this.courses} />;
+            return <CourseListContainer courses={this.courses} />;
         }
     }
 }
