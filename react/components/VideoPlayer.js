@@ -92,6 +92,7 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
+        console.log(this.props);
         return (
             <div>
                 <h2>{this.props.lecture}</h2>
@@ -142,8 +143,8 @@ class VideoPlayer extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        course: state.currentCourse,
-        lecture:state.currentLecture
+        course:  state.currentCourse,
+        lecture: state.currentLecture
     };
 }
 

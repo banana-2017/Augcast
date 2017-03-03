@@ -156,7 +156,7 @@ html, body, .podcast-container, .pdf-view, .video-view {
 }
 
 /* lecture list */
-.lecture-wrapper {
+.lectures-wrapper {
     position: fixed;
     top: 48px;
     height: 100%;
