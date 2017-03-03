@@ -90,7 +90,9 @@ class PodcastView extends React.Component {
 
         return (
             <div className="content-panel">
-                <this.PDFContainer/>
+                <div className="pdf-panel">
+                    <this.PDFContainer/>
+                </div>
                 <div className = "video-panel">
                     <VideoPlayer
                         timestamp={this.state.timestamp}
