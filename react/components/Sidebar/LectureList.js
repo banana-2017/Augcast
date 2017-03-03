@@ -111,7 +111,7 @@ class LectureList extends React.Component {
 
         var listItem = function(id) {
             var course = that.course;
-            var lecture = that.lectures[id];
+            var lecture = course.lectures[id];
             var month = that.calendar[lecture.month];
             return (
                 <li key={id} className="lecture-item" onClick={() => {that.renderLecture(id);}}>
@@ -137,7 +137,7 @@ class LectureList extends React.Component {
                         </div>
                         <div className="lectures-wrapper">
                             <ul className="lecture-list">
-                                {that.props.course.lectures.map(listItem)}
+                                {Object.keys(that.props.course.lectures).map(listItem)}
                             </ul>
                         </div>
                     </div>
