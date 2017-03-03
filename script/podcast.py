@@ -68,7 +68,7 @@ for eachCourse in currentCourse.find_all('tr'):
         thisCourse['section']   = sectionID
 
         ###################################### Lecture Information ###################################################
-        # lectureDic[courseID] = {}
+        lectureDic[courseID] = []
         # lectureList = []
 
         # open the url and of each course's podcast page
@@ -92,22 +92,20 @@ for eachCourse in currentCourse.find_all('tr'):
                 if '[' in lectureDate:
                     continue
 
-                lectureNum = lectureNum + 1
-
-                thisLecture['id'] = lectureID
                 thisLecture['num'] = lectureNum
                 thisLecture['video_url'] = lectureMedia
                 thisLecture['day'], thisLecture['month'], thisLecture['date'] = re.sub(r'(\w+) (\d+)/(\d+).*', r'\1 \2 \3', lectureDate).split()
                 thisLecture['week'] = week
 
-                # lectureDic[courseID][lectureID] = thisLecture
+                lectureDic[courseID].append(thisLecture);
 
                 # store the lecture information to the lecture list
                 # lectureList.append(lectureID)
+                lectureNum = lectureNum + 1
                 lectureNumber = lectureNumber + 1
 
         # add lecture list into eachCourseDic
-        thisCourse['lectures'] = thisLecture
+        thisCourse['lectures'] = lectureDic[courseID]
 
         # store the course information to the course dictionary
         courseDic[courseID] = thisCourse
