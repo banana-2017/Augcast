@@ -37,10 +37,11 @@ export function logOut () {
     };
 }
 
-export function updateCourse (courseId) {
+export function updateCourse (courseId, lectureId) {
     return {
         type: UPDATE_COURSE,
-        courseId: courseId
+        courseId: courseId,
+        lectureId: lectureId
     };
 }
 

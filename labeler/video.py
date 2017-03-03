@@ -50,8 +50,6 @@ def generateTimestamp(video, filename):
     quitAppending = False
     slides = []
 
-    print('starting')
-
     # while(cap.isOpened()):
     # iterate through video to generate time stamp based on text comparison
     # of slides and video frames

@@ -13,7 +13,6 @@ class PDFDisplay extends React.Component {
         // Initial state
         this.state = {
             page: 1,
-            file: props.pdfURL,
             pages: 1
         };
 
@@ -38,9 +37,10 @@ class PDFDisplay extends React.Component {
         var PDFpages = sentinelArray.map(function(x, i){
             return (
                 <div key={'ButtonPageCombo' + i} className="pdf-page" onClick={() => {that.skipToTime(i);}}>
+                    <div className="pdf-timestamp">{'Skip to ' + i + 's'}</div>
                     <PDF
                         key={'PDFPage' + i}
-                        file={that.state.file}
+                        file={that.props.pdfURL}
                         onDocumentComplete={that.onDocumentComplete}
                         scale={0.3}
                         page= {i + 1} />
@@ -50,7 +50,7 @@ class PDFDisplay extends React.Component {
 
         return (
             <div
-                className="pdf-slides">
+                className="pdf-panel">
                 {PDFpages}
             </div>
         );

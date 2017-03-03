@@ -2,7 +2,7 @@
 // Responsible for uploading the PDF
 
 import React from 'react';
-import { firebaseApp, storageRef } from './../../database/database_init';
+import { firebaseApp, storageRef, database } from './../../database/database_init';
 import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
 
@@ -17,7 +17,8 @@ class Upload extends React.Component {
             uploadStarted: false,
             downloadURL: '',
             error: '',
-            APIresult: ''
+            APIresult: '',
+            lectureID: ''
         };
 
         // Bind all functions so they can refer to "this" correctly
@@ -80,13 +81,21 @@ class Upload extends React.Component {
                 that.setState({
                     downloadURL: url
                 });
+
+                database.ref('lectures/' + that.props.courseID + '/' + that.props.lectureID).update({
+                    slides_url: url
+                });
+
+                // Call the label API with the new download URL
+                that.callLabelAPI(url);
                 console.log('Download URL: ' + url);
             });
 
     }
 
-    callLabelAPI() {
+    callLabelAPI(url) {
         var that = this;
+
         fetch('http://localhost:8080/api/label', {
             method: 'POST',
             headers: {
@@ -94,7 +103,10 @@ class Upload extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                message: 'POST sent from button'
+                pdfURL: url,
+                courseID: that.props.courseID,
+                lectureID: that.props.lectureID,
+                mediaURL: that.props.mediaURL
             })
         }).then(function(response) {
             return response.json();
@@ -117,13 +129,16 @@ class Upload extends React.Component {
         console.log('Rendering Upload page');
         return (
             <div
-            style={{maxWidth: '500px', margin:'0 auto'}}>
+            style={{maxWidth: '300px', margin:'0 auto'}}>
 
-                <h1
-                    style={{margin:'10px'}}>
+                <h3>
                     Upload a PDF file
-                </h1>
-
+                </h3>
+                <p>
+                    There are no slides for this lecture yet.
+                    Upload the PDF here for the system to automatically generate
+                    timestamps for each slide!
+                </p>
                 <form
                     ref='inputForm'>
                 <input
@@ -159,17 +174,6 @@ class Upload extends React.Component {
 
                 <h3> {this.state.downloadURL != '' ? 'Download URL from Firebase:' : ''} </h3>
                 <a href={this.state.downloadURL}> {this.state.downloadURL} </a>
-
-                <h3> Call label API </h3>
-                <Button
-                    bsStyle="default"
-                    bsSize="small"
-                    style={{margin:'10px'}}
-                    active={this.state.curSource == 2}
-                    onClick={this.callLabelAPI}>
-                        POST
-                </Button>
-                <h4>Response received: </h4>{this.state.APIresult}
             </div>
         );
     }
