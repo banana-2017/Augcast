@@ -94,12 +94,14 @@ def generateTimestamp(video, filename):
                     for string in slides:
                         print (string)
                 '''
+                '''
                 for string in slides:
                     print ("enter outer")
                     if similar(string, currentText) > 0.8:
                         print ("enter inner")
                         quitAppending = True
                         break
+                '''
                 if quitAppending == False:
                     print ("appending")
                     slides.append(currentText)
@@ -109,17 +111,20 @@ def generateTimestamp(video, filename):
                 else:
                     quitAppending = False
                 # done
+                
                 if slideIndex == slideLength:
                     break
                     #currentText = nextText
             elif (similar(re.sub("[^0-9a-zA-Z]", " ", currentText), pdftext[slideIndex+1]) > 0.4 or
                 similar(re.sub("r\W", " ", currentText), pdftext[slideIndex+1]) > 0.3):
+                '''
                 for string in slides:
                     print ("enter outer")
                     if similar(string, currentText) > 0.8:
                         print ("enter inner")
                         quitAppending = True
                         break
+                '''
                 if quitAppending == False:
                     print ("appending")
                     slides.append("")
@@ -130,6 +135,7 @@ def generateTimestamp(video, filename):
                     newSlide = False
                 else:
                     quitAppending = False
+
                 # done
                 if slideIndex == slideLength:
                     break
