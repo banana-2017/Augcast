@@ -11,3 +11,4 @@ labeler/assets
 .DS_Store
 *.pyc
 labeler/*.pyc
+script/*.json

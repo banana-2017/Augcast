@@ -134,11 +134,14 @@ class Upload extends React.Component {
             <div
             style={{maxWidth: '500px', margin:'0 auto'}}>
 
-                <h1
-                    style={{margin:'10px'}}>
+                <h3>
                     Upload a PDF file
-                </h1>
-
+                </h3>
+                <p>
+                    There are no slides for this lecture yet.
+                    Upload the PDF here for the system to automatically generate
+                    timestamps for each slide!
+                </p>
                 <form
                     ref='inputForm'>
                 <input

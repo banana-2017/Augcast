@@ -8,6 +8,7 @@ import {LOG_OUT, LOG_IN, UPDATE_COURSE, IS_INSTRUCTOR} from './actions';
 const initialState = {
     loggedIn : true,
     currentCourse: undefined,
+    currentLecture: undefined,
     userType: 'STUDENT',
     username: undefined,
 };
@@ -41,7 +42,8 @@ function appReducers (state, action) {
 
     case UPDATE_COURSE: {
         return Object.assign ({}, state, {
-            currentCourse: action.courseId
+            currentCourse: action.courseId,
+            currentLecture: action.lectureId
         });
     }
 

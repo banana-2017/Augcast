@@ -2,7 +2,7 @@
 // Responsible for uploading the PDF
 
 import React from 'react';
-import Sidebar from './Sidebar.js';
+import Sidebar from './Sidebar/Sidebar.js';
 import PodcastView from './PodcastView.js';
 
 
@@ -16,8 +16,7 @@ class Test extends React.Component {
     render () {
         return (
             <div className="main">
-                <Sidebar />
-                <PodcastView />
+                <Sidebar courseID={this.props.params.courseID} lectureID={this.props.params.lectureID}/>
             </div>
         );
     }
