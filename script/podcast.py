@@ -121,7 +121,7 @@ for eachCourse in currentCourse.find_all('tr'):
 with open('table.json', 'w') as outfile:
     # for eachCourseList in courseList:
         # json.dump(table, outfile)
-        json.dump(table, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+        json.dump(courseDic, outfile, sort_keys=True, indent=4, separators=(',', ': '))
         outfile.write('\n')
 
 
