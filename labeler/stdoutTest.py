@@ -1,11 +1,19 @@
 #!/usr/local/bin/python
 import sys
+import json
 from time import sleep
 
-for i in range(0, 100):
-    print i+1
+pdf_url = sys.argv[1]
+media_url = sys.argv[2]
+courseID = sys.argv[3]
+lectureID = sys.argv[4]
+
+for i in range(0, 101):
+    print 'progress'+'#'+courseID+'#'+lectureID+'#'+str(i)
     sys.stdout.flush()
-    sleep(0.05)
+    sleep(0.5)
 
+array = [5, 10, 15, 20, 25, 30]
 
-print '{"1": 50}'
+print 'result'+'#'+courseID+'#'+lectureID+'#'+json.dumps(array)
+sys.stdout.flush()

@@ -40,32 +40,33 @@ router.route('/label').post(function(req, res) {
     // Configure the python script's arguments
     var options = {
         mode: 'text',
-        args: [req.body.pdf, req.body.media, req.body.lectureID]
+        args: [req.body.pdf, req.body.media, req.body.courseID, req.body.lectureID]
     };
     var pyshell = new PythonShell('./labeler/stdoutTest.py', options);
 
     // Listen to script's stdout, which outputs percentage of labeling complete.
     // Whenever updated, upload progress to Firebase so frontend can display
     // the progress of the labeling.
-    pyshell.on('message', function (message) {
+    pyshell.on('message', function (pythonStdout) {
         // received a message sent from the Python script (a simple "print" statement)
-        let pythonStdout = message;
-        console.log('Python stdout: ' + pythonStdout);
+        var split = pythonStdout.split('#');
+        //console.log('Python stdout: ' + split);
 
         // If the stdout starts with {, that means the final result is being printed.
         // Upload the final timestamps to the timestamps key
-        if (pythonStdout.startsWith('[')) {
-            console.log('Updating test/python.timestamps: ' + JSON.stringify(JSON.parse(pythonStdout)));
-            adminDatabase.ref('/test/python').update({
-                timestamps: JSON.parse(pythonStdout)
+        if (split[0] === 'progress') {
+            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.timestamps: ' + split[3]);
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
+                labelProgress: Number(split[3])
             });
         }
         // Else, the progress as a percent is being printed.
         // Upload the progress to the labelProgress key
-        else if (!isNaN(pythonStdout)){
-            console.log('Updating test/python.labelProgress: ' + Number(pythonStdout));
-            adminDatabase.ref('/test/python').update({
-                labelProgress: Number(pythonStdout)
+        else if (split[0] === 'result'){
+            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.labelProgress: ' + split[3]);
+
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
+                timestamps: JSON.parse(split[3])
             });
         }
     });

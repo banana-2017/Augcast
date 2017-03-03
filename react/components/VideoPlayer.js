@@ -30,7 +30,10 @@ class VideoPlayer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.refs.basicvideo.currentTime = nextProps.timestamp;
+        console.log('Recieving prop timestamp: ' + JSON.stringify(nextProps.timestamp));
+        if (nextProps.timestamp != undefined) {
+            this.refs.basicvideo.currentTime = nextProps.timestamp;
+        }
     }
 
     togglePlay() {

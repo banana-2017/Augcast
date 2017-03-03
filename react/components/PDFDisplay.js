@@ -13,7 +13,6 @@ class PDFDisplay extends React.Component {
         // Initial state
         this.state = {
             page: 1,
-            file: props.pdfURL,
             pages: 1
         };
 
@@ -41,7 +40,7 @@ class PDFDisplay extends React.Component {
                     <div className="pdf-timestamp">{i}</div>
                     <PDF
                         key={'PDFPage' + i}
-                        file={that.state.file}
+                        file={that.props.pdfURL}
                         onDocumentComplete={that.onDocumentComplete}
                         scale={0.3}
                         page= {i + 1} />
