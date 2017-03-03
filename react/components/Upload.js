@@ -174,17 +174,6 @@ class Upload extends React.Component {
 
                 <h3> {this.state.downloadURL != '' ? 'Download URL from Firebase:' : ''} </h3>
                 <a href={this.state.downloadURL}> {this.state.downloadURL} </a>
-
-                <h3> Call label API </h3>
-                <Button
-                    bsStyle="default"
-                    bsSize="small"
-                    style={{margin:'10px'}}
-                    active={this.state.curSource == 2}
-                    onClick={this.callLabelAPI}>
-                        POST
-                </Button>
-                <h4>Response received: </h4>{this.state.APIresult}
             </div>
         );
     }
