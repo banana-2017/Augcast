@@ -101,7 +101,7 @@ class LectureList extends React.Component {
     renderLecture(id) {
         browserHistory.push('/' + this.props.courseID + '/' + id);
         this.props.updateCourseState (this.props.courseID, id);
-        this.setState({render: id});
+        this.setState({render: this.course.lectures[id]});
     }
 
     render () {
@@ -141,7 +141,7 @@ class LectureList extends React.Component {
                             </ul>
                         </div>
                     </div>
-                    {this.props.lectureID && <PodcastView course={this.props.course} lecture={this.lectures[this.state.render]} lectureID = {this.state.render}/>}
+                    {this.props.lectureID && <PodcastView course={this.props.course} lecture={this.course.lectures[this.state.render]} />}
                 </div>
             );
         }
