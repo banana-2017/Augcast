@@ -37,7 +37,7 @@ class PDFDisplay extends React.Component {
         var PDFpages = sentinelArray.map(function(x, i){
             return (
                 <div key={'ButtonPageCombo' + i} className="pdf-page" onClick={() => {that.skipToTime(i);}}>
-                    <div className="pdf-timestamp">{i}</div>
+                    <div className="pdf-timestamp">{'Skip to ' + i + 's'}</div>
                     <PDF
                         key={'PDFPage' + i}
                         file={that.props.pdfURL}
