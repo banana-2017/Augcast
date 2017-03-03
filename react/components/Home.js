@@ -11,11 +11,13 @@ class Home extends React.Component {
         return (
             <div>
             <h1>Home</h1>
-            <Link to="/podcastview">Open PodcastView</Link>
+            <Link to="/test">Open Sidebar (/test)</Link>
             <br/>
-            <Link to="/upload">Open Upload Page</Link>
+            <Link to="/podcastview">Open PodcastView (/podcastview)</Link>
             <br/>
-            <Link to="/pdf">Open PDF Display Page</Link>
+            <Link to="/upload">Open Upload Page (/upload)</Link>
+            <br/>
+            <Link to="/pdf">Open PDF Display Page (/pdf)</Link>
             </div>
         );
     }

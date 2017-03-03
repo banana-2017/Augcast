@@ -1,58 +1,44 @@
-// Sidebar.js
-// Our Navigation Center
+// CourseList.js
+// List all podcast-enabled courses
 
 import React from 'react';
 import FA from 'react-fontawesome';
+import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
-import { database } from './../../database/database_init';
-import Spinner from 'react-spinkit';
+import { connect } from 'react-redux';
+import { updateCourse } from '../../redux/actions';
 import Fuse from 'fuse.js';
 
-
-class Sidebar extends React.Component {
+class CourseList extends React.Component {
     constructor(props) {
         super(props);
 
         // Initial state
         this.state = {
-            dataRetrieved: false,
-            visibleCourses:undefined    // keys to visible courses
+            display: 'loading courses data',
+            visibleCourses: []    // keys to visible courses
         };
 
-        this.search = this.search.bind (this);
-        this.searchInput = this.searchInput.bind (this);
+        this.search = this.search.bind(this);
+        this.searchInput = this.searchInput.bind(this);
 
-        this.courseData = undefined;
-        this.courseNum = undefined;         // keys to all courses
+        // lecture slection variable
         this.dataArray = [];
 
-        // database query
-        var that = this;
-        database.ref('courses').once('value').then(function(snapshot) {
-            that.courseData = snapshot.val();
-            that.courseNum = Object.keys(snapshot.val());
-            that.state.visibleCourses = that.courseNum;
-            that.setState({dataRetrieved: true});
+        // inherit all course data
+        this.courses = this.props.courses;
+        this.state.visibleCourses = Object.keys(this.courses);
 
-            let arr = [];
-            console.log (that.courseData);
-
-            // populating array for search
-            for (var course in that.courseData) {
-                let current = that.courseData[course];
-                current.key = course;
-                arr.push(current);
-            }
-
-            that.dataArray = arr;
-            console.log (that.dataArray);
-
-        });
+        // populate array for search
+        for (var course in this.courses) {
+            let current = this.courses[course];
+            current.key = course;
+            this.dataArray.push(current);
+        }
     }
 
     // search course
     search (query) {
-        console.log (query);
         var options = {
             shouldSort: true,
             threshold: 0.6,
@@ -60,7 +46,7 @@ class Sidebar extends React.Component {
             distance: 70,
             maxPatternLength: 32,
             minMatchCharLength: 1,
-            keys: ['key', 'professor', 'title']
+            keys: ['key', 'dept', 'num', 'professor', 'title']
         };
 
         var fuse = new Fuse(this.dataArray, options);
@@ -73,7 +59,7 @@ class Sidebar extends React.Component {
 
         // empty query
         if (query === '') {
-            this.setState({visibleCourses:this.courseNum});
+            this.setState({visibleCourses:this.courseIDs});
             return;
         }
 
@@ -85,21 +71,28 @@ class Sidebar extends React.Component {
         this.setState({visibleCourses:visibleCourses});
     }
 
+    routeToLecture(id) {
+        this.setState({display: 'loading lectures data'});
+        this.props.updateCourseState (id, undefined);
+        browserHistory.push('/' + id);
+    }
 
     render () {
-        console.log('Rendering Sidebar');
 
         // make data accessible in subroutines
-        var courseData = this.courseData;
+        var courses = this.courses;
+
+        // access to this
+        var that = this;
 
         // render single course item
-        var listItem = function(course) {
-            console.log ('called with' + course);
-            var number = course.substring(0, course.length - 6);
-            var section = course.substring(course.length - 6);
-            var prof = courseData[course].professor;
+        var listItem = function(id) {
+            var course = courses[id];
+            var number = course.dept + ' ' + course.num;
+            var section = course.section;
+            var prof = course.professor;
             return (
-                <li className="course-item" key={course}>
+                <li className="course-item" key={id} onClick={() => {that.routeToLecture(id);}}>
                     <div className="pin-button"><FA name="star-o" size="2x"/></div>
                     <div className="course-title">
                         <span className="course-number">{number}</span>
@@ -114,15 +107,15 @@ class Sidebar extends React.Component {
         return (
             <div className="nav">
                 <div className="search-bar">
-                    <div className="search-icon"><FA name='search' size='1x'/></div>
+                    <div className="search-icon"><FA name='search' /></div>
                     <FormControl type="text"
                                  placeholder="Filter courses..."
                                  onChange={this.searchInput}
                                  className="search-box" />
                 </div>
-                <div className="course-list">
+                <div className="course-wrapper">
                     <ul className="unpinned-list">
-                        {this.state.dataRetrieved ? this.state.visibleCourses.map(listItem) : <Spinner className="sidebar-loading" spinnerName="three-bounce" /> }
+                        {this.state.visibleCourses.map(listItem)}
                     </ul>
                 </div>
             </div>
@@ -130,4 +123,13 @@ class Sidebar extends React.Component {
     }
 }
 
-export default Sidebar;
+function mapDispatchToProps (dispatch) {
+    return {
+        updateCourseState: (courseId, lectureId) => {
+            dispatch (updateCourse (courseId, lectureId));
+        }
+    };
+}
+
+const CourseListContainer = connect (null, mapDispatchToProps)(CourseList);
+export default CourseListContainer;
