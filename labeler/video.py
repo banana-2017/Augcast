@@ -26,6 +26,7 @@ print ("fps" , fps)
 # generate timestamp of slides in the video
 def generateTimestamp(video, filename):
     # timestamp corresponding to the slides
+
     timestamp = []
 
     # convert pdf to list of strings
@@ -38,6 +39,7 @@ def generateTimestamp(video, filename):
     tess = Tesseract()
 
     # local variables to perform search
+    debug = False
     index = 0
     slideIndex = 0
     slideLength = len(pdftext)
@@ -76,14 +78,14 @@ def generateTimestamp(video, filename):
             probeIndex += currentProbeRate
             continue
 
-        print( "page", probeIndex)
+        #print( "page", probeIndex)
 
         # comparison with slide
         if newSlide:
             if (similar(re.sub("[^0-9a-zA-Z]", " ", currentText), pdftext[slideIndex]) > 0.26 or
                     similar(re.sub("r\W", " ", currentText), pdftext[slideIndex]) > 0.3):
                 # duplicate slide
-                print ("length of slides", len(slides))
+                #print ("length of slides", len(slides))
                 '''
                 if (len(slides) == 8):
                     print (currentText)
@@ -101,7 +103,7 @@ def generateTimestamp(video, filename):
                         break
                 '''
                 if quitAppending == False:
-                    print ("appending")
+                    #print ("appending")
                     slides.append(currentText)
                     timestamp.append(index)
                     slideIndex += 1
@@ -109,7 +111,7 @@ def generateTimestamp(video, filename):
                 else:
                     quitAppending = False
                 # done
-                
+
                 if slideIndex == slideLength:
                     break
                     #currentText = nextText
@@ -143,7 +145,7 @@ def generateTimestamp(video, filename):
 
 
         # jump through video frames if nextText is similar to currentText
-        if (similar(currentText, nextText) > 0.7): ##very very similar
+        if (similar(currentText, nextText) > 0.6): ##very very similar
             index = probeIndex
             probeIndex += defaultProbeRate
             #print("probeIndex", probeIndex)
@@ -170,9 +172,13 @@ def generateTimestamp(video, filename):
             #print("probeIndex", probeIndex)
             continue
 
-        print ("#################", index ,"##################")
-        print ("current Timestamp")
-        print (timestamp)
+        # current progress
+        print (round(index/length))
+
+        if debug = True:
+            print ("#################", index ,"##################")
+            print ("current Timestamp")
+            print (timestamp)
 #       if cv2.waitKey(1) & 0xFF == ord('q'):
 #           break
 

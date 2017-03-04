@@ -2,6 +2,7 @@ from video import generateTimestamp
 import os
 import sys
 import urllib
+import json
 
 if __name__ == '__main__':
     filename = '/Users/Tejas/OneDrive - UC San Diego/Augcast/labeler/test/test1.pdf'
@@ -14,7 +15,16 @@ if __name__ == '__main__':
 
     # Generate the timestamps
     timestamp = generateTimestamp("slides.pdf", "media.mp4")
-    print (timestamp)
+
+    # Convert list to dict for json output
+    timemap = {}
+    for i in range(len(timestamp)):
+        timemap[i+1] = timestamp[i]
+
+    # Output json
+    json_string = json.dumps(timemap)
+    print (timemap, sort_keys=True, indent=4)
+    
 
     # Remove downloaded files from disk
     os.remove("slides.pdf")
