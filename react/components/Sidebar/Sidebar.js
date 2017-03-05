@@ -37,8 +37,7 @@ class Sidebar extends React.Component {
         // render lecture list
         if (this.props.courseID) {
             return <LectureListContainer course={this.courses[this.props.courseID]}
-                                lectureID={this.props.lectureID}
-                                courseID={this.props.courseID} />;
+                                         lectureNum={this.props.lectureNum} />;
         }
 
         // render course list

@@ -3,8 +3,6 @@
 
 import React from 'react';
 import Sidebar from './Sidebar/Sidebar.js';
-import PodcastView from './PodcastView.js';
-
 
 class Test extends React.Component {
     constructor(props) {
@@ -16,7 +14,8 @@ class Test extends React.Component {
     render () {
         return (
             <div className="main">
-                <Sidebar courseID={this.props.params.courseID} lectureID={this.props.params.lectureID}/>
+                <Sidebar courseID={this.props.params.courseID}
+                         lectureNum={this.props.params.lectureNum}/>
             </div>
         );
     }

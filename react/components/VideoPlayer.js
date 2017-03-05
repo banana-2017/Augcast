@@ -30,7 +30,10 @@ class VideoPlayer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.refs.basicvideo.currentTime = nextProps.timestamp;
+        console.log('Recieving prop timestamp: ' + JSON.stringify(nextProps.timestamp));
+        if (nextProps.timestamp != undefined) {
+            this.refs.basicvideo.currentTime = nextProps.timestamp;
+        }
     }
 
     togglePlay() {
@@ -92,13 +95,17 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
+        var course = this.props.course;
+        var lectureNum = this.props.lectureNum;
+        var lecture = course.lectures[lectureNum];
+        var video_url = lecture.video_url;
         return (
             <div>
-                <h2>{this.props.lecture}</h2>
+                <h2>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
                 <div className="video_player_container">
                     <br />
                     <video
-                        src={this.props.mediaURL}
+                        src={video_url}
                         autoPlay
                         width="600"
                         muted
@@ -142,8 +149,8 @@ class VideoPlayer extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        course: state.currentCourse,
-        lecture:state.currentLecture
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture
     };
 }
 

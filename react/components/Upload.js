@@ -2,7 +2,7 @@
 // Responsible for uploading the PDF
 
 import React from 'react';
-import { firebaseApp, storageRef } from './../../database/database_init';
+import { firebaseApp, storageRef, database } from './../../database/database_init';
 import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
 
@@ -16,14 +16,16 @@ class Upload extends React.Component {
             uploadProgress: 0,
             uploadStarted: false,
             downloadURL: '',
-            error: ''
+            error: '',
+            APIresult: '',
+            lectureID: ''
         };
 
         // Bind all functions so they can refer to "this" correctly
         //this.togglePlay = this.togglePlay.bind(this);
         this.handleFile = this.handleFile.bind(this);
         this.handleClear = this.handleClear.bind(this);
-
+        this.callLabelAPI = this.callLabelAPI.bind(this);
     }
 
     /**
@@ -79,9 +81,38 @@ class Upload extends React.Component {
                 that.setState({
                     downloadURL: url
                 });
+
+                database.ref('lectures/' + that.props.courseID + '/' + that.props.lectureID).update({
+                    slides_url: url
+                });
+
+                // Call the label API with the new download URL
+                that.callLabelAPI(url);
                 console.log('Download URL: ' + url);
             });
 
+    }
+
+    callLabelAPI(url) {
+        var that = this;
+
+        fetch('http://localhost:8080/api/label', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                pdfURL: url,
+                courseID: that.props.courseID,
+                lectureID: that.props.lectureID,
+                mediaURL: that.props.mediaURL
+            })
+        }).then(function(response) {
+            return response.json();
+        }).then(function(j) {
+            that.setState({APIresult: j.message});
+        });
     }
 
     handleClear() {
@@ -98,7 +129,7 @@ class Upload extends React.Component {
         console.log('Rendering Upload page');
         return (
             <div
-            style={{maxWidth: '500px', margin:'0 auto'}}>
+            style={{maxWidth: '300px', margin:'0 auto'}}>
 
                 <h3>
                     Upload a PDF file
