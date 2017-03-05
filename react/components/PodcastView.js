@@ -38,15 +38,17 @@ class PodcastView extends React.Component {
     componentDidMount() {
         // Store reference to database listener so it can be removed
         var that = this;
-        console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
-        var ref = database.ref('lectures/' + that.props.courseID + '/' + that.props.lectureID);
+        // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
+        console.log(this.props);
+        console.log('courses/' + that.props.course.id + '/lectures/' + that.props.lecture.num);
+        var ref = database.ref('courses/' + that.props.course.id + '/lectures/' + that.props.lecture.num);
         this.setState({
             firebaseListener: ref
         });
 
         // Listen to changes at ref's location in db
         ref.on('value', function(snapshot) {
-            console.log(JSON.stringify('db on lectures/../' + that.props.lectureID +': ' + JSON.stringify(snapshot.val())));
+            console.log(JSON.stringify('db on lectures/../' + that.props.course.id + "/" + that.props.lecture.num +': ' + JSON.stringify(snapshot.val())));
             that.setState({
                 lectureInfo: snapshot.val()
             });

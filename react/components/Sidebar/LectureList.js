@@ -42,7 +42,7 @@ class LectureList extends React.Component {
 
         // database query
         var that = this;
-        database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
+        database.ref('lectures/' + this.props.course.id).once('value').then(function(snapshot) {
             that.lectures = snapshot.val();
             that.setState({loading: false});
         });
@@ -98,10 +98,10 @@ class LectureList extends React.Component {
         browserHistory.push('/test');
     }
 
-    renderLecture(id) {
-        browserHistory.push('/' + this.props.courseID + '/' + id);
-        this.props.updateCourseState (this.props.courseID, id);
-        this.setState({render: this.course.lectures[id]});
+    renderLecture(lid) {
+        browserHistory.push('/' + this.props.course.id + '/' + lid);
+        this.props.updateCourseState (this.props.course.lid, lid);
+        this.setState({render: this.course.lectures[lid]});
     }
 
     render () {
@@ -109,12 +109,12 @@ class LectureList extends React.Component {
         // access to this
         var that = this;
 
-        var listItem = function(id) {
+        var listItem = function(lid) {
             var course = that.course;
-            var lecture = course.lectures[id];
+            var lecture = course.lectures[lid];
             var month = that.calendar[lecture.month];
             return (
-                <li key={id} className="lecture-item" onClick={() => {that.renderLecture(id);}}>
+                <li key={lid} className="lecture-item" onClick={() => {that.renderLecture(lid);}}>
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
             );
@@ -125,6 +125,7 @@ class LectureList extends React.Component {
                 <Spinner className="sidebar-loading" spinnerName="three-bounce" />
             );
         } else {
+            // console.log(this.course.lectures[this.state.render]);
             return (
                 <div>
                     <div className="nav">
@@ -141,7 +142,7 @@ class LectureList extends React.Component {
                             </ul>
                         </div>
                     </div>
-                    {this.props.lectureID && <PodcastView course={this.props.course} lecture={this.course.lectures[this.state.render]} />}
+                    {this.props.lectureID && <PodcastView course={this.props.course} lecture={this.state.render} />}
                 </div>
             );
         }
