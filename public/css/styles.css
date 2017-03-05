@@ -1,33 +1,124 @@
-html,body,.podcast-container, .pdf-view, .video-view
-{
+html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
+    font-family: Roboto, sans-serif;
+}
+
+.app {
+    height: 100%;
+    width: 100%;
+}
+
+.main {
+    height: 100%;
+    width: 100%;
+}
+
+.fa {
+    height: 100%;
+    width: 100%;
+}
+
+[data-reactroot] {
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    margin: 0;
+    position: fixed;
 }
 
 .nav {
     position: fixed;
-    width: 280px;;
-    float: left;
+    width: 250px;
+    height: 100%;
     top: 0px;
     left: 0px;
     padding: 0px;
     margin:0px;
-    height: 100%;
-    overflow: auto;
-    display: flex;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
+    background: white;
+    z-index: 10;
 }
 
 /* sidebar elements */
 
-ul {
+.search-bar {
+    display: block;
+    position: absolute;
+    float: left;
+    height: 48px;
+    width: inherit;
+    z-index: 2;
+}
+
+.search-icon {
+    position: absolute;
+    display: table;
+    z-index: 200;
+    float: left;
+    width: 48px;
+    height: 100%;
+    text-align: center;
+    font-size:16pt;
+    color: lightgray;
+}
+
+.search-icon .fa {
+    margin: auto;
+    text-align: center;
+    display: table-cell;
+    vertical-align:middle;
+}
+
+.search-box {
+    display: block;
+    position: relative;
+    float: left;
+    height: 100%;
+    width: 100%;
+    border-radius:0;
+    border: 0;
+    padding: 0 0 0 48px;
+    background: gray;
+    font-size: 14pt;
+    color: white;
+}
+/* Chrome/Opera/Safari */
+.search-box::-webkit-input-placeholder {
+    color: lightgray;
+}
+/* Firefox 19+ */
+.search-box::-moz-placeholder {
+    color: lightgray;
+}
+/* IE 10+ */
+.search-box:-ms-input-placeholder {
+    color: lightgray;
+}
+/* Firefox 18- */
+.search-box:-moz-placeholder {
+    color: lightgray;
+}
+
+/* course list */
+.course-wrapper {
+    position: fixed;
+    top: 48px;
+    height: 100%;
     padding: 0px;
     margin: 0px;
-    width: 100%;
+    width: inherit;
+    display: block;
+}
+
+.unpinned-list {
     position: relative;
+    padding: 0px;
+    height: inherit;
+    overflow: auto;
 }
 
 .course-item {
-    font-family: Roboto, sans-serif;
     position: relative;
     width: 100%;
     height: 72px;
@@ -35,16 +126,22 @@ ul {
     list-style: none;
     padding-top:12px;
     padding-bottom:12px;
+    cursor: pointer;
 }
 
 .course-item:hover {
-    background: gray;
+    background: orange;
 }
 
 .course-title {
     display: flex;
     font-size: 14pt;
     white-space:nowrap;
+}
+
+.course-number {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .course-section {
@@ -58,10 +155,59 @@ ul {
     white-space: nowrap;
 }
 
+/* lecture list */
+.lecture-wrapper {
+    position: fixed;
+    top: 48px;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    width: inherit;
+    display: block;
+}
+
+.lecture-list {
+    position: relative;
+    padding: 0px;
+    height: inherit;
+    overflow: auto;
+}
+
+.lecture-item {
+    position: relative;
+    width: 100%;
+    font-size:16pt;
+    background: white;
+    list-style: none;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.lecture-item:hover {
+    background: lightblue;
+}
+
+.sidebar-loading {
+    width:100px;
+    height:50px;
+    position:relative;
+    left:50%;
+    top:50%;
+    margin:-25px 0 -50px;
+}
+
 .pin-button {
     float: left;
     width: 48px;
     height: 100%;
+    text-align: center;
+    display: table;
+}
+
+.pin-button .fa {
+    vertical-align: middle;
+    line-height: inherit;
+    display: table-cell;
 }
 
 .expand-button {
@@ -71,41 +217,70 @@ ul {
     height: 100%;
 }
 
-.fa {
-    height: 100%;
+.content-panel {
     width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 250px;
+    top: 0;
+    display: inline-block;
+    vertical-align: top;
 }
 
-/* main canvas */
+/* pdf panel */
 
-.main {
-    display: flex;
-    float: right;
+.pdf-panel {
+    position: relative;
+    height: 100%;
+    top: 0;
+    background: darkgray;
+    display: inline-block;
+    overflow: auto;
+    vertical-align: top;
 }
 
-.podcast-container
-{
-    overflow:auto;
+.pdf-page {
+    position: relative;
+    margin: 10px;
+    cursor: pointer;
+    display: table;
+    text-align: center;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
 }
 
-[data-reactroot] { height: 100% }
-
-.pdf-view
-{
-    float:left;
-    width: 600px;
-    /*background: gainsboro;*/
-    overflow-x:hidden;
-    overflow-y:auto;
-
-}
-.video-view
-{
-    overflow-x:hidden;
-    overflow-y:auto;
-    /*background: lightgray;*/
+.pdf-timestamp {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    text-align: center;
+    background: rgba(42, 42, 42, 0.3);
+    color: white;
+    border: 0;
+    width: 100%;
+    margin: 0 0 5px 0;
+    padding: 2px;
+    font-size: 12pt;
+    vertical-align: middle;
 }
 
+.pdf-page:hover .pdf-timestamp {
+    background: rgba(120, 120, 120, 0.3);
+    display: block;
+}
+
+.pdf-page canvas {
+    position: relative;
+}
+
+.video-panel {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
+    height: 100%;
+    vertical-align: top;
+}
 
 .loadingSideBar {
     width:100px;

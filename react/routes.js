@@ -7,6 +7,7 @@ import PodcastView from './components/PodcastView';
 import Upload from './components/Upload';
 import PDFDisplay from './components/PDFDisplay';
 import Test from './components/Test';
+import Sidebar from './components/Sidebar/Sidebar';
 import appReducers from './redux/reducers';
 import ElabRequest from './components/ElabRequest';
 
@@ -26,7 +27,11 @@ module.exports = (
         <Route path="/upload" component = {Upload}/>
         <Route path="/pdf" component={PDFDisplay} />
         <Route path="/test" component={Test} />
+        <Route path="/sidebar" component={Sidebar} />
         <Route path="/pdfdisplay" component={PDFDisplay} />
+        <Route path="/:courseID" component={Test}>
+            <Route path="/:courseID/:lectureID" component={Test} />
+        </Route>
         <Route path="/elab-request" component={ElabRequest} />
     </Route>
 );

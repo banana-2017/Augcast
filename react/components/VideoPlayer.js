@@ -1,6 +1,7 @@
 import React from 'react';
 import { database } from './../../database/database_init';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 const SKIP_VALUE = 10;
 
@@ -92,16 +93,9 @@ class VideoPlayer extends React.Component {
 
     render () {
         return (
-            <div
-                style={{
-                    textAlign: 'center',
-                    margin: '0 auto',
-                    width: '560px',
-                }} >
-                <h2> CSE 110 Lecture A00 (Fri Mar 10)</h2>
-                <div
-                    className="video_player_container">
-
+            <div>
+                <h2>{this.props.lecture}</h2>
+                <div className="video_player_container">
                     <br />
                     <video
                         src={this.props.mediaURL}
@@ -113,8 +107,7 @@ class VideoPlayer extends React.Component {
                         controls>
                         Your browser does not support the video tag.
                     </video>
-                    <div
-                        className="video_api_container">
+                    <div className="video_api_container">
                         <ButtonGroup>
                             <Button bsStyle="default"  onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}><Glyphicon glyph="chevron-left" />Skip {SKIP_VALUE}s</Button>
                             <Button
@@ -132,7 +125,7 @@ class VideoPlayer extends React.Component {
                         <br />
 
                         <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.decreasePlaybackRate}><Glyphicon glyph="chevron-left" /></Button>
-                        Rate: {Math.abs(this.state.playbackRate).toFixed(2)}x
+                        Speed: {Math.abs(this.state.playbackRate).toFixed(2)}x
                         <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.increasePlaybackRate}><Glyphicon glyph="chevron-right" /></Button>
 
                         <br />
@@ -147,4 +140,12 @@ class VideoPlayer extends React.Component {
     }
 }
 
-export default VideoPlayer;
+function mapStateToProps (state) {
+    return {
+        course: state.currentCourse,
+        lecture:state.currentLecture
+    };
+}
+
+const VideoPlayerContainer = connect (mapStateToProps)(VideoPlayer);
+export default VideoPlayerContainer;
