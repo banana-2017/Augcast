@@ -183,6 +183,10 @@ html, body, .podcast-container, .pdf-view, .video-view {
     cursor: pointer;
 }
 
+.lecture-item.selected {
+    background: lightgreen;
+}
+
 .lecture-item:hover {
     background: lightblue;
 }
