@@ -46,6 +46,7 @@ class Answer extends React.Component {
     render() {
       var allRequests = this.props.allRequests;
       var that = this;
+      var num = 'a';
 
       // render single elaboration item
       var requestList = function(elaboration) {
@@ -53,20 +54,21 @@ class Answer extends React.Component {
           var answers = allRequests[elaboration].answer;
           var parts = elaboration.split("_")
           that.updatedID = parts[parts.length-1]
+          console.log(elaboration)
+          console.log(that.updatedID)
           return (
             <div>
-              <form key={elaboration} onSubmit={that.submitAnswer}>
+              <p className="elaboration-item" key={parts}>
                   Question {that.updatedID}:<br/>
                   <p1 className="elaboration-question">{questions}</p1><br/>
                   Answer {that.updatedID}:
                   {answers != null &&
                     <p2 className="elaboration-answer">{answers.map((k, index) => <li key={index}>{ `${k}` }</li>) }</p2>
                   }
-                  <label>
-                    <textarea value={that.state.draft} onChange={that.editAnswer} /><br/>
-                  </label>
-                  <input type="submit" value="Submit" />
-              </form>
+              </p>
+              <label>
+                <textarea key={elaboration} value={that.state.draft} onChange={that.editAnswer} /><br/>
+              </label>
             </div>
           );
       };
