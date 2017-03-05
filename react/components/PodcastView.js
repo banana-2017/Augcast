@@ -150,7 +150,6 @@ class PodcastView extends React.Component {
     }
 
     render () {
-        console.log(this.props.course);
         return (
             <div className="content-panel">
                 <div className="pdf-panel">

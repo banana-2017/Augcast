@@ -95,7 +95,6 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
-        console.log(this.props);
         var course = this.props.course;
         var lectureNum = this.props.lectureNum;
         var lecture = course.lectures[lectureNum];

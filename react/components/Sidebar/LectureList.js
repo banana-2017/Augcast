@@ -143,7 +143,7 @@ class LectureList extends React.Component {
                             </ul>
                         </div>
                     </div>
-                    {this.props.lectureID && <PodcastView course={this.props.course} lectureNum={this.state.render} />}
+                    {this.props.lectureNum && <PodcastView course={this.props.course} lectureNum={this.props.lectureNum} />}
                 </div>
             );
         }
