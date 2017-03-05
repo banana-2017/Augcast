@@ -98,10 +98,10 @@ class LectureList extends React.Component {
         browserHistory.push('/test');
     }
 
-    renderLecture(lid) {
-        browserHistory.push('/' + this.props.course.id + '/' + lid);
-        this.props.updateCourseState (this.props.course.lid, lid);
-        this.setState({render: this.course.lectures[lid]});
+    renderLecture(lectureNum) {
+        browserHistory.push('/' + this.props.course.id + '/' + lectureNum);
+        this.props.updateCourseState (this.props.course.id, lectureNum);
+        this.setState({render: lectureNum});
     }
 
     render () {
@@ -109,14 +109,14 @@ class LectureList extends React.Component {
         // access to this
         var that = this;
 
-        var listItem = function(lid) {
+        var listItem = function(lectureNum) {
             var course = that.course;
-            var lecture = course.lectures[lid];
+            var lecture = course.lectures[lectureNum];
             var month = that.calendar[lecture.month];
             return (
-                <li key={lid}
-                    className={(lid == that.props.lectureID) ? "lecture-item selected" : "lecture-item"}
-                    onClick={() => {that.renderLecture(lid);}}>
+                <li key={lectureNum}
+                    className={(lectureNum == that.props.lectureID) ? "lecture-item selected" : "lecture-item"}
+                    onClick={() => {that.renderLecture(lectureNum);}}>
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
             );
@@ -127,7 +127,6 @@ class LectureList extends React.Component {
                 <Spinner className="sidebar-loading" spinnerName="three-bounce" />
             );
         } else {
-            // console.log(this.course.lectures[this.state.render]);
             return (
                 <div>
                     <div className="nav">
@@ -144,7 +143,7 @@ class LectureList extends React.Component {
                             </ul>
                         </div>
                     </div>
-                    {this.props.lectureID && <PodcastView course={this.props.course} lecture={this.state.render} />}
+                    {this.props.lectureID && <PodcastView course={this.props.course} lectureNum={this.state.render} />}
                 </div>
             );
         }
@@ -154,8 +153,8 @@ class LectureList extends React.Component {
 
 function mapDispatchToProps (dispatch) {
     return {
-        updateCourseState: (courseId, lectureId) => {
-            dispatch (updateCourse (courseId, lectureId));
+        updateCourseState: (course, lectureNum) => {
+            dispatch (updateCourse (course, lectureNum));
         }
     };
 }
