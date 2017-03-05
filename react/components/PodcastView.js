@@ -40,7 +40,6 @@ class PodcastView extends React.Component {
         var that = this;
         var course = this.props.course;
         var lectureNum = this.props.lectureNum;
-        var lecture = course.lectures[lectureNum]
         // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
         var ref = database.ref('courses/' + course.id + '/lectures/' + lectureNum);
         this.setState({
@@ -49,7 +48,7 @@ class PodcastView extends React.Component {
 
         // Listen to changes at ref's location in db
         ref.on('value', function(snapshot) {
-            console.log(JSON.stringify('db on lectures/../' + course.id + "/lectures/" + lectureNum +': ' + JSON.stringify(snapshot.val())));
+            console.log(JSON.stringify('db on lectures/../' + course.id + '/lectures/' + lectureNum +': ' + JSON.stringify(snapshot.val())));
             that.setState({
                 lectureInfo: snapshot.val()
             });

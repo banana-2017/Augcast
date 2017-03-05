@@ -3,8 +3,6 @@
 
 import React from 'react';
 import Sidebar from './Sidebar/Sidebar.js';
-import PodcastView from './PodcastView.js';
-
 
 class Test extends React.Component {
     constructor(props) {

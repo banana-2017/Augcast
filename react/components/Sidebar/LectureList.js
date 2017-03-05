@@ -6,11 +6,9 @@ import FA from 'react-fontawesome';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
-import Spinner from 'react-spinkit';
 
 import PodcastView from '../PodcastView.js';
 import {updateCourse} from '../../redux/actions';
-import { database } from './../../../database/database_init';
 
 class LectureList extends React.Component {
     constructor(props) {
@@ -104,7 +102,7 @@ class LectureList extends React.Component {
             var month = that.calendar[lecture.month];
             return (
                 <li key={lectureNum}
-                    className={(lectureNum == that.props.lectureNum) ? "lecture-item selected" : "lecture-item"}
+                    className={(lectureNum == that.props.lectureNum) ? 'lecture-item selected' : 'lecture-item'}
                     onClick={() => {that.renderLecture(lectureNum);}}>
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
