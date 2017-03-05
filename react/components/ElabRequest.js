@@ -5,10 +5,10 @@ import Answer from './Answer'
 //import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
-ElabRequest 
+ElabRequest
 */
 const NAME = 'elaboration_id_';
-var num = 1;
+var newestID = 0;
 
 class ElabRequest extends React.Component {
     constructor(props) {
@@ -16,9 +16,8 @@ class ElabRequest extends React.Component {
 
         // Initial state
         this.state = {
-            id: NAME + num,
             question:'Please write your question here...',
-            answer: [],
+            answer: [''],
             endorsed:false,
             q_username:'',
             a_username:'',
@@ -27,6 +26,7 @@ class ElabRequest extends React.Component {
 
         this.allRequests = undefined;
         this.requestID = undefined;
+        this.updatedID = undefined;
 
         var that = this;
         database.ref('/elab-request').once('value').then(function(snapshot) {
@@ -45,53 +45,28 @@ class ElabRequest extends React.Component {
         this.setState({question: event.target.value});
     }
 
-
     handleSubmit(event) {
         //var newPostKey = database.ref().child('elab-request').push().key;
         var updates = {};
-        this.setState({
-            id: 'elaboration_id_' + num
-        });
-        updates['/elab-request/' + this.state.id] = this.state;
-        num++;
+        this.updatedID = parseInt(this.updatedID)+1
+        updates['/elab-request/' + (NAME + this.updatedID)] = this.state;
+        database.ref().update(updates);
+    }
+
+    remove(event) {
+        //var newPostKey = database.ref().child('elab-request').push().key;
+        var updates = {};
+        updates['/elab-request/'] = this.state;
         database.ref().update(updates);
     }
 
     render () {
-
-        var allRequests = this.allRequests;
-
-        // render single elaboration item
-        var requestList = function(elaboration) {
-            var questions = allRequests[elaboration].question;
-            var answers = allRequests[elaboration].answer;
-            var parts = elaboration.split("_")
-            var id = parts[parts.length-1]
-            return (
-                <p className="elaboration-item" key={elaboration}>
-                    Question {id}:<br/>
-                    <p1 className="elaboration-question">{questions}</p1><br/>
-                    Answer {id}:<br/>
-                    <p2 className="elaboration-answer">{answers.map((k, index) => <li key={index}>{ `${k}` }</li>) }</p2><br/>
-                </p>
-            );
-        };
-
-        console.log("question in Elab: " + this.state.question);
-        console.log("question in Elab: " + this.state.id);
         return (
             <div>
-            <div style={{
-                    textAlign: 'center',
-                    margin: '0 auto',
-                }}>
-                <h2>All Questions & Answers</h2>
-                {this.state.dataRetrieved ? this.requestID.map(requestList) : <p> Loading... </p> }
-            </div>
-            <Question question={this.state.question} handleEdit={this.handleEdit} endorsed={this.state.endorsed} 
+            <Question question={this.state.question} handleEdit={this.handleEdit} endorsed={this.state.endorsed}
             q_username={this.state.q_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
-            <Answer answer={this.state.answer} handleEdit={this.handleEdit} 
-            a_username={this.state.a_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
+            <Answer answer={this.state.answer} handleEdit={this.handleEdit} id={this.id} allRequests={this.allRequests}
+              requestID={this.requestID} a_username={this.state.a_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
             </div>
         );
     }
