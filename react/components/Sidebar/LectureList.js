@@ -17,10 +17,6 @@ class LectureList extends React.Component {
         super(props);
 
         // Initial state
-        this.state = {
-            loading: true,
-            // visibleCourses: []    // keys to visible courses
-        };
 
         // this.search = this.search.bind (this);
         // this.searchInput = this.searchInput.bind (this);
@@ -30,7 +26,7 @@ class LectureList extends React.Component {
 
         // inherit all course data
         this.course = this.props.course;
-        this.lectures = undefined;
+        this.lectureNum = undefined;
         // this.state.visibleCourses = this.courses.keys;
 
         // // populate array for search
@@ -39,13 +35,6 @@ class LectureList extends React.Component {
         //     current.key = course;
         //     this.dataArray.push(current);
         // }
-
-        // database query
-        var that = this;
-        database.ref('lectures/' + this.props.course.id).once('value').then(function(snapshot) {
-            that.lectures = snapshot.val();
-            that.setState({loading: false});
-        });
 
         // helper object
         this.calendar = {
@@ -122,31 +111,25 @@ class LectureList extends React.Component {
             );
         };
 
-        if (this.state.loading) {
-            return (
-                <Spinner className="sidebar-loading" spinnerName="three-bounce" />
-            );
-        } else {
-            return (
-                <div>
-                    <div className="nav">
-                        <div className="search-bar">
-                            <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
-                            <FormControl type="text"
-                                         placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
-                                         onChange={this.searchInput}
-                                         className="search-box" />
-                        </div>
-                        <div className="lectures-wrapper">
-                            <ul className="lecture-list">
-                                {Object.keys(that.props.course.lectures).map(listItem)}
-                            </ul>
-                        </div>
+        return (
+            <div>
+                <div className="nav">
+                    <div className="search-bar">
+                        <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
+                        <FormControl type="text"
+                                     placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
+                                     onChange={this.searchInput}
+                                     className="search-box" />
                     </div>
-                    {this.props.lectureNum && <PodcastView course={this.props.course} lectureNum={this.props.lectureNum} />}
+                    <div className="lectures-wrapper">
+                        <ul className="lecture-list">
+                            {Object.keys(that.props.course.lectures).map(listItem)}
+                        </ul>
+                    </div>
                 </div>
-            );
-        }
+                {this.props.lectureNum && <PodcastView course={this.props.course} lectureNum={this.props.lectureNum} />}
+            </div>
+        );
     }
 }
 
