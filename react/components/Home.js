@@ -18,6 +18,8 @@ class Home extends React.Component {
             <Link to="/upload">Open Upload Page (/upload)</Link>
             <br/>
             <Link to="/pdf">Open PDF Display Page (/pdf)</Link>
+            <br/>
+            <Link to="/elab-request">Open Elab-Request Page</Link>
             </div>
         );
     }
