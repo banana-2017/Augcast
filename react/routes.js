@@ -29,7 +29,7 @@ module.exports = (
         <Route path="/sidebar" component={Sidebar} />
         <Route path="/pdfdisplay" component={PDFDisplay} />
         <Route path="/:courseID" component={Test}>
-            <Route path="/:courseID/:lectureID" component={Test} />
+            <Route path="/:courseID/:lectureNum" component={Test} />
         </Route>
     </Route>
 );

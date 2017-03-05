@@ -38,15 +38,17 @@ class PodcastView extends React.Component {
     componentDidMount() {
         // Store reference to database listener so it can be removed
         var that = this;
-        console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
-        var ref = database.ref('lectures/' + that.props.courseID + '/' + that.props.lectureID);
+        var course = this.props.course;
+        var lectureNum = this.props.lectureNum;
+        // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
+        var ref = database.ref('courses/' + course.id + '/lectures/' + lectureNum);
         this.setState({
             firebaseListener: ref
         });
 
         // Listen to changes at ref's location in db
         ref.on('value', function(snapshot) {
-            console.log(JSON.stringify('db on lectures/../' + that.props.lectureID +': ' + JSON.stringify(snapshot.val())));
+            console.log(JSON.stringify('db on lectures/../' + course.id + '/lectures/' + lectureNum +': ' + JSON.stringify(snapshot.val())));
             that.setState({
                 lectureInfo: snapshot.val()
             });
@@ -138,8 +140,8 @@ class PodcastView extends React.Component {
         else if (this.state.timestampProgress == undefined) {
             return (
                 <Upload
-                    courseID = {this.props.courseID}
-                    lectureID = {this.props.lectureID}
+                    course = {this.props.course.id}
+                    lecture = {this.state.lectureInfo.num}
                     mediaURL = {this.state.lectureInfo.video_url}
                     />
             );
@@ -147,7 +149,6 @@ class PodcastView extends React.Component {
     }
 
     render () {
-
         return (
             <div className="content-panel">
                 <div className="pdf-panel">
@@ -156,7 +157,8 @@ class PodcastView extends React.Component {
                 <div className = "video-panel">
                     <VideoPlayer
                         timestamp={this.state.timestamp}
-                        mediaURL={this.state.lectureInfo.video_url == undefined ? undefined : this.state.lectureInfo.video_url}/>
+                        course={this.props.course}
+                        lectureNum={this.props.lectureNum} />
                 </div>
             </div>
         );

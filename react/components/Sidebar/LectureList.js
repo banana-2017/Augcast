@@ -6,21 +6,15 @@ import FA from 'react-fontawesome';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
-import Spinner from 'react-spinkit';
 
 import PodcastView from '../PodcastView.js';
 import {updateCourse} from '../../redux/actions';
-import { database } from './../../../database/database_init';
 
 class LectureList extends React.Component {
     constructor(props) {
         super(props);
 
         // Initial state
-        this.state = {
-            loading: true,
-            // visibleCourses: []    // keys to visible courses
-        };
 
         // this.search = this.search.bind (this);
         // this.searchInput = this.searchInput.bind (this);
@@ -30,7 +24,7 @@ class LectureList extends React.Component {
 
         // inherit all course data
         this.course = this.props.course;
-        this.lectures = undefined;
+        this.lectureNum = undefined;
         // this.state.visibleCourses = this.courses.keys;
 
         // // populate array for search
@@ -39,13 +33,6 @@ class LectureList extends React.Component {
         //     current.key = course;
         //     this.dataArray.push(current);
         // }
-
-        // database query
-        var that = this;
-        database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
-            that.lectures = snapshot.val();
-            that.setState({loading: false});
-        });
 
         // helper object
         this.calendar = {
@@ -98,10 +85,10 @@ class LectureList extends React.Component {
         browserHistory.push('/test');
     }
 
-    renderLecture(id) {
-        browserHistory.push('/' + this.props.courseID + '/' + id);
-        this.props.updateCourseState (this.props.courseID, id);
-        this.setState({render: id});
+    renderLecture(lectureNum) {
+        browserHistory.push('/' + this.props.course.id + '/' + lectureNum);
+        this.props.updateCourseState (this.props.course.id, lectureNum);
+        this.setState({render: lectureNum});
     }
 
     render () {
@@ -109,50 +96,46 @@ class LectureList extends React.Component {
         // access to this
         var that = this;
 
-        var listItem = function(id) {
+        var listItem = function(lectureNum) {
             var course = that.course;
-            var lecture = that.lectures[id];
+            var lecture = course.lectures[lectureNum];
             var month = that.calendar[lecture.month];
             return (
-                <li key={id} className="lecture-item" onClick={() => {that.renderLecture(id);}}>
+                <li key={lectureNum}
+                    className={(lectureNum == that.props.lectureNum) ? 'lecture-item selected' : 'lecture-item'}
+                    onClick={() => {that.renderLecture(lectureNum);}}>
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
             );
         };
 
-        if (this.state.loading) {
-            return (
-                <Spinner className="sidebar-loading" spinnerName="three-bounce" />
-            );
-        } else {
-            return (
-                <div>
-                    <div className="nav">
-                        <div className="search-bar">
-                            <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
-                            <FormControl type="text"
-                                         placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
-                                         onChange={this.searchInput}
-                                         className="search-box" />
-                        </div>
-                        <div className="lectures-wrapper">
-                            <ul className="lecture-list">
-                                {that.props.course.lectures.map(listItem)}
-                            </ul>
-                        </div>
+        return (
+            <div>
+                <div className="nav">
+                    <div className="search-bar">
+                        <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
+                        <FormControl type="text"
+                                     placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
+                                     onChange={this.searchInput}
+                                     className="search-box" />
                     </div>
-                    {this.props.lectureID && <PodcastView courseID={this.props.course.key} lecture={this.lectures[this.state.render]} lectureID = {this.state.render}/>}
+                    <div className="lectures-wrapper">
+                        <ul className="lecture-list">
+                            {Object.keys(that.props.course.lectures).map(listItem)}
+                        </ul>
+                    </div>
                 </div>
-            );
-        }
+                {this.props.lectureNum && <PodcastView course={this.props.course} lectureNum={this.props.lectureNum} />}
+            </div>
+        );
     }
 }
 
 
 function mapDispatchToProps (dispatch) {
     return {
-        updateCourseState: (courseId, lectureId) => {
-            dispatch (updateCourse (courseId, lectureId));
+        updateCourseState: (course, lectureNum) => {
+            dispatch (updateCourse (course, lectureNum));
         }
     };
 }

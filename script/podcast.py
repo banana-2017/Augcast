@@ -58,6 +58,7 @@ for eachCourse in currentCourse.find_all('tr'):
         courseID = (num + '-' + (sectionID[0] if sectionType == 'LE' else sectionID)).lower()
         courseDept, courseNum = re.sub(numberPattern, r'\1 \2', num).split()
 
+        thisCourse['id']        = courseID
         thisCourse['dept']      = courseDept
         thisCourse['num']       = courseNum
         thisCourse['subject']   = subject
@@ -67,8 +68,8 @@ for eachCourse in currentCourse.find_all('tr'):
         thisCourse['section']   = sectionID
 
         ###################################### Lecture Information ###################################################
-        lectureDic[courseID] = {}
-        lectureList = []
+        lectureDic[courseID] = []
+        # lectureList = []
 
         # open the url and of each course's podcast page
         htmlTextCoursePodcast = urllib.urlopen(courseUrl).read()
@@ -86,37 +87,39 @@ for eachCourse in currentCourse.find_all('tr'):
                 lectureMedia = 'https://podcast.ucsd.edu/Podcasts//' + lecture.find('span')['forfile']
                 lectureDate = lecture.find('a').text.strip()
 
-                thisLecture['video_url'] = lectureMedia
-                thisLecture['day'], thisLecture['month'], thisLecture['date'] = re.sub(r'(\w+) (\d+)/(\d+).*', r'\1 \2 \3', lectureDate).split()
-                thisLecture['week'] = week
+                lectureID = (courseID + '-' + sectionType + str('%02d' % lectureNum)).lower()
 
                 if '[' in lectureDate:
                     continue
 
-                lectureNum = lectureNum + 1
+                thisLecture['num'] = lectureNum
+                thisLecture['video_url'] = lectureMedia
+                thisLecture['day'], thisLecture['month'], thisLecture['date'] = re.sub(r'(\w+) (\d+)/(\d+).*', r'\1 \2 \3', lectureDate).split()
+                thisLecture['week'] = week
 
-                lectureID = (courseID + '-' + sectionType + str('%02d' % lectureNum)).lower()
-                lectureDic[courseID][lectureID] = thisLecture
+                lectureDic[courseID].append(thisLecture);
 
                 # store the lecture information to the lecture list
-                lectureList.append(lectureID)
+                # lectureList.append(lectureID)
+                lectureNum = lectureNum + 1
                 lectureNumber = lectureNumber + 1
 
         # add lecture list into eachCourseDic
-        thisCourse['lectures'] = lectureList
+        thisCourse['lectures'] = lectureDic[courseID]
+
         # store the course information to the course dictionary
         courseDic[courseID] = thisCourse
         courseNumber = courseNumber + 1
 
         table['courses'] = courseDic
-        table['lectures'] = lectureDic
+        # table['lectures'] = lectureDic
 
 
 # write to json file
 with open('table.json', 'w') as outfile:
     # for eachCourseList in courseList:
         # json.dump(table, outfile)
-        json.dump(table, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+        json.dump(courseDic, outfile, sort_keys=True, indent=4, separators=(',', ': '))
         outfile.write('\n')
 
 
