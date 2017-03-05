@@ -24,20 +24,20 @@ soupPodcast = BeautifulSoup(htmlTextPodcast, 'html.parser', from_encoding='uft-8
 # find course
 currentCourse = soupPodcast.find('div', id='courses_div')
 
-for eachCourse in currentCourse.find_all('tr'):
+for thisCourse in currentCourse.find_all('tr'):
 
     # skip the course which need authentication
-    authentication = eachCourse.attrs
+    authentication = thisCourse.attrs
     if authentication:
         continue
 
     # get the course podcast url and course name
-    courseInfo = eachCourse.find('a', {'class': 'PodcastLink'})
+    courseInfo = thisCourse.find('a', {'class': 'PodcastLink'})
     courseUrl = str('https://podcast.ucsd.edu' + courseInfo['href'])
     courseTitle = str(courseInfo.text)
 
     # get the course professor
-    courseProf = eachCourse.find('td', {'class': 'prof'}).text
+    courseProf = thisCourse.find('td', {'class': 'prof'}).text
 
     # explode
     number, subject, section = courseTitle.split(' - ')
@@ -68,8 +68,8 @@ for eachCourse in currentCourse.find_all('tr'):
         thisCourse['section']   = sectionID
 
         ###################################### Lecture Information ###################################################
-        lectureDic[courseID] = []
-        # lectureList = []
+        lectureDic[courseID] = {}
+        lectureList = []
 
         # open the url and of each course's podcast page
         htmlTextCoursePodcast = urllib.urlopen(courseUrl).read()
@@ -82,12 +82,14 @@ for eachCourse in currentCourse.find_all('tr'):
         for w in weeks:
             week = w.find('h3').text.split()[1]
             lectures = w.find_all('div', {'class': 'lecture'})
+
+            # construct lecture object
             for lecture in lectures:
                 thisLecture = {}
                 lectureMedia = 'https://podcast.ucsd.edu/Podcasts//' + lecture.find('span')['forfile']
                 lectureDate = lecture.find('a').text.strip()
 
-                lectureID = (courseID + '-' + sectionType + str('%02d' % lectureNum)).lower()
+                lectureID = (courseID + '-' + str(lectureNum)).lower()
 
                 if '[' in lectureDate:
                     continue
@@ -97,29 +99,44 @@ for eachCourse in currentCourse.find_all('tr'):
                 thisLecture['day'], thisLecture['month'], thisLecture['date'] = re.sub(r'(\w+) (\d+)/(\d+).*', r'\1 \2 \3', lectureDate).split()
                 thisLecture['week'] = week
 
-                lectureDic[courseID].append(thisLecture);
+                lectureList.append(lectureID);
 
                 # store the lecture information to the lecture list
                 # lectureList.append(lectureID)
                 lectureNum = lectureNum + 1
                 lectureNumber = lectureNumber + 1
 
-        # add lecture list into eachCourseDic
-        thisCourse['lectures'] = lectureDic[courseID]
+                lectureDic[courseID][lectureID] = thisLecture
+
+
+        # add lecture list into this course
+        thisCourse['lectures'] = lectureList
 
         # store the course information to the course dictionary
         courseDic[courseID] = thisCourse
         courseNumber = courseNumber + 1
 
-        table['courses'] = courseDic
-        # table['lectures'] = lectureDic
+        # store the lecture information to the lecture dictionary
+        lectureDic[courseID][lectureID] = thisLecture
 
+table['courses'] = courseDic
+table['lectures'] = lectureDic
 
 # write to json file
 with open('table.json', 'w') as outfile:
     # for eachCourseList in courseList:
         # json.dump(table, outfile)
+        json.dump(table, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+        outfile.write('\n')
+with open('courses.json', 'w') as outfile:
+    # for eachCourseList in courseList:
+        # json.dump(table, outfile)
         json.dump(courseDic, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+        outfile.write('\n')
+with open('lectures.json', 'w') as outfile:
+    # for eachCourseList in courseList:
+        # json.dump(table, outfile)
+        json.dump(lectureDic, outfile, sort_keys=True, indent=4, separators=(',', ': '))
         outfile.write('\n')
 
 
