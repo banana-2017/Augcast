@@ -104,7 +104,7 @@ class LectureList extends React.Component {
             var month = that.calendar[lecture.month];
             return (
                 <li key={lectureNum}
-                    className={(lectureNum == that.props.lectureID) ? "lecture-item selected" : "lecture-item"}
+                    className={(lectureNum == that.props.lectureNum) ? "lecture-item selected" : "lecture-item"}
                     onClick={() => {that.renderLecture(lectureNum);}}>
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
