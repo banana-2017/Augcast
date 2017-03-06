@@ -98,7 +98,6 @@ class Login extends React.Component {
                         console.log ('Login Failure');
                     }
 
-
                     // if ad succeeds, add user to firebase (if doesn't exist)
                     else {
                         auth.signInWithEmailAndPassword(email, password).catch(function(error) {
@@ -107,20 +106,6 @@ class Login extends React.Component {
                             auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
                                 console.log ('error creating account: '+ error.code + ' ' + error.message);
                             });
-
-                            // create profile
-                            auth.currentUser.updateProfile({
-                                username: email.substring (0, email.length - 8),
-                                instructorFor: [],
-                                favorites: [],
-                                questions: [],
-                                answers: []
-                            }).then(function() {
-                                console.log ('Profile creation successful');
-                            }, function(error) {
-                                console.log ('Profile creation unsuccessful: '+error);
-                            });
-
                         });
                     }
                 }
