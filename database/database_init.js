@@ -8,6 +8,7 @@ if (firebase.apps.length === 0) {
     firebase.initializeApp(conf);
 }
 
+
 export let database = firebase.database();
 export let storageRef = firebase.storage().ref();
 export let auth = firebase.auth();
