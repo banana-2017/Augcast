@@ -3,6 +3,7 @@ import {FormGroup, FormControl, Button} from 'react-bootstrap';
 import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {logIn} from '../redux/actions';
+import {auth} from '../../database/database_init';
 
 
 class Login extends React.Component {
@@ -22,7 +23,7 @@ class Login extends React.Component {
             password: '',
             valid: false,
             failureMessage: ''
-        }
+        };
 
     }
 
@@ -95,6 +96,23 @@ class Login extends React.Component {
                     console.log (success);
                     if (!success) {
                         console.log ('Login Failure');
+                    }
+
+
+                    // if ad succeeds, add user to firebase (if doesn't exist)
+                    else {
+                        
+                        auth.signInWithEmailAndPassword(email, password).catch(function(error) {
+                            console.log ('New user: '+error);
+                            newUser = true;
+                            // if user doesn't exist, add user to firebase
+                            auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
+                                console.log ('error creating account: '+ error.code + ' ' + error.message);
+                            });
+
+                        });
+
+
                     }
                 }
             );

@@ -8,8 +8,6 @@ router.use(bodyParser.json());
 
 router.post ('/', function (req, res) {
 
-    console.log ('logging in');
-
     var config = {
         url: 'ldap://ad.ucsd.edu',
         baseDN: '',
