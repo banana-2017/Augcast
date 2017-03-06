@@ -3,10 +3,14 @@
 */
 
 export const LOG_OUT = 'LOG_OUT';
-export const LOG_IN = 'LOG_IN';
+export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
+export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
+export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 
 export const UPDATE_COURSE = 'UPDATE_COURSE';
+export const UPDATE_USER = 'UPDATE_USER';
 export const IS_INSTRUCTOR = 'IS_INSTRUCTOR';
+export const IS_FETCHING = 'IS_FETCHING';
 
 
 /**
@@ -27,8 +31,45 @@ export function logIn (email, password, router) {
         })
     };
 
+    return (dispatch) => {
+        dispatch (loginRequest());
 
+        return fetch('/api/login', config)
+        .then(response => {
+            // this fucking returns a promise
+            return response.json();
+        }).then (obj => {
 
+            if (obj.success) {
+                dispatch(loginSuccess());
+                setTimeout(() => router.push('/'), 1000);
+                return true;
+            }
+
+            else {
+                dispatch(loginFailure());
+                return false;
+            }
+        });
+    };
+}
+
+export function loginRequest () {
+    return {
+        type: LOG_IN_REQUEST
+    };
+}
+
+export function loginSuccess() {
+    return {
+        type: LOG_IN_SUCCESS
+    };
+}
+
+export function loginFailure () {
+    return {
+        type: LOG_IN_FAILURE
+    };
 }
 
 export function logOut () {
@@ -42,6 +83,13 @@ export function updateCourse (courseId, lectureId) {
         type: UPDATE_COURSE,
         courseId: courseId,
         lectureId: lectureId
+    };
+}
+
+export function updateUser (username) {
+    return {
+        type: UPDATE_USER,
+        username: username
     };
 }
 
