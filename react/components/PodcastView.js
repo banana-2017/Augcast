@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 //import { Link } from 'react-router';
 import VideoPlayer from './VideoPlayer';
 import PDFDisplay from './PDFDisplay';
@@ -38,8 +39,8 @@ class PodcastView extends React.Component {
     componentDidMount() {
         // Store reference to database listener so it can be removed
         var that = this;
-        var course = this.props.course;
-        var lectureNum = this.props.lectureNum;
+        var course = this.props.currentCourse;
+        var lectureNum = this.props.currentLecture.num;
         // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
         var ref = database.ref('courses/' + course.id + '/lectures/' + lectureNum);
         this.setState({
@@ -140,15 +141,18 @@ class PodcastView extends React.Component {
         else if (this.state.timestampProgress == undefined) {
             return (
                 <Upload
-                    course = {this.props.course.id}
+                    course = {this.props.currentCourse.id}
                     lecture = {this.state.lectureInfo.num}
                     mediaURL = {this.state.lectureInfo.video_url}
-                    />
+                />
             );
         }
     }
 
     render () {
+        if (!this.props.currentLecture) {
+            return <div>select a lecture to start</div>;
+        }
         return (
             <div className="content-panel">
                 <div className="pdf-panel">
@@ -165,4 +169,21 @@ class PodcastView extends React.Component {
     }
 }
 
-export default PodcastView;
+
+function mapStateToProps (state) {
+    return {
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture
+    };
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        updateCourseState: (course, lectureNum) => {
+            dispatch (updateCourse (course, lectureNum));
+        }
+    };
+}
+
+const PodcastViewContainer = connect (mapStateToProps)(PodcastView);
+export default PodcastViewContainer;

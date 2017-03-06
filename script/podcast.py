@@ -94,6 +94,7 @@ for thisCourse in currentCourse.find_all('tr'):
                 if '[' in lectureDate:
                     continue
 
+                thisLecture['id'] = lectureID
                 thisLecture['num'] = lectureNum
                 thisLecture['video_url'] = lectureMedia
                 thisLecture['day'], thisLecture['month'], thisLecture['date'] = re.sub(r'(\w+) (\d+)/(\d+).*', r'\1 \2 \3', lectureDate).split()

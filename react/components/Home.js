@@ -1,26 +1,56 @@
+// Sidebar.js
+// Responsible for uploading the PDF
+
 import React from 'react';
-import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import SidebarContainer from './Sidebar/Sidebar.js';
+import PodcastViewContainer from './PodcastView.js';
 
-
-/**
- Home module - to be displayed on the side
- */
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+
+        // Initial state
+        this.state = {
+            playing: undefined
+        }
+
+        this.selectLecture = this.selectLecture.bind(this);
+    }
+
+    selectLecture(lectureID) {
+        console.log("Changing home state: " + lectureID);
+        this.setState({playing: lectureID});
+    }
 
     render () {
+        console.log("Rendering Home....");
+        console.log(this.state);
+        let main = null;
+        if (this.state.playing) {
+            main = <PodcastViewContainer />
+        } else {
+            main = <div>select lecture to view content</div>
+        }
+
         return (
-            <div>
-            <h1>Home</h1>
-            <Link to="/test">Open Sidebar (/test)</Link>
-            <br/>
-            <Link to="/podcastview">Open PodcastView (/podcastview)</Link>
-            <br/>
-            <Link to="/upload">Open Upload Page (/upload)</Link>
-            <br/>
-            <Link to="/pdf">Open PDF Display Page (/pdf)</Link>
+            <div className="main">
+                <SidebarContainer courseID={this.props.params.courseID}
+                                  lectureNum={this.props.params.lectureNum}
+                                  selectLecture={this.selectLecture} />
+                {main}
             </div>
         );
     }
 }
 
-export default Home;
+function mapStateToProps (state) {
+    return {
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture
+    };
+}
+
+const HomeContainer = connect (mapStateToProps)(Home);
+
+export default HomeContainer;

@@ -15,7 +15,6 @@ class CourseList extends React.Component {
 
         // Initial state
         this.state = {
-            display: 'loading courses data',
             visibleCourses: []    // keys to visible courses
         };
 
@@ -46,7 +45,7 @@ class CourseList extends React.Component {
             distance: 70,
             maxPatternLength: 32,
             minMatchCharLength: 1,
-            keys: ['key', 'dept', 'num', 'professor', 'title']
+            keys: ['dept', 'num', 'professor', 'title']
         };
 
         var fuse = new Fuse(this.dataArray, options);
@@ -71,10 +70,14 @@ class CourseList extends React.Component {
         this.setState({visibleCourses:visibleCourses});
     }
 
-    routeToLecture(id) {
-        this.setState({display: 'loading lectures data'});
-        this.props.updateCourseState (id, undefined);
-        browserHistory.push('/' + id);
+    routeToLecture(course) {
+        this.props.updateCourseState (course, undefined);
+        this.props.onSelectCourse(course.id);
+        // database.ref('courses').once('value').then(function(snapshot) {
+        //     that.courses = snapshot.val();
+        //     that.setState({loading: false});
+        // });
+        // browserHistory.push('/' + id);
     }
 
     render () {
@@ -92,7 +95,7 @@ class CourseList extends React.Component {
             var section = course.section;
             var prof = course.professor;
             return (
-                <li className="course-item" key={id} onClick={() => {that.routeToLecture(id);}}>
+                <li className="course-item" key={id} onClick={() => {that.routeToLecture(course);}}>
                     <div className="pin-button"><FA name="star-o" size="2x"/></div>
                     <div className="course-title">
                         <span className="course-number">{number}</span>
@@ -125,8 +128,8 @@ class CourseList extends React.Component {
 
 function mapDispatchToProps (dispatch) {
     return {
-        updateCourseState: (courseId, lectureId) => {
-            dispatch (updateCourse (courseId, lectureId));
+        updateCourseState: (currentCourse, currentLecture) => {
+            dispatch (updateCourse (currentCourse, currentLecture));
         }
     };
 }

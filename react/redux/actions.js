@@ -37,11 +37,12 @@ export function logOut () {
     };
 }
 
-export function updateCourse (courseId, lectureId) {
+export function updateCourse (currentCourse, currentLecture) {
+    console.log("updating course -> " + currentCourse + " lecture -> " + currentLecture);
     return {
         type: UPDATE_COURSE,
-        courseId: courseId,
-        lectureId: lectureId
+        currentCourse: currentCourse,
+        currentLecture: currentLecture
     };
 }
 
