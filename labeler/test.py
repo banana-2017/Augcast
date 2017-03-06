@@ -22,9 +22,9 @@ if __name__ == '__main__':
         timemap[i+1] = timestamp[i]
 
     # Output json
-    json_string = json.dumps(timemap)
-    print (timemap, sort_keys=True, indent=4)
-    
+    json_string = json.dumps(timemap,sort_keys=True, indent=4)
+    print ('result' + '#' + courseID + '#' + lectureID + json_string)
+
 
     # Remove downloaded files from disk
     os.remove("slides.pdf")

@@ -3,6 +3,7 @@ from pytesseract import image_to_string
 from PIL import Image
 from difflib import SequenceMatcher
 from pdfparser import convert
+import json
 import cv2
 import re
 
@@ -24,13 +25,21 @@ print ("fps" , fps)
 '''
 
 # generate timestamp of slides in the video
-def generateTimestamp(video, filename):
+def generateTimestamp(video, filename, courseID, lectureID):
     # timestamp corresponding to the slides
-
     timestamp = []
 
     # convert pdf to list of strings
     pdftext = convert(filename)
+
+    # print pdftext to stdout
+    pdfdict = {}
+    for i in range(len(pdftext)):
+        pdfdict[i+1] = pdftext[i]
+
+    # Output json
+    json_string = json.dumps(pdfdict, sort_keys=True, indent=4)
+    print (json_string)
 
     # capture the video
     cap = cv2.VideoCapture(video)
@@ -145,7 +154,7 @@ def generateTimestamp(video, filename):
 
 
         # jump through video frames if nextText is similar to currentText
-        if (similar(currentText, nextText) > 0.6): ##very very similar
+        if (similar(currentText, nextText) > 0.8): ##very very similar
             index = probeIndex
             probeIndex += defaultProbeRate
             #print("probeIndex", probeIndex)
@@ -173,9 +182,9 @@ def generateTimestamp(video, filename):
             continue
 
         # current progress
-        print (round(index/length))
+        print ('progress'+'#'+courseID+'#'+lectureID+'#'+str(round((index*100/length))))
 
-        if debug = True:
+        if debug == True:
             print ("#################", index ,"##################")
             print ("current Timestamp")
             print (timestamp)
