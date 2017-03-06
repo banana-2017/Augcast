@@ -15,25 +15,17 @@ router.post ('/', function (req, res) {
         baseDN: '',
     };
 
-    let responseSent = false;
-
     var ad = new ActiveDirectory(config);
     console.log ('authenticating ' + req.body.email);
 
-    ad.authenticate(req.body.email, req.body.password, function(err, auth) {
+    ad.authenticate(req.body.email, req.body.password, function(err, adAuth) {
         if (err) {
-            console.log ("Failure");
             res.json ({
                 success:false
             });
-            //
-            // if (!responseSent) {
-            //     res.status(500).send ({'error': 'Login failed!'});
-            // }
-            // responseSent = true;
         }
 
-        else if (auth) {
+        else if (adAuth) {
             console.log('Authenticated with ' + req.body.email);
             res.json ({
                 success: true
