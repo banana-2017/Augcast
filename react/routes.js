@@ -7,7 +7,7 @@ import PodcastView from './components/PodcastView';
 import Upload from './components/Upload';
 import PDFDisplay from './components/PDFDisplay';
 import Test from './components/Test';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/Sidebar/Sidebar';
 import appReducers from './redux/reducers';
 
 
@@ -28,6 +28,9 @@ module.exports = (
         <Route path="/test" component={Test} />
         <Route path="/sidebar" component={Sidebar} />
         <Route path="/pdfdisplay" component={PDFDisplay} />
+        <Route path="/:courseID" component={Test}>
+            <Route path="/:courseID/:lectureNum" component={Test} />
+        </Route>
     </Route>
 );
 

@@ -22,17 +22,18 @@ let store = createStore (appReducers,
 );
 
 
+
 // React main class and router
 class Augcast extends React.Component {
     render () {
         return (
+
             <Provider store={store} >
                 <Router routes={routes} history={browserHistory}/>
             </Provider>
+
         );
     }
 }
-
-
 
 ReactDOM.render (<Augcast/>, document.getElementById('app'));

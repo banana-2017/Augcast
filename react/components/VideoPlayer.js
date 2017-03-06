@@ -1,6 +1,7 @@
 import React from 'react';
 import { database } from './../../database/database_init';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 const SKIP_VALUE = 10;
 
@@ -29,7 +30,10 @@ class VideoPlayer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.refs.basicvideo.currentTime = nextProps.timestamp;
+        console.log('Recieving prop timestamp: ' + JSON.stringify(nextProps.timestamp));
+        if (nextProps.timestamp != undefined) {
+            this.refs.basicvideo.currentTime = nextProps.timestamp;
+        }
     }
 
     togglePlay() {
@@ -91,13 +95,17 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
+        var course = this.props.course;
+        var lectureNum = this.props.lectureNum;
+        var lecture = course.lectures[lectureNum];
+        var video_url = lecture.video_url;
         return (
             <div>
-                <h2> CSE 110 Lecture A00 (Fri Mar 10)</h2>
+                <h2>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
                 <div className="video_player_container">
                     <br />
                     <video
-                        src={this.props.mediaURL}
+                        src={video_url}
                         autoPlay
                         width="600"
                         muted
@@ -124,7 +132,7 @@ class VideoPlayer extends React.Component {
                         <br />
 
                         <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.decreasePlaybackRate}><Glyphicon glyph="chevron-left" /></Button>
-                        Rate: {Math.abs(this.state.playbackRate).toFixed(2)}x
+                        Speed: {Math.abs(this.state.playbackRate).toFixed(2)}x
                         <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.increasePlaybackRate}><Glyphicon glyph="chevron-right" /></Button>
 
                         <br />
@@ -139,4 +147,12 @@ class VideoPlayer extends React.Component {
     }
 }
 
-export default VideoPlayer;
+function mapStateToProps (state) {
+    return {
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture
+    };
+}
+
+const VideoPlayerContainer = connect (mapStateToProps)(VideoPlayer);
+export default VideoPlayerContainer;

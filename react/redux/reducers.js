@@ -10,6 +10,7 @@ const initialState = {
     isFetching: false,
     loggedIn : false,
     currentCourse: undefined,
+    currentLecture: undefined,
     userType: 'STUDENT',
     username: undefined,
 };
@@ -58,7 +59,8 @@ function appReducers (state, action) {
 
     case UPDATE_COURSE: {
         return Object.assign ({}, state, {
-            currentCourse: action.courseId
+            currentCourse: action.courseId,
+            currentLecture: action.lectureId
         });
     }
 
