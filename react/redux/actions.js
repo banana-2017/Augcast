@@ -8,6 +8,7 @@ export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 
 export const UPDATE_COURSE = 'UPDATE_COURSE';
+export const UPDATE_USER = 'UPDATE_USER';
 export const IS_INSTRUCTOR = 'IS_INSTRUCTOR';
 export const IS_FETCHING = 'IS_FETCHING';
 
@@ -82,6 +83,13 @@ export function updateCourse (courseId, lectureId) {
         type: UPDATE_COURSE,
         courseId: courseId,
         lectureId: lectureId
+    };
+}
+
+export function updateUser (username) {
+    return {
+        type: UPDATE_USER,
+        username: username
     };
 }
 

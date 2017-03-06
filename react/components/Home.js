@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import {connect} from 'react-redux';
 
 
 /**
@@ -10,7 +11,7 @@ class Home extends React.Component {
     render () {
         return (
             <div>
-            <h1>Home</h1>
+            <h1>Welcome {this.props.username}</h1>
             <Link to="/test">Open Sidebar (/test)</Link>
             <br/>
             <Link to="/podcastview">Open PodcastView (/podcastview)</Link>
@@ -23,4 +24,11 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+function mapStateToProps (state) {
+    return {
+        username: state.username
+    };
+}
+
+const HomeContainer = connect(mapStateToProps)(Home);
+export default HomeContainer;

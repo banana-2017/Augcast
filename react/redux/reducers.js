@@ -1,5 +1,6 @@
 import {LOG_OUT, LOG_IN_SUCCESS,LOG_IN_FAILURE,
-        LOG_IN_REQUEST, UPDATE_COURSE, IS_INSTRUCTOR} from './actions';
+        LOG_IN_REQUEST, UPDATE_COURSE, IS_INSTRUCTOR,
+        UPDATE_USER} from './actions';
 
 /**
 * state of the app
@@ -68,6 +69,12 @@ function appReducers (state, action) {
     case IS_INSTRUCTOR: {
         return Object.assign ({}, state, {
             userType: 'INSTRUCTOR'
+        });
+    }
+
+    case UPDATE_USER: {
+        return Object.assign ({}, state, {
+            username: action.username
         });
     }
 
