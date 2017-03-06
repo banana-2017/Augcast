@@ -35,14 +35,17 @@ export function logIn (email, password, router) {
 
         return fetch('/api/login', config)
         .then(response => {
-            console.log ('login response: ');
-            console.log (response);
-            if (response.ok) {
+            // this fucking returns a promise
+            return response.json();
+        }).then (obj => {
+
+            if (obj.success) {
                 dispatch(loginSuccess());
-                console.log ('Response ok! dispatching success');
-                setTimeout(() => router.push('/'), 100);
+                setTimeout(() => router.push('/'), 1000);
                 return true;
-            } else {
+            }
+
+            else {
                 dispatch(loginFailure());
                 return false;
             }

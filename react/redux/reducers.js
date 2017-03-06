@@ -37,6 +37,7 @@ function appReducers (state, action) {
     }
 
     case LOG_IN_SUCCESS: {
+        console.log ('login succeeded');
         return Object.assign ({}, state, {
             loggedIn: true,
             isFetching: false

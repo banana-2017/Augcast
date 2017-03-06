@@ -9,11 +9,10 @@ router.use(bodyParser.json());
 router.post ('/', function (req, res) {
 
     console.log ('logging in');
+
     var config = {
         url: 'ldap://ad.ucsd.edu',
         baseDN: '',
-        username: req.body.email,
-        password: req.body.password
     };
 
     let responseSent = false;
@@ -23,12 +22,15 @@ router.post ('/', function (req, res) {
 
     ad.authenticate(req.body.email, req.body.password, function(err, auth) {
         if (err) {
-            console.log('ERROR: '+JSON.stringify(err));
-            console.log('this Authentication failed!');
-            if (!responseSent) {
-                res.status(500).send ({'error': 'Login failed!'});
-            }
-            responseSent = true;
+            console.log ("Failure");
+            res.json ({
+                success:false
+            });
+            //
+            // if (!responseSent) {
+            //     res.status(500).send ({'error': 'Login failed!'});
+            // }
+            // responseSent = true;
         }
 
         else if (auth) {
