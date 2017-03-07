@@ -15,9 +15,7 @@ class LectureList extends React.Component {
         super(props);
 
         // Initial state
-        this.state = {
-            render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined
-        };
+        this.state = {};
 
         // this.search = this.search.bind (this);
         // this.searchInput = this.searchInput.bind (this);
@@ -87,7 +85,6 @@ class LectureList extends React.Component {
         console.log(this.course);
         this.props.displayLecture(this.course, lecture);
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
-        // this.setState({render: lecture.id});
     }
 
     render () {
@@ -105,6 +102,8 @@ class LectureList extends React.Component {
                 </li>
             );
         };
+
+        document.title = this.course.dept + " " + this.course.num + " - Augcast";
 
         return (
             <div>

@@ -151,11 +151,16 @@ class PodcastView extends React.Component {
     }
 
     render () {
-        // No lecture is selected -- display blank
 
         if (!this.props.currentLecture) {
             return <div>select a lecture to start</div>;
         }
+
+        document.title = this.props.currentCourse.dept + " "
+                       + this.props.currentCourse.num  + ": Lecture "
+                       + this.props.currentLecture.num
+                       + " - Augcast";
+
         return (
             <div className="content-panel">
                 <div className="pdf-panel">

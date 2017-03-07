@@ -31,6 +31,8 @@ class Home extends React.Component {
             main = <div />
         }
 
+        document.title = "Augcast - An Augmented Podcast Experience";
+
         return (
             <div className="main">
                 <SidebarContainer courseID={this.props.params.courseID}
