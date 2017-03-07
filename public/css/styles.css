@@ -184,7 +184,6 @@ html, body, .podcast-container, .pdf-view, .video-view {
     background: white;
     list-style: none;
     display: table;
-    padding: 12px;
     cursor: pointer;
 }
 
@@ -195,6 +194,7 @@ html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
     font-size:14pt;
     display: table-cell;
+    padding: 12px;
 }
 
 .lecture-item .slides-status {

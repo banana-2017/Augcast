@@ -12,7 +12,7 @@ class Upload extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log("CONSTRUCTOR");
+        console.log(props);
 
         // Initial state
         this.state = {

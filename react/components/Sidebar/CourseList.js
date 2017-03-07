@@ -91,7 +91,7 @@ class CourseList extends React.Component {
             for (var pinned in this.state.favoriteArray) {
                 this.moveToTop(this.state.favoriteArray[pinned]);
             }
-            
+
             return;
         }
 

@@ -59,7 +59,8 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
-            upload: undefined
+            upload: undefined,
+            modal: false
         };
 
         // inherit all course data
