@@ -70,8 +70,6 @@ class CourseList extends React.Component {
     search (query) {
         var options = {
             shouldSort: true,
-            tokenize: true,
-            matchAllTokens: true,
             threshold: 0.6,
             location: 0,
             distance: 70,
