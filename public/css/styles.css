@@ -176,11 +176,25 @@ html, body, .podcast-container, .pdf-view, .video-view {
 .lecture-item {
     position: relative;
     width: 100%;
-    font-size:16pt;
+    font-size:14pt;
     background: white;
     list-style: none;
     padding: 12px;
     cursor: pointer;
+}
+
+.lecture-button {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    font-size:14pt;
+    display: inline;
+}
+
+.lecture-item .upload-button {
+    position: relative;
+    display: inline;
+    height: 100%;
 }
 
 .lecture-item.selected {

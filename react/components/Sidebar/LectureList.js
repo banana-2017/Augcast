@@ -3,12 +3,30 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
+import IconButton from 'material-ui/IconButton';
+import ActionBackup from 'material-ui/svg-icons/action/backup';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 
 import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
+
+class UploadButton extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div className="upload-button">
+                <IconButton tooltip="Upload slides">
+                    <ActionBackup />
+                </IconButton>
+            </div>
+        );
+    }
+}
 
 class LectureList extends React.Component {
     constructor(props) {
@@ -17,22 +35,8 @@ class LectureList extends React.Component {
         // Initial state
         this.state = {};
 
-        // this.search = this.search.bind (this);
-        // this.searchInput = this.searchInput.bind (this);
-
-        // lecture slection variable
-        // this.dataArray = [];
-
         // inherit all course data
         this.course = this.props.navCourse;
-        // this.state.visibleCourses = this.courses.keys;
-
-        // // populate array for search
-        // for (var course in this.courses.data) {
-        //     let current = this.courses.data[course];
-        //     current.key = course;
-        //     this.dataArray.push(current);
-        // }
 
         // helper object
         this.calendar = {
@@ -40,45 +44,6 @@ class LectureList extends React.Component {
             7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
         };
     }
-
-    // // search course
-    // search (query) {
-    //     var options = {
-    //         shouldSort: true,
-    //         threshold: 0.6,
-    //         location: 0,
-    //         distance: 70,
-    //         maxPatternLength: 32,
-    //         minMatchCharLength: 1,
-    //         keys: ['key', 'dept', 'num', 'professor', 'title']
-    //     };
-    //
-    //     var fuse = new Fuse(this.dataArray, options);
-    //     var result = fuse.search(query);
-    //     return result;
-    // }
-    //
-    // searchInput (e) {
-    //     let query = e.target.value;
-    //
-    //     // empty query
-    //     if (query === '') {
-    //         this.setState({visibleCourses:this.courseIDs});
-    //         return;
-    //     }
-    //
-    //     let searchResults = this.search (query);
-    //     let visibleCourses = [];
-    //     for (var index in searchResults) {
-    //         visibleCourses.push (searchResults[index].key);
-    //     }
-    //     this.setState({visibleCourses:visibleCourses});
-    // }
-    //
-    // routeToLecture(id) {
-    //     this.setState({display: 'loading lectures data'});
-    //     browserHistory.push('/' + id);
-    // }
 
     selectLecture(lecture) {
         console.log(lecture);
@@ -98,7 +63,10 @@ class LectureList extends React.Component {
                 <li key={lecture.id}
                     className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}
                     onClick={() => {that.selectLecture(lecture);}}>
-                    Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
+                    <div className="lecture-button">
+                        Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
+                    </div>
+                    {!lecture.slides_url && <UploadButton />}
                 </li>
             );
         };
