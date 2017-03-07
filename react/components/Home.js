@@ -24,13 +24,19 @@ class Home extends React.Component {
 
     render () {
         console.log("Rendering Home");
+        var main = null;
+        if (this.props.currentLecture) {
+            main = <PodcastViewContainer />;
+        } else {
+            main = <div />
+        }
 
         return (
             <div className="main">
                 <SidebarContainer courseID={this.props.params.courseID}
                                   lectureNum={this.props.params.lectureNum}
                                   selectLecture={this.selectLecture} />
-                <PodcastViewContainer />
+                {main}
             </div>
         );
     }

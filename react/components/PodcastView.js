@@ -42,6 +42,7 @@ class PodcastView extends React.Component {
         var course = this.props.currentCourse;
         var lecture = this.props.currentLecture;
 
+
         if (course != undefined && lecture != undefined) {
 
             // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
