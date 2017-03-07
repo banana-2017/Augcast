@@ -8,13 +8,16 @@ import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 
 import PodcastView from '../PodcastView.js';
-import {updateCourse} from '../../redux/actions';
+import { displayLecture } from '../../redux/actions';
 
 class LectureList extends React.Component {
     constructor(props) {
         super(props);
 
         // Initial state
+        this.state = {
+            render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined
+        };
 
         // this.search = this.search.bind (this);
         // this.searchInput = this.searchInput.bind (this);
@@ -23,8 +26,7 @@ class LectureList extends React.Component {
         // this.dataArray = [];
 
         // inherit all course data
-        this.course = this.props.course;
-        this.lectureNum = undefined;
+        this.course = this.props.navCourse;
         // this.state.visibleCourses = this.courses.keys;
 
         // // populate array for search
@@ -80,30 +82,25 @@ class LectureList extends React.Component {
     //     browserHistory.push('/' + id);
     // }
 
-    back() {
-        this.setState({display: 'courses'});
-        browserHistory.push('/test');
-    }
-
-    renderLecture(lectureNum) {
-        browserHistory.push('/' + this.props.course.id + '/' + lectureNum);
-        this.props.updateCourseState (this.props.course.id, lectureNum);
-        this.setState({render: lectureNum});
+    selectLecture(lecture) {
+        console.log(lecture);
+        console.log(this.course);
+        this.props.displayLecture(this.course, lecture);
+        browserHistory.push('/' + this.course.id + '/' + lecture.num);
+        // this.setState({render: lecture.id});
     }
 
     render () {
-
         // access to this
         var that = this;
 
-        var listItem = function(lectureNum) {
-            var course = that.course;
-            var lecture = course.lectures[lectureNum];
+        var listItem = function(lectureID) {
+            var lecture = that.props.lectures[lectureID]
             var month = that.calendar[lecture.month];
             return (
-                <li key={lectureNum}
-                    className={(lectureNum == that.props.lectureNum) ? 'lecture-item selected' : 'lecture-item'}
-                    onClick={() => {that.renderLecture(lectureNum);}}>
+                <li key={lecture.id}
+                    className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}
+                    onClick={() => {that.selectLecture(lecture);}}>
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
             );
@@ -113,7 +110,7 @@ class LectureList extends React.Component {
             <div>
                 <div className="nav">
                     <div className="search-bar">
-                        <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
+                        <div className="search-icon"><FA name='arrow-left' onClick={that.props.back}/></div>
                         <FormControl type="text"
                                      placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
                                      onChange={this.searchInput}
@@ -121,24 +118,30 @@ class LectureList extends React.Component {
                     </div>
                     <div className="lectures-wrapper">
                         <ul className="lecture-list">
-                            {Object.keys(that.props.course.lectures).map(listItem)}
+                            {that.props.navCourse.lectures.map(listItem)}
                         </ul>
                     </div>
                 </div>
-                {this.props.lectureNum && <PodcastView course={this.props.course} lectureNum={this.props.lectureNum} />}
             </div>
         );
     }
 }
 
 
+function mapStateToProps (state) {
+    return {
+        navCourse:  state.navCourse,
+        currentLecture:  state.currentLecture
+    };
+}
+
 function mapDispatchToProps (dispatch) {
     return {
-        updateCourseState: (course, lectureNum) => {
-            dispatch (updateCourse (course, lectureNum));
+        displayLecture: (currentCourse, currentLecture) => {
+            dispatch (displayLecture(currentCourse, currentLecture));
         }
     };
 }
 
-const LectureListContainer = connect (null, mapDispatchToProps)(LectureList);
+const LectureListContainer = connect (mapStateToProps, mapDispatchToProps)(LectureList);
 export default LectureListContainer;

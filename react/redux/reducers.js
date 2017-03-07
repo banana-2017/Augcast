@@ -1,6 +1,5 @@
-import {LOG_OUT, LOG_IN_SUCCESS,LOG_IN_FAILURE,
-        LOG_IN_REQUEST, UPDATE_COURSE, IS_INSTRUCTOR,
-        UPDATE_USER} from './actions';
+import { DISPLAY_LECTURE, LOG_OUT, LOG_IN_SUCCESS,LOG_IN_FAILURE,
+         LOG_IN_REQUEST, NAVIGATE_COURSE, IS_INSTRUCTOR, UPDATE_USER } from './actions';
 
 /**
 * state of the app
@@ -10,6 +9,7 @@ import {LOG_OUT, LOG_IN_SUCCESS,LOG_IN_FAILURE,
 const initialState = {
     isFetching: false,
     loggedIn : false,
+    navCourse: undefined,
     currentCourse: undefined,
     currentLecture: undefined,
     userType: 'STUDENT',
@@ -59,10 +59,16 @@ function appReducers (state, action) {
         });
     }
 
-    case UPDATE_COURSE: {
+    case NAVIGATE_COURSE: {
+        return Object.assign({}, state, {
+            navCourse: action.navCourse
+        });
+    }
+
+    case DISPLAY_LECTURE: {
         return Object.assign ({}, state, {
-            currentCourse: action.courseId,
-            currentLecture: action.lectureId
+            currentCourse: action.currentCourse,
+            currentLecture: action.currentLecture
         });
     }
 
@@ -83,8 +89,5 @@ function appReducers (state, action) {
 
     return state;
 }
-
-
-
 
 export default appReducers;
