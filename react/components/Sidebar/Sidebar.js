@@ -35,7 +35,6 @@ class Sidebar extends React.Component {
         });
     }
 
-
     /**
      * Routine before rendering LectureList.
      * Queries database for lecture information regarding selected course.
@@ -51,10 +50,11 @@ class Sidebar extends React.Component {
                 var lecture = that.lectures[course.lectures[that.props.lectureNum]];
 
                 // if the link also contains lecture num
-                if (that.props.lectureNum) {
-                    that.props.displayLecture(course, lecture);
-                } else {
+                if (that.props.courseID) {
                     that.props.navigateCourse(that.courses[that.props.courseID]);
+                    if (that.props.lectureNum) {
+                        that.props.displayLecture(course, lecture);
+                    }
                 }
             });
         }

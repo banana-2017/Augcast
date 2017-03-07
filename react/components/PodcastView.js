@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 //import { Link } from 'react-router';
 import VideoPlayer from './VideoPlayer';
 import PDFDisplay from './PDFDisplay';
-import Upload from './Upload';
 import { database } from './../../database/database_init';
 import { ProgressBar } from 'react-bootstrap';
 
@@ -84,14 +83,14 @@ class PodcastView extends React.Component {
 
             // Create and store new listener so it can too be removed
             var that = this;
-            console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
+            // console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
             this.setState({
                 firebaseListener: newRef
             });
 
             newRef.on('value', function(snapshot) {
-                console.log(JSON.stringify('db on lectures/../' + newProps.currentLecture.id +': ' + JSON.stringify(snapshot.val())));
+                // console.log(JSON.stringify('db on lectures/../' + newProps.currentLecture.id +': ' + JSON.stringify(snapshot.val())));
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
@@ -115,8 +114,7 @@ class PodcastView extends React.Component {
     // the timestamped PDF if timestamping is complete,
     // or an upload component if no PDF has been submitted yet.
     PDFContainer() {
-
-        // If lectureInfo not loaded yet, do nothing.
+        // // If lectureInfo not loaded yet, do nothing.
         if (this.props.currentLecture == undefined) {
             return (<div>select a lecture to start</div>);
         }
@@ -132,10 +130,9 @@ class PodcastView extends React.Component {
         }
 
         // If there aren't timestamps in DB, then display a progress bar
-        else if (this.state.lectureInfo.labelProgress != undefined) {
+        if (this.state.lectureInfo.labelProgress != undefined) {
             return (
-                <div
-                    style={{maxWidth: '300px', margin:'0 auto'}}>
+                <div style={{maxWidth: '300px', margin:'0 auto'}}>
                     <h3>
                         Analyzing PDF
                     </h3>
@@ -154,15 +151,8 @@ class PodcastView extends React.Component {
             );
         }
 
-        // If there isn't any PDF being processed for this lecture, render upload component
-        else if (this.state.timestampProgress == undefined) {
-            return (
-                <Upload
-                    course = {this.props.currentCourse.id}
-                    lecture = {this.props.currentLecture.id}
-                    mediaURL = {this.state.lectureInfo.video_url}
-                />
-            );
+        else {
+            return (<div/>);
         }
     }
 

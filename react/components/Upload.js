@@ -3,6 +3,7 @@
 
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
+import { connect } from 'react-redux';
 import { firebaseApp, storageRef, database } from './../../database/database_init';
 import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
@@ -11,6 +12,7 @@ class Upload extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log("CONSTRUCTOR");
 
         // Initial state
         this.state = {
@@ -20,30 +22,22 @@ class Upload extends React.Component {
             error: '',
             APIresult: '',
             lectureID: '',
-            open: true
+            open: false
         };
 
         // Bind all functions so they can refer to "this" correctly
         //this.togglePlay = this.togglePlay.bind(this);
         this.handleFile = this.handleFile.bind(this);
         this.handleClear = this.handleClear.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.callLabelAPI = this.callLabelAPI.bind(this);
-    }
-
-    /**
-     * Handler for opening the dialog box.
-     */
-    handleOpen() {
-        this.setState({open: true});
     }
 
     /**
      * Handler for closing the dialog box.
      */
     handleClose() {
-        this.setState({open: false});
+        this.props.close();
     }
 
     /**
@@ -101,7 +95,7 @@ class Upload extends React.Component {
                     downloadURL: url
                 });
 
-                database.ref('lectures/' + that.props.course + '/' + that.props.lecture).update({
+                database.ref('lectures/' + that.props.currentCourse + '/' + that.props.currentLecture).update({
                     slides_url: url
                 });
 
@@ -122,9 +116,9 @@ class Upload extends React.Component {
             },
             body: JSON.stringify({
                 pdfURL: url,
-                courseID: that.props.course,
-                lectureID: that.props.lecture,
-                mediaURL: that.props.mediaURL
+                courseID: that.props.currentCourse.id,
+                lectureID: that.props.lecture.id,
+                mediaURL: that.props.lecture.video_url
             })
         }).then(function(response) {
             return response.json();
@@ -144,13 +138,20 @@ class Upload extends React.Component {
     }
 
     render () {
-        console.log(this.state);
+        if (this.props.lecture) {
+            console.log(JSON.stringify({
+                    courseID: this.props.currentCourse.id,
+                    lectureID: this.props.lecture.id,
+                    mediaURL: this.props.lecture.video_url
+                })
+            );
+        }
         return (
             <div
             style={{maxWidth: '300px', margin:'0 auto'}}>
                 <Dialog title="Upload a PDF file"
                         modal={false}
-                        open={this.state.open}
+                        open={this.props.open}
                         onRequestClose={this.handleClose} >
 
                     <p>
@@ -207,4 +208,12 @@ class Upload extends React.Component {
     }
 }
 
-export default Upload;
+function mapStateToProps (state) {
+    return {
+        currentCourse:  state.currentCourse,
+        currentLecture:  state.currentLecture
+    };
+}
+
+const UploadContainer = connect (mapStateToProps, null)(Upload);
+export default UploadContainer;

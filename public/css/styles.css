@@ -179,6 +179,7 @@ html, body, .podcast-container, .pdf-view, .video-view {
     font-size:14pt;
     background: white;
     list-style: none;
+    display: table;
     padding: 12px;
     cursor: pointer;
 }
@@ -186,14 +187,17 @@ html, body, .podcast-container, .pdf-view, .video-view {
 .lecture-button {
     position: relative;
     width: 100%;
+    vertical-align: middle;
     height: 100%;
     font-size:14pt;
-    display: inline;
+    display: table-cell;
 }
 
-.lecture-item .upload-button {
+.lecture-item .slides-status {
+    float: right;
+    font-size: 12pt;
     position: relative;
-    display: inline;
+    display: table-cell;
     height: 100%;
 }
 
