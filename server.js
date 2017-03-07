@@ -27,16 +27,6 @@ router.get('/', function(req, res) {
     res.json({ message: 'API works'});
 });
 
-router.route('/testadmindb').post(function(req, res) {
-
-    adminDatabase.ref('/test/python').update({
-        labelProgress: 50
-    });
-
-    res.json({ message: 'Admin DB at '
-        + new Date().toLocaleString() + ': ' + JSON.stringify(req.body)});
-});
-
 router.route('/label').post(function(req, res) {
     // Create a new Python thread and run labeling script
     var PythonShell = require('python-shell');
@@ -55,19 +45,25 @@ router.route('/label').post(function(req, res) {
         var split = pythonStdout.split('#');
         //console.log('Python stdout: ' + split);
 
-        // If the stdout starts with {, that means the final result is being printed.
-        // Upload the final timestamps to the timestamps key
+        // If receiving progress update, upload the progress
         if (split[0] === 'progress') {
-            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.timestamps: ' + split[3]);
+            console.log('Updating lecture ' + split[2] + ' progress: ' + split[3]);
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 labelProgress: Number(split[3])
             });
         }
-        // Else, the progress as a percent is being printed.
-        // Upload the progress to the labelProgress key
-        else if (split[0] === 'result'){
-            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.labelProgress: ' + split[3]);
 
+        // If receiving slide text contents, upload the contents
+        else if (split[0] === 'content') {
+            console.log('Updating lecture ' + split[2] + ' content: ' + split[3]);
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
+                contents: JSON.parse(split[3])
+            });
+        }
+
+        // If receiving final timestamps, upload the timestamps
+        else if (split[0] === 'result'){
+            console.log('Updating lecture ' + split[2] + ' final timestamps: ' + split[3]);
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 timestamps: JSON.parse(split[3])
             });

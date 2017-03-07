@@ -95,7 +95,6 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
-        console.log("PLAYER");
         console.log(this.props);
         var course = this.props.currentCourse;
         var lecture = this.props.currentLecture;
@@ -104,7 +103,7 @@ class VideoPlayer extends React.Component {
         return (
             <div>
                 <h2>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
-                <div className="video_player_container">
+                <div className="video_api_containerplayer">
                     <br />
                     <video
                         src={video_url}
@@ -116,8 +115,8 @@ class VideoPlayer extends React.Component {
                         controls>
                         Your browser does not support the video tag.
                     </video>
-                    <div className="video_api_container">
-                        <ButtonGroup>
+                    <div className="video-button-group-container">
+                        <ButtonGroup className='video-button-group'>
                             <Button bsStyle="default"  onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}><Glyphicon glyph="chevron-left" />Skip {SKIP_VALUE}s</Button>
                             <Button
                                 bsStyle="primary"
