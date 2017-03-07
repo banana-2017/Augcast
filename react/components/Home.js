@@ -1,24 +1,36 @@
+// Home.js
+// The landing page for our amazing app
 import React from 'react';
 import { Link } from 'react-router';
 import {connect} from 'react-redux';
+import SidebarContainer from './Sidebar/Sidebar.js';
+import PodcastViewContainer from './PodcastView.js';
 
-
-/**
- Home module - to be displayed on the side
- */
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+
+        // Initial state
+        this.state = {
+            playing: undefined
+        }
+
+        this.selectLecture = this.selectLecture.bind(this);
+    }
+
+    selectLecture(lectureID) {
+        this.setState({playing: lectureID});
+    }
 
     render () {
+        console.log("Rendering Home");
+
         return (
-            <div>
-            <h1>Welcome {this.props.username}</h1>
-            <Link to="/test">Open Sidebar (/test)</Link>
-            <br/>
-            <Link to="/podcastview">Open PodcastView (/podcastview)</Link>
-            <br/>
-            <Link to="/upload">Open Upload Page (/upload)</Link>
-            <br/>
-            <Link to="/pdf">Open PDF Display Page (/pdf)</Link>
+            <div className="main">
+                <SidebarContainer courseID={this.props.params.courseID}
+                                  lectureNum={this.props.params.lectureNum}
+                                  selectLecture={this.selectLecture} />
+                <PodcastViewContainer />
             </div>
         );
     }
@@ -26,7 +38,8 @@ class Home extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        username: state.username
+        currentLecture: state.currentLecture,
+        username:       state.username
     };
 }
 

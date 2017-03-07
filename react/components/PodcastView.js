@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 //import { Link } from 'react-router';
 import VideoPlayer from './VideoPlayer';
 import PDFDisplay from './PDFDisplay';
@@ -38,21 +39,29 @@ class PodcastView extends React.Component {
     componentDidMount() {
         // Store reference to database listener so it can be removed
         var that = this;
-        var course = this.props.course;
-        var lectureNum = this.props.lectureNum;
-        // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
-        var ref = database.ref('courses/' + course.id + '/lectures/' + lectureNum);
-        this.setState({
-            firebaseListener: ref
-        });
+        var course = this.props.currentCourse;
+        var lecture = this.props.currentLecture;
 
-        // Listen to changes at ref's location in db
-        ref.on('value', function(snapshot) {
-            console.log(JSON.stringify('db on lectures/../' + course.id + '/lectures/' + lectureNum +': ' + JSON.stringify(snapshot.val())));
-            that.setState({
-                lectureInfo: snapshot.val()
+        if (course != undefined && lecture != undefined) {
+
+            // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
+            var ref = database.ref('courses/' + course.id + '/lectures/' + lecture.id);
+            this.setState({
+                firebaseListener: ref
             });
-        });
+
+            // Listen to changes at ref's location in db
+            ref.on('value', function(snapshot) {
+                console.log(JSON.stringify('db on lectures/' + course.id + '/' + lecture.id +': ' + JSON.stringify(snapshot.val())));
+                that.setState({
+                    lectureInfo: snapshot.val()
+                });
+            });
+        } else {
+            this.setState({
+                firstRender: true
+            });
+        }
     }
 
     // This method is called whenever the props are updated (i.e. a new lecture is selected in Sidebar)
@@ -60,21 +69,29 @@ class PodcastView extends React.Component {
     componentWillReceiveProps(newProps) {
 
         // Only change the database listener if the lectureID has changed
-        if (newProps.lectureID != this.props.lectureID) {
+        if (this.state.firstRender || (newProps.currentLecture.id != this.props.currentLecture.id)) {
+
+            if (this.state.firstRender) {
+                this.setState({
+                    firstRender: false
+                });
+            }
 
             // Remove old database Listener
-            this.state.firebaseListener.off();
+            if (this.state.firebaseListener != undefined) {
+                this.state.firebaseListener.off();
+            }
 
             // Create and store new listener so it can too be removed
             var that = this;
             console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
-            var newRef = database.ref('lectures/' + newProps.courseID + '/' + newProps.lectureID);
+            var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
             this.setState({
                 firebaseListener: newRef
             });
 
             newRef.on('value', function(snapshot) {
-                console.log(JSON.stringify('db on lectures/../' + newProps.lectureID +': ' + JSON.stringify(snapshot.val())));
+                console.log(JSON.stringify('db on lectures/../' + newProps.currentLecture.id +': ' + JSON.stringify(snapshot.val())));
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
@@ -100,8 +117,8 @@ class PodcastView extends React.Component {
     PDFContainer() {
 
         // If lectureInfo not loaded yet, do nothing.
-        if (this.state.lectureInfo == undefined) {
-            return (<div></div>);
+        if (this.props.currentLecture == undefined) {
+            return (<div>select a lecture to start</div>);
         }
 
         // If there are timestamps in DB, display the PDF with them
@@ -133,6 +150,7 @@ class PodcastView extends React.Component {
                         now={this.state.lectureInfo.labelProgress}
                         label={`${(this.state.lectureInfo.labelProgress).toFixed(2)}%`} />
                 </div>
+
             );
         }
 
@@ -140,29 +158,41 @@ class PodcastView extends React.Component {
         else if (this.state.timestampProgress == undefined) {
             return (
                 <Upload
-                    course = {this.props.course.id}
-                    lecture = {this.state.lectureInfo.num}
+                    course = {this.props.currentCourse.id}
+                    lecture = {this.props.currentLecture.id}
                     mediaURL = {this.state.lectureInfo.video_url}
-                    />
+                />
             );
         }
     }
 
     render () {
-        return (
-            <div className="content-panel">
-                <div className="pdf-panel">
-                    <this.PDFContainer/>
+        // No lecture is selected -- display blank
+
+        if (this.props.currentLecture == undefined) {
+            return (<div>select a lecture to start</div>);
+        } else {
+            return (
+                <div className="content-panel">
+                    <div className="pdf-panel">
+                        <this.PDFContainer/>
+                    </div>
+                    <div className = "video-panel">
+                        <VideoPlayer timestamp={this.state.timestamp} />
+                    </div>
                 </div>
-                <div className = "video-panel">
-                    <VideoPlayer
-                        timestamp={this.state.timestamp}
-                        course={this.props.course}
-                        lectureNum={this.props.lectureNum} />
-                </div>
-            </div>
-        );
+            );
+        }
     }
 }
 
-export default PodcastView;
+
+function mapStateToProps (state) {
+    return {
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture
+    };
+}
+
+const PodcastViewContainer = connect (mapStateToProps)(PodcastView);
+export default PodcastViewContainer;

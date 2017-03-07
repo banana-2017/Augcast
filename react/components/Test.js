@@ -1,24 +1,26 @@
-// Sidebar.js
-// Responsible for uploading the PDF
-
 import React from 'react';
-import Sidebar from './Sidebar/Sidebar.js';
+import { Link } from 'react-router';
 
-class Test extends React.Component {
-    constructor(props) {
-        super(props);
 
-        // Initial state
-    }
+/**
+ Home module - to be displayed on the side
+ */
+class Home extends React.Component {
 
     render () {
         return (
-            <div className="main">
-                <Sidebar courseID={this.props.params.courseID}
-                         lectureNum={this.props.params.lectureNum}/>
+            <div>
+            <h1>Home</h1>
+            <Link to="/test">Open Sidebar (/test)</Link>
+            <br/>
+            <Link to="/podcastview">Open PodcastView (/podcastview)</Link>
+            <br/>
+            <Link to="/upload">Open Upload Page (/upload)</Link>
+            <br/>
+            <Link to="/pdf">Open PDF Display Page (/pdf)</Link>
             </div>
         );
     }
 }
 
-export default Test;
+export default Home;

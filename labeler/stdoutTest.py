@@ -13,7 +13,10 @@ for i in range(0, 101):
     sys.stdout.flush()
     sleep(0.5)
 
-array = [5, 10, 15, 20, 25, 30]
+timestamps = [30, 46, 63, 99, 434, 511]
+contents = ['Page 1 contents', 'Page 2 contents', 'Page 3 contents', 'Page 4 contents', 'Page 5 contents', 'Page 6 contents']
 
-print 'result'+'#'+courseID+'#'+lectureID+'#'+json.dumps(array)
+
+print 'result'+'#'+courseID+'#'+lectureID+'#'+json.dumps(timestamps)
+print 'content'+'#'+courseID+'#'+lectureID+'#'+json.dumps(contents)
 sys.stdout.flush()

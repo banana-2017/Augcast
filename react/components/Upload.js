@@ -60,8 +60,9 @@ class Upload extends React.Component {
         var metadata = {
             contentType: 'application/pdf'
         };
-        // Upload the file and metadata to pdf/filename path in FB Storage
-        var uploadTask = storageRef.child('test/pdf/' + file.name).put(file, metadata);
+        // Upload the file and metadata to 'lectureid/file.pdf' in FB Storage
+        var uploadTask = storageRef.child(that.props.lecture + '/' + file.name).put(file, metadata);
+
 
         // Listener for state changes, errors, and completion of the upload
         uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED,
@@ -82,13 +83,12 @@ class Upload extends React.Component {
                     downloadURL: url
                 });
 
-                database.ref('lectures/' + that.props.courseID + '/' + that.props.lectureID).update({
+                database.ref('lectures/' + that.props.course + '/' + that.props.lecture).update({
                     slides_url: url
                 });
 
                 // Call the label API with the new download URL
                 that.callLabelAPI(url);
-                console.log('Download URL: ' + url);
             });
 
     }
@@ -104,8 +104,8 @@ class Upload extends React.Component {
             },
             body: JSON.stringify({
                 pdfURL: url,
-                courseID: that.props.courseID,
-                lectureID: that.props.lectureID,
+                courseID: that.props.course,
+                lectureID: that.props.lecture,
                 mediaURL: that.props.mediaURL
             })
         }).then(function(response) {
