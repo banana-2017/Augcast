@@ -27,16 +27,6 @@ router.get('/', function(req, res) {
     res.json({ message: 'API works'});
 });
 
-router.route('/testadmindb').post(function(req, res) {
-
-    adminDatabase.ref('/test/python').update({
-        labelProgress: 50
-    });
-
-    res.json({ message: 'Admin DB at '
-        + new Date().toLocaleString() + ': ' + JSON.stringify(req.body)});
-});
-
 router.route('/label').post(function(req, res) {
     // Create a new Python thread and run labeling script
     var PythonShell = require('python-shell');
