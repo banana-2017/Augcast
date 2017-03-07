@@ -45,18 +45,17 @@ router.route('/label').post(function(req, res) {
         var split = pythonStdout.split('#');
         //console.log('Python stdout: ' + split);
 
-        // If the stdout starts with {, that means the final result is being printed.
-        // Upload the final timestamps to the timestamps key
+        // Upload the progress to the timestamps key
         if (split[0] === 'progress') {
-            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.timestamps: ' + split[3]);
+            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.labelProgress: ' + split[3]);
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 labelProgress: Number(split[3])
             });
         }
-        // Else, the progress as a percent is being printed.
-        // Upload the progress to the labelProgress key
+
+        // Upload the final timestamps to the labelProgress key
         else if (split[0] === 'result'){
-            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.labelProgress: ' + split[3]);
+            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.timestamps: ' + split[3]);
 
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 timestamps: JSON.parse(split[3])
