@@ -45,18 +45,25 @@ router.route('/label').post(function(req, res) {
         var split = pythonStdout.split('#');
         //console.log('Python stdout: ' + split);
 
-        // Upload the progress to the timestamps key
+        // If receiving progress update, upload the progress
         if (split[0] === 'progress') {
-            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.labelProgress: ' + split[3]);
+            console.log('Updating lecture ' + split[2] + ' progress: ' + split[3]);
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 labelProgress: Number(split[3])
             });
         }
 
-        // Upload the final timestamps to the labelProgress key
-        else if (split[0] === 'result'){
-            console.log('Updating ' + '/lectures/'+split[1]+'/'+split[2] + '.timestamps: ' + split[3]);
+        // If receiving slide text contents, upload the contents
+        else if (split[0] === 'content') {
+            console.log('Updating lecture ' + split[2] + ' content: ' + split[3]);
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
+                contents: JSON.parse(split[3])
+            });
+        }
 
+        // If receiving final timestamps, upload the timestamps
+        else if (split[0] === 'result'){
+            console.log('Updating lecture ' + split[2] + ' final timestamps: ' + split[3]);
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 timestamps: JSON.parse(split[3])
             });
