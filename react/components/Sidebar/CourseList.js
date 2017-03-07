@@ -6,7 +6,6 @@ import FA from 'react-fontawesome';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { updateCourse } from '../../redux/actions';
 import Fuse from 'fuse.js';
 
 class CourseList extends React.Component {
@@ -15,7 +14,6 @@ class CourseList extends React.Component {
 
         // Initial state
         this.state = {
-            display: 'loading courses data',
             visibleCourses: []    // keys to visible courses
         };
 
@@ -46,7 +44,7 @@ class CourseList extends React.Component {
             distance: 70,
             maxPatternLength: 32,
             minMatchCharLength: 1,
-            keys: ['key', 'dept', 'num', 'professor', 'title']
+            keys: ['dept', 'num', 'professor', 'title']
         };
 
         var fuse = new Fuse(this.dataArray, options);
@@ -71,12 +69,6 @@ class CourseList extends React.Component {
         this.setState({visibleCourses:visibleCourses});
     }
 
-    routeToLecture(id) {
-        this.setState({display: 'loading lectures data'});
-        this.props.updateCourseState (id, undefined);
-        browserHistory.push('/' + id);
-    }
-
     render () {
 
         // make data accessible in subroutines
@@ -92,7 +84,7 @@ class CourseList extends React.Component {
             var section = course.section;
             var prof = course.professor;
             return (
-                <li className="course-item" key={id} onClick={() => {that.routeToLecture(id);}}>
+                <li className="course-item" key={id} onClick={() => {that.props.selectCourse(course);}}>
                     <div className="pin-button"><FA name="star-o" size="2x"/></div>
                     <div className="course-title">
                         <span className="course-number">{number}</span>
@@ -123,13 +115,12 @@ class CourseList extends React.Component {
     }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapStateToProps (state) {
     return {
-        updateCourseState: (courseId, lectureId) => {
-            dispatch (updateCourse (courseId, lectureId));
-        }
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture
     };
 }
 
-const CourseListContainer = connect (null, mapDispatchToProps)(CourseList);
+const CourseListContainer = connect (mapStateToProps, null)(CourseList);
 export default CourseListContainer;

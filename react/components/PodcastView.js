@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 //import { Link } from 'react-router';
 import VideoPlayer from './VideoPlayer';
 import PDFDisplay from './PDFDisplay';
@@ -38,8 +39,9 @@ class PodcastView extends React.Component {
     componentDidMount() {
         // Store reference to database listener so it can be removed
         var that = this;
-        var course = this.props.course;
-        var lectureNum = this.props.lectureNum;
+        var course = this.props.currentCourse;
+        var lecture = this.props.currentLecture;
+
         // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
         var ref = database.ref('courses/' + course.id + '/lectures/' + lectureNum);
         this.setState({
@@ -100,7 +102,7 @@ class PodcastView extends React.Component {
     PDFContainer() {
 
         // If lectureInfo not loaded yet, do nothing.
-        if (this.state.lectureInfo == undefined) {
+        if (this.props.currentLecture == undefined) {
             return (<div></div>);
         }
 
@@ -130,9 +132,9 @@ class PodcastView extends React.Component {
                     <br/>
                     <ProgressBar
                         active
-                        now={this.state.lectureInfo.labelProgress}
-                        label={`${(this.state.lectureInfo.labelProgress).toFixed(2)}%`} />
+                        now={this.state.lectureInfo.labelProgress} />
                 </div>
+                        // label={`${(this.state.lectureInfo.labelProgress).toFixed(2)}%`} />
             );
         }
 
@@ -140,29 +142,40 @@ class PodcastView extends React.Component {
         else if (this.state.timestampProgress == undefined) {
             return (
                 <Upload
-                    course = {this.props.course.id}
+                    course = {this.props.currentCourse.id}
                     lecture = {this.state.lectureInfo.num}
                     mediaURL = {this.state.lectureInfo.video_url}
-                    />
+                />
             );
         }
     }
 
     render () {
+        // No lecture is selected -- display blank
+
+        if (!this.props.currentLecture) {
+            return <div>select a lecture to start</div>;
+        }
         return (
             <div className="content-panel">
                 <div className="pdf-panel">
                     <this.PDFContainer/>
                 </div>
                 <div className = "video-panel">
-                    <VideoPlayer
-                        timestamp={this.state.timestamp}
-                        course={this.props.course}
-                        lectureNum={this.props.lectureNum} />
+                    <VideoPlayer timestamp={this.state.timestamp} />
                 </div>
             </div>
         );
     }
 }
 
-export default PodcastView;
+
+function mapStateToProps (state) {
+    return {
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture
+    };
+}
+
+const PodcastViewContainer = connect (mapStateToProps)(PodcastView);
+export default PodcastViewContainer;

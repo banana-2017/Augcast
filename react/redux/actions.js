@@ -7,7 +7,8 @@ export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 
-export const UPDATE_COURSE = 'UPDATE_COURSE';
+export const NAVIGATE_COURSE = 'NAVIGATE_COURSE';
+export const DISPLAY_LECTURE = 'DISPLAY_LECTURE';
 export const UPDATE_USER = 'UPDATE_USER';
 export const IS_INSTRUCTOR = 'IS_INSTRUCTOR';
 export const IS_FETCHING = 'IS_FETCHING';
@@ -78,11 +79,18 @@ export function logOut () {
     };
 }
 
-export function updateCourse (courseId, lectureId) {
+export function navigateCourse (navCourse) {
     return {
-        type: UPDATE_COURSE,
-        courseId: courseId,
-        lectureId: lectureId
+        type: NAVIGATE_COURSE,
+        navCourse: navCourse
+    };
+}
+
+export function displayLecture (currentCourse, currentLecture) {
+    return {
+        type: DISPLAY_LECTURE,
+        currentCourse: currentCourse,
+        currentLecture: currentLecture
     };
 }
 

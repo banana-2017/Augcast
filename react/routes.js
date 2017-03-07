@@ -1,6 +1,6 @@
 import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
-import Home from './components/Home';
+import HomeContainer from './components/Home';
 import Login from './components/Login';
 import PodcastView from './components/PodcastView';
 import Upload from './components/Upload';
@@ -17,7 +17,7 @@ import React from 'react';      // used for jsx
 
 module.exports = (
     <Route path="/" component = {App} >
-        <IndexRoute component = {Home} onEnter={authenticate}></IndexRoute>
+        <IndexRoute component = {HomeContainer} /* onEnter={authenticate} */></IndexRoute>
         <Route path="/login" component = {Login}/>
         <Route path="/podcastview" component={PodcastView} />
         <Route path="/upload" component = {Upload}/>
@@ -25,8 +25,8 @@ module.exports = (
         <Route path="/test" component={Test} />
         <Route path="/sidebar" component={Sidebar} />
         <Route path="/pdfdisplay" component={PDFDisplay} />
-        <Route path="/:courseID" component={Test}>
-            <Route path="/:courseID/:lectureNum" component={Test} />
+        <Route path="/:courseID" component={HomeContainer}>
+            <Route path="/:courseID/:lectureNum" component={HomeContainer} />
         </Route>
     </Route>
 );
