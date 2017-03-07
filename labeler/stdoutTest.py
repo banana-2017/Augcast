@@ -13,7 +13,7 @@ for i in range(0, 101):
     sys.stdout.flush()
     sleep(0.5)
 
-array = [5, 10, 15, 20, 25, 30]
+array = [0, 5, 10, 15, 20, 25, 30, 46, 23, 33, 434, 511]
 
 print 'result'+'#'+courseID+'#'+lectureID+'#'+json.dumps(array)
 sys.stdout.flush()
