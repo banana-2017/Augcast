@@ -95,7 +95,7 @@ class Upload extends React.Component {
                     downloadURL: url
                 });
 
-                database.ref('lectures/' + that.props.currentCourse.id + '/' + that.props.lecture.id).update({
+                database.ref('lectures/' + that.props.currentCourse.id + '/' + that.props.currentLecture.id).update({
                     slides_url: url
                 });
 
