@@ -12,7 +12,7 @@ import { FormControl } from 'react-bootstrap';
 import UploadContainer from '../Upload';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import PodcastView from '../PodcastView.js';
+//import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
 
 injectTapEventPlugin();
@@ -29,7 +29,7 @@ class UploadButton extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-                <IconButton tooltip="Upload slides" onTouchTap={() => {that.props.onClick(that.props.lecture)}}>
+                <IconButton tooltip="Upload slides" onTouchTap={() => {that.props.onClick(that.props.lecture);}}>
                     <ActionBackup />
                 </IconButton>
             </div>
@@ -108,7 +108,8 @@ class LectureList extends React.Component {
             );
         };
 
-        document.title = this.course.dept + " " + this.course.num + " - Augcast";
+        // Set page title
+        document.title = this.course.dept + ' ' + this.course.num + ' - Augcast';
 
         return (
             <div>

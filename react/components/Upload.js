@@ -12,7 +12,6 @@ class Upload extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(props);
 
         // Initial state
         this.state = {
@@ -140,11 +139,10 @@ class Upload extends React.Component {
     render () {
         if (this.props.lecture) {
             console.log(JSON.stringify({
-                    courseID: this.props.currentCourse.id,
-                    lectureID: this.props.lecture.id,
-                    mediaURL: this.props.lecture.video_url
-                })
-            );
+                courseID: this.props.currentCourse.id,
+                lectureID: this.props.lecture.id,
+                mediaURL: this.props.lecture.video_url
+            }));
         }
         return (
             <div
