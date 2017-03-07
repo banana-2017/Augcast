@@ -1,8 +1,8 @@
-// Sidebar.js
-// Responsible for uploading the PDF
-
+// Home.js
+// The landing page for our amazing app
 import React from 'react';
-import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import {connect} from 'react-redux';
 import SidebarContainer from './Sidebar/Sidebar.js';
 import PodcastViewContainer from './PodcastView.js';
 
@@ -19,26 +19,18 @@ class Home extends React.Component {
     }
 
     selectLecture(lectureID) {
-        console.log("Changing home state: " + lectureID);
         this.setState({playing: lectureID});
     }
 
     render () {
-        console.log("Rendering Home....");
-        console.log(this.state);
-        let main = null;
-        if (this.state.playing) {
-            main = <PodcastViewContainer />
-        } else {
-            main = <div>select lecture to view content</div>
-        }
+        console.log("Rendering Home");
 
         return (
             <div className="main">
                 <SidebarContainer courseID={this.props.params.courseID}
                                   lectureNum={this.props.params.lectureNum}
                                   selectLecture={this.selectLecture} />
-                {main}
+                <PodcastViewContainer />
             </div>
         );
     }
@@ -46,11 +38,10 @@ class Home extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        currentCourse:  state.currentCourse,
-        currentLecture: state.currentLecture
+        currentLecture: state.currentLecture,
+        username:       state.username
     };
 }
 
-const HomeContainer = connect (mapStateToProps)(Home);
-
+const HomeContainer = connect(mapStateToProps)(Home);
 export default HomeContainer;

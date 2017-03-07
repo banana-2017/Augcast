@@ -40,7 +40,8 @@ class PodcastView extends React.Component {
         // Store reference to database listener so it can be removed
         var that = this;
         var course = this.props.currentCourse;
-        var lectureNum = this.props.currentLecture.num;
+        var lecture = this.props.currentLecture;
+
         // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
         var ref = database.ref('courses/' + course.id + '/lectures/' + lectureNum);
         this.setState({
@@ -101,7 +102,7 @@ class PodcastView extends React.Component {
     PDFContainer() {
 
         // If lectureInfo not loaded yet, do nothing.
-        if (this.state.lectureInfo == undefined) {
+        if (this.props.currentLecture == undefined) {
             return (<div></div>);
         }
 
@@ -131,9 +132,9 @@ class PodcastView extends React.Component {
                     <br/>
                     <ProgressBar
                         active
-                        now={this.state.lectureInfo.labelProgress}
-                        label={`${(this.state.lectureInfo.labelProgress).toFixed(2)}%`} />
+                        now={this.state.lectureInfo.labelProgress} />
                 </div>
+                        // label={`${(this.state.lectureInfo.labelProgress).toFixed(2)}%`} />
             );
         }
 
@@ -150,6 +151,8 @@ class PodcastView extends React.Component {
     }
 
     render () {
+        // No lecture is selected -- display blank
+
         if (!this.props.currentLecture) {
             return <div>select a lecture to start</div>;
         }
@@ -159,10 +162,7 @@ class PodcastView extends React.Component {
                     <this.PDFContainer/>
                 </div>
                 <div className = "video-panel">
-                    <VideoPlayer
-                        timestamp={this.state.timestamp}
-                        course={this.props.course}
-                        lectureNum={this.props.lectureNum} />
+                    <VideoPlayer timestamp={this.state.timestamp} />
                 </div>
             </div>
         );
@@ -174,14 +174,6 @@ function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
         currentLecture: state.currentLecture
-    };
-}
-
-function mapDispatchToProps (dispatch) {
-    return {
-        updateCourseState: (course, lectureNum) => {
-            dispatch (updateCourse (course, lectureNum));
-        }
     };
 }
 

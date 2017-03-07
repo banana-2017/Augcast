@@ -1,26 +1,30 @@
 import express from 'express';
 import ActiveDirectory from 'activedirectory2';
+import bodyParser from 'body-parser';
 var router = express.Router();
 
+// parse application/json
+router.use(bodyParser.json());
 
 router.post ('/', function (req, res) {
 
-    var config = { url: 'ldap://ad.ucsd.edu',
+    var config = {
+        url: 'ldap://ad.ucsd.edu',
         baseDN: '',
-        username: req.body.username,
-        password: req.body.password
     };
 
     var ad = new ActiveDirectory(config);
+    console.log ('authenticating ' + req.body.email);
 
-    ad.authenticate(req.body.username, req.body.password, function(err, auth) {
+    ad.authenticate(req.body.email, req.body.password, function(err, adAuth) {
         if (err) {
-            console.log('ERROR: '+JSON.stringify(err));
-            return;
+            res.json ({
+                success:false
+            });
         }
 
-        if (auth) {
-            console.log('Authenticated with ' + req.body.username);
+        else if (adAuth) {
+            console.log('Authenticated with ' + req.body.email);
             res.json ({
                 success: true
             });

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --inline --hot --history-api-fallback",
     "prod": "npm run build && node server.bundle.js",
+    "nodemon": "./node_modules/.bin/nodemon npm run prod",
     "build:client": "webpack",
     "build:server": "webpack --config webpack.server.config.js",
     "build": "npm run build:client && npm run build:server"
@@ -29,9 +30,11 @@
     "eslint": "^3.15.0",
     "eslint-plugin-react": "^6.9.0",
     "morgan": "^1.8.1",
+    "nodemon": "^1.11.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router": "^3.0.2",
+    "redux-logger": "^2.8.1",
     "style-loader": "^0.13.1",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
@@ -55,6 +58,7 @@
     "react-router": "^3.0.2",
     "react-spinkit": "^2.1.1",
     "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
   }

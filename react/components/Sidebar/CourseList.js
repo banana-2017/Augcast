@@ -6,7 +6,6 @@ import FA from 'react-fontawesome';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { updateCourse } from '../../redux/actions';
 import Fuse from 'fuse.js';
 
 class CourseList extends React.Component {
@@ -70,16 +69,6 @@ class CourseList extends React.Component {
         this.setState({visibleCourses:visibleCourses});
     }
 
-    routeToLecture(course) {
-        this.props.updateCourseState (course, undefined);
-        this.props.onSelectCourse(course.id);
-        // database.ref('courses').once('value').then(function(snapshot) {
-        //     that.courses = snapshot.val();
-        //     that.setState({loading: false});
-        // });
-        // browserHistory.push('/' + id);
-    }
-
     render () {
 
         // make data accessible in subroutines
@@ -95,7 +84,7 @@ class CourseList extends React.Component {
             var section = course.section;
             var prof = course.professor;
             return (
-                <li className="course-item" key={id} onClick={() => {that.routeToLecture(course);}}>
+                <li className="course-item" key={id} onClick={() => {that.props.selectCourse(course);}}>
                     <div className="pin-button"><FA name="star-o" size="2x"/></div>
                     <div className="course-title">
                         <span className="course-number">{number}</span>
@@ -126,13 +115,12 @@ class CourseList extends React.Component {
     }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapStateToProps (state) {
     return {
-        updateCourseState: (currentCourse, currentLecture) => {
-            dispatch (updateCourse (currentCourse, currentLecture));
-        }
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture
     };
 }
 
-const CourseListContainer = connect (null, mapDispatchToProps)(CourseList);
+const CourseListContainer = connect (mapStateToProps, null)(CourseList);
 export default CourseListContainer;

@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { navigateCourse } from '../../redux/actions';
 import { browserHistory } from 'react-router';
 import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
@@ -17,7 +18,6 @@ class Sidebar extends React.Component {
         // Initial state
         this.state = {
             display: 'loading',
-            course: undefined
         };
 
         // functions
@@ -31,9 +31,7 @@ class Sidebar extends React.Component {
         var that = this;
         database.ref('courses').once('value').then(function(snapshot) {
             that.courses = snapshot.val();
-            if (that.props.lectureNum == undefined) {
-                that.setState({display: 'course'});
-            }
+            that.setState({display: 'course'});
         });
     }
 
@@ -47,7 +45,7 @@ class Sidebar extends React.Component {
         if (this.props.courseID) {
             database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
                 that.lectures = snapshot.val();
-                that.setState({display: that.props.counrseID});
+                that.props.updateCourseState(that.courses[that.props.courseID], null);
             });
         }
     }
@@ -59,7 +57,7 @@ class Sidebar extends React.Component {
      */
     back() {
         browserHistory.push('/');
-        this.setState({display: 'course'});
+        this.props.navigateCourse(null);
     }
 
 
@@ -67,36 +65,31 @@ class Sidebar extends React.Component {
      * Handler for the course selection..
      * Display LectureList of the selected course.
      */
-    selectCourse(id) {
-        console.log("Selecting course: " + id);
+    selectCourse(course) {
         var that = this;
-        database.ref('lectures/' + id).once('value').then(function(snapshot) {
+        database.ref('lectures/' + course.id).once('value').then(function(snapshot) {
             that.lectures = snapshot.val();
-            that.setState({display: id});
+            browserHistory.push('/' + course.id);
+            that.props.navigateCourse(course);
         });
-        browserHistory.push('/' + id);
     }
 
 
     render () {
-        console.log("Rendering LectureList....");
-        console.log(this.props);
-
         // loading
         if (this.state.display == 'loading') {
             return <Spinner className="sidebar-loading" spinnerName="three-bounce" />;
         }
 
         // render lecture list
-        else if (this.state.display == 'course') {
-            return <CourseListContainer courses={this.courses}
-                                        onSelectCourse={this.selectCourse} />;
+        else if (this.props.navCourse) {
+            return <LectureListContainer back={this.back}
+                                         lectures={this.lectures} />;
         }
         // render course list
         else {
-            return <LectureListContainer back={this.back}
-                                         course={this.courses[this.props.courseID]}
-                                         lectures={this.lectures} />;
+            return <CourseListContainer courses={this.courses}
+                                        selectCourse={this.selectCourse} />;
         }
     }
 
@@ -104,18 +97,20 @@ class Sidebar extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        currentCourse:  state.currentCourse,
-        currentLecture: state.currentLecture
+        navCourse:  state.navCourse
     };
 }
 
 function mapDispatchToProps (dispatch) {
     return {
-        updateCourseState: (course, lectureNum) => {
-            dispatch (updateCourse (course, lectureNum));
+        navigateCourse: (navCourse) => {
+            dispatch(navigateCourse(navCourse));
+        },
+        displayLecture: (currentCourse, currentLecture) => {
+            dispatch(displayLecture(currentCourse, currentLecture));
         }
     };
 }
 
-const SidebarContainer = connect (mapStateToProps)(Sidebar);
+const SidebarContainer = connect (mapStateToProps, mapDispatchToProps)(Sidebar);
 export default SidebarContainer;

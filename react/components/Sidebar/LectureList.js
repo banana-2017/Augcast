@@ -8,7 +8,7 @@ import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 
 import PodcastView from '../PodcastView.js';
-import {updateCourse} from '../../redux/actions';
+import { displayLecture } from '../../redux/actions';
 
 class LectureList extends React.Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
-            render: this.props.lectures[this.props.course.lectures[this.props.lectueNum]]
+            render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined
         };
 
         // this.search = this.search.bind (this);
@@ -26,8 +26,7 @@ class LectureList extends React.Component {
         // this.dataArray = [];
 
         // inherit all course data
-        this.course = this.props.course;
-        this.lecture = this.props.lecture;
+        this.course = this.props.navCourse;
         // this.state.visibleCourses = this.courses.keys;
 
         // // populate array for search
@@ -84,9 +83,11 @@ class LectureList extends React.Component {
     // }
 
     selectLecture(lecture) {
-        browserHistory.push('/' + this.course.id + '/' + lecture.num);
-        this.props.updateCourseState(this.course, lecture);
-        this.setState({render: lecture.id});
+        console.log(lecture);
+        console.log(this.course);
+        // browserHistory.push('/' + this.course.id + '/' + lecture.num);
+        this.props.displayLecture(this.course, lecture);
+        // this.setState({render: lecture.id});
     }
 
     render () {
@@ -98,7 +99,7 @@ class LectureList extends React.Component {
             var month = that.calendar[lecture.month];
             return (
                 <li key={lecture.id}
-                    className={(lecture.id == that.state.render) ? 'lecture-item selected' : 'lecture-item'}
+                    className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}
                     onClick={() => {that.selectLecture(lecture);}}>
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
@@ -117,7 +118,7 @@ class LectureList extends React.Component {
                     </div>
                     <div className="lectures-wrapper">
                         <ul className="lecture-list">
-                            {that.course.lectures.map(listItem)}
+                            {that.props.navCourse.lectures.map(listItem)}
                         </ul>
                     </div>
                 </div>
@@ -129,15 +130,15 @@ class LectureList extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        currentCourse:  state.currentCourse,
-        currentLecture: state.currentLecture
+        navCourse:  state.navCourse,
+        currentLecture:  state.currentLecture
     };
 }
 
 function mapDispatchToProps (dispatch) {
     return {
-        updateCourseState: (course, lectureNum) => {
-            dispatch (updateCourse (course, lectureNum));
+        displayLecture: (currentCourse, currentLecture) => {
+            dispatch (displayLecture(currentCourse, currentLecture));
         }
     };
 }
