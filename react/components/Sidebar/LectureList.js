@@ -43,44 +43,6 @@ class LectureList extends React.Component {
         };
     }
 
-    // // search course
-    // search (query) {
-    //     var options = {
-    //         shouldSort: true,
-    //         threshold: 0.6,
-    //         location: 0,
-    //         distance: 70,
-    //         maxPatternLength: 32,
-    //         minMatchCharLength: 1,
-    //         keys: ['key', 'dept', 'num', 'professor', 'title']
-    //     };
-    //
-    //     var fuse = new Fuse(this.dataArray, options);
-    //     var result = fuse.search(query);
-    //     return result;
-    // }
-    //
-    // searchInput (e) {
-    //     let query = e.target.value;
-    //
-    //     // empty query
-    //     if (query === '') {
-    //         this.setState({visibleCourses:this.courseIDs});
-    //         return;
-    //     }
-    //
-    //     let searchResults = this.search (query);
-    //     let visibleCourses = [];
-    //     for (var index in searchResults) {
-    //         visibleCourses.push (searchResults[index].key);
-    //     }
-    //     this.setState({visibleCourses:visibleCourses});
-    // }
-    //
-    // routeToLecture(id) {
-    //     this.setState({display: 'loading lectures data'});
-    //     browserHistory.push('/' + id);
-    // }
 
     selectLecture(lecture) {
         console.log(lecture);
@@ -95,7 +57,7 @@ class LectureList extends React.Component {
         var that = this;
 
         var listItem = function(lectureID) {
-            var lecture = that.props.lectures[lectureID]
+            var lecture = that.props.lectures[lectureID];
             var month = that.calendar[lecture.month];
             return (
                 <li key={lecture.id}

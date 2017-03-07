@@ -8,6 +8,8 @@ import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Fuse from 'fuse.js';
 
+import  CourseListItem from './CourseListItem';
+
 class CourseList extends React.Component {
     constructor(props) {
         super(props);
@@ -69,6 +71,7 @@ class CourseList extends React.Component {
         this.setState({visibleCourses:visibleCourses});
     }
 
+
     render () {
 
         // make data accessible in subroutines
@@ -84,15 +87,13 @@ class CourseList extends React.Component {
             var section = course.section;
             var prof = course.professor;
             return (
-                <li className="course-item" key={id} onClick={() => {that.props.selectCourse(course);}}>
-                    <div className="pin-button"><FA name="star-o" size="2x"/></div>
-                    <div className="course-title">
-                        <span className="course-number">{number}</span>
-                        <span className="course-section">{section}</span>
-                    </div>
-                    <div className="course-prof">{prof}</div>
-                    <div className="expand-button"></div>
-                </li>
+                <CourseListItem key={id}
+                                number={number}
+                                id={id}
+                                section={section}
+                                prof={prof}
+                                course={course}
+                                selectCourse={that.props.selectCourse}/>
             );
         };
 
@@ -118,7 +119,8 @@ class CourseList extends React.Component {
 function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
-        currentLecture: state.currentLecture
+        currentLecture: state.currentLecture,
+        user: state.username
     };
 }
 
