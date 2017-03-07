@@ -118,6 +118,10 @@ html, body, .podcast-container, .pdf-view, .video-view {
     overflow: auto;
 }
 
+.pinned {
+    color: yellow
+}
+
 .course-item {
     position: relative;
     width: 100%;

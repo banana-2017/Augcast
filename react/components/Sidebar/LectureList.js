@@ -94,7 +94,7 @@ class LectureList extends React.Component {
         var that = this;
 
         var listItem = function(lectureID) {
-            var lecture = that.props.lectures[lectureID]
+            var lecture = that.props.lectures[lectureID];
             var month = that.calendar[lecture.month];
             return (
                 <li key={lecture.id}
