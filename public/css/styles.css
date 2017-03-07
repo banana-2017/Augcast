@@ -298,3 +298,17 @@ html, body, .podcast-container, .pdf-view, .video-view {
     top:50%;
     margin:-25px 0 -50px;
 }
+
+.video-player {
+    margin: 0 auto;
+}
+
+.video-button-group-container {
+    margin: 0 auto;
+    max-width: 300px;
+}
+
+.video-button-group {
+    margin: 0 auto;
+    max-width: 300px;
+}
