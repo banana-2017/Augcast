@@ -33,6 +33,8 @@ class CourseListItem extends React.Component {
                     that.setState ({
                         pinned: true
                     });
+
+                    that.props.moveToTop (that.props.id);
                 }
             }
         });

@@ -3,7 +3,6 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
-import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Fuse from 'fuse.js';
@@ -21,6 +20,7 @@ class CourseList extends React.Component {
 
         this.search = this.search.bind(this);
         this.searchInput = this.searchInput.bind(this);
+        this.moveToTop = this.moveToTop.bind (this);
 
         // lecture slection variable
         this.dataArray = [];
@@ -71,6 +71,19 @@ class CourseList extends React.Component {
         this.setState({visibleCourses:visibleCourses});
     }
 
+    // moves pinned courses to the top
+    moveToTop (courseId) {
+        let visibleCourses = this.state.visibleCourses;
+        let index = visibleCourses.indexOf (courseId);
+
+        // removing the courseId and pushing to the front
+        if (index > -1) {
+            visibleCourses.splice(index, 1);
+        }
+
+        visibleCourses.unshift (courseId);
+        this.setState ({visibleCourses: visibleCourses});
+    }
 
     render () {
 
@@ -93,7 +106,8 @@ class CourseList extends React.Component {
                                 section={section}
                                 prof={prof}
                                 course={course}
-                                selectCourse={that.props.selectCourse}/>
+                                selectCourse={that.props.selectCourse}
+                                moveToTop={that.moveToTop}/>
             );
         };
 
