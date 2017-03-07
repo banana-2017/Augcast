@@ -1,6 +1,5 @@
 import React from 'react';
 import FA from 'react-fontawesome';
-import {database} from '../../../database/database_init';
 import {connect} from 'react-redux';
 
 
@@ -9,35 +8,21 @@ class CourseListItem extends React.Component {
 
     constructor (props) {
         super (props);
-
         this.pinCourse = this.pinCourse.bind(this);
-        this.state = {
-            pinned: false
-        };
     }
 
+    // toggle pinning
     pinCourse (id) {
-        return id;
-    }
-
-    componentWillMount () {
-        var that = this;
-
-        // get the favorites array, set state for pinned courses
-        database.ref('users/'+this.props.username+'/favorites').once('value').then(function(snapshot) {
-            let favoriteArray = snapshot.val();
-
-            // course is the index in the array
-            for (var course in favoriteArray) {
-                if (favoriteArray[course] === that.props.id) {
-                    that.setState ({
-                        pinned: true
-                    });
-
-                    that.props.moveToTop (that.props.id);
-                }
-            }
-        });
+        let {favorite, pushToFavorites, removeFromFavorites} = this.props;
+        
+        // toggle
+        if (favorite)
+        {
+            removeFromFavorites (id);
+        }
+        else {
+            pushToFavorites (id);
+        }
     }
 
     render () {
@@ -48,9 +33,9 @@ class CourseListItem extends React.Component {
             <li className="course-item" key={id} >
                 <div className="pin-button">
                     <FA onClick={() => {this.pinCourse(id);}}
-                        name={(this.state.pinned)?'star':'star-o'}
+                        name={(this.props.favorite)?'star':'star-o'}
                         size="2x"
-                        className={(this.state.pinned)?'pinned':'unpinned'}/>
+                        className={(this.props.favorite)?'pinned':'unpinned'}/>
                 </div>
                 <div id="courseLabel" onClick={() => {selectCourse(course);}}>
                     <div className="course-title">

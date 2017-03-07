@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import Fuse from 'fuse.js';
 
 import  CourseListItem from './CourseListItem';
+import {database} from '../../../database/database_init';
+
 
 class CourseList extends React.Component {
     constructor(props) {
@@ -15,12 +17,15 @@ class CourseList extends React.Component {
 
         // Initial state
         this.state = {
-            visibleCourses: []    // keys to visible courses
+            visibleCourses: [],    // keys to visible courses
+            favoriteArray: []
         };
 
         this.search = this.search.bind(this);
         this.searchInput = this.searchInput.bind(this);
         this.moveToTop = this.moveToTop.bind (this);
+        this.pushToFavorites = this.pushToFavorites.bind (this);
+        this.removeFromFavorites = this.removeFromFavorites.bind(this);
 
         // lecture slection variable
         this.dataArray = [];
@@ -35,6 +40,28 @@ class CourseList extends React.Component {
             current.key = course;
             this.dataArray.push(current);
         }
+    }
+
+    componentWillMount () {
+        // get the favorites array, set state for pinned courses
+        var that = this;
+
+        database.ref('users/'+this.props.username+'/favorites').once('value').then(function(snapshot) {
+            let favoriteArray = snapshot.val();
+
+            if (snapshot.val() == null) {
+                favoriteArray = [];
+            }
+
+            that.setState({favoriteArray:favoriteArray});
+
+            let visibleCourses = that.state.visibleCourses;
+            for (var course in visibleCourses) {
+                if (favoriteArray.includes(visibleCourses[course])) {
+                    that.moveToTop (visibleCourses[course]);
+                }
+            }
+        });
     }
 
     // search course
@@ -71,6 +98,36 @@ class CourseList extends React.Component {
         this.setState({visibleCourses:visibleCourses});
     }
 
+    /**************** Pinned course management ******************/
+
+    // adds to favorites in db
+    pushToFavorites (courseId) {
+        var updates = {};
+        let favoriteArray = this.state.favoriteArray;
+        favoriteArray.push (courseId);
+        this.moveToTop (courseId);
+
+        updates['/users/' + this.props.username + '/favorites'] = favoriteArray;
+        this.setState({favoriteArray: favoriteArray});
+        database.ref().update(updates);
+    }
+
+
+    // removes from favorties in db
+    removeFromFavorites (courseId) {
+        var updates = {};
+        let favoriteArray = this.state.favoriteArray;
+
+        let index = favoriteArray.indexOf (courseId);
+        if (index > -1) {
+            favoriteArray.splice (index, 1);
+        }
+
+        updates['/users/' + this.props.username + '/favorites'] = favoriteArray;
+        this.setState({favoriteArray: favoriteArray});
+        database.ref().update(updates);
+    }
+
     // moves pinned courses to the top
     moveToTop (courseId) {
         let visibleCourses = this.state.visibleCourses;
@@ -84,6 +141,8 @@ class CourseList extends React.Component {
         visibleCourses.unshift (courseId);
         this.setState ({visibleCourses: visibleCourses});
     }
+
+    /********************************************************************/
 
     render () {
 
@@ -99,6 +158,11 @@ class CourseList extends React.Component {
             var number = course.dept + ' ' + course.num;
             var section = course.section;
             var prof = course.professor;
+
+            if (that.state.favoriteArray.length > 0) {
+                var favorite = that.state.favoriteArray.includes(id);
+            }
+
             return (
                 <CourseListItem key={id}
                                 number={number}
@@ -107,6 +171,9 @@ class CourseList extends React.Component {
                                 prof={prof}
                                 course={course}
                                 selectCourse={that.props.selectCourse}
+                                favorite= {favorite}
+                                pushToFavorites = {that.pushToFavorites}
+                                removeFromFavorites = {that.removeFromFavorites}
                                 moveToTop={that.moveToTop}/>
             );
         };
@@ -130,11 +197,12 @@ class CourseList extends React.Component {
     }
 }
 
+
 function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
         currentLecture: state.currentLecture,
-        user: state.username
+        username: state.username
     };
 }
 
