@@ -38,7 +38,7 @@ class CourseList extends React.Component {
         // populate array for search
         for (var course in this.courses) {
             let current = this.courses[course];
-            current.course = current.dept+' '+current.number;
+            current.course = current.dept+' '+current.num;
             current.key = course;
             this.dataArray.push(current);
         }
@@ -96,7 +96,7 @@ class CourseList extends React.Component {
                     this.moveToTop(this.state.favoriteArray[pinned]);
                 }
             });
-            
+
             return;
         }
 
