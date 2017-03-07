@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
+import authentication from './routes/authentication';
 import { adminDatabase } from './database/admin_database_init';
 var bodyParser = require('body-parser');
 //import labelHandler from './labeler/labelHandler';
@@ -17,6 +18,8 @@ var router = express.Router();  //Instance of Express Router
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/css', express.static(__dirname + '/public/css/'));
+app.use('/api/login', authentication);
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 
