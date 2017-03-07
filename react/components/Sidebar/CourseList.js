@@ -33,6 +33,7 @@ class CourseList extends React.Component {
         // inherit all course data
         this.courses = this.props.courses;
         this.state.visibleCourses = Object.keys(this.courses);
+        this.courseIDs = this.state.visibleCourses;
 
         // populate array for search
         for (var course in this.courses) {
