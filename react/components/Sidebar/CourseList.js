@@ -88,6 +88,10 @@ class CourseList extends React.Component {
         // empty query
         if (query === '') {
             this.setState({visibleCourses:this.courseIDs});
+            for (var pinned in this.state.favoriteArray) {
+                this.moveToTop(this.state.favoriteArray[pinned]);
+            }
+            
             return;
         }
 
