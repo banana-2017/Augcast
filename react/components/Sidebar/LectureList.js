@@ -85,8 +85,8 @@ class LectureList extends React.Component {
     selectLecture(lecture) {
         console.log(lecture);
         console.log(this.course);
-        // browserHistory.push('/' + this.course.id + '/' + lecture.num);
         this.props.displayLecture(this.course, lecture);
+        browserHistory.push('/' + this.course.id + '/' + lecture.num);
         // this.setState({render: lecture.id});
     }
 
