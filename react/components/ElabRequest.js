@@ -45,6 +45,7 @@ class ElabRequest extends React.Component {
         this.editAnswer = this.editAnswer.bind(this);
         this.submitAnswer = this.submitAnswer.bind(this);
         this.displayAnswer = this.displayAnswer.bind(this);
+        this.removeAnswer = this.removeAnswer.bind(this);
     }
 
     handleEdit(event) {
@@ -84,10 +85,34 @@ class ElabRequest extends React.Component {
         });
     }
 
-    displayAnswer(answerText){
+    removeAnswer(inputtedID, index) {
+        var that = this;
+        //console.log('inputtedID is :' + inputtedID);
+        //console.log('answer after inputtedID is :' + that.state.answer);
+        database.ref('/elab-request/' + inputtedID + '/answer/' + index).once('value').then(function(snapshot) {
+            console.log('SNAPSHOT in database is :' + snapshot.val());
+            var updates = {};
+            that.setState({answer: that.state.answer.filter((_, i) => i !== index)});
+            updates['/elab-request/' + inputtedID  + '/answer/' + index] = null;
+            database.ref().update(updates);
+        });
+    }
+
+    displayAnswer(inputtedID,answerText, index){
+        console.log('answerText: ' + answerText);
+        console.log('index: ' + index);
+        var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
+            margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
+            fontWeight: '300', fontSize: '22px', display: 'inline-block'};
+        var that = this;
         return(
-            <div className="elaboration-oneAnswer" key={answerText}>
+            <div className="elaboration-oneAnswer" key={index}>
                  <li className="elaboration-oneAnswer-text">{answerText}</li>
+                 <form>
+                   <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index);}}>
+                     Delete
+                   </a>
+                 </form>
              </div>
         );
     }
@@ -113,7 +138,7 @@ class ElabRequest extends React.Component {
                 </p>
               </div>
               <div className="elaboration-answer">
-                {answers != null && answers.map(that.displayAnswer)}
+                {answers != null && answers.map(that.displayAnswer.bind(this,elaboration))}
                 <form>
                     <input
                         style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
