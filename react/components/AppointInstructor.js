@@ -1,5 +1,6 @@
 import React from 'react';
 import { database } from './../../database/database_init';
+import { Button } from 'react-bootstrap';
 import Fuse from 'fuse.js';
 
 class AppointInstructor extends React.Component {
@@ -126,7 +127,10 @@ class AppointInstructor extends React.Component {
                 <tr key={email}>
                     <td>{name}</td>
                     <td>{email}</td>
-                    <td>Button</td>
+                    <td>
+                        <Button bsStyle="default">+</Button>
+                        <Button bsStyle="default">-</Button>
+                    </td>
                 </tr>
             )
         }
@@ -152,7 +156,6 @@ class AppointInstructor extends React.Component {
 
                 <h3>Student List </h3>
                 <table id='student-table'>
-
                     <thead>
                         <tr>
                             <th>Name</th>
