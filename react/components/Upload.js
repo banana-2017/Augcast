@@ -60,8 +60,8 @@ class Upload extends React.Component {
         var metadata = {
             contentType: 'application/pdf'
         };
-        // Upload the file and metadata to pdf/filename path in FB Storage
-        var uploadTask = storageRef.child('test/pdf/' + file.name).put(file, metadata);
+        // Upload the file and metadata to 'lectureid/file.pdf' in FB Storage
+        var uploadTask = storageRef.child(that.props.lecture + '/' + file.name).put(file, metadata);
 
 
         // Listener for state changes, errors, and completion of the upload
