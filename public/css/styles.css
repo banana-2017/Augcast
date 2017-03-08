@@ -119,7 +119,7 @@ html, body, .podcast-container, .pdf-view, .video-view {
 }
 
 .pinned {
-    color: yellow
+    color: gold;
 }
 
 .course-item {
@@ -263,6 +263,7 @@ html, body, .podcast-container, .pdf-view, .video-view {
     display: inline-block;
     overflow: auto;
     vertical-align: top;
+    float: left;
 }
 
 .pdf-page {
@@ -301,11 +302,14 @@ html, body, .podcast-container, .pdf-view, .video-view {
 
 .video-panel {
     position: relative;
-    display: inline-block;
+    /* white-space: nowrap; */
+    /* width: 100%; */
+    /* display: inline-block; */
     overflow: hidden;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     height: 100%;
     vertical-align: top;
+    /* float: left; */
 }
 
 .loadingSideBar {

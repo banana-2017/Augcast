@@ -83,6 +83,7 @@ class LectureList extends React.Component {
     }
 
     openModal(lecture) {
+        console.log(lecture);
         this.setState({upload: lecture, modal: true});
     }
 

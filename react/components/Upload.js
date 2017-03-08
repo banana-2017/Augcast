@@ -94,7 +94,7 @@ class Upload extends React.Component {
                     downloadURL: url
                 });
 
-                database.ref('lectures/' + that.props.currentCourse.id + '/' + that.props.currentLecture.id).update({
+                database.ref('lectures/' + that.props.navCourse.id + '/' + that.props.lecture.id).update({
                     slides_url: url
                 });
 
@@ -115,7 +115,7 @@ class Upload extends React.Component {
             },
             body: JSON.stringify({
                 pdfURL: url,
-                courseID: that.props.currentCourse.id,
+                courseID: that.props.navCourse.id,
                 lectureID: that.props.lecture.id,
                 mediaURL: that.props.lecture.video_url
             })
@@ -139,7 +139,7 @@ class Upload extends React.Component {
     render () {
         if (this.props.lecture) {
             console.log(JSON.stringify({
-                courseID: this.props.currentCourse.id,
+                courseID: this.props.navCourse.id,
                 lectureID: this.props.lecture.id,
                 mediaURL: this.props.lecture.video_url
             }));
@@ -208,7 +208,7 @@ class Upload extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        currentCourse:  state.currentCourse,
+        navCourse:  state.navCourse,
         currentLecture:  state.currentLecture
     };
 }
