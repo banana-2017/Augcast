@@ -13,7 +13,7 @@ class AppointInstructor extends React.Component {
         }
 
         // Instance Variable
-        this.testCourseId = "cse100";
+        this.courseId = this.props.course.id;
         this.usersDirObj = undefined;
         this.studentsArray = [];
         this.instructorsArray = [];
@@ -33,17 +33,13 @@ class AppointInstructor extends React.Component {
                 let instructorCourse = current.instructorFor;
                 if(typeof instructorCourse != 'undefined') {
                     for(var course in instructorCourse) {
-                        if(instructorCourse[course] === that.testCourseId) {
+                        if(instructorCourse[course] === that.courseId) {
                             that.instructorsArray.push(current);
                             break;
                         }
                     }
                 }
             }
-
-            // check if it works
-            console.log("instructorsArray", that.instructorsArray);
-            console.log("studentsArray", that.studentsArray);
 
             that.setState({dataRetrieved: true});
         })
@@ -57,25 +53,29 @@ class AppointInstructor extends React.Component {
 
     /*
      * Update the database when a user is selected to be the instructor
+     *
+     * userId: the id of the user to be the instructor
      */
-    selectInstructor(testCourseId) {
-        let testUserId = "instructor";
+    selectInstructor(userId) {
+        var that = this;
 
         let instructorCourses = undefined;
         // query the instructorFor array field of the selected users
-        var ref = database.ref('/users/' + testUserId + '/instructorFor');
+        var ref = database.ref('/users/' + userId + '/instructorFor');
         ref.once('value').then(function(snapshot) {
             instructorCourses = snapshot.val();
 
             console.log("instructorCourses", instructorCourses);
             var updates = {};
-            updates[Object.keys(instructorCourses).length] = testCourseId;
+            updates[Object.keys(instructorCourses).length] = that.courseId;
             ref.update(updates);
         })
     }
 
     /*
      * The function handling searching the users using fuzzy search
+     *
+     * query: string to be searched for
      */
     searchUser(query) {
         var options = {
