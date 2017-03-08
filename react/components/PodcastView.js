@@ -44,7 +44,7 @@ class PodcastView extends React.Component {
         if (course != undefined && lecture != undefined) {
 
             // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
-            var ref = database.ref('courses/' + course.id + '/lectures/' + lecture.id);
+            var ref = database.ref('/lectures/' + course.id + '/' + lecture.id);
             this.setState({
                 firebaseListener: ref
             });
@@ -161,10 +161,10 @@ class PodcastView extends React.Component {
         if (this.props.currentLecture == undefined) {
             return (<div>select a lecture to start</div>);
         } else {
-            document.title = this.props.currentCourse.dept + " "
-                           + this.props.currentCourse.num  + ": Lecture "
+            document.title = this.props.currentCourse.dept + ' '
+                           + this.props.currentCourse.num  + ': Lecture '
                            + this.props.currentLecture.num
-                           + " - Augcast";
+                           + ' - Augcast';
 
             return (
                 <div className="content-panel">
