@@ -1,5 +1,5 @@
 import React from 'react';
-// import { database } from './../../database/database_init';
+import { database } from './../../database/database_init';
 // import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
@@ -31,24 +31,19 @@ class Question extends React.Component {
             endorsed: this.props.endorsed, q_userName: this.props.q_userName})
     }
 
-    toggleEdit() {
+    toggleEdit(event) {
         this.setState({editing: !this.state.editing})
     }
 
-    toggleHover() {
+    toggleHover(event) {
         this.setState({hover: !this.state.hover})
     }
 
-    cancelButton() {
-        {this.toggleHover()}
-        {this.toggleEdit()}
+    cancelButton(event) {
+        {this.toggleHover}
+        {this.toggleEdit}
     }
 
-    submitButton() {
-        {this.toggleHover()}
-        {this.toggleEdit()}
-        {this.props.handleSubmit()}
-    }
     newRequest() {
         var containerStyle = {backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
             width: '800px', fontSize: '25px'};
@@ -64,10 +59,10 @@ class Question extends React.Component {
                             style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
                             type="text"
                             className="form-control"
-                            defaultValue= {this.state.question}
-                        />
+                            defaultValue= {this.props.question}
+                            onChange={this.props.handleEdit}/>
                         <div className="request-buttons">
-                            <a style={buttonStyle} onClick={this.submitButton}>
+                            <a style={buttonStyle} onClick={this.props.handleSubmit}>
                                 Submit
                             </a>
                             <a style={buttonStyle} onClick={this.cancelButton}>
