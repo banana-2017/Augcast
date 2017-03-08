@@ -130,29 +130,45 @@ class AppointInstructor extends React.Component {
                 </tr>
             )
         }
-
         return (
             <div className="instructors">
+                <h3>Instructor List </h3>
                 <input type="text"
                        placeholder="Appoint Instructors"
                        onChange={this.searchInput}/>
                 <table id='instructor-table'>
-                    <tr class="header">
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                    </tr>
-                    {this.state.dataRetrieved ?
-                        this.instructorsArray.map(userItem) : <p>Loading</p>}
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.dataRetrieved ?
+                            this.instructorsArray.map(userItem) : <tr><td>Loading</td></tr>}
+                    </tbody>
                 </table>
+
+                <h3>Student List </h3>
                 <table id='student-table'>
-                    <tr class="header">
-                        -------------------------------------------------
-                    </tr>
-                    {this.state.dataRetrieved ?
-                        this.state.searchResult.map(userItem) : <p>Loading</p>}
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.dataRetrieved ?
+                            this.studentsArray.map(userItem) : <tr><td>Loading</td></tr>}
+                    </tbody>
                 </table>
             </div>
+
+
+
         )
     }
 }
