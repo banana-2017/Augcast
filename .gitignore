@@ -12,4 +12,3 @@ labeler/assets
 *.pyc
 labeler/*.pyc
 script/*.json
-utility/
