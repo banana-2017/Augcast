@@ -69,29 +69,55 @@ class AppointInstructor extends React.Component {
         })
     }
 
-    showInstructors() {
+    // showInstructors() {
+    //     var instructorItem = function(instructor) {
+    //         let name = instructor.username;
+    //         let email = instructor.email;
+    //         return(
+    //             <li className="instructor" key="{instructor}">
+    //                 <span style={{color: "green"}}>{name} </span>
+    //                 <span style={{color: "blue"}}>{email}</span>
+    //             </li>
+    //         )
+    //     }
+    //
+    //     return(
+    //         <div className="instructors">
+    //             <ul className="instructor-list">
+    //                 {this.state.dataRetrieved ?
+    //                     this.instructorsArray.map(instructorItem) : <p>Loading</p>}
+    //             </ul>
+    //         </div>
+    //     )
+    //  }
+
+    render () {
         var instructorItem = function(instructor) {
             let name = instructor.username;
             let email = instructor.email;
             return(
-                <li className="instructor" key="{instructor}">
-                    <span style={{color: "green"}}>{name} </span>
-                    <span style={{color: "blue"}}>{email}</span>
-                </li>
+                <tr>
+                <td>{name}</td>
+                <td>{email}</td>
+                <td>XXX</td>
+                </tr>
             )
         }
 
-        return(
+        return (
             <div className="instructors">
-                <ul className="instructor-list">
+                <table id='instructor-table'>
+                    <tr class="header">
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
                     {this.state.dataRetrieved ?
                         this.instructorsArray.map(instructorItem) : <p>Loading</p>}
-                </ul>
+                </table>
             </div>
-        )
-    }
+            )
 
-    render () {
     }
 }
 
