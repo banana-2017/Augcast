@@ -13,7 +13,7 @@ class AppointInstructor extends React.Component {
         }
 
         // Instance Variable
-        this.testCourseId = "cse100";
+        this.testCourseId = "cse100-a";
         this.usersDirObj = undefined;
         this.studentsArray = [];
         this.instructorsArray = [];
@@ -120,7 +120,6 @@ class AppointInstructor extends React.Component {
 
     render () {
         var userItem = function(user) {
-            this.state.searchInput(user);
             let name = user.username;
             let email = user.email;
             return(
@@ -167,9 +166,6 @@ class AppointInstructor extends React.Component {
                     </tbody>
                 </table>
             </div>
-
-
-
         )
     }
 }
