@@ -106,6 +106,7 @@ class AppointInstructor extends React.Component {
 
         return (
             <div className="instructors">
+                <input type="text" placeholder="Appoint Instructors"/>
                 <table id='instructor-table'>
                     <tr class="header">
                         <th>Name</th>
@@ -116,8 +117,7 @@ class AppointInstructor extends React.Component {
                         this.instructorsArray.map(instructorItem) : <p>Loading</p>}
                 </table>
             </div>
-            )
-
+        )
     }
 }
 
