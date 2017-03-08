@@ -40,14 +40,12 @@ class CourseListItem extends React.Component {
                         name={(this.props.favorite)?'star':'star-o'}
                         className={(this.props.favorite) ? 'pinned': ' unpinned'}/>
                 </div>
-                <div className="course-label" onClick={() => {selectCourse(course);}}>
-                    <div className="course-title">
-                        <span className="course-number">{number}</span>
-                        <span className="course-section">{section}</span>
-                    </div>
-                    <div className="course-prof">{prof}</div>
-                    <div className="expand-button"></div>
+                <div className="course-title" onClick={() => {selectCourse(course);}}>
+                    <span className="course-number">{number}</span>
+                    <span className="course-section">{section}</span><br />
+                    <span className="course-prof">{prof}</span>
                 </div>
+                <div className="expand-button"></div>
             </MenuItem>
         );
     }

@@ -1,4 +1,4 @@
-html, body, .podcast-container, .pdf-view, .video-view {
+ html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
     font-family: Roboto, sans-serif;
 }
@@ -126,7 +126,7 @@ html, body, .podcast-container, .pdf-view, .video-view {
     display: inline-block;
 }
 
-.course-label {
+.course-title {
     display: block;
     font-size: 14pt;
 }
