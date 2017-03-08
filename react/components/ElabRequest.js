@@ -1,14 +1,13 @@
 import React from 'react';
 import { database } from './../../database/database_init';
-import Question from './Question'
-import Answer from './Answer'
+import Question from './Question';
+import Answer from './Answer';
 //import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
 ElabRequest
 */
 const NAME = 'elaboration_id_';
-var newestID = 0;
 
 class ElabRequest extends React.Component {
     constructor(props) {
@@ -17,12 +16,14 @@ class ElabRequest extends React.Component {
         // Initial state
         this.state = {
             question:'Please write your question here...',
-            answer: [''],
+            answer: [],
             endorsed:false,
+            answerDraft: '',
             q_username:'',
             a_username:'',
+            draft:'Please write your answer here...',
             dataRetrieved: false,
-            exapand: false,
+            retrieveAnswer: false,
         };
 
         this.allRequests = undefined;
@@ -41,94 +42,115 @@ class ElabRequest extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.displayQuestion = this.displayQuestion.bind(this);
+        this.editAnswer = this.editAnswer.bind(this);
+        this.submitAnswer = this.submitAnswer.bind(this);
         this.displayAnswer = this.displayAnswer.bind(this);
-        this.toggleExpand = this.toggleExpand.bind(this);
     }
 
     handleEdit(event) {
         this.setState({question: event.target.value});
     }
 
+    editAnswer(event){
+        this.setState({draft: event.target.value});
+    }
+
     handleSubmit(event) {
         //var newPostKey = database.ref().child('elab-request').push().key;
         window.location.href = event.target.href;
         var updates = {};
-        this.updatedID = parseInt(this.updatedID)+1
+        this.updatedID = parseInt(this.updatedID)+1;
         updates['/elab-request/' + (NAME + this.updatedID)] = this.state;
         database.ref().update(updates);
     }
 
-    toggleExpand() {
-        this.setState({expand: !this.state.expand});
+    submitAnswer(inputtedID) {
+        var that = this;
+        console.log('inputtedID is :' + inputtedID);
+        console.log('answer after inputtedID is :' + that.state.answer);
+        database.ref('/elab-request/' + inputtedID + '/answer').once('value').then(function(snapshot) {
+            that.setState({answer: that.state.answer.concat(snapshot.val())});
+            console.log('SNAPSHOT in database is :' + snapshot.val());
+            console.log('answer in database is :' + that.state.answer);
+            that.setState({retrieveAnswer: true});
+            console.log('retrieveAnswer value: ' + that.state.retrieveAnswer);
+            if(that.state.retrieveAnswer){
+                var updates = {};
+                console.log('INSIDE IF');
+                that.setState({answer: that.state.answer.concat(that.state.draft)});
+                updates['/elab-request/' + inputtedID + '/' + 'answer'] = that.state.answer;
+                database.ref().update(updates);
+            }
+        });
     }
 
-    displayAnswer(k, index){
+    displayAnswer(answerText){
         return(
-            <div className="elaboration-oneAnswer" key={index}>
-                <text className="elaboration-oneAnswer-text">{ `${k}` }</text>
-            </div>
-        )
+            <div className="elaboration-oneAnswer" key={answerText}>
+                 <li className="elaboration-oneAnswer-text">{answerText}</li>
+             </div>
+        );
     }
 
     displayQuestion(elaboration) {
+        console.log('elaboration is :' + elaboration);
         var allRequests = this.allRequests;
         var that = this;
 
         var questions = allRequests[elaboration].question;
         var answers = allRequests[elaboration].answer;
-        var parts = elaboration.split("_")
-        that.updatedID = parts[parts.length-1]
-        console.log(elaboration)
-        console.log(that.updatedID)
-
-        if (this.state.expand) {
-            return(
-                <div key={elaboration} className="elaboration-question" style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
-                    width: '800px', fontSize: '20px'}}>
-                    <p className="elaboration-question-text" key={parts}
-                       onClick={this.toggleExpand}>
-                        Question {that.updatedID}:
-                        <p1 className="elaboration-question">{questions}</p1><br/>
-                    </p>
-                    <div className="elaboration-answer">
-                        {answers != null &&
-                        <p2 className="elaboration-answer">{answers.map((k, index) => <li key={index}>{ `${k}` }</li>) }</p2>
-                        }
+        var parts = elaboration.split('_');
+        that.updatedID = parts[parts.length-1];
+        var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
+            margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
+            fontWeight: '300', fontSize: '22px', display: 'inline-block'};
+        return(
+            <div key={elaboration}>
+              <div className="elaboration-question" style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}}>
+                <p className="elaboration-question-text" key={parts}>
+                Question {that.updatedID}:
+                <p1 className="elaboration-question">{questions}</p1><br/>
+                </p>
+              </div>
+              <div className="elaboration-answer">
+                {answers != null && answers.map(that.displayAnswer)}
+                <form>
+                    <input
+                        style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
+                        type="text"
+                        className="form-control"
+                        defaultValue= {that.state.draft}
+                        onChange={that.editAnswer}/>
+                    <div>
+                        <a style={buttonStyle} onClick={() => {that.submitAnswer(elaboration);}}>
+                            Submit
+                        </a>
                     </div>
-                </div>
-            )
-        } else {
-            return (
-                <div key={parts} className="elaboration-question" style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
-                    width: '800px', fontSize: '20px'}}>
-                    <p className="elaboration-question-text" key={parts}
-                          onClick={this.toggleExpand}>
-                        Question {that.updatedID}:
-                        <p1 className="elaboration-question">{questions}</p1><br/>
-                    </p>
-                </div>
-            )
-        }
+                </form>
+              </div>
+            </div>
+        );
     }
 
 
     render() {
-      console.log("question in Elab: " + this.state.question);
-      console.log("dataRetrieved in Elab: " + this.state.dataRetrieved);
-      return (
+        //console.log('question in Elab: ' + this.state.question);
+        //console.log('dataRetrieved in Elab: ' + this.state.dataRetrieved);
+        //console.log('draft in Elab: ' + this.state.draft);
+        return (
           <div>
           <div style={{
-                  textAlign: 'center',
-                  margin: '0 auto',
-              }}>
-              <h2>All Questions & Answers</h2>
-              {this.state.dataRetrieved ? this.requestID.map(this.displayQuestion) : <p> Loading... </p> }
+              textAlign: 'center',
+              margin: '0 auto',
+          }}>
+          <h2>All Questions & Answers</h2>
+          {this.state.dataRetrieved ? this.requestID.map(this.displayQuestion) : <p> Loading... </p> }
           </div>
-            <Question question={this.state.question} handleEdit={this.handleEdit} endorsed={this.state.endorsed}
-            q_username={this.state.q_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
-            <Answer answer={this.state.answer} handleEdit={this.handleEdit} id={this.id} allRequests={this.allRequests}
-              requestID={this.requestID} a_username={this.state.a_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
-        </div>
+          <Question question={this.state.question} handleEdit={this.handleEdit} endorsed={this.state.endorsed}
+          q_username={this.state.q_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
+          <Answer answer={this.state.answer} handleEdit={this.handleEdit} id={this.id} allRequests={this.allRequests}
+          requestID={this.requestID} a_username={this.state.a_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
+          </div>
         );
     }
 }

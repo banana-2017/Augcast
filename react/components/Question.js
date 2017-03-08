@@ -1,5 +1,5 @@
 import React from 'react';
-import { database } from './../../database/database_init';
+//import { database } from './../../database/database_init';
 // import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
@@ -26,22 +26,21 @@ class Question extends React.Component {
         this.cancelButton = this.cancelButton.bind(this);
     }
 
-    updateFields(event){
+    updateFields(){
         this.setState({question: this.props.question,
-            endorsed: this.props.endorsed, q_userName: this.props.q_userName})
+            endorsed: this.props.endorsed, q_userName: this.props.q_userName});
     }
 
-    toggleEdit(event) {
-        this.setState({editing: !this.state.editing})
+    toggleEdit() {
+        this.setState({editing: !this.state.editing});
     }
 
-    toggleHover(event) {
-        this.setState({hover: !this.state.hover})
+    toggleHover() {
+        this.setState({hover: !this.state.hover});
     }
 
-    cancelButton(event) {
-        {this.toggleHover}
-        {this.toggleEdit}
+    cancelButton() {
+        {this.toggleEdit();}
     }
 
     newRequest() {
@@ -92,7 +91,7 @@ class Question extends React.Component {
     }
 
     render() {
-        console.log('Question in question: ' + this.props.question);
+        //console.log('Question in question: ' + this.props.question);
         return (
             <div>
                 {this.props.dataRetrieved ? this.updateFields : '' }
