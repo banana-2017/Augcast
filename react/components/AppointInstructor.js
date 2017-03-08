@@ -120,6 +120,7 @@ class AppointInstructor extends React.Component {
 
     render () {
         var userItem = function(user) {
+            this.state.searchInput(user);
             let name = user.username;
             let email = user.email;
             return(
@@ -162,7 +163,7 @@ class AppointInstructor extends React.Component {
                     </thead>
                     <tbody>
                         {this.state.dataRetrieved ?
-                            this.studentsArray.map(userItem) : <tr><td>Loading</td></tr>}
+                            this.state.searchResult.map(userItem) : <tr><td>Loading</td></tr>}
                     </tbody>
                 </table>
             </div>
