@@ -28,7 +28,7 @@ class ElabRequest extends React.Component {
 
         this.allRequests = undefined;
         this.requestID = undefined;
-        this.updatedID = undefined;
+        this.updatedID = 0;
 
         var that = this;
         database.ref('/elab-request').once('value').then(function(snapshot) {
@@ -36,6 +36,7 @@ class ElabRequest extends React.Component {
             that.requestID = Object.keys(snapshot.val());
             that.setState({dataRetrieved: true});
         });
+        console.log('INITIALIZING');
 
         // Bind all functions so they can refer to "this" correctly
         this.handleEdit = this.handleEdit.bind(this);
@@ -98,9 +99,10 @@ class ElabRequest extends React.Component {
         });
     }
 
-    displayAnswer(inputtedID,answerText, index){
+    displayAnswer(filler,inputtedID, answerText, index){
         console.log('answerText: ' + answerText);
         console.log('index: ' + index);
+        console.log('inputtedID: ' + inputtedID);
         var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
             margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
             fontWeight: '300', fontSize: '22px', display: 'inline-block'};
@@ -118,13 +120,18 @@ class ElabRequest extends React.Component {
     }
 
     displayQuestion(elaboration) {
-        console.log('elaboration is :' + elaboration);
+        //console.log('elaboration is :' + elaboration);
         var allRequests = this.allRequests;
+        //console.log('allRequests is :' + allRequests);
         var that = this;
 
         var questions = allRequests[elaboration].question;
         var answers = allRequests[elaboration].answer;
+        console.log('answers is :' + answers);
+        console.log('requestID is :' + this.requestID);
+        //console.log('keys of answers: ' + Object.keys(answers));
         var parts = elaboration.split('_');
+        console.log('PARTS ARE: ' + parts);
         that.updatedID = parts[parts.length-1];
         var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
             margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
@@ -138,7 +145,7 @@ class ElabRequest extends React.Component {
                 </p>
               </div>
               <div className="elaboration-answer">
-                {answers != null && answers.map(that.displayAnswer.bind(this,elaboration))}
+                {answers != null && answers.map(that.displayAnswer.bind(this,Object.keys(this),elaboration))}
                 <form>
                     <input
                         style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
@@ -161,7 +168,7 @@ class ElabRequest extends React.Component {
     render() {
         //console.log('question in Elab: ' + this.state.question);
         //console.log('dataRetrieved in Elab: ' + this.state.dataRetrieved);
-        //console.log('draft in Elab: ' + this.state.draft);
+        console.log('allRequests in Elab: ' + this.allRequests);
         return (
           <div>
           <div style={{
@@ -169,7 +176,7 @@ class ElabRequest extends React.Component {
               margin: '0 auto',
           }}>
           <h2>All Questions & Answers</h2>
-          {this.state.dataRetrieved ? this.requestID.map(this.displayQuestion) : <p> Loading... </p> }
+          {this.state.dataRetrieved && this.requestID!=undefined ? this.requestID.map(this.displayQuestion) : <p> No Question & Answer Posted </p> }
           </div>
           <Question question={this.state.question} handleEdit={this.handleEdit} endorsed={this.state.endorsed}
           q_username={this.state.q_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
