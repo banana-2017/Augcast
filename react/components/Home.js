@@ -30,7 +30,7 @@ class Home extends React.Component {
             main = <div />
         }
 
-        document.title = "Augcast - An Augmented Podcast Experience";
+        document.title = "Augcast";
 
         return (
             <div className="main">
