@@ -154,7 +154,6 @@ class AppointInstructor extends React.Component {
                 </table>
             </div>
         )
-
     }
 }
 
