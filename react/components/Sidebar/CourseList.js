@@ -27,7 +27,7 @@ class CourseList extends React.Component {
         this.pushToFavorites = this.pushToFavorites.bind (this);
         this.removeFromFavorites = this.removeFromFavorites.bind(this);
 
-        // lecture slection variable
+        // lecture selection variable
         this.dataArray = [];
 
         // inherit all course data

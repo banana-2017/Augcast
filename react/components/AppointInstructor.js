@@ -1,5 +1,6 @@
 import React from 'react';
 import { database } from './../../database/database_init';
+import Fuse from 'fuse.js';
 
 class AppointInstructor extends React.Component {
     constructor(props) {
@@ -7,23 +8,24 @@ class AppointInstructor extends React.Component {
 
         // Initial state
         this.state = {
-            dataRetrieved: false
+            dataRetrieved: false,
+            searchResult: []
         }
 
         // Instance Variable
         this.testCourseId = "cse100";
-        this.usersObj = undefined;
+        this.usersDirObj = undefined;
         this.studentsArray = [];
         this.instructorsArray = [];
 
         // query the users directory
         var that = this;
         database.ref('users').once('value').then(function(snapshot) {
-            that.usersObj = snapshot.val();
+            that.usersDirObj = snapshot.val();
 
-            for(var user in that.usersObj) {
+            for(var user in that.usersDirObj) {
                 // push every user object into student array
-                let current = that.usersObj[user];
+                let current = that.usersDirObj[user];
                 that.studentsArray.push(current);
 
                 // Check whether the user is instructor for this class
@@ -49,11 +51,14 @@ class AppointInstructor extends React.Component {
 
         // Bind the function
         this.selectInstructor = this.selectInstructor.bind(this);
+        this.searchUser = this.searchUser.bind(this);
+        this.searchInput = this.searchInput.bind(this);
     }
 
+    /*
+     * Update the database when a user is selected to be the instructor
+     */
     selectInstructor(testCourseId) {
-        var that = this;
-
         let testUserId = "instructor";
 
         let instructorCourses = undefined;
@@ -62,36 +67,94 @@ class AppointInstructor extends React.Component {
         ref.once('value').then(function(snapshot) {
             instructorCourses = snapshot.val();
 
-            console.log(instructorCourses);
+            console.log("instructorCourses", instructorCourses);
             var updates = {};
             updates[Object.keys(instructorCourses).length] = testCourseId;
             ref.update(updates);
         })
     }
 
-    showInstructors() {
-        var instructorItem = function(instructor) {
-            let name = instructor.username;
-            let email = instructor.email;
-            return(
-                <li className="instructor" key="{instructor}">
-                    <span style={{color: "green"}}>{name} </span>
-                    <span style={{color: "blue"}}>{email}</span>
-                </li>
-            )
+    /*
+     * The function handling searching the users using fuzzy search
+     */
+    searchUser(query) {
+        var options = {
+            include: ["score"],
+            shouldSort: true,
+            threshold: 0.6,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: [
+                "email",
+                "username"
+            ]
+        };
+
+        // fuse = {item: "user object", score: "0 means perfect match"}
+        var fuse = new Fuse(this.studentsArray, options);
+        return fuse.search(query);
+    }
+
+    /*
+     * This function handling searching user input by calling searchUser
+     */
+    searchInput (e) {
+        let query = e.target.value;
+
+        // get the raw data from fuzzy search
+        let result = this.searchUser(query);
+
+        // extract user object from the raw search result array
+        let searchResults = [];
+        for(let index in result) {
+            if(result[index].score < 0.3) {
+                searchResults.push(result[index].item);
+            }
         }
 
-        return(
-            <div className="instructors">
-                <ul className="instructor-list">
-                    {this.state.dataRetrieved ?
-                        this.instructorsArray.map(instructorItem) : <p>Loading</p>}
-                </ul>
-            </div>
-        )
+        // Set the search result to be the state so that the component will refresh when the data changes
+        this.setState({searchResult: searchResults});
     }
 
     render () {
+        var userItem = function(user) {
+            let name = user.username;
+            let email = user.email;
+            return(
+                <tr key={email}>
+                    <td>{name}</td>
+                    <td>{email}</td>
+                    <td>Button</td>
+                </tr>
+            )
+        }
+
+        return (
+            <div className="instructors">
+                <input type="text"
+                       placeholder="Appoint Instructors"
+                       onChange={this.searchInput}/>
+                <table id='instructor-table'>
+                    <tr class="header">
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
+                    {this.state.dataRetrieved ?
+                        this.instructorsArray.map(userItem) : <p>Loading</p>}
+                </table>
+                <table id='student-table'>
+                    <tr class="header">
+                        -------------------------------------------------
+                    </tr>
+                    {this.state.dataRetrieved ?
+                        this.state.searchResult.map(userItem) : <p>Loading</p>}
+                </table>
+            </div>
+        )
+
     }
 }
 
