@@ -123,24 +123,12 @@ html, body, .podcast-container, .pdf-view, .video-view {
 }
 
 .course-item {
-    position: relative;
-    width: 100%;
-    height: 72px;
-    background: white;
-    list-style: none;
-    padding-top:12px;
-    padding-bottom:12px;
-    cursor: pointer;
+    display: inline-block;
 }
 
-.course-item:hover {
-    background: orange;
-}
-
-.course-title {
-    display: flex;
+.course-label {
+    display: block;
     font-size: 14pt;
-    white-space:nowrap;
 }
 
 .course-number {
@@ -225,15 +213,13 @@ html, body, .podcast-container, .pdf-view, .video-view {
 .pin-button {
     float: left;
     width: 48px;
-    height: 100%;
+    line-height: inherit;
     text-align: center;
     display: table;
 }
 
 .pin-button .fa {
     vertical-align: middle;
-    line-height: inherit;
-    display: table-cell;
 }
 
 .expand-button {
@@ -309,6 +295,7 @@ html, body, .podcast-container, .pdf-view, .video-view {
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     height: 100%;
     vertical-align: top;
+    text-align: center;
     /* float: left; */
 }
 
