@@ -7,6 +7,7 @@ import Upload from './components/Upload';
 import PDFDisplay from './components/PDFDisplay';
 import Test from './components/Test';
 import Sidebar from './components/Sidebar/Sidebar';
+import AppointInstructor from './components/AppointInstructor'
 import {authenticate} from './index';
 
 
@@ -25,6 +26,7 @@ module.exports = (
         <Route path="/test" component={Test} />
         <Route path="/sidebar" component={Sidebar} />
         <Route path="/pdfdisplay" component={PDFDisplay} />
+        <Route path="/instructor" component={AppointInstructor} />
         <Route path="/:courseID" component={HomeContainer}>
             <Route path="/:courseID/:lectureNum" component={HomeContainer} />
         </Route>
