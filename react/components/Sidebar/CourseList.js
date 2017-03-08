@@ -38,6 +38,7 @@ class CourseList extends React.Component {
         // populate array for search
         for (var course in this.courses) {
             let current = this.courses[course];
+            current.course = current.dept+' '+current.num;
             current.key = course;
             this.dataArray.push(current);
         }
@@ -74,7 +75,7 @@ class CourseList extends React.Component {
             distance: 70,
             maxPatternLength: 32,
             minMatchCharLength: 1,
-            keys: ['dept', 'num', 'professor', 'title']
+            keys: ['course', 'professor', 'subject']
         };
 
         var fuse = new Fuse(this.dataArray, options);
@@ -87,11 +88,13 @@ class CourseList extends React.Component {
 
         // empty query
         if (query === '') {
-            this.setState({visibleCourses:this.courseIDs});
-            for (var pinned in this.state.favoriteArray) {
-                this.moveToTop(this.state.favoriteArray[pinned]);
-            }
-            
+            console.log (this.courseIDs);
+            this.setState({visibleCourses:this.courseIDs}, () => {
+                for (var pinned in this.state.favoriteArray) {
+                    this.moveToTop(this.state.favoriteArray[pinned]);
+                }
+            });
+
             return;
         }
 
