@@ -29,6 +29,8 @@ class ElabRequest extends React.Component {
         this.allRequests = undefined;
         this.requestID = undefined;
         this.updatedID = 0;
+        this.answerArray = [];
+        this.temp = [];
 
         var that = this;
         database.ref('/elab-request').once('value').then(function(snapshot) {
@@ -70,39 +72,41 @@ class ElabRequest extends React.Component {
         var that = this;
         console.log('inputtedID is :' + inputtedID);
         console.log('answer after inputtedID is :' + that.state.answer);
-        database.ref('/elab-request/' + inputtedID + '/answer').once('value').then(function(snapshot) {
-            that.setState({answer: that.state.answer.concat(snapshot.val())});
-            console.log('SNAPSHOT in database is :' + snapshot.val());
-            console.log('answer in database is :' + that.state.answer);
-            that.setState({retrieveAnswer: true});
-            console.log('retrieveAnswer value: ' + that.state.retrieveAnswer);
-            if(that.state.retrieveAnswer){
-                var updates = {};
-                console.log('INSIDE IF');
-                that.setState({answer: that.state.answer.concat(that.state.draft)});
-                updates['/elab-request/' + inputtedID + '/' + 'answer'] = that.state.answer;
-                database.ref().update(updates);
-            }
-        });
+        database.ref('/elab-request/' + inputtedID + '/' + 'answer').push(that.state.draft);
+        that.answerArray = that.answerArray.concat(that.state.draft);
     }
 
-    removeAnswer(inputtedID, index) {
+    removeAnswer(inputtedID, index,answerText) {
         var that = this;
-        //console.log('inputtedID is :' + inputtedID);
+        //var updates = {};
+        console.log('index in removeAnswer is :' + index);
+        console.log('inputtedID in removeAnswer is :' + inputtedID);
         //console.log('answer after inputtedID is :' + that.state.answer);
-        database.ref('/elab-request/' + inputtedID + '/answer/' + index).once('value').then(function(snapshot) {
-            console.log('SNAPSHOT in database is :' + snapshot.val());
-            var updates = {};
-            that.setState({answer: that.state.answer.filter((_, i) => i !== index)});
-            updates['/elab-request/' + inputtedID  + '/answer/' + index] = null;
-            database.ref().update(updates);
-        });
+        // database.ref('/elab-request/' + inputtedID + '/answer/' + index).once('value').then(function(snapshot) {
+        //     console.log('SNAPSHOT in database is :' + snapshot.val());
+        //     console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
+        //     for (var count = 0; count < that.answerArray.length; count++) {
+        //       if (that.answerArray[count] != answerText)
+        //         console.log('FOR LOOPPPPP: ' + that.answerArray[count]);
+        //     }
+        //     that.answerArray = that.answerArray.filter((_, i) => i !== index);
+        // });
+        console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
+        database.ref('/elab-request/' + inputtedID + '/answer/' + index).remove();
+        // for (var count = 0; count < that.answerArray.length; count++) {
+        //     if (that.answerArray[count] != answerText){
+        //         console.log('FOR LOOPPPPP: ' + that.answerArray[count]);
+        //         database.ref('/elab-request/' + inputtedID + '/answer' ).push(that.answerArray[count]);
+        //     }
+        // }
     }
 
-    displayAnswer(filler,inputtedID, answerText, index){
+    displayAnswer(rawIndex,inputtedID, answerText, filler){
         console.log('answerText: ' + answerText);
-        console.log('index: ' + index);
+        console.log('index: ' + rawIndex);
         console.log('inputtedID: ' + inputtedID);
+        //this.setState({answer: this.state.answer.concat(answerText)});
+        var index = rawIndex[filler];
         var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
             margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
             fontWeight: '300', fontSize: '22px', display: 'inline-block'};
@@ -111,7 +115,7 @@ class ElabRequest extends React.Component {
             <div className="elaboration-oneAnswer" key={index}>
                  <li className="elaboration-oneAnswer-text">{answerText}</li>
                  <form>
-                   <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index);}}>
+                   <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index,answerText);}}>
                      Delete
                    </a>
                  </form>
@@ -127,8 +131,22 @@ class ElabRequest extends React.Component {
 
         var questions = allRequests[elaboration].question;
         var answers = allRequests[elaboration].answer;
-        console.log('answers is :' + answers);
-        console.log('requestID is :' + this.requestID);
+        var keys = [];
+        console.log('answers is :' + JSON.stringify(answers));
+        var answers2 = [];
+        if(answers!=null || answers != undefined){
+            JSON.parse(JSON.stringify(answers), (key, value) => {
+                console.log(value);
+                if(typeof value === 'string'){
+                    answers2 = answers2.concat(value);
+                    keys = keys.concat(key);
+                }
+            });
+        }
+        that.answerArray = answers2;
+        console.log('answers2 is :' + answers2);
+        console.log('keys is :' + keys);
+        //console.log('requestID is :' + this.requestID);
         //console.log('keys of answers: ' + Object.keys(answers));
         var parts = elaboration.split('_');
         console.log('PARTS ARE: ' + parts);
@@ -145,7 +163,7 @@ class ElabRequest extends React.Component {
                 </p>
               </div>
               <div className="elaboration-answer">
-                {answers != null && answers.map(that.displayAnswer.bind(this,Object.keys(this),elaboration))}
+                {answers != null && answers2.map(that.displayAnswer.bind(this,keys,elaboration))}
                 <form>
                     <input
                         style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
