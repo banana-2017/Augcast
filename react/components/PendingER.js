@@ -7,7 +7,7 @@ class PendingER extends React.Component {
 
         this.state = {
             dataRetrieved: false,
-            pendingER: [];
+            pendingER: []
         }
 
         // Instance Variable
