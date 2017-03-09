@@ -316,8 +316,9 @@ class Upload extends React.Component {
     // Destructor, removes database listener when component is unmounted
     componentWillUnmount() {
         //Remove the database listener
-        this.state.firebaseListener.off('value', this.state.firebaseCallback);
-    }
+        if (this.state.firebaseListener != undefined) {
+            this.state.firebaseListener.off('value', this.state.firebaseCallback);
+        }    }
 
     handleUploadInProgress(evt) {
         this.setState({

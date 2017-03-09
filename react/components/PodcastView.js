@@ -106,7 +106,9 @@ class PodcastView extends React.Component {
     // Destructor, removes database listener when component is unmounted
     componentWillUnmount() {
         //Remove the database listener
-        this.state.firebaseListener.off('value', this.state.firebaseCallback);
+        if (this.state.firebaseListener != undefined) {
+            this.state.firebaseListener.off('value', this.state.firebaseCallback);
+        }
     }
 
     // Callback function passed to and executed by VideoPlayer
