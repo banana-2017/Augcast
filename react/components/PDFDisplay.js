@@ -40,8 +40,6 @@ class PDFDisplay extends React.Component {
     }
 
     render() {
-        console.log('Props of PDFDisplay');
-        console.log(this.props);
         var that = this;
         var sentinelArray = Array.from(Array(this.state.pages));
         var PDFpages = sentinelArray.map(function(x, i){

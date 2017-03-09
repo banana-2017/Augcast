@@ -270,7 +270,7 @@ class Upload extends React.Component {
 
         // Listen to changes at ref's location in db
         var uploadReference = ref.on('value', function(snapshot) {
-            console.log('db on: ' + lecture.id);
+            console.log('UPLOAD didMount db on: ' + lecture.id);
             that.setState({
                 lectureInfo: snapshot.val()
             });
@@ -285,11 +285,12 @@ class Upload extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        // Remove old database Listener
+
 
         // No lecture was passed in, do not set up listener
         if (newProps.lecture == undefined) return;
 
+        // Remove old database Listener
         if (this.state.firebaseListener != undefined) {
             this.state.firebaseListener.off('value', this.state.uploadReference);
         }
@@ -299,7 +300,7 @@ class Upload extends React.Component {
         // console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
         var newRef = database.ref('lectures/' + newProps.navCourse.id + '/' + newProps.lecture.id);
 
-        console.log('received props, db on: ' + newProps.lecture.id);
+        console.log('UPLOAD received props, db on: ' + newProps.lecture.id);
         var uploadReference = newRef.on('value', function(snapshot) {
             that.setState({
                 lectureInfo: snapshot.val()
@@ -353,7 +354,8 @@ class Upload extends React.Component {
 function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
-        currentLecture:  state.currentLecture
+        currentLecture:  state.currentLecture,
+        navCourse: state.navCourse
     };
 }
 
