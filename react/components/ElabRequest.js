@@ -22,7 +22,7 @@ class ElabRequest extends React.Component {
             q_username:'',
             a_username:'',
             dataRetrieved: false,
-            exapand: false,
+            expand: false,
         };
 
         this.allRequests = undefined;

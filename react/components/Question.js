@@ -24,6 +24,7 @@ class Question extends React.Component {
         this.toggleEdit = this.toggleEdit.bind(this);
         this.toggleHover = this.toggleHover.bind(this);
         this.cancelButton = this.cancelButton.bind(this);
+        this.submitButton = this.submitButton.bind(this);
     }
 
     updateFields(event){
@@ -40,8 +41,14 @@ class Question extends React.Component {
     }
 
     cancelButton(event) {
-        {this.toggleHover}
-        {this.toggleEdit}
+        {this.toggleHover()}
+        {this.toggleEdit()}
+    }
+
+    submitButton(event) {
+        {this.toggleHover()}
+        {this.toggleEdit()}
+        {this.props.handleSubmit()}
     }
 
     newRequest() {
