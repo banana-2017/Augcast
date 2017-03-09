@@ -28,7 +28,6 @@ class PodcastView extends React.Component {
         // Update the state whenever this lecture is updated in DB by python script
 
         this.handleSkipToTime = this.handleSkipToTime.bind(this);
-        this.PDFContainer = this.PDFContainer.bind(this);
     }
 
     // This method is called only once, right after this component is created.

@@ -48,7 +48,7 @@ class PDFDisplay extends React.Component {
                 undefined;
             return (
                 <div key={'ButtonPageCombo' + i} className="pdf-page" onClick={() => {that.skipToTime(stamp);}}>
-                    {that.props.timestamps != undefined ?
+                    {(that.props.timestamps != undefined && !isNaN(stamp) && stamp != -1) ?
                         <div className="pdf-timestamp">{'Skip to ' + that.prettyTimestamp(stamp)}</div>
                             : <div></div>}
                     <PDF
