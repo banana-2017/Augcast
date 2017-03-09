@@ -18,6 +18,8 @@ class AppointInstructor extends React.Component {
         this.studentsArray = [];
         this.instructorsArray = [];
 
+        console.log(this.courseId);
+
         // query the users directory
         var that = this;
         database.ref('users').once('value').then(function(snapshot) {
@@ -73,6 +75,15 @@ class AppointInstructor extends React.Component {
     }
 
     /*
+     * Remove the instructor priority from one user
+     */
+    removeInstructor(userId) {
+        var that = this;
+
+        let instructorCourses = undefined;
+    }
+
+    /*
      * The function handling searching the users using fuzzy search
      *
      * query: string to be searched for
@@ -120,7 +131,6 @@ class AppointInstructor extends React.Component {
 
     render () {
         var userItem = function(user) {
-            this.state.searchInput(user);
             let name = user.username;
             let email = user.email;
             return(
