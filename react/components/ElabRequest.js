@@ -3,11 +3,7 @@ import { database } from './../../database/database_init';
 import Question from './Question';
 import Answer from './Answer';
 import {connect} from 'react-redux';
-//import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
-/**
-ElabRequest
-*/
 const NAME = 'elaboration_id_';
 
 class ElabRequest extends React.Component {
@@ -16,66 +12,55 @@ class ElabRequest extends React.Component {
 
         // Initial state
         this.state = {
-            question:'Please write your question here...',
-            endorsed:false,
-            answerDraft: '',
-            q_username:'',
-            a_username:'',
-            draft:'Please write your answer here...',
+            visibleER: [],
             dataRetrieved: false,
+            slide: 0
         };
 
-        // Used to store all elab info from database
-        this.allRequests = undefined;
-        // All elab ID under it
-        this.requestID = undefined;
-        // Grab the updated ID for question
-        this.updatedID = 0;
-        // Array to store answer
-        this.answerArray = [];
-        this.temp = [];
+        this.lectureId = this.props.lecture.id;
+        this.ERArray = [];
 
+        // database query
         var that = this;
-        database.ref('/elab-request').once('value').then(function(snapshot) {
-            that.allRequests = snapshot.val();
-            that.requestID = Object.keys(snapshot.val());
-            that.setState({dataRetrieved: true});
+        database.ref('/elaborations/' + lectureId).once('value').then(function(snapshot) {
+            let lecture = snapshot.val();
+
+            // get all the elaborations for current lecture
+            for(var index in lecture) {
+                that.ERArray.push(lecture[index]);
+            }
+
+            // set the all request as default
+            this.setState({visibleER: this.ERArray, dataRetrieved: true});
         });
-        console.log('INITIALIZING');
-
-        // Bind all functions so they can refer to "this" correctly
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-
-        this.displayQuestion = this.displayQuestion.bind(this);
-        this.editAnswer = this.editAnswer.bind(this);
-        this.submitAnswer = this.submitAnswer.bind(this);
-        this.displayAnswer = this.displayAnswer.bind(this);
-        this.removeAnswer = this.removeAnswer.bind(this);
     }
 
-    handleEdit(event) {
-        this.setState({question: event.target.value});
+    displayERsForSlide(slide) {
+        var that = this;
+
+        let ERsInSlide = [];
+        for(i = 0; i < that.ERArray.length; i++) {
+            if(that.ERArray[i].slide_num == slide) {
+                ERsInSlide.push(that.ERArray[i]);
+            }
+        }
+        this.setState({visibleER: ERsInSlide});
     }
 
-    editAnswer(event){
-        this.setState({draft: event.target.value});
+    submitER() {
+        var that = this;
+
+        // push a new empty node to firebase with a unique key
+        let newER = database.ref('/elaborations/' + lectureId).once('value').push();
+        // set the empty node
+        newER.set({
+            author: "testl1qiao",
+            content: "testquestion",
+            endorsed: false,
+            slide_num: 1
+        })
     }
 
-    handleSubmit(event) {
-        //var newPostKey = database.ref().child('elab-request').push().key;
-        window.location.href = event.target.href;
-        var postData = {
-            question:this.state.question,
-            endorsed:this.state.endorsed,
-            //q_username:this.props.username,
-            a_username:this.state.a_username,
-        };
-        var updates = {};
-        this.updatedID = parseInt(this.updatedID)+1;
-        updates['/elab-request/' + (NAME + this.updatedID)] = postData;
-        database.ref().update(updates);
-    }
 
     submitAnswer(inputtedID) {
         var that = this;
@@ -203,4 +188,6 @@ function mapStateToProps (state) {
 }
 
 const ElabRequestContainer = connect(mapStateToProps)(ElabRequest);
+
+
 export default ElabRequestContainer;
