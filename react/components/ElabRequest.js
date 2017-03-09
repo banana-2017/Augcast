@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 ElabRequest
 */
 const NAME = 'elaboration_id_';
-var user = 'gary';
+var user = 'alan';
 
 class ElabRequest extends React.Component {
     constructor(props) {
@@ -84,7 +84,7 @@ class ElabRequest extends React.Component {
         var newPostKey = database.ref('/elab-request/' + inputtedID + '/' + 'answer').push().key;
         var answerObj = {
             content: that.state.draft,
-            a_username: 'gary',
+            a_username: user,
         };
         updates['/elab-request/' + inputtedID + '/answer/' + newPostKey] = answerObj;
         database.ref().update(updates);
@@ -116,7 +116,7 @@ class ElabRequest extends React.Component {
             <div className="elaboration-oneAnswer" key={index}>
                  <li className="elaboration-oneAnswer-text">{answerText}</li>
                  <form>
-                   {owner=='alan'&&
+                   {owner==user&&
                    <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index);}}>
                      Delete
                    </a>}
@@ -134,10 +134,13 @@ class ElabRequest extends React.Component {
         var questions = allRequests[elaboration].question;
         var answers = allRequests[elaboration].answer;
         var answer_owner = [];
-        var keys = Object.keys(answers);
-        console.log('answers is :' + JSON.stringify(answers));
+        var keys = undefined;
+        if(answers!=null&&answers!=undefined){
+            console.log('answers is :' + JSON.stringify(answers));
+            keys = Object.keys(answers);
+        }
         var answers2 = [];
-        if(answers!=null || answers != undefined){
+        if(answers!=null && answers != undefined){
             JSON.parse(JSON.stringify(answers), (key, value) => {
                 if(key=='content'){
                     console.log(value);
