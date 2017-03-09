@@ -6,11 +6,9 @@ import FA from 'react-fontawesome';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
-import Spinner from 'react-spinkit';
 
 import PodcastView from '../PodcastView.js';
-import {updateCourse} from '../../redux/actions';
-import { database } from './../../../database/database_init';
+import { displayLecture } from '../../redux/actions';
 
 class LectureList extends React.Component {
     constructor(props) {
@@ -18,8 +16,7 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
-            loading: true,
-            // visibleCourses: []    // keys to visible courses
+            render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined
         };
 
         // this.search = this.search.bind (this);
@@ -29,8 +26,7 @@ class LectureList extends React.Component {
         // this.dataArray = [];
 
         // inherit all course data
-        this.course = this.props.course;
-        this.lectures = undefined;
+        this.course = this.props.navCourse;
         // this.state.visibleCourses = this.courses.keys;
 
         // // populate array for search
@@ -40,13 +36,6 @@ class LectureList extends React.Component {
         //     this.dataArray.push(current);
         // }
 
-        // database query
-        var that = this;
-        database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
-            that.lectures = snapshot.val();
-            that.setState({loading: false});
-        });
-
         // helper object
         this.calendar = {
             1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
@@ -54,108 +43,67 @@ class LectureList extends React.Component {
         };
     }
 
-    // // search course
-    // search (query) {
-    //     var options = {
-    //         shouldSort: true,
-    //         threshold: 0.6,
-    //         location: 0,
-    //         distance: 70,
-    //         maxPatternLength: 32,
-    //         minMatchCharLength: 1,
-    //         keys: ['key', 'dept', 'num', 'professor', 'title']
-    //     };
-    //
-    //     var fuse = new Fuse(this.dataArray, options);
-    //     var result = fuse.search(query);
-    //     return result;
-    // }
-    //
-    // searchInput (e) {
-    //     let query = e.target.value;
-    //
-    //     // empty query
-    //     if (query === '') {
-    //         this.setState({visibleCourses:this.courseIDs});
-    //         return;
-    //     }
-    //
-    //     let searchResults = this.search (query);
-    //     let visibleCourses = [];
-    //     for (var index in searchResults) {
-    //         visibleCourses.push (searchResults[index].key);
-    //     }
-    //     this.setState({visibleCourses:visibleCourses});
-    // }
-    //
-    // routeToLecture(id) {
-    //     this.setState({display: 'loading lectures data'});
-    //     browserHistory.push('/' + id);
-    // }
 
-    back() {
-        this.setState({display: 'courses'});
-        browserHistory.push('/test');
-    }
-
-    renderLecture(id) {
-        browserHistory.push('/' + this.props.courseID + '/' + id);
-        this.props.updateCourseState (this.props.courseID, id);
-        this.setState({render: id});
+    selectLecture(lecture) {
+        console.log(lecture);
+        console.log(this.course);
+        this.props.displayLecture(this.course, lecture);
+        browserHistory.push('/' + this.course.id + '/' + lecture.num);
+        // this.setState({render: lecture.id});
     }
 
     render () {
-
         // access to this
         var that = this;
 
-        var listItem = function(id) {
-            var course = that.course;
-            var lecture = that.lectures[id];
+        var listItem = function(lectureID) {
+            var lecture = that.props.lectures[lectureID];
             var month = that.calendar[lecture.month];
             return (
-                <li key={id} className="lecture-item" onClick={() => {that.renderLecture(id);}}>
+                <li key={lecture.id}
+                    className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}
+                    onClick={() => {that.selectLecture(lecture);}}>
                     Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                 </li>
             );
         };
 
-        if (this.state.loading) {
-            return (
-                <Spinner className="sidebar-loading" spinnerName="three-bounce" />
-            );
-        } else {
-            return (
-                <div>
-                    <div className="nav">
-                        <div className="search-bar">
-                            <div className="search-icon"><FA name='arrow-left' onClick={() => {that.back();}}/></div>
-                            <FormControl type="text"
-                                         placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
-                                         onChange={this.searchInput}
-                                         className="search-box" />
-                        </div>
-                        <div className="lectures-wrapper">
-                            <ul className="lecture-list">
-                                {that.props.course.lectures.map(listItem)}
-                            </ul>
-                        </div>
+        return (
+            <div>
+                <div className="nav">
+                    <div className="search-bar">
+                        <div className="search-icon"><FA name='arrow-left' onClick={that.props.back}/></div>
+                        <FormControl type="text"
+                                     placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
+                                     onChange={this.searchInput}
+                                     className="search-box" />
                     </div>
-                    {this.props.lectureID && <PodcastView course={this.props.course} lecture={this.lectures[this.state.render]} lectureID = {this.state.render}/>}
+                    <div className="lectures-wrapper">
+                        <ul className="lecture-list">
+                            {that.props.navCourse.lectures.map(listItem)}
+                        </ul>
+                    </div>
                 </div>
-            );
-        }
+            </div>
+        );
     }
 }
 
 
+function mapStateToProps (state) {
+    return {
+        navCourse:  state.navCourse,
+        currentLecture:  state.currentLecture
+    };
+}
+
 function mapDispatchToProps (dispatch) {
     return {
-        updateCourseState: (courseId, lectureId) => {
-            dispatch (updateCourse (courseId, lectureId));
+        displayLecture: (currentCourse, currentLecture) => {
+            dispatch (displayLecture(currentCourse, currentLecture));
         }
     };
 }
 
-const LectureListContainer = connect (null, mapDispatchToProps)(LectureList);
+const LectureListContainer = connect (mapStateToProps, mapDispatchToProps)(LectureList);
 export default LectureListContainer;

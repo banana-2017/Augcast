@@ -2,7 +2,7 @@
 // Responsible for uploading the PDF
 
 import React from 'react';
-import { firebaseApp, storageRef } from './../../database/database_init';
+import { firebaseApp, storageRef, database } from './../../database/database_init';
 import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
 
@@ -16,14 +16,16 @@ class Upload extends React.Component {
             uploadProgress: 0,
             uploadStarted: false,
             downloadURL: '',
-            error: ''
+            error: '',
+            APIresult: '',
+            lectureID: ''
         };
 
         // Bind all functions so they can refer to "this" correctly
         //this.togglePlay = this.togglePlay.bind(this);
         this.handleFile = this.handleFile.bind(this);
         this.handleClear = this.handleClear.bind(this);
-
+        this.callLabelAPI = this.callLabelAPI.bind(this);
     }
 
     /**
@@ -58,8 +60,9 @@ class Upload extends React.Component {
         var metadata = {
             contentType: 'application/pdf'
         };
-        // Upload the file and metadata to pdf/filename path in FB Storage
-        var uploadTask = storageRef.child('test/pdf/' + file.name).put(file, metadata);
+        // Upload the file and metadata to 'lectureid/file.pdf' in FB Storage
+        var uploadTask = storageRef.child(that.props.lecture + '/' + file.name).put(file, metadata);
+
 
         // Listener for state changes, errors, and completion of the upload
         uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED,
@@ -79,9 +82,37 @@ class Upload extends React.Component {
                 that.setState({
                     downloadURL: url
                 });
-                console.log('Download URL: ' + url);
+
+                database.ref('lectures/' + that.props.course + '/' + that.props.lecture).update({
+                    slides_url: url
+                });
+
+                // Call the label API with the new download URL
+                that.callLabelAPI(url);
             });
 
+    }
+
+    callLabelAPI(url) {
+        var that = this;
+
+        fetch('http://localhost:8080/api/label', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                pdfURL: url,
+                courseID: that.props.course,
+                lectureID: that.props.lecture,
+                mediaURL: that.props.mediaURL
+            })
+        }).then(function(response) {
+            return response.json();
+        }).then(function(j) {
+            that.setState({APIresult: j.message});
+        });
     }
 
     handleClear() {
@@ -98,7 +129,7 @@ class Upload extends React.Component {
         console.log('Rendering Upload page');
         return (
             <div
-            style={{maxWidth: '500px', margin:'0 auto'}}>
+            style={{maxWidth: '300px', margin:'0 auto'}}>
 
                 <h3>
                     Upload a PDF file
