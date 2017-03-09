@@ -16,19 +16,21 @@ class ElabRequest extends React.Component {
         // Initial state
         this.state = {
             question:'Please write your question here...',
-            answer: [],
             endorsed:false,
             answerDraft: '',
             q_username:'',
             a_username:'',
             draft:'Please write your answer here...',
             dataRetrieved: false,
-            retrieveAnswer: false,
         };
 
+        // Used to store all elab info from database
         this.allRequests = undefined;
+        // All elab ID under it
         this.requestID = undefined;
+        // Grab the updated ID for question
         this.updatedID = 0;
+        // Array to store answer
         this.answerArray = [];
         this.temp = [];
 
@@ -62,21 +64,26 @@ class ElabRequest extends React.Component {
     handleSubmit(event) {
         //var newPostKey = database.ref().child('elab-request').push().key;
         window.location.href = event.target.href;
+        var postData = {
+            question:this.state.question,
+            endorsed:this.state.endorsed,
+            q_username:this.state.q_username,
+            a_username:this.state.a_username,
+        };
         var updates = {};
         this.updatedID = parseInt(this.updatedID)+1;
-        updates['/elab-request/' + (NAME + this.updatedID)] = this.state;
+        updates['/elab-request/' + (NAME + this.updatedID)] = postData;
         database.ref().update(updates);
     }
 
     submitAnswer(inputtedID) {
         var that = this;
         console.log('inputtedID is :' + inputtedID);
-        console.log('answer after inputtedID is :' + that.state.answer);
         database.ref('/elab-request/' + inputtedID + '/' + 'answer').push(that.state.draft);
         that.answerArray = that.answerArray.concat(that.state.draft);
     }
 
-    removeAnswer(inputtedID, index,answerText) {
+    removeAnswer(inputtedID, index) {
         var that = this;
         //var updates = {};
         console.log('index in removeAnswer is :' + index);
@@ -115,7 +122,7 @@ class ElabRequest extends React.Component {
             <div className="elaboration-oneAnswer" key={index}>
                  <li className="elaboration-oneAnswer-text">{answerText}</li>
                  <form>
-                   <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index,answerText);}}>
+                   <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index);}}>
                      Delete
                    </a>
                  </form>
@@ -198,7 +205,7 @@ class ElabRequest extends React.Component {
           </div>
           <Question question={this.state.question} handleEdit={this.handleEdit} endorsed={this.state.endorsed}
           q_username={this.state.q_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
-          <Answer answer={this.state.answer} handleEdit={this.handleEdit} id={this.id} allRequests={this.allRequests}
+          <Answer handleEdit={this.handleEdit} id={this.id} allRequests={this.allRequests}
           requestID={this.requestID} a_username={this.state.a_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
           </div>
         );
