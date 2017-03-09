@@ -257,52 +257,65 @@ class Upload extends React.Component {
     }
 
     componentDidMount() {
-        // Store reference to database listener so it can be later removed
+
+        // No lecture was passed in, do not set up listener
+        if (this.props.lecture == undefined) return;
+
         var that = this;
-        var course = this.props.currentCourse;
-        var lecture = this.props.currentLecture;
+        var course = this.props.navCourse;
+        var lecture = this.props.lecture;
+
 
         var ref = database.ref('/lectures/' + course.id + '/' + lecture.id);
-        that.setState({
-            firebaseListener: ref
-        });
 
         // Listen to changes at ref's location in db
-        ref.on('value', function(snapshot) {
+        var uploadReference = ref.on('value', function(snapshot) {
             console.log('db on: ' + lecture.id);
             that.setState({
                 lectureInfo: snapshot.val()
             });
         });
 
+        // Store reference to database listener so it can be later removed
+        this.setState({
+            firebaseListener: ref,
+            firebaseCallback: uploadReference
+        });
+
     }
 
     componentWillReceiveProps(newProps) {
         // Remove old database Listener
+
+        // No lecture was passed in, do not set up listener
+        if (newProps.lecture == undefined) return;
+
         if (this.state.firebaseListener != undefined) {
-            this.state.firebaseListener.off();
+            this.state.firebaseListener.off('value', this.state.uploadReference);
         }
 
         // Create and store new listener so it can too be removed
         var that = this;
         // console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
-        var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
-        this.setState({
-            firebaseListener: newRef
-        });
+        var newRef = database.ref('lectures/' + newProps.navCourse.id + '/' + newProps.lecture.id);
 
-        console.log('received props, db on: ' + newProps.currentLecture.id);
-        newRef.on('value', function(snapshot) {
+        console.log('received props, db on: ' + newProps.lecture.id);
+        var uploadReference = newRef.on('value', function(snapshot) {
             that.setState({
                 lectureInfo: snapshot.val()
             });
+        });
+
+        this.setState({
+            firebaseListener: newRef,
+            firebaseCallback: uploadReference
         });
     }
 
     // Destructor, removes database listener when component is unmounted
     componentWillUnmount() {
         //Remove the database listener
-        this.state.firebaseListener.off();
+        this.state.firebaseListener.off('value', this.state.firebaseCallback);
     }
 
     handleUploadInProgress(evt) {
@@ -327,7 +340,7 @@ class Upload extends React.Component {
                         onRequestClose={this.handleClose} >
 
                     <DynamicDisplay
-                        currentCourse={this.props.currentCourse}
+                        currentCourse={this.props.navCourse}
                         currentLecture={this.state.lectureInfo}
                         onClose={this.handleClose}
                         onUploadInProgress={this.handleUploadInProgress}/>

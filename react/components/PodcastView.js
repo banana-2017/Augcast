@@ -45,17 +45,20 @@ class PodcastView extends React.Component {
 
             // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
             var ref = database.ref('/lectures/' + course.id + '/' + lecture.id);
-            this.setState({
-                firebaseListener: ref
-            });
 
             // Listen to changes at ref's location in db
-            ref.on('value', function(snapshot) {
+            var pdfRef = ref.on('value', function(snapshot) {
                 console.log(JSON.stringify('db on lectures/' + course.id + '/' + lecture.id +': ' + JSON.stringify(snapshot.val())));
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
             });
+
+            this.setState({
+                firebaseListener: ref,
+                firebaseCallback: pdfRef
+            });
+
         } else {
             this.setState({
                 firstRender: true
@@ -78,22 +81,24 @@ class PodcastView extends React.Component {
 
             // Remove old database Listener
             if (this.state.firebaseListener != undefined) {
-                this.state.firebaseListener.off();
+                this.state.firebaseListener.off('value', this.state.firebaseCallback);
             }
 
             // Create and store new listener so it can too be removed
             var that = this;
             // console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
-            this.setState({
-                firebaseListener: newRef
-            });
 
-            newRef.on('value', function(snapshot) {
+            var pdfRef = newRef.on('value', function(snapshot) {
                 // console.log(JSON.stringify('db on lectures/../' + newProps.currentLecture.id +': ' + JSON.stringify(snapshot.val())));
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
+            });
+
+            this.setState({
+                firebaseListener: newRef,
+                firebaseCallback: pdfRef
             });
         }
     }
@@ -101,7 +106,7 @@ class PodcastView extends React.Component {
     // Destructor, removes database listener when component is unmounted
     componentWillUnmount() {
         //Remove the database listener
-        this.state.firebaseListener.off();
+        this.state.firebaseListener.off('value', this.state.firebaseCallback);
     }
 
     // Callback function passed to and executed by VideoPlayer
@@ -119,8 +124,10 @@ class PodcastView extends React.Component {
             return (<div>select a lecture to start</div>);
         }
 
-        // If there are timestamps in DB, display the PDF with them
-        if (this.state.lectureInfo.timestamps != undefined) {
+        // If there is a slides_url in DB, display the PDF.
+        // When the timestamps are added to lectureInfo,
+        // the timestamps prop will automatically update
+        if (this.state.lectureInfo.slides_url != undefined) {
             return (
                 <PDFDisplay
                     onSkipToTime={this.handleSkipToTime}
@@ -129,28 +136,7 @@ class PodcastView extends React.Component {
             );
         }
 
-        // If there aren't timestamps in DB, then display a progress bar
-        if (this.state.lectureInfo.labelProgress != undefined) {
-            return (
-                <div style={{maxWidth: '300px', margin:'0 auto'}}>
-                    <h3>
-                        Analyzing PDF
-                    </h3>
-                    <br/>
-                    <p>Your submitted PDF is being analyzed for matching text in the video podcast.
-                        This process will take around 20 minutes, feel free to browse away and check back later on the progress.</p>
-                    <br/>
-                    <h4>Progress: </h4>
-                    <br/>
-                    <ProgressBar
-                        active
-                        now={this.state.lectureInfo.labelProgress}
-                        label={`${(this.state.lectureInfo.labelProgress).toFixed(2)}%`} />
-                </div>
-
-            );
-        }
-
+        // Catch-all for any failure. Display empty div.
         else {
             return (<div/>);
         }
