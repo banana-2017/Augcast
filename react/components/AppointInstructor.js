@@ -1,7 +1,7 @@
 import React from 'react';
 import { database } from './../../database/database_init';
 import { Button } from 'react-bootstrap';
-import Fuse from 'fuse.js';
+import Fuse from "fuse.js";
 
 class AppointInstructor extends React.Component {
     constructor(props) {
@@ -11,11 +11,10 @@ class AppointInstructor extends React.Component {
         this.state = {
             dataRetrieved: false,
             searchResult: []
-        }
+        };
 
         // Instance Variable
         this.courseId = this.props.course.id;
-        this.usersDirObj = undefined;
         this.studentsArray = [];
         this.instructorsArray = [];
 
@@ -24,11 +23,11 @@ class AppointInstructor extends React.Component {
         // query the users directory
         var that = this;
         database.ref('users').once('value').then(function(snapshot) {
-            that.usersDirObj = snapshot.val();
+            let usersDirObj = snapshot.val();
 
-            for(var user in that.usersDirObj) {
+            for(var user in usersDirObj) {
                 // push every user object into student array
-                let current = that.usersDirObj[user];
+                let current = usersDirObj[user];
                 that.studentsArray.push(current);
 
                 // Check whether the user is instructor for this class
@@ -49,7 +48,7 @@ class AppointInstructor extends React.Component {
 
 
         // Bind the function
-        this.selectInstructor = this.selectInstructor.bind(this);
+        this.addInstructor = this.addInstructor.bind(this);
         this.searchUser = this.searchUser.bind(this);
         this.searchInput = this.searchInput.bind(this);
     }
@@ -59,7 +58,7 @@ class AppointInstructor extends React.Component {
      *
      * userId: the id of the user to be the instructor
      */
-    selectInstructor(userId) {
+    addInstructor(userId) {
         var that = this;
 
         let instructorCourses = undefined;
@@ -68,20 +67,10 @@ class AppointInstructor extends React.Component {
         ref.once('value').then(function(snapshot) {
             instructorCourses = snapshot.val();
 
-            console.log("instructorCourses", instructorCourses);
             var updates = {};
             updates[Object.keys(instructorCourses).length] = that.courseId;
             ref.update(updates);
         })
-    }
-
-    /*
-     * Remove the instructor priority from one user
-     */
-    removeInstructor(userId) {
-        var that = this;
-
-        let instructorCourses = undefined;
     }
 
     /*
@@ -90,7 +79,7 @@ class AppointInstructor extends React.Component {
      * query: string to be searched for
      */
     searchUser(query) {
-        var options = {
+        let options = {
             include: ["score"],
             shouldSort: true,
             threshold: 0.6,
@@ -105,7 +94,7 @@ class AppointInstructor extends React.Component {
         };
 
         // fuse = {item: "user object", score: "0 means perfect match"}
-        var fuse = new Fuse(this.studentsArray, options);
+        let fuse = new Fuse(this.studentsArray, options);
         return fuse.search(query);
     }
 
@@ -131,6 +120,7 @@ class AppointInstructor extends React.Component {
     }
 
     render () {
+        var that = this;
         var userItem = function(user) {
             let name = user.username;
             let email = user.email;
@@ -139,12 +129,11 @@ class AppointInstructor extends React.Component {
                     <td>{name}</td>
                     <td>{email}</td>
                     <td>
-                        <Button bsStyle="default">+</Button>
-                        <Button bsStyle="default">-</Button>
+                        <Button bsStyle="default" onClick={that.addInstructor(email.split('@')[0])}>+</Button>
                     </td>
                 </tr>
             )
-        }
+        };
         return (
             <div className="instructors">
                 <h3>Instructor List </h3>

@@ -1,5 +1,5 @@
 // Lecture.js
-// List all lectures of podcast-enabled courses
+// List all lectureIds of podcast-enabled courses
 
 import React from 'react';
 import FA from 'react-fontawesome';
@@ -57,7 +57,7 @@ class LectureList extends React.Component {
         var that = this;
 
         var listItem = function(lectureID) {
-            var lecture = that.props.lectures[lectureID];
+            var lecture = that.props.lectureIds[lectureID];
             var month = that.calendar[lecture.month];
             return (
                 <li key={lecture.id}
@@ -80,7 +80,7 @@ class LectureList extends React.Component {
                     </div>
                     <div className="lectures-wrapper">
                         <ul className="lecture-list">
-                            {that.props.navCourse.lectures.map(listItem)}
+                            {that.props.navCourse.lectureIds.map(listItem)}
                         </ul>
                     </div>
                 </div>

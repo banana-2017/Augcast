@@ -46,14 +46,14 @@ class PodcastView extends React.Component {
         if (course != undefined && lecture != undefined) {
 
             // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
-            var ref = database.ref('courses/' + course.id + '/lectures/' + lecture.id);
+            var ref = database.ref('courses/' + course.id + '/lectureIds/' + lecture.id);
             this.setState({
                 firebaseListener: ref
             });
 
             // Listen to changes at ref's location in db
             ref.on('value', function(snapshot) {
-                console.log(JSON.stringify('db on lectures/' + course.id + '/' + lecture.id +': ' + JSON.stringify(snapshot.val())));
+                console.log(JSON.stringify('db on lectureIds/' + course.id + '/' + lecture.id +': ' + JSON.stringify(snapshot.val())));
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
@@ -86,13 +86,13 @@ class PodcastView extends React.Component {
             // Create and store new listener so it can too be removed
             var that = this;
             console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
-            var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
+            var newRef = database.ref('lectureIds/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
             this.setState({
                 firebaseListener: newRef
             });
 
             newRef.on('value', function(snapshot) {
-                console.log(JSON.stringify('db on lectures/../' + newProps.currentLecture.id +': ' + JSON.stringify(snapshot.val())));
+                console.log(JSON.stringify('db on lectureIds/../' + newProps.currentLecture.id +': ' + JSON.stringify(snapshot.val())));
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
