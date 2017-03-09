@@ -2,6 +2,7 @@ import React from 'react';
 import { database } from './../../database/database_init';
 import Question from './Question';
 import Answer from './Answer';
+import {connect} from 'react-redux';
 //import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
@@ -67,7 +68,7 @@ class ElabRequest extends React.Component {
         var postData = {
             question:this.state.question,
             endorsed:this.state.endorsed,
-            q_username:this.state.q_username,
+            //q_username:this.props.username,
             a_username:this.state.a_username,
         };
         var updates = {};
@@ -85,27 +86,10 @@ class ElabRequest extends React.Component {
 
     removeAnswer(inputtedID, index) {
         var that = this;
-        //var updates = {};
         console.log('index in removeAnswer is :' + index);
         console.log('inputtedID in removeAnswer is :' + inputtedID);
-        //console.log('answer after inputtedID is :' + that.state.answer);
-        // database.ref('/elab-request/' + inputtedID + '/answer/' + index).once('value').then(function(snapshot) {
-        //     console.log('SNAPSHOT in database is :' + snapshot.val());
-        //     console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
-        //     for (var count = 0; count < that.answerArray.length; count++) {
-        //       if (that.answerArray[count] != answerText)
-        //         console.log('FOR LOOPPPPP: ' + that.answerArray[count]);
-        //     }
-        //     that.answerArray = that.answerArray.filter((_, i) => i !== index);
-        // });
         console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
         database.ref('/elab-request/' + inputtedID + '/answer/' + index).remove();
-        // for (var count = 0; count < that.answerArray.length; count++) {
-        //     if (that.answerArray[count] != answerText){
-        //         console.log('FOR LOOPPPPP: ' + that.answerArray[count]);
-        //         database.ref('/elab-request/' + inputtedID + '/answer' ).push(that.answerArray[count]);
-        //     }
-        // }
     }
 
     displayAnswer(rawIndex,inputtedID, answerText, filler){
@@ -114,9 +98,9 @@ class ElabRequest extends React.Component {
         console.log('inputtedID: ' + inputtedID);
         //this.setState({answer: this.state.answer.concat(answerText)});
         var index = rawIndex[filler];
-        var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
+        var buttonStyle = {backgroundColor: '#efb430', width: '60px', height: '20px', textAlign: 'center',
             margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
-            fontWeight: '300', fontSize: '22px', display: 'inline-block'};
+            fontWeight: '300', fontSize: '14px', display: 'inline-block'};
         var that = this;
         return(
             <div className="elaboration-oneAnswer" key={index}>
@@ -163,10 +147,10 @@ class ElabRequest extends React.Component {
             fontWeight: '300', fontSize: '22px', display: 'inline-block'};
         return(
             <div key={elaboration}>
-              <div className="elaboration-question" style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}}>
+              <div className="elaboration-question">
                 <p className="elaboration-question-text" key={parts}>
-                Question {that.updatedID}:
-                <p1 className="elaboration-question">{questions}</p1><br/>
+                Question {that.updatedID}:<br/>
+                <p1 style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}} className="elaboration-question">{questions}</p1><br/>
                 </p>
               </div>
               <div className="elaboration-answer">
@@ -211,5 +195,12 @@ class ElabRequest extends React.Component {
         );
     }
 }
-//<Button style={{margin:'10px'}} bsStyle="success" onClick={this.updateQuestionFromDB}><Glyphicon glyph="save" /> Update</Button>
-export default ElabRequest;
+
+function mapStateToProps (state) {
+    return {
+        username: state.username
+    };
+}
+
+const ElabRequestContainer = connect(mapStateToProps)(ElabRequest);
+export default ElabRequestContainer;
