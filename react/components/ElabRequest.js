@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 ElabRequest
 */
 const NAME = 'elaboration_id_';
+var user = 'gary';
 
 class ElabRequest extends React.Component {
     constructor(props) {
@@ -68,8 +69,7 @@ class ElabRequest extends React.Component {
         var postData = {
             question:this.state.question,
             endorsed:this.state.endorsed,
-            //q_username:this.props.username,
-            a_username:this.state.a_username,
+            q_username:user,
         };
         var updates = {};
         this.updatedID = parseInt(this.updatedID)+1;
@@ -79,8 +79,15 @@ class ElabRequest extends React.Component {
 
     submitAnswer(inputtedID) {
         var that = this;
+        var updates = {};
         console.log('inputtedID is :' + inputtedID);
-        database.ref('/elab-request/' + inputtedID + '/' + 'answer').push(that.state.draft);
+        var newPostKey = database.ref('/elab-request/' + inputtedID + '/' + 'answer').push().key;
+        var answerObj = {
+            content: that.state.draft,
+            a_username: 'gary',
+        };
+        updates['/elab-request/' + inputtedID + '/answer/' + newPostKey] = answerObj;
+        database.ref().update(updates);
         that.answerArray = that.answerArray.concat(that.state.draft);
     }
 
@@ -92,11 +99,14 @@ class ElabRequest extends React.Component {
         database.ref('/elab-request/' + inputtedID + '/answer/' + index).remove();
     }
 
-    displayAnswer(rawIndex,inputtedID, answerText, filler){
-        console.log('answerText: ' + answerText);
-        console.log('index: ' + rawIndex);
+    displayAnswer(rawIndex,inputtedID, answer_owner, answerText,filler){
+        console.log('answer_owner: ' + answer_owner);
+        console.log('rawIndex: ' + rawIndex);
         console.log('inputtedID: ' + inputtedID);
-        //this.setState({answer: this.state.answer.concat(answerText)});
+        console.log('filler: ' + filler);
+        var owner = answer_owner[filler];
+        console.log('owner: ' + owner);
+        //this.setState({answer: this.state.answer.concat(answer_owner)});
         var index = rawIndex[filler];
         var buttonStyle = {backgroundColor: '#efb430', width: '60px', height: '20px', textAlign: 'center',
             margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
@@ -106,9 +116,10 @@ class ElabRequest extends React.Component {
             <div className="elaboration-oneAnswer" key={index}>
                  <li className="elaboration-oneAnswer-text">{answerText}</li>
                  <form>
+                   {owner=='alan'&&
                    <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index);}}>
                      Delete
-                   </a>
+                   </a>}
                  </form>
              </div>
         );
@@ -122,20 +133,25 @@ class ElabRequest extends React.Component {
 
         var questions = allRequests[elaboration].question;
         var answers = allRequests[elaboration].answer;
-        var keys = [];
+        var answer_owner = [];
+        var keys = Object.keys(answers);
         console.log('answers is :' + JSON.stringify(answers));
         var answers2 = [];
         if(answers!=null || answers != undefined){
             JSON.parse(JSON.stringify(answers), (key, value) => {
-                console.log(value);
-                if(typeof value === 'string'){
+                if(key=='content'){
+                    console.log(value);
                     answers2 = answers2.concat(value);
-                    keys = keys.concat(key);
+                }
+                if(key=='a_username'){
+                    console.log(value);
+                    answer_owner = answer_owner.concat(value);
                 }
             });
         }
         that.answerArray = answers2;
         console.log('answers2 is :' + answers2);
+        console.log('answer_owner is :' + answer_owner);
         console.log('keys is :' + keys);
         //console.log('requestID is :' + this.requestID);
         //console.log('keys of answers: ' + Object.keys(answers));
@@ -154,7 +170,7 @@ class ElabRequest extends React.Component {
                 </p>
               </div>
               <div className="elaboration-answer">
-                {answers != null && answers2.map(that.displayAnswer.bind(this,keys,elaboration))}
+                {answers != null && answers2.map(that.displayAnswer.bind(this,keys,elaboration, answer_owner))}
                 <form>
                     <input
                         style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
