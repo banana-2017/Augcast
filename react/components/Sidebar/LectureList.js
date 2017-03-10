@@ -5,12 +5,15 @@ import React from 'react';
 import FA from 'react-fontawesome';
 import IconButton from 'material-ui/IconButton';
 import ActionBackup from 'material-ui/svg-icons/action/backup';
+import ActionCached from 'material-ui/svg-icons/action/cached';
 import ActionDone from 'material-ui/svg-icons/action/done';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
 import UploadContainer from '../Upload';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import { database } from './../../../database/database_init';
+
 
 //import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
@@ -29,7 +32,7 @@ class UploadButton extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-                <IconButton tooltip="Upload slides" onTouchTap={() => {that.props.onClick(that.props.lecture);}}>
+                <IconButton tooltip="Upload slides" onTouchTap={() => {that.props.onClick(that.props.iconLecture);}}>
                     <ActionBackup />
                 </IconButton>
             </div>
@@ -49,6 +52,121 @@ class DoneMark extends React.Component {
                     <ActionDone />
                 </IconButton>
             </div>
+        );
+    }
+}
+
+class LabelingProgressChart extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        var that = this;
+        return (
+            <div className="slides-status">
+                <IconButton
+                    tooltip={'Progress: ' + that.props.progress}
+                    onTouchTap={() => {that.props.onClick(that.props.iconLecture);}}>
+                    <ActionCached />
+                </IconButton>
+            </div>
+        );
+    }
+}
+
+class UploadIconController extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {}
+    }
+
+    componentDidMount() {
+        // Store reference to database listener so it can be removed
+        var that = this;
+        var course = this.props.iconCourse;
+        var lecture = this.props.iconLecture;
+
+        if (course != undefined && lecture != undefined) {
+
+            // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
+            var ref = database.ref('/lectures/' + course.id + '/' + lecture.id);
+
+            // Listen to changes at ref's location in db
+            var iconRef = ref.on('value', function(snapshot) {
+                that.setState({
+                    lectureInfo: snapshot.val()
+                });
+            });
+
+            this.setState({
+                firebaseListener: ref,
+                firebaseCallback: iconRef
+            });
+
+        }
+        console.log('controller mounted');
+    }
+
+    componentWillReceiveProps(newProps) {
+
+        // Remove old database Listener
+        if (this.state.firebaseListener != undefined) {
+            this.state.firebaseListener.off('value', this.state.firebaseCallback);
+        }
+
+        // Create and store new listener so it can too be removed
+        var that = this;
+        var newRef = database.ref('lectures/' + newProps.iconCourse.id + '/' + newProps.iconLecture.id);
+
+        var iconRef = newRef.on('value', function(snapshot) {
+            that.setState({
+                lectureInfo: snapshot.val()
+            });
+        });
+
+        this.setState({
+            firebaseListener: newRef,
+            firebaseCallback: iconRef
+        });
+
+    }
+
+    // Destructor, removes database listener when component is unmounted
+    componentWillUnmount() {
+        //Remove the database listener
+        if (this.state.firebaseListener != undefined) {
+            this.state.firebaseListener.off('value', this.state.firebaseCallback);
+        }    }
+
+    render() {
+
+        // If lecture info not loaded from DB just chill out
+        if (this.state.lectureInfo == undefined) {
+            return (<div></div>);
+        }
+
+        // If there are timestamps in DB, display check mark
+        if (this.state.lectureInfo.timestamps != undefined) {
+            return (<DoneMark/>);
+        }
+
+        // If there is progress in the database, display a progress pie chart
+        if (this.state.lectureInfo.labelProgress != undefined) {
+            return (
+                <LabelingProgressChart
+                    onClick={this.props.uploadButtonOnClick}
+                    iconLecture={this.props.iconLecture}
+                    progress={this.state.lectureInfo.labelProgress}/>
+            );
+        }
+
+        // If no progress, then display upload Button
+        return (
+            <UploadButton
+                onClick={this.props.uploadButtonOnClick}
+                iconLecture={this.props.iconLecture}/>
         );
     }
 }
@@ -104,7 +222,7 @@ class LectureList extends React.Component {
                     <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
                         Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                     </div>
-                    {(lecture.slides_url) ? <DoneMark /> : <UploadButton onClick={that.openModal} lecture={lecture}/>}
+                    <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                 </li>
             );
         };

@@ -17,6 +17,7 @@ class Login extends React.Component {
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.emailValidation = this.emailValidation.bind(this);
         this.authenticate = this.authenticate.bind(this);
+        this.keyEvent = this.keyEvent.bind (this);
 
         this.state = {
             email: '',
@@ -36,11 +37,18 @@ class Login extends React.Component {
         this.setState({ password: e.target.value });
     }
 
+    // handle enter key
+    keyEvent (e) {
+        if (e.keyCode === 13) {
+            this.authenticate();
+        }
+    }
+
     // TODO: needs styling
     render () {
         document.title = "Login - Augcast";
         return (
-            <form>
+            <form onKeyDown={this.keyEvent} >
                 <FormGroup
                     controlId="email"
                     validationState={this.emailValidation()}>
