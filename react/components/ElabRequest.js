@@ -206,7 +206,7 @@ class ElabRequest extends React.Component {
               <div className="elaboration-content">
                 <p className="elaboration-content-text" key={parts}>
                 Question {that.updatedID}:<br/>
-                <p1 style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}} className="elaboration-content">{contents} Posted by ---- {question_owner}</p1><br/>
+                <p1 style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}} className="elaboration-content">{contents}  ----  Posted by {question_owner}</p1><br/>
                 </p>
               </div>
               <div className="elaboration-answer">
