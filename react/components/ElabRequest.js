@@ -53,7 +53,6 @@ class ElabRequest extends React.Component {
         this.submitAnswer = this.submitAnswer.bind(this);
         this.displayAnswer = this.displayAnswer.bind(this);
         this.removeAnswer = this.removeAnswer.bind(this);
-        this.startEditing = this.startEditing.bind(this);
     }
 
     // edit field for submitting ER
@@ -81,35 +80,9 @@ class ElabRequest extends React.Component {
         database.ref().update(updates);
     }
 
-    startEditing() {
-        console.log('IN START EDITING');
-        var containerStyle = {backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
-            width: '800px', fontSize: '25px'};
-        var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
-            margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
-            fontWeight: '300', fontSize: '22px', display: 'inline-block'};
-
-        return(
-            <div className="request-new" style={containerStyle}>
-              <form>
-                  <input
-                      style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
-                      type="text"
-                      className="form-control"
-                      defaultValue= {this.content}
-                      onChange={this.handleEdit}/>
-                  <div className="request-buttons">
-                      <a style={buttonStyle} onClick={this.handleSubmit}>
-                          Submit
-                      </a>
-                  </div>
-              </form>
-          </div>
-        );
-    }
-
     // Update answer to database
     submitAnswer(inputtedID) {
+        window.location.reload();
         var that = this;
         var updates = {};
         console.log('inputtedID is :' + inputtedID);
@@ -125,6 +98,7 @@ class ElabRequest extends React.Component {
 
     // remove answer of ID from database
     removeAnswer(inputtedID, index) {
+        window.location.reload();
         var that = this;
         console.log('index in removeAnswer is :' + index);
         console.log('inputtedID in removeAnswer is :' + inputtedID);
