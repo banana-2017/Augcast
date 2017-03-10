@@ -23,13 +23,14 @@ class Home extends React.Component {
     }
 
     render () {
-        console.log("Rendering Home");
         var main = null;
         if (this.props.currentLecture) {
             main = <PodcastViewContainer />;
         } else {
             main = <div />
         }
+
+        document.title = "Augcast - An Augmented Podcast Experience";
 
         return (
             <div className="main">
