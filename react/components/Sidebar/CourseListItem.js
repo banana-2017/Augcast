@@ -36,15 +36,16 @@ class CourseListItem extends React.Component {
             <MenuItem className="course-item" key={id}>
                 <div className="pin-button">
                     <FA onClick={() => {this.pinCourse(id);}}
-                        name={(this.props.favorite)?'star':'star-o'}
+                        name={(this.props.favorite) ? 'star' : 'star-o'}
                         className={(this.props.favorite) ? 'pinned': ' unpinned'}/>
                 </div>
-                <div className="course-title" onClick={() => {selectCourse(course);}}>
-                    <span className="course-number">{number}</span>
-                    <span className="course-section">{section}</span>
+                <div className="course-button" onClick={() => {selectCourse(course);}}>
+                    <div className="course-title">
+                        <span className="course-number">{number}</span>
+                        <span className="course-section">{section}</span>
+                    </div>
+                    <div className="course-prof">{prof}</div>
                 </div>
-                <div className="course-prof">{prof}</div>
-                <div className="expand-button"></div>
             </MenuItem>
         );
     }
