@@ -2,6 +2,7 @@ import React from 'react';
 import { database } from './../../database/database_init';
 import { Button } from 'react-bootstrap';
 import Fuse from "fuse.js";
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 class AppointInstructor extends React.Component {
     constructor(props) {
@@ -9,75 +10,87 @@ class AppointInstructor extends React.Component {
 
         // Initial state
         this.state = {
-            dataRetrieved: false,
+            students: [],
+            instructors: [],
             searchResult: []
         };
 
-        // Instance Variable
-        this.courseId = this.props.course.id;
-        this.studentsArray = [];
-        this.instructorsArray = [];
+        // Indicate the props that this class should have
+        console.log(this.props.course);
 
-        console.log(this.courseId);
+        // first time query database
+        this.updateArray();
+
+        // Bind the function
+        this.addInstructor = this.addInstructor.bind(this);
+        this.updateArray = this.updateArray.bind(this);
+        this.searchUser = this.searchUser.bind(this);
+        this.searchInput = this.searchInput.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(JSON.stringify(this.props.course) != JSON.stringify(nextProps)) {
+            this.updateArray();
+        }
+    }
+
+    updateArray(){
+        let studentsArray = [];
+        let instructorsArray = [];
 
         // query the users directory
         var that = this;
         database.ref('users').once('value').then(function(snapshot) {
             let usersDirObj = snapshot.val();
 
-            for(var user in usersDirObj) {
-                // push every user object into student array
-                let current = usersDirObj[user];
-                that.studentsArray.push(current);
+            for(let index in usersDirObj) {
+                let user = usersDirObj[index];
 
                 // Check whether the user is instructor for this class
-                // and if it is, push it into the instructor array
-                let instructorCourse = current.instructorFor;
-                if(typeof instructorCourse != 'undefined') {
-                    for(var course in instructorCourse) {
-                        if(instructorCourse[course] === that.courseId) {
-                            that.instructorsArray.push(current);
-                            break;
-                        }
-                    }
+                // if it is, push it into the instructor array
+                // otherwise, push it into the student array
+                let instructorCourse = user.instructorFor;
+                if (typeof instructorCourse != 'undefined' &&
+                    Object.values(instructorCourse).includes(that.props.course.id)) {
+                    instructorsArray.push(user);
+                }
+                else {
+                    studentsArray.push(user);
                 }
             }
 
-            that.setState({dataRetrieved: true});
+            that.setState({students: studentsArray, instructors: instructorsArray});
         })
-
-
-        // Bind the function
-        this.addInstructor = this.addInstructor.bind(this);
-        this.searchUser = this.searchUser.bind(this);
-        this.searchInput = this.searchInput.bind(this);
     }
 
-    /*
-     * Update the database when a user is selected to be the instructor
-     *
-     * userId: the id of the user to be the instructor
-     */
-    addInstructor(userId) {
+    addInstructor(user) {
         var that = this;
 
-        let instructorCourses = undefined;
         // query the instructorFor array field of the selected users
-        var ref = database.ref('/users/' + userId + '/instructorFor');
+        var ref = database.ref('/users/' + user.username + '/instructorFor');
         ref.once('value').then(function(snapshot) {
-            instructorCourses = snapshot.val();
+            let instructorCourses = snapshot.val();
 
-            var updates = {};
-            updates[Object.keys(instructorCourses).length] = that.courseId;
-            ref.update(updates);
-        })
+            if(instructorCourses == null) {
+                let updates = {};
+                updates[0] = that.props.course.id;
+                ref.update(updates);
+            }
+            else {
+                if (Object.values(instructorCourses).includes(that.props.course.id)) {
+                    console.log("duplicate");
+                }
+                else {
+                    let updates = {};
+                    updates[Object.keys(instructorCourses).length] = that.props.course.id;
+                    ref.update(updates);
+                }
+            }
+
+            that.updateArray();
+        });
     }
 
-    /*
-     * The function handling searching the users using fuzzy search
-     *
-     * query: string to be searched for
-     */
     searchUser(query) {
         let options = {
             include: ["score"],
@@ -94,13 +107,10 @@ class AppointInstructor extends React.Component {
         };
 
         // fuse = {item: "user object", score: "0 means perfect match"}
-        let fuse = new Fuse(this.studentsArray, options);
+        let fuse = new Fuse(this.state.students, options);
         return fuse.search(query);
     }
 
-    /*
-     * This function handling searching user input by calling searchUser
-     */
     searchInput (e) {
         let query = e.target.value;
 
@@ -121,55 +131,41 @@ class AppointInstructor extends React.Component {
 
     render () {
         var that = this;
-        var userItem = function(user) {
-            let name = user.username;
-            let email = user.email;
-            return(
-                <tr key={email}>
-                    <td>{name}</td>
-                    <td>{email}</td>
-                    <td>
-                        <Button bsStyle="default" onClick={that.addInstructor(email.split('@')[0])}>+</Button>
-                    </td>
-                </tr>
-            )
+        const optionsProp_student = {
+            onRowClick: function(row) {
+                that.addInstructor(row);
+            },
+
+            noDataText: "No Student Found"
+        }
+
+        const selectRowProp_student = {
+            mode: 'checkbox',
+            bgColor: '#ccccff',
+            hideSelectColumn: true,
+            clickToSelect: true
+
         };
         return (
-            <div className="instructors">
-                <h3>Instructor List </h3>
+            <div>
+                <big> Instructor List </big>
+                <BootstrapTable data={this.state.instructors} bordered={false} options={ { noDataText: "No instructor found"} }>
+                    <TableHeaderColumn dataField="username" isKey>Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField="email">email</TableHeaderColumn>
+                </BootstrapTable>
+
                 <input type="text"
                        placeholder="Appoint Instructors"
                        onChange={this.searchInput}/>
-                <table id='instructor-table'>
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.dataRetrieved ?
-                        this.instructorsArray.map(userItem) : <tr><td>Loading</td></tr>}
-                    </tbody>
-                </table>
 
-                <h3>Student List </h3>
-                <table id='student-table'>
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.dataRetrieved ?
-                        this.state.searchResult.map(userItem) : <tr><td>Loading</td></tr>}
-                    </tbody>
-                </table>
+                <BootstrapTable data={this.state.searchResult} bordered={false}
+                                options={optionsProp_student} selectRow={selectRowProp_student}>
+                    <TableHeaderColumn dataField="username" isKey>Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField="email">email</TableHeaderColumn>
+                </BootstrapTable>
+
             </div>
-        )
+        );
     }
 }
 
