@@ -7,5 +7,9 @@ server.bundle.js
 database/credentials.json
 database/serviceAccountKey.json
 *.log
-labeler
+labeler/assets
 .DS_Store
+*.pyc
+labeler/*.pyc
+script/*.json
+utility/
