@@ -2,11 +2,6 @@
 // List all lectures of podcast-enabled courses
 
 import React from 'react';
-import FA from 'react-fontawesome';
-import IconButton from 'material-ui/IconButton';
-import ActionBackup from 'material-ui/svg-icons/action/backup';
-import ActionCached from 'material-ui/svg-icons/action/cached';
-import ActionDone from 'material-ui/svg-icons/action/done';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
@@ -14,6 +9,12 @@ import UploadContainer from '../Upload';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { database } from './../../../database/database_init';
 
+// ui components
+import FA from 'react-fontawesome';
+import {Button, IconButton} from 'react-toolbox/lib/button';
+import ActionBackup from 'material-ui/svg-icons/action/backup';
+import ActionCached from 'material-ui/svg-icons/action/cached';
+import ActionDone from 'material-ui/svg-icons/action/done';
 
 //import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
