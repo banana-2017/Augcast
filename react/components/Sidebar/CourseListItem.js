@@ -41,9 +41,9 @@ class CourseListItem extends React.Component {
                 </div>
                 <div className="course-title" onClick={() => {selectCourse(course);}}>
                     <span className="course-number">{number}</span>
-                    <span className="course-section">{section}</span><br />
-                    <span className="course-prof">{prof}</span>
+                    <span className="course-section">{section}</span>
                 </div>
+                <div className="course-prof">{prof}</div>
                 <div className="expand-button"></div>
             </MenuItem>
         );
