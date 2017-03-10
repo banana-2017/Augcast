@@ -8,7 +8,8 @@ import {connect} from 'react-redux';
 ElabRequest
 */
 const NAME = 'elaboration_id_';
-var user = 'alan';
+var user = 'gary';
+var course = 'cse100-b-0';
 
 class ElabRequest extends React.Component {
     constructor(props) {
@@ -37,7 +38,7 @@ class ElabRequest extends React.Component {
 
         // Grab initial data from database
         var that = this;
-        database.ref('/elab-request').once('value').then(function(snapshot) {
+        database.ref('/elaborations/' + course).once('value').then(function(snapshot) {
             that.allRequests = snapshot.val();
             that.requestID = Object.keys(snapshot.val());
             that.setState({dataRetrieved: true});
@@ -67,7 +68,7 @@ class ElabRequest extends React.Component {
 
     // updating ER to database
     handleSubmit(event) {
-        //var newPostKey = database.ref().child('elab-request').push().key;
+        //var newPostKey = database.ref().child('elaborations').push().key;
         window.location.href = event.target.href;
         var postData = {
             content:this.state.content,
@@ -76,7 +77,7 @@ class ElabRequest extends React.Component {
         };
         var updates = {};
         this.updatedID = parseInt(this.updatedID)+1;
-        updates['/elab-request/' + (NAME + this.updatedID)] = postData;
+        updates['/elaborations/' + course + '/' + (NAME + this.updatedID)] = postData;
         database.ref().update(updates);
     }
 
@@ -86,12 +87,12 @@ class ElabRequest extends React.Component {
         var that = this;
         var updates = {};
         console.log('inputtedID is :' + inputtedID);
-        var newPostKey = database.ref('/elab-request/' + inputtedID + '/' + 'answers').push().key;
+        var newPostKey = database.ref('/elaborations/' + course + '/' + inputtedID + '/' + 'answers').push().key;
         var answerObj = {
             content: that.state.draft,
             a_username: user,
         };
-        updates['/elab-request/' + inputtedID + '/answers/' + newPostKey] = answerObj;
+        updates['/elaborations/' + course + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
         that.answerArray = that.answerArray.concat(that.state.draft);
     }
@@ -103,7 +104,7 @@ class ElabRequest extends React.Component {
         console.log('index in removeAnswer is :' + index);
         console.log('inputtedID in removeAnswer is :' + inputtedID);
         console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
-        database.ref('/elab-request/' + inputtedID + '/answers/' + index).remove();
+        database.ref('/elaborations/' + course + '/' + inputtedID + '/answers/' + index).remove();
     }
 
     // display answer list of each ER to user
@@ -179,9 +180,10 @@ class ElabRequest extends React.Component {
             <div key={elaboration}>
               <div className="elaboration-content">
                 <p className="elaboration-content-text" key={parts}>
-                Question {that.updatedID}:<br/>
+                Question:<br/>
                 <p1 style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}} className="elaboration-content">{contents}  ----  Posted by {question_owner}</p1><br/>
                 </p>
+                
               </div>
               <div className="elaboration-answer">
                 {answers != null && answers2.map(that.displayAnswer.bind(this,keys,elaboration, answer_owner))}
