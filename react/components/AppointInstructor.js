@@ -26,6 +26,7 @@ class AppointInstructor extends React.Component {
         this.updateArray = this.updateArray.bind(this);
         this.searchUser = this.searchUser.bind(this);
         this.searchInput = this.searchInput.bind(this);
+        this.removeInstructor = this.removeInstructor.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -78,7 +79,7 @@ class AppointInstructor extends React.Component {
             }
             else {
                 if (Object.values(instructorCourses).includes(that.props.course.id)) {
-                    console.log("duplicate");
+                    alert("duplicate");
                 }
                 else {
                     let updates = {};
@@ -89,6 +90,25 @@ class AppointInstructor extends React.Component {
 
             that.updateArray();
         });
+    }
+
+    removeInstructor(user) {
+        var that = this;
+
+        var ref = database.ref('/users/' + user.username + '/instructorFor');
+        ref.once('value').then(function(snapshot) {
+            let courses = snapshot.val();
+
+            var updates = {};
+            for(let index in courses) {
+                if(courses[index] === that.props.course.id) {
+                    updates[index] = null
+                }
+            }
+
+            ref.update(updates);
+            that.updateArray();
+        })
     }
 
     searchUser(query) {
@@ -139,17 +159,33 @@ class AppointInstructor extends React.Component {
             noDataText: "No Student Found"
         }
 
+        const optionsProp_instructor = {
+            onRowClick: function(row) {
+                that.removeInstructor(row);
+            },
+
+            noDataText: "No Instructor Found"
+        }
+
         const selectRowProp_student = {
             mode: 'checkbox',
             bgColor: '#ccccff',
             hideSelectColumn: true,
             clickToSelect: true
-
         };
+
+        const selectRowProp_instructor = {
+            mode: 'checkbox',
+            bgColor: '#ff5050',
+            hideSelectColumn: true,
+            clickToSelect: true
+        };
+
         return (
             <div>
                 <big> Instructor List </big>
-                <BootstrapTable data={this.state.instructors} bordered={false} options={ { noDataText: "No instructor found"} }>
+                <BootstrapTable data={this.state.instructors} bordered={false}
+                                options={optionsProp_instructor} selectRow={selectRowProp_instructor}>
                     <TableHeaderColumn dataField="username" isKey>Name</TableHeaderColumn>
                     <TableHeaderColumn dataField="email">email</TableHeaderColumn>
                 </BootstrapTable>
