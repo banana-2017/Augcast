@@ -148,7 +148,7 @@ class ElabRequest extends React.Component {
         var that = this;
         return(
             <div className="elaboration-oneAnswer" key={index}>
-                 <li className="elaboration-oneAnswer-text">{answerText}</li>
+                 <li className="elaboration-oneAnswer-text">{answerText} ----- Posted By {owner}</li>
                  <form>
                    {owner==user&&
                    <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index);}}>
@@ -167,6 +167,7 @@ class ElabRequest extends React.Component {
         var that = this;
 
         var contents = allRequests[elaboration].content;
+        var question_owner = allRequests[elaboration].author;
         var answers = allRequests[elaboration].answers;
         var answer_owner = [];
         var keys = undefined;
@@ -205,7 +206,7 @@ class ElabRequest extends React.Component {
               <div className="elaboration-content">
                 <p className="elaboration-content-text" key={parts}>
                 Question {that.updatedID}:<br/>
-                <p1 style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}} className="elaboration-content">{contents}</p1><br/>
+                <p1 style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}} className="elaboration-content">{contents} Posted by ---- {question_owner}</p1><br/>
                 </p>
               </div>
               <div className="elaboration-answer">
