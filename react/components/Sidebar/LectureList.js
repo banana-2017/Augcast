@@ -14,6 +14,7 @@ import ActionBackup from 'material-ui/svg-icons/action/backup';
 import ActionCached from 'material-ui/svg-icons/action/cached';
 import ActionDone from 'material-ui/svg-icons/action/done';
 import Button from 'react-toolbox/lib/button';
+import Drawer from 'material-ui/Drawer';
 import FA from 'react-fontawesome';
 import FontIcon from 'react-toolbox/lib/font_icon';
 import IconButton from 'material-ui/IconButton';
@@ -243,7 +244,7 @@ class LectureList extends React.Component {
 
         return (
             <div>
-                <div className="nav">
+                <Drawer className="nav">
                     <div className="search-bar">
                         <div className="search-icon"><FA name='arrow-left' onClick={that.props.back}/></div>
                         <FormControl type="text"
@@ -256,7 +257,7 @@ class LectureList extends React.Component {
                             {that.props.navCourse.lectures.map(listItem)}
                         </div>
                     </div>
-                </div>
+                </Drawer>
                 <UploadContainer lecture={this.state.upload} open={this.state.modal} close={this.closeModal}/>
             </div>
         );

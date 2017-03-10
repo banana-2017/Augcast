@@ -27,19 +27,6 @@
     position: fixed;
 }
 
-.nav {
-    position: fixed;
-    width: 250px;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    padding: 0px;
-    margin:0px;
-    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
-    background: white;
-    z-index: 10;
-}
-
 /* sidebar elements */
 
 .search-bar {
@@ -189,21 +176,21 @@ li.lecture-item {
 }
 
 .lecture-button {
+    float: left;
     position: relative;
-    width: 100%;
-    vertical-align: middle;
     height: 100%;
     font-size:14pt;
+    padding: 8px 0 8px 0;
 }
 
 .lecture-calendar {
     float: left;
     width: 48px;
     height: 48px;
-    margin: 8px 0 8px 0;
     line-height: inherit;
     text-align: center;
     display: table;
+    font-weight: 200;
 }
 
 .lecture-month {
@@ -218,25 +205,40 @@ li.lecture-item {
 }
 
 .lecture-info {
+    height: 100%;
     display: table;
+    padding: 4px;
+    font-size: 14pt;
+    font-weight: 200;
+    float: left;
+}
+
+.lecture-num {
+    display: table-cell;
     vertical-align: middle;
 }
 
+.lecture-week {
+    padding-left: 10px;
+    display: table-cell;
+    vertical-align: middle;
+    font-weight: 200;
+}
+
 .lecture-item .slides-status {
-    float: right;
-    height: 100%;
-    position: relative;
-    display: table;
+    position: absolute;
+    right: 0;
     height: 100%;
     text-align: center;
 }
 
 .slides-status > button {
+    display: table-cell;
     height: 100%;
     min-width: 0;
-    vertical-align: middle;
-    display: table-cell;
     text-align: center;
+    vertical-align: middle;
+    width: 48px;
 }
 
 .slides-status > button > span.material-icons {
@@ -296,7 +298,7 @@ li.lecture-item {
     width: 100%;
     height: 100%;
     position: fixed;
-    left: 250px;
+    left: 256px;
     top: 0;
     display: inline-block;
     vertical-align: top;
