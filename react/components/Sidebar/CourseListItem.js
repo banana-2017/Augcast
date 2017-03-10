@@ -33,7 +33,8 @@ class CourseListItem extends React.Component {
         let {number, id, section, prof, selectCourse, course} = this.props;
 
         return (
-            <MenuItem className="course-item" key={id}>
+            <MenuItem className={ (course == this.props.currentCourse) ? "course-item selected" : "course-item" }
+            key={id}>
                 <div className="pin-button">
                     <FA onClick={() => {this.pinCourse(id);}}
                         name={(this.props.favorite) ? 'star' : 'star-o'}
@@ -53,7 +54,8 @@ class CourseListItem extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        username: state.username
+        username: state.username,
+        currentCourse: state.currentCourse
     };
 }
 

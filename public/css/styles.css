@@ -114,6 +114,10 @@ li.course-item {
     vertical-align: top;
 }
 
+.course-item.selected {
+    background: lightgreen;
+}
+
 .course-button {
     padding: 8px 0 8px 0;
     height: 100%;
