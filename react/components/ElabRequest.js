@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 ElabRequest
 */
 const NAME = 'elaboration_id_';
-var user = 'gary';
+var user = 'alan';
 var course = 'cse100-b-0';
 
 class ElabRequest extends React.Component {
@@ -40,7 +40,9 @@ class ElabRequest extends React.Component {
         var that = this;
         database.ref('/elaborations/' + course).once('value').then(function(snapshot) {
             that.allRequests = snapshot.val();
-            that.requestID = Object.keys(snapshot.val());
+            if(that.allRequests!=null){
+                that.requestID = Object.keys(snapshot.val());
+            }
             that.setState({dataRetrieved: true});
         });
         console.log('INITIALIZING');
@@ -67,9 +69,7 @@ class ElabRequest extends React.Component {
     }
 
     // updating ER to database
-    handleSubmit(event) {
-        //var newPostKey = database.ref().child('elaborations').push().key;
-        window.location.href = event.target.href;
+    handleSubmit() {
         var postData = {
             content:this.state.content,
             endorsed:this.state.endorsed,
@@ -79,11 +79,11 @@ class ElabRequest extends React.Component {
         this.updatedID = parseInt(this.updatedID)+1;
         updates['/elaborations/' + course + '/' + (NAME + this.updatedID)] = postData;
         database.ref().update(updates);
+        window.location.reload();
     }
 
     // Update answer to database
     submitAnswer(inputtedID) {
-        window.location.reload();
         var that = this;
         var updates = {};
         console.log('inputtedID is :' + inputtedID);
@@ -95,16 +95,23 @@ class ElabRequest extends React.Component {
         updates['/elaborations/' + course + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
         that.answerArray = that.answerArray.concat(that.state.draft);
+        window.location.reload();
     }
 
     // remove answer of ID from database
     removeAnswer(inputtedID, index) {
-        window.location.reload();
         var that = this;
         console.log('index in removeAnswer is :' + index);
         console.log('inputtedID in removeAnswer is :' + inputtedID);
         console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
         database.ref('/elaborations/' + course + '/' + inputtedID + '/answers/' + index).remove();
+        window.location.reload();
+    }
+
+    removeQuestion(inputtedID){
+        console.log('inputtedID in removeQuestion is :' + inputtedID);
+        database.ref('/elaborations/' + course + '/' + inputtedID).remove();
+        window.location.reload();
     }
 
     // display answer list of each ER to user
@@ -117,7 +124,7 @@ class ElabRequest extends React.Component {
         console.log('owner: ' + owner);
         //this.setState({answer: this.state.answer.concat(answer_owner)});
         var index = rawIndex[filler];
-        var buttonStyle = {backgroundColor: '#efb430', width: '60px', height: '20px', textAlign: 'center',
+        var buttonStyle = {backgroundColor: '#efb430', width: '100px', height: '20px', textAlign: 'center',
             margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
             fontWeight: '300', fontSize: '14px', display: 'inline-block'};
         var that = this;
@@ -127,7 +134,7 @@ class ElabRequest extends React.Component {
                  <form>
                    {owner==user&&
                    <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index);}}>
-                     Delete
+                     Delete Answer
                    </a>}
                  </form>
              </div>
@@ -175,6 +182,9 @@ class ElabRequest extends React.Component {
         var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
             margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
             fontWeight: '300', fontSize: '22px', display: 'inline-block'};
+        var buttonStyle2 = {backgroundColor: '#efb430', width: '120px', height: '20px', textAlign: 'center',
+            margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
+            fontWeight: '300', fontSize: '14px', display: 'inline-block'};
 
         return(
             <div key={elaboration}>
@@ -183,7 +193,12 @@ class ElabRequest extends React.Component {
                 Question:<br/>
                 <p1 style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}} className="elaboration-content">{contents}  ----  Posted by {question_owner}</p1><br/>
                 </p>
-                
+                <form>
+                  {user==question_owner&&
+                  <a style={buttonStyle2} onClick={() => {that.removeQuestion(elaboration);}}>
+                    Delete Question
+                  </a>}
+                </form>
               </div>
               <div className="elaboration-answer">
                 {answers != null && answers2.map(that.displayAnswer.bind(this,keys,elaboration, answer_owner))}
@@ -209,6 +224,7 @@ class ElabRequest extends React.Component {
         //console.log('content in Elab: ' + this.state.content);
         //console.log('dataRetrieved in Elab: ' + this.state.dataRetrieved);
         console.log('allRequests in Elab: ' + this.allRequests);
+        console.log('requestID in Elab: ' + this.requestID);
         return (
           <div>
           <div style={{

@@ -1,5 +1,4 @@
 import React from 'react';
-//import { database } from './../../database/database_init';
 // import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
