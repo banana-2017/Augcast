@@ -1,9 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {IconMenu, MenuItem, MenuDivider } from 'react-toolbox/lib/menu';
 
 // ui elements
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
 import FA from 'react-fontawesome';
 
 
