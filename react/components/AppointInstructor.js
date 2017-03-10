@@ -1,6 +1,5 @@
 import React from 'react';
 import { database } from './../../database/database_init';
-import { Button } from 'react-bootstrap';
 import Fuse from "fuse.js";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 

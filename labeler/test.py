@@ -1,20 +1,19 @@
 from video import generateTimestamp
-import os
-import sys
-import urllib
+from video import generateTimestampFromWeb
 import json
+import sys
+
+media_url = sys.argv[1]
+pdf_url  = sys.argv[2]
+courseID = sys.argv[3]
+lectureID = sys.argv[4]
+
+test_media_url = "https://firebasestorage.googleapis.com/v0/b/cse110project-a890c.appspot.com/o/test1.pdf?alt=media&token=0721c873-d188-4b59-9eec-2b93d9fddf2e"
+test_pdf_url = "http://podcast.ucsd.edu/podcasts/Download.aspx?fileId=122106"
 
 if __name__ == '__main__':
-    filename = '/Users/Tejas/OneDrive - UC San Diego/Augcast/labeler/test/test1.pdf'
-    video = '/Users/Tejas/OneDrive - UC San Diego/Augcast/labeler/test/test1.mp4'
-
-    # Download files to disk (argv[1]: slides url, argv[2]: podcast media url)
-    testfile = urllib.URLopener()
-    testfile.retrieve(sys.argv[1], "slides.pdf")
-    testfile.retrieve(sys.argv[2], "media.mp4")
-
     # Generate the timestamps
-    timestamp = generateTimestamp("slides.pdf", "media.mp4")
+    timestamp = generateTimestampFromWeb(media_url, pdf_url, courseID, lectureID)
 
     # Convert list to dict for json output
     timemap = {}
@@ -24,8 +23,3 @@ if __name__ == '__main__':
     # Output json
     json_string = json.dumps(timemap,sort_keys=True, indent=4)
     print ('result' + '#' + courseID + '#' + lectureID + json_string)
-
-
-    # Remove downloaded files from disk
-    os.remove("slides.pdf")
-    os.remove("media.mp4")

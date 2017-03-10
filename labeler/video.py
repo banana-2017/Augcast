@@ -6,23 +6,15 @@ from pdfparser import convert
 import json
 import cv2
 import re
+import sys
+import urllib
+import os
+
 
 
 # fuzzy text comparison
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
-
-
-# constants
-'''
-time  = int(cap.get(cv2.CAP_PROP_POS_MSEC))
-frameindex = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
-fps    = int(cap.get(cv2.CAP_PROP_FPS))
-print ("length", length)
-print ("time" , time)
-print ("frameindex" , frameindex)
-print ("fps" , fps)
-'''
 
 # generate timestamp of slides in the video
 def generateTimestamp(video, filename, courseID, lectureID):
@@ -188,10 +180,19 @@ def generateTimestamp(video, filename, courseID, lectureID):
             print ("#################", index ,"##################")
             print ("current Timestamp")
             print (timestamp)
-#       if cv2.waitKey(1) & 0xFF == ord('q'):
-#           break
 
     # closure
     cap.release()
     cv2.destroyAllWindows()
+    return timestamp
+
+def generateTimestampFromWeb(videoURL, pdfURL, courseID, lectureID):
+    opener = urllib.URLopener()
+    media_name = "media.mp4"
+    pdf_name = "slides.pdf"
+    opener.retrieve(videoURL, media_name)
+    opener.retrieve(pdfURL, pdf_name)
+    timestamp = generateTimestamp(media_name, pdf_name, courseID, lectureID)
+    os.remove(pdf_name)
+    os.remove(media_name)
     return timestamp

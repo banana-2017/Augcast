@@ -2,6 +2,12 @@ import React from 'react';
 import { database } from './../../database/database_init'
 import SplitPane from 'react-split-pane'
 
+/*
+import AppBar from 'react-toolbox/lib/app_bar';
+import Navigation from 'react-toolbox/lib/navigation';
+import Drawer from 'react-toolbox/lib/drawer';
+*/
+
 import AppointInstructor from './AppointInstructor';
 
 class InstructorPanel extends React.Component {
@@ -57,23 +63,7 @@ class InstructorPanel extends React.Component {
                 </li>
             )
         }
-/*
-        // Use react-tools
-        return (
-            <div>
-                <Drawer active={this.state.active} onOverlayClick={this.handleToggle}>
-                    <h5>This is your Drawer.</h5>
-                    <p>You can embed any content you want, for example a Menu.</p>
-                </Drawer>
 
-                <AppBar title="Instructor Panel" leftIcon="menu">
-                    <Navigation type="horizontal">
-                    </Navigation>
-                </AppBar>
-            </div>
-        );
-
-*/
         return (
             <SplitPane split="vertical" minSize={50} defaultSize={200}>
                 <div>
@@ -86,6 +76,23 @@ class InstructorPanel extends React.Component {
                 </div>
             </SplitPane>
         )
+
+        /*
+         // Use react-tools
+         return (
+         <div>
+         <Drawer active={this.state.active} onOverlayClick={this.handleToggle}>
+         <h5>This is your Drawer.</h5>
+         <p>You can embed any content you want, for example a Menu.</p>
+         </Drawer>
+
+         <AppBar title="Instructor Panel" leftIcon="menu">
+         <Navigation type="horizontal">
+         </Navigation>
+         </AppBar>
+         </div>
+         );
+         */
     }
 }
 
