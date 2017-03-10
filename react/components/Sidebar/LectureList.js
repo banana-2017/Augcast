@@ -224,7 +224,14 @@ class LectureList extends React.Component {
                 <MenuItem key={lecture.id}
                     className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
                     <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
-                        Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
+                        <div className="lecture-calendar">
+                            <div className="lecture-month">{month}</div>
+                            <div className="lecture-date">{lecture.date}</div>
+                        </div>
+                        <div className="lecture-info">
+                            <span className="lecture-num">Lecture {lecture.num}</span>
+                            <span className="lecture-week">Week {lecture.week}</span>
+                        </div>
                     </div>
                     <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                 </MenuItem>
