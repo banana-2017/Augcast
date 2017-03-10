@@ -124,7 +124,6 @@ class FileUploader extends React.Component {
     handleClear() {
         this.refs.inputForm.reset();
         this.setState({
-            uploadProgress: 0,
             uploadStarted: false,
             downloadURL: '',
             error: ''
@@ -158,6 +157,7 @@ class FileUploader extends React.Component {
                     bsStyle="warning"
                     bsSize="small"
                     style={{margin:'10px'}}
+                    disabled={this.state.uploadProgress >= 0}
                     onClick={this.handleClear}>
                         Clear selection
                 </Button>

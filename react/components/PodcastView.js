@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-//import { Link } from 'react-router';
 import VideoPlayer from './VideoPlayer';
 import PDFDisplay from './PDFDisplay';
 import { database } from './../../database/database_init';
@@ -46,7 +45,7 @@ class PodcastView extends React.Component {
 
             // Listen to changes at ref's location in db
             var pdfRef = ref.on('value', function(snapshot) {
-                console.log('PODMOUNT snapshot.val: ' + JSON.stringify(snapshot.val()));
+                console.log('POD MOUNT snapshot.val: ' + JSON.stringify(snapshot.val()));
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
@@ -88,6 +87,7 @@ class PodcastView extends React.Component {
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
 
             var pdfRef = newRef.on('value', function(snapshot) {
+                console.log('POD PROPS snapshot.val: ' + JSON.stringify(snapshot.val()));
 
                 that.setState({
 
