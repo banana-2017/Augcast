@@ -10,16 +10,22 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { database } from './../../../database/database_init';
 
 // ui components
-import FA from 'react-fontawesome';
-import {Button, IconButton} from 'react-toolbox/lib/button';
 import ActionBackup from 'material-ui/svg-icons/action/backup';
 import ActionCached from 'material-ui/svg-icons/action/cached';
 import ActionDone from 'material-ui/svg-icons/action/done';
+import Button from 'react-toolbox/lib/button';
+import FA from 'react-fontawesome';
+import FontIcon from 'react-toolbox/lib/font_icon';
+import IconButton from 'material-ui/IconButton';
+import Tooltip from 'react-toolbox/lib/tooltip';
+import {IconMenu, MenuItem, MenuDivider } from 'react-toolbox/lib/menu';
 
 //import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
 
 injectTapEventPlugin();
+
+const TooltipButton = Tooltip(Button);
 
 class UploadButton extends React.Component {
     constructor(props) {
@@ -33,9 +39,8 @@ class UploadButton extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-                <IconButton tooltip="Upload slides" onTouchTap={() => {that.props.onClick(that.props.iconLecture);}}>
-                    <ActionBackup />
-                </IconButton>
+            <Button icon='cloud_upload' className="upload-button"
+                    onClick={() => {that.props.onClick(that.props.iconLecture);}} />
             </div>
         );
     }
@@ -49,9 +54,7 @@ class DoneMark extends React.Component {
     render() {
         return (
             <div className="slides-status">
-                <IconButton tooltip="Slides have been uploaded">
-                    <ActionDone />
-                </IconButton>
+                <Button icon="done" />
             </div>
         );
     }
@@ -218,13 +221,13 @@ class LectureList extends React.Component {
             var lecture = that.props.lectures[lectureID];
             var month = that.calendar[lecture.month];
             return (
-                <li key={lecture.id}
+                <MenuItem key={lecture.id}
                     className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
                     <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
                         Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
                     </div>
                     <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
-                </li>
+                </MenuItem>
             );
         };
 
@@ -242,9 +245,9 @@ class LectureList extends React.Component {
                                      className="search-box" />
                     </div>
                     <div className="lectures-wrapper">
-                        <ul className="lecture-list">
+                        <div className="lecture-list">
                             {that.props.navCourse.lectures.map(listItem)}
-                        </ul>
+                        </div>
                     </div>
                 </div>
                 <UploadContainer lecture={this.state.upload} open={this.state.modal} close={this.closeModal}/>

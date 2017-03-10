@@ -124,7 +124,7 @@ li.course-item {
     height: 64px;
     padding: 0;
     border-bottom: thin solid lightgray;
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 .course-button {
@@ -174,13 +174,12 @@ li.course-item {
     overflow: auto;
 }
 
-.lecture-item {
+li.lecture-item {
     position: relative;
+    padding: 0;
     width: 100%;
     font-size:14pt;
     background: white;
-    list-style: none;
-    display: table;
     cursor: pointer;
 }
 
@@ -196,10 +195,23 @@ li.course-item {
 
 .lecture-item .slides-status {
     float: right;
-    font-size: 12pt;
-    position: relative;
-    display: table-cell;
     height: 100%;
+    position: relative;
+    display: table;
+    height: 100%;
+    text-align: center;
+}
+
+.slides-status > button {
+    height: 100%;
+    min-width: 0;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+}
+
+.slides-status > button > span.material-icons {
+    margin-right: 0;
 }
 
 .lecture-item.selected {
