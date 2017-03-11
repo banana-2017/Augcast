@@ -23,7 +23,7 @@ class SearchResultList extends React.Component {
                 startIndex = 0;
                 queryLength = 0;
             }
-            
+
             let endIndex = startIndex + queryLength;
             let prefix = contents.substring (0, startIndex);
             let queryMatch = contents.substring (startIndex, endIndex);

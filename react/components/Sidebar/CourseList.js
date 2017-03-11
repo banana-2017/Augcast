@@ -84,7 +84,7 @@ class CourseList extends React.Component {
             keys: ['course', 'professor', 'subject']
         };
 
-        console.log ("searching in courselist");
+        console.log ('searching in courselist');
 
         var fuse = new Fuse(this.dataArray, options);
         var result = fuse.search(query);

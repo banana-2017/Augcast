@@ -240,7 +240,7 @@ class LectureList extends React.Component {
     }
 
     selectLecture(lecture) {
-        console.log("selecting lecture");
+        console.log('selecting lecture');
         this.props.displayLecture(this.course, lecture);
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
     }
@@ -249,8 +249,7 @@ class LectureList extends React.Component {
         let query = e.target.value;
 
         if (query === '') {
-            this.setState ({visibleLectures: this.props.navCourse.lectures,
-                            resultArray: []});
+            this.setState ({ visibleLectures: this.props.navCourse.lectures, resultArray: []});
             return;
         }
         var options = {
