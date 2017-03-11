@@ -82,7 +82,7 @@ class UploadIconController extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {};
     }
 
     componentDidMount() {
@@ -183,7 +183,8 @@ class LectureList extends React.Component {
             render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined,
             lectures: [],
             upload: undefined,
-            modal: false
+            modal: false,
+            visibleLectures: []
         };
 
         // decide if week has changed in randering lecture list
@@ -209,19 +210,25 @@ class LectureList extends React.Component {
 
         let course = this.props.navCourse.id;
         var that = this;
+
+        this.setState ({visibleLectures: this.props.navCourse.lectures});
+        console.log (this.state.visibleLectures);
+
         // getting array of lectures of this course
         database.ref('/lectures/' + course).once('value').then(function(snapshot) {
             let lectureList = snapshot.val();
             let searchData = [];
 
-
             for (var lecture  in lectureList) {
+                var i = 0;
                 for (var slide in lectureList[lecture].contents) {
                     searchData.push ({
+                        index: i,
                         lectureId: lecture,
                         slide: slide,
                         contents: lectureList[lecture].contents[slide]
                     });
+                    i++;
                 }
             }
 
@@ -275,7 +282,7 @@ class LectureList extends React.Component {
             }
 
             return (
-                <div className="lecture-wrapper">
+                <div key={lecture.id} className="lecture-wrapper">
                     {weekSeparator}
                     <MenuItem key={lecture.id}
                         className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
@@ -310,7 +317,7 @@ class LectureList extends React.Component {
                     </div>
                     <div className="lectures-wrapper">
                         <div className="lecture-list">
-                            {that.props.navCourse.lectures.map(listItem)}
+                            {that.state.visibleLectures.map(listItem)}
                         </div>
                     </div>
                 </Drawer>
