@@ -192,20 +192,22 @@ class CourseList extends React.Component {
         };
 
         return (
-            <Drawer className="nav">
-                <div className="search-bar">
-                    <div className="search-icon"><FA name='search' /></div>
-                    <FormControl type="text"
-                                 placeholder="Filter courses..."
-                                 onChange={this.searchInput}
-                                 className="search-box" />
-                </div>
-                <div className="course-wrapper">
-                    <div className="unpinned-list">
-                        {this.state.visibleCourses.map(listItem)}
+            <div className="sidebar">
+                <Drawer className="sidebar-drawer">
+                    <div className="search-bar">
+                        <div className="search-icon"><FA name='search' /></div>
+                        <FormControl type="text"
+                                     placeholder="Filter courses..."
+                                     onChange={this.searchInput}
+                                     className="search-box" />
                     </div>
-                </div>
-            </Drawer>
+                    <div className="course-wrapper">
+                        <div className="unpinned-list">
+                            {this.state.visibleCourses.map(listItem)}
+                        </div>
+                    </div>
+                </Drawer>
+            </div>
         );
     }
 }
