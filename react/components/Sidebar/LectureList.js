@@ -82,12 +82,7 @@ class UploadIconController extends React.Component {
 
     constructor(props) {
         super(props);
-<<<<<<< HEAD
         this.state = {}
-=======
-
-        this.state = {};
->>>>>>> ce66ec6611c7c6472832b4bda83940dc153373ae
     }
 
     componentDidMount() {
@@ -185,14 +180,10 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
-<<<<<<< HEAD
             render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined,
             lectures: [],
-            upload: undefined
-=======
             upload: undefined,
-            modal: false,
->>>>>>> ce66ec6611c7c6472832b4bda83940dc153373ae
+            modal: false
         };
 
         // decide if week has changed in randering lecture list
@@ -255,10 +246,8 @@ class LectureList extends React.Component {
             keys: ['contents']
         };
 
-        console.log (this.state.lectures);
         var fuse = new Fuse(this.state.lectures, options);
         var result = fuse.search(query);
-        console.log (result);
         return result;
     }
 
