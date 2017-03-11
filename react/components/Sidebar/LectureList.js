@@ -180,8 +180,11 @@ class LectureList extends React.Component {
         // Initial state
         this.state = {
             upload: undefined,
-            modal: false
+            modal: false,
         };
+
+        // decide if week has changed in randering lecture list
+        this.week = null;
 
         // inherit all course data
         this.course = this.props.navCourse;
@@ -189,7 +192,9 @@ class LectureList extends React.Component {
         // helper object
         this.calendar = {
             1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
-            7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
+            7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
+            'Mon': 'Monday', 'Tue': 'Tuesday', 'Wed': 'Wednesday',
+            'Thu': 'Thursday', 'Fri': 'Friday', 'Sat': 'Saturday', 'Sun': 'Sunday'
         };
 
         this.openModal = this.openModal.bind(this);
@@ -218,26 +223,36 @@ class LectureList extends React.Component {
         var listItem = function(lectureID) {
             var lecture = that.props.lectures[lectureID];
             var month = that.calendar[lecture.month];
+
+            var weekSeparator = null;
+            if (that.week != lecture.week) {
+                that.week = lecture.week;
+                weekSeparator = (<div className="week-separator">Week {lecture.week}</div>);
+            }
+
             return (
-                <MenuItem key={lecture.id}
-                    className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
-                    <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
-                        <div className="lecture-calendar">
-                            <div className="lecture-month">{month}</div>
-                            <div className="lecture-date">{lecture.date}</div>
+                <div className="lecture-wrapper">
+                    {weekSeparator}
+                    <MenuItem key={lecture.id}
+                        className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
+                        <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
+                            <div className="lecture-calendar">
+                                <div className="lecture-month">{month}</div>
+                                <div className="lecture-date">{lecture.date}</div>
+                            </div>
+                            <div className="lecture-info">
+                                <span className="lecture-day">{that.calendar[lecture.day]}</span>
+                            </div>
                         </div>
-                        <div className="lecture-info">
-                            <span className="lecture-num">Lecture {lecture.num}</span>
-                            <span className="lecture-week">Week {lecture.week}</span>
-                        </div>
-                    </div>
-                    <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
-                </MenuItem>
+                        <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
+                    </MenuItem>
+                </div>
             );
         };
 
         // Set page title
         document.title = this.course.dept + ' ' + this.course.num + ' - Augcast';
+
 
         return (
             <div className="sidebar">
