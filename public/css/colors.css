@@ -1,5 +1,30 @@
+body {
+    color: #483401;
+}
+
 .search-box {
     background: #483401;
+}
+
+.search-icon {
+    color: #faf3e8;
+}
+
+/* Chrome/Opera/Safari */
+.search-box::-webkit-input-placeholder {
+    color: #faf3e8;
+}
+/* Firefox 19+ */
+.search-box::-moz-placeholder {
+    color: #faf3e8;
+}
+/* IE 10+ */
+.search-box:-ms-input-placeholder {
+    color: #faf3e8;
+}
+/* Firefox 18- */
+.search-box:-moz-placeholder {
+    color: #faf3e8;
 }
 
 li.course-item {
@@ -10,21 +35,16 @@ li.course-item {
     background: #f1ca8c;
 }
 
-.week-separator {
-    background: rgba(124, 91, 28, 0.74);
-}
-
 .pin-button .fa.pinned {
     color: #fed602;
 }
 
 .pin-button .fa:hover {
     color: #fed602;
-    font-size: 20pt;
 }
 
 .slides-status button {
-    color:rgba(169, 68, 66, 0.67)
+    color: #483401 !important;
 }
 
 li.lecture-item {
@@ -33,4 +53,9 @@ li.lecture-item {
 
 .lecture-item.selected {
     background: #f1ca8c;
+}
+
+.week-separator {
+    background: rgba(124, 91, 28, 0.74);
+    color: #faf3e8;
 }
