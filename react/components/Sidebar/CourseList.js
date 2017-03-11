@@ -2,13 +2,19 @@
 // List all podcast-enabled courses
 
 import React from 'react';
-import FA from 'react-fontawesome';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Fuse from 'fuse.js';
 
-import  CourseListItem from './CourseListItem';
+// ui elements
+import Drawer from 'material-ui/Drawer';
+import FA from 'react-fontawesome';
+
+// db library
 import {database} from '../../../database/database_init';
+
+// custom react components
+import  CourseListItem from './CourseListItem';
 
 
 class CourseList extends React.Component {
@@ -88,7 +94,6 @@ class CourseList extends React.Component {
 
         // empty query
         if (query === '') {
-            console.log (this.courseIDs);
             this.setState({visibleCourses:this.courseIDs}, () => {
                 for (var pinned in this.state.favoriteArray) {
                     this.moveToTop(this.state.favoriteArray[pinned]);
@@ -187,19 +192,21 @@ class CourseList extends React.Component {
         };
 
         return (
-            <div className="nav">
-                <div className="search-bar">
-                    <div className="search-icon"><FA name='search' /></div>
-                    <FormControl type="text"
-                                 placeholder="Filter courses..."
-                                 onChange={this.searchInput}
-                                 className="search-box" />
-                </div>
-                <div className="course-wrapper">
-                    <ul className="unpinned-list">
-                        {this.state.visibleCourses.map(listItem)}
-                    </ul>
-                </div>
+            <div className="sidebar">
+                <Drawer className="sidebar-drawer">
+                    <div className="search-bar">
+                        <div className="search-icon"><FA name='search' /></div>
+                        <FormControl type="text"
+                                     placeholder="Filter courses..."
+                                     onChange={this.searchInput}
+                                     className="search-box" />
+                    </div>
+                    <div className="course-wrapper">
+                        <div className="unpinned-list">
+                            {this.state.visibleCourses.map(listItem)}
+                        </div>
+                    </div>
+                </Drawer>
             </div>
         );
     }

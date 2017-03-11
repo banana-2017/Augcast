@@ -4,6 +4,8 @@ import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {logIn} from '../redux/actions';
 import {auth} from '../../database/database_init';
+import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox/lib/card';
+import Input from 'react-toolbox/lib/input';
 
 
 class Login extends React.Component {
@@ -46,8 +48,22 @@ class Login extends React.Component {
 
     // TODO: needs styling
     render () {
+        document.title = 'Login - Augcast';
+        // return (
+        //     <div className="login-wrapper">
+        //         <div className="animateme">
+        //             <ul className="bg-bubbles">
+        //                 <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+        //             </ul>
+        //         </div>
+        //         <div className="login">
+        //             <Input type='email' label='Your UCSD Email' icon='email' value={this.state.email} onChange={this.emailChange} />
+        //             <Input type='password' label='Password' icon='vpn_key' value={this.state.password} onChange={this.passwordChange} />
+        //         </div>
+        //     </div>
+        // );
         return (
-            <form onKeyDown={this.keyEvent} >
+            <form>
                 <FormGroup
                     controlId="email"
                     validationState={this.emailValidation()}>
