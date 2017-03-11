@@ -33,10 +33,10 @@ html, body, .podcast-container, .pdf-view, .video-view {
 }
 
 .main {
-    position: relative;
+    position: fixed;
     height: 100%;
     display: table;
-    float: right;
+    right: 0;
     width: calc(100% - 256px);
     width: -moz-calc(100% - 256px);
     width: -webkit-calc(100% - 256px);
@@ -346,7 +346,6 @@ li.lecture-item {
 .content-panel {
     width: 100%;
     height: 100%;
-    position: fixed;
     left: 256px;
     top: 0;
     display: inline-block;
@@ -417,6 +416,13 @@ li.lecture-item {
 .video-wrapper {
     text-align: center;
     display: block;
+}
+
+video {
+    width: 100%;
+    max-width: 60%;
+    height: auto;
+    margin: 0 auto;
 }
 
 .loadingSideBar {
