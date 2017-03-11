@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 ElabRequest
 */
 const NAME = 'elaboration_id_';
-var user = 'bala';
+var user = 'Kiki';
 var course = 'cse100-b-0';
 
 

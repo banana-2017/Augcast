@@ -1,6 +1,6 @@
 import React from 'react';
 
-var user = 'bala';
+var user = 'Kiki';
 
 class CurrentQuestion extends React.Component {
     constructor(props) {
@@ -21,6 +21,11 @@ class CurrentQuestion extends React.Component {
 
         this.displayAnswer = this.displayAnswer.bind(this);
         this.display = this.display.bind(this);
+        this.toggleExpand = this.toggleExpand.bind(this);
+    }
+
+    toggleExpand() {
+        this.setState({expand: !this.state.expand});
     }
 
     displayAnswer(rawIndex,inputtedID, answer_owner, answerText,filler){
@@ -61,36 +66,48 @@ class CurrentQuestion extends React.Component {
         var inputStyle = {margin: '5px 5px 5px 5px', width: '780px', height: '100px'};
         var extra = [];
 
-        return(
-            <div className="elaboration-question" style={containerStyle}>
-                <p className="elaboration-question-text" key={this.state.parts}>
-                    {this.state.question}<br/>
-                </p>
+        if (this.state.expand) {
+            return (
+                <div className="elaboration-question" style={containerStyle}>
+                    <p className="elaboration-question-text" key={this.state.parts}>
+                        {this.state.question}<br/>
+                    </p>
 
-                <div className="elaboration-answer">
-                    {this.state.answers.map(
-                        this.displayAnswer.bind(extra,this.state.keys,this.state.elaboration, this.state.answer_owner))}
-                </div>
+                    <div className="elaboration-answer">
+                        {this.state.answers.map(
+                            this.displayAnswer.bind(extra, this.state.keys, this.state.elaboration, this.state.answer_owner))}
+                    </div>
 
-                <div className="elaboration-new-answer">
-                    <input
-                        className="elaboration-answer-input"
-                        style={inputStyle}
-                        type="text"
-                        defaultValue= {this.state.draft}
-                        onChange={this.props.editAnswer}/>
+                    <div className="elaboration-new-answer">
+                        <input
+                            className="elaboration-answer-input"
+                            style={inputStyle}
+                            type="text"
+                            defaultValue={this.state.draft}
+                            onChange={this.props.editAnswer}/>
 
-                    <div className="elaboration-new-answer-button">
-                        <a style={buttonStyle} onClick={() => {this.props.submitAnswer(this.state.elaboration);}}>
-                            Submit
-                        </a>
-                        <a style={buttonStyle}> Cancel </a>
+                        <div className="elaboration-new-answer-button">
+                            <a style={buttonStyle} onClick={() => {this.props.submitAnswer(this.state.elaboration);
+                                            this.toggleExpand();
+                            }}>
+                                Submit
+                            </a>
+                            <a style={buttonStyle} onClick={this.toggleExpand}> Cancel </a>
+                        </div>
+
                     </div>
 
                 </div>
-
-            </div>
-        );
+            );
+        } else {
+            return (
+                <div className="elaboration-question" style={containerStyle}>
+                    <p className="elaboration-question-text" key={this.state.parts} onClick={this.toggleExpand}>
+                        {this.state.question}<br/>
+                    </p>
+                </div>
+            );
+        }
     }
 
     render() {
