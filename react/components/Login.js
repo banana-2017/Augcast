@@ -58,9 +58,9 @@ class Login extends React.Component {
         return (
             <div className="login-wrapper-none">
                 <div className="login">
-                    <Input type='email' label='Your UCSD Email' icon='email' value={this.state.email} onChange={this.emailChange} />
-                    <Input type='password' label='Password' icon='vpn_key' value={this.state.password} onChange={this.passwordChange} />
-                    <Button label='LOG IN' flat primary />
+                    <Input type="email" label="Your UCSD Email" icon="email" value={this.state.email} onChange={this.emailChange} />
+                    <Input type="password" label="Password" icon="vpn_key" value={this.state.password} onChange={this.passwordChange} />
+                    <Button label="LOG IN" flat primary onClick={this.authenticate}/>
                 </div>
             </div>
         );
@@ -139,15 +139,15 @@ class Login extends React.Component {
         }
     }
 
-    passwordChange (e) {
+    passwordChange (password) {
         this.setState ({
-            password: e.target.value
+            password: password
         });
     }
 
-    emailChange (e) {
+    emailChange (email) {
         this.setState ({
-            email: e.target.value
+            email: email
         });
     }
 
