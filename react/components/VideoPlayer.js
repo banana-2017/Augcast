@@ -101,7 +101,7 @@ class VideoPlayer extends React.Component {
         var lectureNum = lecture.num;
         var video_url = lecture.video_url;
         return (
-            <div>
+            <div className="video-wrapper">
                 <h2>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
                 <div className="video_api_containerplayer">
                     <br />

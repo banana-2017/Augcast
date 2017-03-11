@@ -250,7 +250,7 @@ li.lecture-item {
     float: left;
 }
 
-.lecture-num {
+.lecture-day {
     display: table-cell;
     vertical-align: middle;
 }
@@ -389,6 +389,7 @@ li.lecture-item {
 }
 
 .video-panel {
+    text-align: center;
     position: relative;
     /* white-space: nowrap; */
     /* width: 100%; */
@@ -399,6 +400,11 @@ li.lecture-item {
     vertical-align: top;
     text-align: center;
     /* float: left; */
+}
+
+.video-wrapper {
+    text-align: center;
+    display: block;
 }
 
 .loadingSideBar {
