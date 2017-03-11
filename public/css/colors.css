@@ -1,0 +1,36 @@
+.search-box {
+    background: #483401;
+}
+
+li.course-item {
+    background: #faf3e8;
+}
+
+.course-item.selected {
+    background: #f1ca8c;
+}
+
+.week-separator {
+    background: rgba(124, 91, 28, 0.74);
+}
+
+.pin-button .fa.pinned {
+    color: #fed602;
+}
+
+.pin-button .fa:hover {
+    color: #fed602;
+    font-size: 20pt;
+}
+
+.slides-status button {
+    color:rgba(169, 68, 66, 0.67)
+}
+
+li.lecture-item {
+    background: #faf3e8;
+}
+
+.lecture-item.selected {
+    background: #f1ca8c;
+}
