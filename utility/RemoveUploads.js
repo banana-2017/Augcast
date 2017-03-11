@@ -21,7 +21,7 @@ admin.database().ref('/lectures/').on("value", function(snapshot) {
             //console.log('on ' + cur.id + '\n');
 
             if (cur.contents != undefined || cur.labelProgress != undefined
-                || cur.slides != undefined || cur.timestamps != undefined) {
+                || cur.slides_url != undefined || cur.timestamps != undefined) {
                 cur.contents = null;
                 cur.labelProgress = null;
                 cur.slides_url = null;
@@ -32,7 +32,7 @@ admin.database().ref('/lectures/').on("value", function(snapshot) {
     }
 
     admin.database().ref('/lectures/').update(lectures);
-    process.exit();
+//    process.exit();
 
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);

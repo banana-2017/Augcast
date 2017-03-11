@@ -1,5 +1,6 @@
 import React from 'react';
-import { database } from './../../database/database_init'
+import { database } from './../../database/database_init';
+import { connect } from 'react-redux';
 
 import { Layout, AppBar, NavDrawer, Navigation, Panel } from 'react-toolbox';
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
@@ -11,7 +12,7 @@ import AppointInstructor from './AppointInstructor';
 class InstructorPanel extends React.Component {
     constructor(props) {
         super(props);
-        this.testUser = "ajrengar";
+        this.testUser = this.props.username;
 
         this.state = {
             // States about data
@@ -96,6 +97,12 @@ class InstructorPanel extends React.Component {
             </div>
         );
     }
+}
+
+function mapStateToProps(state) {
+    return {
+        username: state.username
+    };
 }
 
 export default InstructorPanel;
