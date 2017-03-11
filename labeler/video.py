@@ -189,21 +189,21 @@ def generateTimestamp(video, filename, courseID, lectureID):
     return timestamp
 
 def generateTimestampFromWeb(videoURL, pdfURL, courseID, lectureID):
-    media_name = "media.mp4"
-    pdf_name = "slides.pdf"
+    media_name = lectureID + ".mp4"
+    pdf_name = lectureID + ".pdf"
 
-    print("at " + str(os.getcwd()));
-    sys.stdout.flush();
+    #print("at " + str(os.getcwd()));
 
     opener = urllib.URLopener()
     opener.retrieve(videoURL, media_name)
     opener.retrieve(pdfURL, pdf_name)
-    print("here")
-    sys.stdout.flush();
 
-    timestamp = generateTimestamp("media.mp4", "slides.pdf", courseID, lectureID)
 
-    os.remove("media.mp4")
-    os.remove("slides.pdf")
+    timestamp = generateTimestamp(media_name, pdf_name, courseID, lectureID)
+    try:
+        os.remove(media_name)
+        os.remove(pdf_name)
+    except:
+        pass
 
     return timestamp

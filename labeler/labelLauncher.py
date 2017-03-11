@@ -11,11 +11,12 @@ lectureID = sys.argv[4]
 test_pdf_url = "https://firebasestorage.googleapis.com/v0/b/cse110project-a890c.appspot.com/o/test1.pdf?alt=media&token=0721c873-d188-4b59-9eec-2b93d9fddf2e"
 test_media_url = "https://podcast.ucsd.edu/Podcasts//cse100_1_wi17/cse100_1_wi17-01272017-1000.mp4"
 
+'''
 print (media_url);
 print (pdf_url);
 print (courseID);
 print (lectureID);
-
+'''
 
 if __name__ == '__main__':
     # Generate the timestamps
@@ -28,5 +29,5 @@ if __name__ == '__main__':
 
     # Output json
     json_string = json.dumps(timemap,sort_keys=True, indent=4)
-    print ('result' + '#' + courseID + '#' + lectureID + json_string)
+    print ('result' + '#' + courseID + '#' + lectureID + '#' + json_string)
     sys.stdout.flush();
