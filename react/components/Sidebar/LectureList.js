@@ -19,8 +19,6 @@ import { database } from './../../../database/database_init';
 import { displayLecture } from '../../redux/actions';
 import Fuse from 'fuse.js';
 
-import {database} from '../../../database/database_init';
-
 injectTapEventPlugin();
 
 class UploadButton extends React.Component {
@@ -79,9 +77,9 @@ class LabelingProgressChart extends React.Component {
 }
 
 class UploadIconController extends React.Component {
+
     constructor(props) {
         super(props);
-
         this.state = {}
     }
 
@@ -181,14 +179,13 @@ class LectureList extends React.Component {
         // Initial state
         this.state = {
             render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined,
-            lectures: []
+            lectures: [],
             upload: undefined
         };
 
         // inherit all course data
         this.course = this.props.navCourse;
         this.searchInput = this.searchInput.bind(this);
-        this.searchForContent = this.searchForContent.bind (this);
 
         // helper object
         this.calendar = {
@@ -198,7 +195,16 @@ class LectureList extends React.Component {
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+    }
 
+    componentDidMount () {
+
+        let course = this.props.navCourse.id;
+        var that = this;
+        // getting array of lectures of this course
+        database.ref('/lectures/' + course).once('value').then(function(snapshot) {
+            that.setState ({lectures: Object.values(snapshot.val())});
+        });
     }
 
     selectLecture(lecture) {
@@ -208,17 +214,6 @@ class LectureList extends React.Component {
 
     searchInput (e) {
         let query = e.target.value;
-        let course = this.props.currentCourse.id;
-        var that = this;
-
-        // getting array of lectures of this course
-        database.ref('/lectures/' + course).once('value').then(function(snapshot) {
-            that.setState ({lectures: Object.values(snapshot.val())});
-            that.searchForContent(query);
-        });
-    }
-
-    searchForContent (query) {
         var options = {
             shouldSort: true,
             threshold: 0.6,
@@ -226,13 +221,15 @@ class LectureList extends React.Component {
             distance: 70,
             maxPatternLength: 32,
             minMatchCharLength: 1,
-            keys: ['content']
+            keys: ['contents']
         };
 
+        console.log (this.state.lectures);
         var fuse = new Fuse(this.state.lectures, options);
         var result = fuse.search(query);
         console.log (result);
         return result;
+    }
 
     openModal(lecture) {
         this.setState({upload: lecture, modal: true});
