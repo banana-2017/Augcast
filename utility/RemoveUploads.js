@@ -20,9 +20,8 @@ admin.database().ref('/lectures/').on("value", function(snapshot) {
 
             //console.log('on ' + cur.id + '\n');
 
-            if (cur.contents != undefined || cur.labelProgress != undefined
+            if (cur.labelProgress != undefined
                 || cur.slides_url != undefined || cur.timestamps != undefined) {
-                cur.contents = null;
                 cur.labelProgress = null;
                 cur.slides_url = null;
                 cur.timestamps = null;
