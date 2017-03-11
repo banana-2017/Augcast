@@ -235,6 +235,7 @@ li.lecture-item {
     float: left;
     position: relative;
     height: 100%;
+    width: 100%;
     font-size:14pt;
     padding: 8px 0 8px 0;
 }
@@ -420,7 +421,7 @@ li.lecture-item {
 
 video {
     width: 100%;
-    max-width: 60%;
+    max-width: 95%;
     height: auto;
     margin: 0 auto;
 }
