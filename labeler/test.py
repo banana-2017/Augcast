@@ -14,7 +14,7 @@ test_pdf_url = "https://firebasestorage.googleapis.com/v0/b/cse110project-a890c.
 
 if __name__ == '__main__':
     # Generate the timestamps
-    timestamp = generateTimestampFromWeb(media_url, pdf_url, courseID, lectureID)
+    timestamp = generateTimestampFromWeb(test_media_url, test_pdf_url, courseID, lectureID)
 
     # Convert list to dict for json output
     timemap = {}

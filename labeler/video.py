@@ -190,9 +190,28 @@ def generateTimestampFromWeb(videoURL, pdfURL, courseID, lectureID):
     opener = urllib.URLopener()
     media_name = "media.mp4"
     pdf_name = "slides.pdf"
+    '''
+    if not os.getcwd()[-7:] == 'labeler':
+        media_name = 'labeler/' + media_name
+        pdf_name = 'labeler/' + pdf_name
+    '''
+    sys.stderr.write("there")
     opener.retrieve(videoURL, media_name)
     opener.retrieve(pdfURL, pdf_name)
-    timestamp = generateTimestamp(media_name, pdf_name, courseID, lectureID)
-    os.remove(pdf_name)
-    os.remove(media_name)
+    sys.stderr.write("here")
+
+    if os.getcwd()[-7:] == 'labeler':
+        sys.stderr.write("running")
+        timestamp = generateTimestamp("media.mp4", "slides.pdf", courseID, lectureID)
+    else:
+        print("what's happening")
+        timestamp = generateTimestamp(media_name, pdf_name, courseID, lectureID)
+
+    if not os.getcwd()[-7:] == 'labeler':
+        os.remove(pdf_name)
+        os.remove(media_name)
+    else:
+        os.remove("media.mp4")
+        os.remove("slides.pdf")
+
     return timestamp
