@@ -44,6 +44,12 @@ html, body, .podcast-container, .pdf-view, .video-view {
     text-align: center;
     font-size: 24pt;
     color: lightgray;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: default;
 }
 
 .fa {
@@ -196,6 +202,13 @@ li.course-item {
     background: darkgray;
     color: white;
     text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: default;
+
 }
 
 .lecture-list {
