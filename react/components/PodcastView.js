@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import VideoPlayer from './VideoPlayer';
 import PDFDisplay from './PDFDisplay';
 import { database } from './../../database/database_init';
+import ElabRequest from './ElabRequest';
 
 /**
     VideoView - Will contain VideoPlayer
