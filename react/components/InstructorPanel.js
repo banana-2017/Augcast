@@ -12,7 +12,8 @@ import AppointInstructor from './AppointInstructor';
 class InstructorPanel extends React.Component {
     constructor(props) {
         super(props);
-        this.testUser = this.props.username;
+
+        this.testUser = "l1qiao";
 
         this.state = {
             // States about data
@@ -69,7 +70,8 @@ class InstructorPanel extends React.Component {
                     <NavDrawer active={this.state.drawerActive}
                                onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
                                permanentAt='xxxl'
-                               pinned={true}>
+                               pinned={true}
+                               scrollY={true}>
                         {this.instructorCourses.map(listItem)}
                     </NavDrawer>
 
@@ -92,17 +94,19 @@ class InstructorPanel extends React.Component {
                             <Tab label='Third'><small>Third Content</small></Tab>
                         </Tabs>
                     </Panel>
-
                 </Layout>
             </div>
         );
     }
 }
-
+/*
 function mapStateToProps(state) {
     return {
         username: state.username
+
     };
 }
 
+const InstructorPanelContainer = connect (mapStateToProps, null)(InstructorPanel);
+*/
 export default InstructorPanel;

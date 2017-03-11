@@ -5,6 +5,7 @@ import Fuse from "fuse.js";
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
 import Snackbar from 'react-toolbox/lib/snackbar';
 import Dialog from 'react-toolbox/lib/dialog';
+import Input from 'react-toolbox/lib/input';
 
 
 class AppointInstructor extends React.Component {
@@ -16,9 +17,12 @@ class AppointInstructor extends React.Component {
             students: [],
             instructors: [],
             searchResult: [],
+            instructor: {username: 0},
+            student: {username: 0},
 
             dialogActive: false,
             snackbarActive: false
+
         };
 
         // Indicate the props that this class should have
@@ -27,6 +31,7 @@ class AppointInstructor extends React.Component {
 
         // first time query database
         this.update();
+
 
         // Bind the function
         this.addInstructor = this.addInstructor.bind(this);
@@ -173,7 +178,7 @@ class AppointInstructor extends React.Component {
                         legend={student.email}
                         selectable={true}
                         onClick={()=>{
-                            that.setState({snackbarActive: true});
+                            that.setState({snackbarActive: true, student: student});
                             that.addInstructor(student);
                         }}
                         rightIcon="person_add"
@@ -182,7 +187,7 @@ class AppointInstructor extends React.Component {
                     <Snackbar
                         action='Dismiss'
                         active={that.state.snackbarActive}
-                        label={"You have added " + student.username + " to instructor."}
+                        label={"You have added " + that.state.student.username + " to instructor."}
                         timeout={2000}
                         onClick={handleHiding}
                         onTimeout={handleHiding}
@@ -198,7 +203,7 @@ class AppointInstructor extends React.Component {
             }
 
             let handleRemove = () => {
-                that.removeInstructor(instructor);
+                that.removeInstructor(that.state.instructor);
                 that.setState({dialogActive: !that.state.dialogActive});
             }
 
@@ -208,7 +213,9 @@ class AppointInstructor extends React.Component {
                         leftIcon="person"
                         caption={instructor.username}
                         selectable={true}
-                        onClick={()=>{that.setState({dialogActive: true})}}
+                        onClick={()=>{
+                            that.setState({dialogActive: true, instructor: instructor});
+                        }}
                         legend={instructor.email}/>
 
                     <Dialog
@@ -219,10 +226,9 @@ class AppointInstructor extends React.Component {
                         active={that.state.dialogActive}
                         onEscKeyDown={handleHiding}
                         onOverlayClick={handleHiding}
-                        title="Are you sure?"
-                    >
+                        title="Are you sure?">
 
-                        <p>Are you sure you want to remove {instructor.username}</p>
+                        <p>Are you sure you want to remove {that.state.instructor.username}</p>
                     </Dialog>
                 </div>
 

@@ -16,7 +16,6 @@ import React from 'react';      // used for jsx
 module.exports = (
     <Route path="/" component = {App} >
         <IndexRoute component = {HomeContainer} onEnter={authenticate}></IndexRoute>
-        <Route path="/instructor" component={InstructorPanel} />
         <Route path="/login" component = {Login}/>
         <Route path="/podcastview" component={PodcastView} />
         <Route path="/upload" component = {Upload}/>
@@ -24,6 +23,7 @@ module.exports = (
         <Route path="/test" component={Test} />
         <Route path="/sidebar" component={Sidebar} />
         <Route path="/pdfdisplay" component={PDFDisplay} />
+        <Route path="/instructor" component={InstructorPanel} />
         <Route path="/:courseID" component={HomeContainer}>
             <Route path="/:courseID/:lectureNum" component={HomeContainer} />
         </Route>
