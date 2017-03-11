@@ -6,9 +6,10 @@ import FA from 'react-fontawesome';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
-
-import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
+import Fuse from 'fuse.js';
+
+import {database} from '../../../database/database_init';
 
 class LectureList extends React.Component {
     constructor(props) {
@@ -16,25 +17,14 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
-            render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined
+            render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined,
+            lectures: []
         };
-
-        // this.search = this.search.bind (this);
-        // this.searchInput = this.searchInput.bind (this);
-
-        // lecture slection variable
-        // this.dataArray = [];
 
         // inherit all course data
         this.course = this.props.navCourse;
-        // this.state.visibleCourses = this.courses.keys;
-
-        // // populate array for search
-        // for (var course in this.courses.data) {
-        //     let current = this.courses.data[course];
-        //     current.key = course;
-        //     this.dataArray.push(current);
-        // }
+        this.searchInput = this.searchInput.bind(this);
+        this.searchForContent = this.searchForContent.bind (this);
 
         // helper object
         this.calendar = {
@@ -45,11 +35,37 @@ class LectureList extends React.Component {
 
 
     selectLecture(lecture) {
-        console.log(lecture);
-        console.log(this.course);
         this.props.displayLecture(this.course, lecture);
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
-        // this.setState({render: lecture.id});
+    }
+
+    searchInput (e) {
+        let query = e.target.value;
+        let course = this.props.currentCourse.id;
+        var that = this;
+
+        // getting array of lectures of this course
+        database.ref('/lectures/' + course).once('value').then(function(snapshot) {
+            that.setState ({lectures: Object.values(snapshot.val())});
+            that.searchForContent(query);
+        });
+    }
+
+    searchForContent (query) {
+        var options = {
+            shouldSort: true,
+            threshold: 0.6,
+            location: 0,
+            distance: 70,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: ['content']
+        };
+
+        var fuse = new Fuse(this.state.lectures, options);
+        var result = fuse.search(query);
+        console.log (result);
+        return result;
     }
 
     render () {
@@ -93,7 +109,8 @@ class LectureList extends React.Component {
 function mapStateToProps (state) {
     return {
         navCourse:  state.navCourse,
-        currentLecture:  state.currentLecture
+        currentLecture:  state.currentLecture,
+        currentCourse: state.currentCourse
     };
 }
 
@@ -102,6 +119,7 @@ function mapDispatchToProps (dispatch) {
         displayLecture: (currentCourse, currentLecture) => {
             dispatch (displayLecture(currentCourse, currentLecture));
         }
+
     };
 }
 
