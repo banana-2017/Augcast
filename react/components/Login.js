@@ -48,39 +48,41 @@ class Login extends React.Component {
     render () {
         document.title = 'Login - Augcast';
         return (
-            <form onKeyDown={this.keyEvent} >
-                <FormGroup
-                    controlId="email"
-                    validationState={this.emailValidation()}>
-                    <FormControl
-                        type="text"
-                        placeholder="@ucsd.edu"
-                        onChange={this.emailChange}
-                        value={this.state.email}
-                        style= {
-                        {   padding: '20px',
-                            margin: '20px',
-                            width: '400px'
-                        }}/>
-                    <FormControl.Feedback />
-                </FormGroup>
-                <FormGroup
-                    controlId="password">
-                    <FormControl
-                        type="password"
-                        onChange={this.passwordChange}
-                        value={this.state.password}
-                        style= {
-                        {   padding: '20px',
-                            margin: '20px',
-                            width: '400px'
-                        }}
-                        placeholder="password"/>
-                    <FormControl.Feedback />
-                    <div id="errorMessage">{this.state.failureMessage}</div>
-                    <Button style={{margin:'20px'}} bsStyle="success" onClick={this.authenticate}>Login</Button>
-                </FormGroup>
-            </form>
+            <div className="login">
+                <form onKeyDown={this.keyEvent} >
+                    <FormGroup
+                        controlId="email"
+                        validationState={this.emailValidation()}>
+                        <FormControl
+                            type="text"
+                            placeholder="@ucsd.edu"
+                            onChange={this.emailChange}
+                            value={this.state.email}
+                            style= {
+                            {   padding: '20px',
+                                margin: '20px',
+                                width: '400px'
+                            }}/>
+                        <FormControl.Feedback />
+                    </FormGroup>
+                    <FormGroup
+                        controlId="password">
+                        <FormControl
+                            type="password"
+                            onChange={this.passwordChange}
+                            value={this.state.password}
+                            style= {
+                            {   padding: '20px',
+                                margin: '20px',
+                                width: '400px'
+                            }}
+                            placeholder="password"/>
+                        <FormControl.Feedback />
+                        <div id="errorMessage">{this.state.failureMessage}</div>
+                        <Button style={{margin:'20px'}} bsStyle="success" onClick={this.authenticate}>Login</Button>
+                    </FormGroup>
+                </form>
+            </div>
         );
     }
 
