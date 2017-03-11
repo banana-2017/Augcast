@@ -62,10 +62,7 @@ class PDFDisplay extends React.Component {
         });
 
         return (
-            <div
-                className="pdf-panel">
-                {PDFpages}
-            </div>
+            <div className="pdf-pages">{PDFpages}</div>
         );
     }
 }

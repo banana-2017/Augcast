@@ -26,7 +26,7 @@ class Home extends React.Component {
         if (this.props.currentLecture) {
             main = <PodcastViewContainer />;
         } else {
-            main = <div className="blank">select lecture to start</div>;
+            main = <div className="blank"><p>select lecture to start</p></div>;
         }
 
         document.title = 'Augcast';

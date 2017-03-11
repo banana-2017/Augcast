@@ -50,7 +50,7 @@ class CourseList extends React.Component {
         }
     }
 
-    componentWillMount () {
+    componentDidMount () {
         // get the favorites array, set state for pinned courses
         var that = this;
 
@@ -83,6 +83,8 @@ class CourseList extends React.Component {
             minMatchCharLength: 1,
             keys: ['course', 'professor', 'subject']
         };
+
+        console.log ('searching in courselist');
 
         var fuse = new Fuse(this.dataArray, options);
         var result = fuse.search(query);
