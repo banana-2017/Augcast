@@ -102,51 +102,44 @@ class VideoPlayer extends React.Component {
         var lectureNum = lecture.num;
         var video_url = lecture.video_url;
         return (
-            <div className="video-wrapper">
-                <h2>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
-                <div className="video-container">
-                    <video
-                        src={video_url}
-                        autoPlay
-                        width="600"
-                        muted
-                        id="basicvideo"
-                        ref="basicvideo"
-                        controls>
-                        Your browser does not support the video tag.
-                    </video>
-                    <div className="video-button-group-container">
-                        <ButtonGroup className='video-button-group'>
-                            <Button bsStyle="default"  onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}><Glyphicon glyph="chevron-left" />Skip {SKIP_VALUE}s</Button>
-                            <Button
-                                bsStyle="primary"
-                                onClick={this.togglePlay}>
-                                    {!this.state.playing ?
-                                        <div><Glyphicon glyph="play" /> Play</div>  :
-                                        <div><Glyphicon glyph="pause" /> Pause</div>
-                                    }
-                            </Button>
+            <div className="video-container">
+                <h2 className="video-title">{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
+                <video
+                    src={video_url}
+                    autoPlay
+                    width="600"
+                    muted
+                    id="basicvideo"
+                    ref="basicvideo"
+                    controls>
+                    Your browser does not support the video tag.
+                </video>
+                <div className="video-button-group-container">
+                    <ButtonGroup className='video-button-group'>
+                        <Button bsStyle="default"  onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}><Glyphicon glyph="chevron-left" />Skip {SKIP_VALUE}s</Button>
+                        <Button
+                            bsStyle="primary"
+                            onClick={this.togglePlay}>
+                                {!this.state.playing ?
+                                    <div><Glyphicon glyph="play" /> Play</div>  :
+                                    <div><Glyphicon glyph="pause" /> Pause</div>
+                                }
+                        </Button>
 
-                            <Button bsStyle="default"  onClick={() => {this.refs.basicvideo.currentTime += SKIP_VALUE;}}>Skip {SKIP_VALUE}s <Glyphicon glyph="chevron-right" /></Button>
-                        </ButtonGroup>
+                        <Button bsStyle="default"  onClick={() => {this.refs.basicvideo.currentTime += SKIP_VALUE;}}>Skip {SKIP_VALUE}s <Glyphicon glyph="chevron-right" /></Button>
+                    </ButtonGroup>
 
-                        <br />
+                    <br />
 
-                        <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.decreasePlaybackRate}><Glyphicon glyph="chevron-left" /></Button>
-                        Speed: {Math.abs(this.state.playbackRate).toFixed(2)}x
-                        <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.increasePlaybackRate}><Glyphicon glyph="chevron-right" /></Button>
+                    <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.decreasePlaybackRate}><Glyphicon glyph="chevron-left" /></Button>
+                    Speed: {Math.abs(this.state.playbackRate).toFixed(2)}x
+                    <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.increasePlaybackRate}><Glyphicon glyph="chevron-right" /></Button>
 
-                        <br />
+                    <br />
 
-                        <h4 className="main__h2">Timestamp: {this.props.timestamp}</h4>
-                        <div>
-                            <ElabRequest timestamp={this.props.timestamp} />
-                        </div>
-
-
-                    </div>
+                    <h4 className="main__h2">Timestamp: {this.props.timestamp}</h4>
                 </div>
-
+                <ElabRequest timestamp={this.props.timestamp} />
             </div>
         );
     }

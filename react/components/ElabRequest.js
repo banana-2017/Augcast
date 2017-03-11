@@ -169,7 +169,7 @@ class ElabRequest extends React.Component {
         console.log('allRequests in Elab: ' + this.allRequests);
         console.log('requestID in Elab: ' + this.requestID);
         return (
-          <div>
+          <div className="elab-container">
               <div style={{
                   textAlign: 'center',
                   margin: '0 auto',
