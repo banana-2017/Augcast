@@ -35,8 +35,9 @@ router.route('/label').post(function(req, res) {
         mode: 'text',
         args: [req.body.media, req.body.pdf, req.body.courseID, req.body.lectureID]
     };
-    var pyshell = new PythonShell('./labeler/labelLauncher.py', options);
 
+    var pyshell = new PythonShell('./labeler/labelLauncher.py', options);
+    
     // Listen to script's stdout, which outputs percentage of labeling complete.
     // Whenever updated, upload progress to Firebase so frontend can display
     // the progress of the labeling.
