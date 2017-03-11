@@ -203,6 +203,7 @@ class LectureList extends React.Component {
     }
 
     selectLecture(lecture) {
+        console.log("selecting lecture");
         this.props.displayLecture(this.course, lecture);
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
     }
@@ -231,10 +232,9 @@ class LectureList extends React.Component {
             }
 
             return (
-                <div className="lecture-wrapper">
+                <div className="lecture-wrapper" key={lecture.id}>
                     {weekSeparator}
-                    <MenuItem key={lecture.id}
-                        className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
+                    <MenuItem className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
                         <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
                             <div className="lecture-calendar">
                                 <div className="lecture-month">{month}</div>
