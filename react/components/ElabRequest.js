@@ -1,7 +1,6 @@
 import React from 'react';
 import { database } from './../../database/database_init';
 import Question from './Question';
-import Answer from './Answer';
 import {connect} from 'react-redux';
 //import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
@@ -10,6 +9,7 @@ ElabRequest
 */
 const NAME = 'elaboration_id_';
 var user = 'alan';
+var course = 'cse100-b-0';
 
 class ElabRequest extends React.Component {
     constructor(props) {
@@ -17,10 +17,10 @@ class ElabRequest extends React.Component {
 
         // Initial state
         this.state = {
-            question:'Please write your question here...',
+            content:'Please write your question here...',
             endorsed:false,
             answerDraft: '',
-            q_username:'',
+            author:'',
             a_username:'',
             draft:'Please write your answer here...',
             dataRetrieved: false,
@@ -31,16 +31,19 @@ class ElabRequest extends React.Component {
         this.allRequests = undefined;
         // All elab ID under it
         this.requestID = undefined;
-        // Grab the updated ID for question
+        // Grab the updated ID for content
         this.updatedID = 0;
         // Array to store answer
         this.answerArray = [];
         this.temp = [];
 
+        // Grab initial data from database
         var that = this;
-        database.ref('/elab-request').once('value').then(function(snapshot) {
+        database.ref('/elaborations/' + course).once('value').then(function(snapshot) {
             that.allRequests = snapshot.val();
-            that.requestID = Object.keys(snapshot.val());
+            if(that.allRequests!=null){
+                that.requestID = Object.keys(snapshot.val());
+            }
             that.setState({dataRetrieved: true});
         });
         console.log('INITIALIZING');
@@ -56,50 +59,63 @@ class ElabRequest extends React.Component {
         this.removeAnswer = this.removeAnswer.bind(this);
     }
 
+    // edit field for submitting ER
     handleEdit(event) {
-        this.setState({question: event.target.value});
+        this.setState({content: event.target.value});
     }
 
+    // edit answer for each ER
     editAnswer(event){
         this.setState({draft: event.target.value});
     }
 
-    handleSubmit(event) {
-        //var newPostKey = database.ref().child('elab-request').push().key;
-        window.location.href = event.target.href;
+    // updating ER to database
+    handleSubmit() {
         var postData = {
-            question:this.state.question,
+            content:this.state.content,
             endorsed:this.state.endorsed,
-            q_username:user,
+            author:user,
         };
         var updates = {};
         this.updatedID = parseInt(this.updatedID)+1;
-        updates['/elab-request/' + (NAME + this.updatedID)] = postData;
+        updates['/elaborations/' + course + '/' + (NAME + this.updatedID)] = postData;
         database.ref().update(updates);
+        window.location.reload();
     }
 
+    // Update answer to database
     submitAnswer(inputtedID) {
         var that = this;
         var updates = {};
         console.log('inputtedID is :' + inputtedID);
-        var newPostKey = database.ref('/elab-request/' + inputtedID + '/' + 'answer').push().key;
+        var newPostKey = database.ref('/elaborations/' + course + '/' + inputtedID + '/' + 'answers').push().key;
         var answerObj = {
             content: that.state.draft,
             a_username: user,
         };
-        updates['/elab-request/' + inputtedID + '/answer/' + newPostKey] = answerObj;
+        updates['/elaborations/' + course + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
         that.answerArray = that.answerArray.concat(that.state.draft);
+        window.location.reload();
     }
 
+    // remove answer of ID from database
     removeAnswer(inputtedID, index) {
         var that = this;
         console.log('index in removeAnswer is :' + index);
         console.log('inputtedID in removeAnswer is :' + inputtedID);
         console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
-        database.ref('/elab-request/' + inputtedID + '/answer/' + index).remove();
+        database.ref('/elaborations/' + course + '/' + inputtedID + '/answers/' + index).remove();
+        window.location.reload();
     }
 
+    removeQuestion(inputtedID){
+        console.log('inputtedID in removeQuestion is :' + inputtedID);
+        database.ref('/elaborations/' + course + '/' + inputtedID).remove();
+        window.location.reload();
+    }
+
+    // display answer list of each ER to user
     displayAnswer(rawIndex,inputtedID, answer_owner, answerText,filler){
         var buttonStyle = {backgroundColor: '#efb430', width: '60px', height: '20px', textAlign: 'center',
             margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
@@ -114,11 +130,10 @@ class ElabRequest extends React.Component {
         console.log('owner: ' + owner);
         //this.setState({answer: this.state.answer.concat(answer_owner)});
         var index = rawIndex[filler];
-
         var that = this;
         return(
             <div className="elaboration-oneAnswer" key={index}>
-                 <li className="elaboration-oneAnswer-text">{answerText}</li>
+                 <li className="elaboration-oneAnswer-text">{answerText} ----- Posted By {owner}</li>
                  <form>
                    {owner==user&&
                    <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index);}}>
@@ -129,6 +144,7 @@ class ElabRequest extends React.Component {
         );
     }
 
+    // Display ER to user
     displayQuestion(elaboration) {
         var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
             margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
@@ -143,8 +159,9 @@ class ElabRequest extends React.Component {
         //console.log('allRequests is :' + allRequests);
         var that = this;
 
-        var questions = allRequests[elaboration].question;
-        var answers = allRequests[elaboration].answer;
+        var contents = allRequests[elaboration].content;
+        var question_owner = allRequests[elaboration].author;
+        var answers = allRequests[elaboration].answers;
         var answer_owner = [];
         var keys = undefined;
         if(answers!=null&&answers!=undefined){
@@ -173,7 +190,6 @@ class ElabRequest extends React.Component {
         var parts = elaboration.split('_');
         console.log('PARTS ARE: ' + parts);
         that.updatedID = parts[parts.length-1];
-
         return(
             <div key={elaboration}>
               <div className="elaboration-question" style={containerStyle}>
@@ -182,34 +198,37 @@ class ElabRequest extends React.Component {
                     <p className="elaboration-question">{questions}</p><br/>
                     </p>
 
-                  <div className="elaboration-answer">
-                    {answers != null && answers2.map(that.displayAnswer.bind(this,keys,elaboration, answer_owner))}
-                    <div className="elaboration-new-answer">
-                        <input
-                            style={inputStyle}
-                            type="text"
-                            className="form-control"
-                            defaultValue= {that.state.draft}
-                            onChange={that.editAnswer}/>
-                        <div className="elaboration-new-answer-button">
-                            <a style={buttonStyle} onClick={() => {that.submitAnswer(elaboration);}}>
-                                Submit
-                            </a>
-                            <a style={buttonStyle}> Cancel </a>
-                        </div>
-                    </div>
-                  </div>
+                      <div className="elaboration-answer">
+                        {answers != null && answers2.map(that.displayAnswer.bind(this,keys,elaboration, answer_owner))}
+                      </div>
+
+                          <div className="elaboration-new-answer">
+                            <input
+                                className="elaboration-answer-input"
+                                style={inputStyle}
+                                type="text"
+                                defaultValue= {that.state.draft}
+                                onChange={that.editAnswer}/>
+
+                            <div className="elaboration-new-answer-button">
+                                <a style={buttonStyle} onClick={() => {that.submitAnswer(elaboration);}}>
+                                    Submit
+                                </a>
+                                <a style={buttonStyle}> Cancel </a>
+                            </div>
+
+                           </div>
 
               </div>
             </div>
         );
     }
 
-
     render() {
-        //console.log('question in Elab: ' + this.state.question);
+        //console.log('content in Elab: ' + this.state.content);
         //console.log('dataRetrieved in Elab: ' + this.state.dataRetrieved);
         console.log('allRequests in Elab: ' + this.allRequests);
+        console.log('requestID in Elab: ' + this.requestID);
         return (
           <div>
           <div style={{
@@ -219,10 +238,8 @@ class ElabRequest extends React.Component {
           <h2>All Questions & Answers</h2>
           {this.state.dataRetrieved && this.requestID!=undefined ? this.requestID.map(this.displayQuestion) : <p> No Question & Answer Posted </p> }
           </div>
-          <Question question={this.state.question} handleEdit={this.handleEdit} endorsed={this.state.endorsed}
-          q_username={this.state.q_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
-          <Answer handleEdit={this.handleEdit} id={this.id} allRequests={this.allRequests}
-          requestID={this.requestID} a_username={this.state.a_username} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
+          <Question content={this.state.content} handleEdit={this.handleEdit} endorsed={this.state.endorsed}
+          author={this.state.author} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
           </div>
         );
     }

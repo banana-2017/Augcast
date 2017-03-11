@@ -1,5 +1,4 @@
 import React from 'react';
-//import { database } from './../../database/database_init';
 // import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
@@ -11,9 +10,9 @@ class Question extends React.Component {
         super();
         // Initial state
         this.state = {
-            question: '',
+            content: '',
             endorsed: false,
-            q_userName: '',
+            author: '',
             editing: false,
             hover: false,
         };
@@ -28,8 +27,8 @@ class Question extends React.Component {
     }
 
     updateFields(){
-        this.setState({question: this.props.question,
-            endorsed: this.props.endorsed, q_userName: this.props.q_userName});
+        this.setState({content: this.props.content,
+            endorsed: this.props.endorsed, author: this.props.author});
     }
 
     toggleEdit() {
@@ -63,10 +62,10 @@ class Question extends React.Component {
                 <div className="request-new" style={containerStyle}>
                     <form>
                         <input
+                            className="request-new-input"
                             style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
                             type="text"
-                            className="form-control"
-                            defaultValue= {this.props.question}
+                            defaultValue= {this.props.content}
                             onChange={this.props.handleEdit}/>
                         <div className="request-buttons">
                             <a style={buttonStyle} onClick={this.props.handleSubmit}>
@@ -99,7 +98,7 @@ class Question extends React.Component {
     }
 
     render() {
-        //console.log('Question in question: ' + this.props.question);
+        //console.log('Question in content: ' + this.props.content);
         return (
             <div>
                 {this.props.dataRetrieved ? this.updateFields : '' }
