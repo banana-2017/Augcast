@@ -189,7 +189,9 @@ class LectureList extends React.Component {
         // helper object
         this.calendar = {
             1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
-            7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
+            7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
+            'Mon': 'Monday', 'Tue': 'Tuesday', 'Wed': 'Wednesday',
+            'Thu': 'Thursday', 'Fri': 'Friday', 'Sat': 'Saturday', 'Sun': 'Sunday'
         };
 
         this.openModal = this.openModal.bind(this);
@@ -227,7 +229,7 @@ class LectureList extends React.Component {
                             <div className="lecture-date">{lecture.date}</div>
                         </div>
                         <div className="lecture-info">
-                            <span className="lecture-num">Lecture {lecture.num}</span>
+                            <span className="lecture-day">{that.calendar[lecture.day]}</span>
                             <span className="lecture-week">Week {lecture.week}</span>
                         </div>
                     </div>

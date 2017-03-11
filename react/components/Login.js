@@ -49,18 +49,53 @@ class Login extends React.Component {
     // TODO: needs styling
     render () {
         document.title = 'Login - Augcast';
+        // return (
+        //     <div className="login-wrapper">
+        //         <div className="animateme">
+        //             <ul className="bg-bubbles">
+        //                 <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+        //             </ul>
+        //         </div>
+        //         <div className="login">
+        //             <Input type='email' label='Your UCSD Email' icon='email' value={this.state.email} onChange={this.emailChange} />
+        //             <Input type='password' label='Password' icon='vpn_key' value={this.state.password} onChange={this.passwordChange} />
+        //         </div>
+        //     </div>
+        // );
         return (
-            <div className="login-wrapper">
-                <div className="animateme">
-                    <ul className="bg-bubbles">
-                        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
-                    </ul>
-                </div>
-                <div className="login">
-                    <Input type='email' label='Your UCSD Email' icon='email' value={this.state.email} onChange={this.emailChange} />
-                    <Input type='password' label='Password' icon='vpn_key' value={this.state.password} onChange={this.passwordChange} />
-                </div>
-            </div>
+            <form>
+                <FormGroup
+                    controlId="email"
+                    validationState={this.emailValidation()}>
+                    <FormControl
+                        type="text"
+                        placeholder="@ucsd.edu"
+                        onChange={this.emailChange}
+                        value={this.state.email}
+                        style= {
+                        {   padding: '20px',
+                            margin: '20px',
+                            width: '400px'
+                        }}/>
+                    <FormControl.Feedback />
+                </FormGroup>
+                <FormGroup
+                    controlId="password">
+                    <FormControl
+                        type="password"
+                        onChange={this.passwordChange}
+                        value={this.state.password}
+                        style= {
+                        {   padding: '20px',
+                            margin: '20px',
+                            width: '400px'
+                        }}
+                        placeholder="password"/>
+                    <FormControl.Feedback />
+                    <div id="errorMessage">{this.state.failureMessage}</div>
+                    <Button style={{margin:'20px'}} bsStyle="success" onClick={this.authenticate}>Login</Button>
+                </FormGroup>
+            </form>
         );
     }
 
