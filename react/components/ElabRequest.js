@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 ElabRequest
 */
 const NAME = 'elaboration_id_';
-var user = 'alan';
+var user = 'bala';
 var course = 'cse100-b-0';
 
 class ElabRequest extends React.Component {
