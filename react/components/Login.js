@@ -4,9 +4,6 @@ import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {logIn} from '../redux/actions';
 import {auth} from '../../database/database_init';
-import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox/lib/card';
-import Input from 'react-toolbox/lib/input';
-
 
 class Login extends React.Component {
 

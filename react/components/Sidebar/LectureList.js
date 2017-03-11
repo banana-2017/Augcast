@@ -17,9 +17,11 @@ import FA from 'react-fontawesome';
 import IconButton from 'material-ui/IconButton';
 // import Tooltip from 'react-toolbox/lib/tooltip';
 import {MenuItem} from 'react-toolbox/lib/menu';
+import SearchResultList from './SearchResultList';
 
 //import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
+import Fuse from 'fuse.js';
 
 injectTapEventPlugin();
 
@@ -78,9 +80,9 @@ class LabelingProgressChart extends React.Component {
 }
 
 class UploadIconController extends React.Component {
+
     constructor(props) {
         super(props);
-
         this.state = {};
     }
 
@@ -179,8 +181,13 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
+            render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined,
+            lectures: [],
             upload: undefined,
             modal: false,
+            visibleLectures: [],
+            resultArray: [],
+            query: ''
         };
 
         // decide if week has changed in randering lecture list
@@ -188,6 +195,7 @@ class LectureList extends React.Component {
 
         // inherit all course data
         this.course = this.props.navCourse;
+        this.searchInput = this.searchInput.bind(this);
 
         // helper object
         this.calendar = {
@@ -199,12 +207,86 @@ class LectureList extends React.Component {
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+    }
 
+    componentDidMount () {
+
+        let course = this.props.navCourse.id;
+        var that = this;
+
+        this.setState ({visibleLectures: this.props.navCourse.lectures});
+        console.log (this.state.visibleLectures);
+
+        // getting array of lectures of this course
+        database.ref('/lectures/' + course).once('value').then(function(snapshot) {
+            let lectureList = snapshot.val();
+            let searchData = [];
+
+            for (var lecture  in lectureList) {
+                var i = 0;
+                for (var slide in lectureList[lecture].contents) {
+                    searchData.push ({
+                        index: i,
+                        lectureId: lecture,
+                        slide: slide,
+                        contents: lectureList[lecture].contents[slide]
+                    });
+                    i++;
+                }
+            }
+
+            that.setState ({lectures: searchData});
+        });
     }
 
     selectLecture(lecture) {
+        console.log('selecting lecture');
         this.props.displayLecture(this.course, lecture);
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
+    }
+
+    searchInput (e) {
+        let query = e.target.value;
+
+        if (query === '') {
+            this.setState ({ visibleLectures: this.props.navCourse.lectures, resultArray: []});
+            return;
+        }
+        var options = {
+            shouldSort: true,
+            threshold: 0.6,
+            location: 0,
+            distance: 70,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: ['contents']
+        };
+
+        var fuse = new Fuse(this.state.lectures, options);
+        var result = fuse.search(query);
+
+        let visibleLectures = [];
+        let resultArray = {};
+        console.log (result);
+        for (var lecture in result) {
+            if (visibleLectures.indexOf(result[lecture].lectureId) < 0) {
+                visibleLectures.push (result[lecture].lectureId);
+                resultArray[result[lecture].lectureId] = [];
+            }
+
+            // storing the search results in an object
+            resultArray[result[lecture].lectureId].push (
+                result[lecture]
+            );
+        }
+
+        this.setState (
+            {visibleLectures: visibleLectures,
+                resultArray: resultArray,
+                query: query});
+
+        this.week = null;
+        return result;
     }
 
     openModal(lecture) {
@@ -225,16 +307,16 @@ class LectureList extends React.Component {
             var month = that.calendar[lecture.month];
 
             var weekSeparator = null;
+            console.log (that.week + ' ' + lecture.week);
             if (that.week != lecture.week) {
                 that.week = lecture.week;
                 weekSeparator = (<div className="week-separator">Week {lecture.week}</div>);
             }
 
             return (
-                <div className="lecture-wrapper">
+                <div className="lecture-wrapper" key={lecture.id}>
                     {weekSeparator}
-                    <MenuItem key={lecture.id}
-                        className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
+                    <MenuItem className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
                         <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
                             <div className="lecture-calendar">
                                 <div className="lecture-month">{month}</div>
@@ -246,6 +328,7 @@ class LectureList extends React.Component {
                         </div>
                         <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                     </MenuItem>
+                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query}/>
                 </div>
             );
         };
@@ -266,7 +349,7 @@ class LectureList extends React.Component {
                     </div>
                     <div className="lectures-wrapper">
                         <div className="lecture-list">
-                            {that.props.navCourse.lectures.map(listItem)}
+                            {that.state.visibleLectures.map(listItem)}
                         </div>
                     </div>
                 </Drawer>
@@ -280,7 +363,8 @@ class LectureList extends React.Component {
 function mapStateToProps (state) {
     return {
         navCourse:  state.navCourse,
-        currentLecture:  state.currentLecture
+        currentLecture:  state.currentLecture,
+        currentCourse: state.currentCourse
     };
 }
 
@@ -289,6 +373,7 @@ function mapDispatchToProps (dispatch) {
         displayLecture: (currentCourse, currentLecture) => {
             dispatch (displayLecture(currentCourse, currentLecture));
         }
+
     };
 }
 

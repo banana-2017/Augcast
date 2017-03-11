@@ -103,8 +103,7 @@ class VideoPlayer extends React.Component {
         return (
             <div className="video-wrapper">
                 <h2>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
-                <div className="video_api_containerplayer">
-                    <br />
+                <div className="video-container">
                     <video
                         src={video_url}
                         autoPlay
