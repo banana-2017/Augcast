@@ -101,6 +101,11 @@ class ElabRequest extends React.Component {
     }
 
     displayAnswer(rawIndex,inputtedID, answer_owner, answerText,filler){
+        var buttonStyle = {backgroundColor: '#efb430', width: '60px', height: '20px', textAlign: 'center',
+            margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
+            fontWeight: '300', fontSize: '14px', display: 'inline-block'};
+
+
         console.log('answer_owner: ' + answer_owner);
         console.log('rawIndex: ' + rawIndex);
         console.log('inputtedID: ' + inputtedID);
@@ -109,9 +114,7 @@ class ElabRequest extends React.Component {
         console.log('owner: ' + owner);
         //this.setState({answer: this.state.answer.concat(answer_owner)});
         var index = rawIndex[filler];
-        var buttonStyle = {backgroundColor: '#efb430', width: '60px', height: '20px', textAlign: 'center',
-            margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
-            fontWeight: '300', fontSize: '14px', display: 'inline-block'};
+
         var that = this;
         return(
             <div className="elaboration-oneAnswer" key={index}>
@@ -127,6 +130,14 @@ class ElabRequest extends React.Component {
     }
 
     displayQuestion(elaboration) {
+        var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
+            margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
+            fontWeight: '300', fontSize: '22px', display: 'inline-block'};
+        var containerStyle = {backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
+            width: '800px', fontSize: '20px'};
+        var inputStyle = {margin: '5px 5px 5px 5px', width: '780px', height: '100px'};
+
+
         //console.log('elaboration is :' + elaboration);
         var allRequests = this.allRequests;
         //console.log('allRequests is :' + allRequests);
@@ -162,32 +173,33 @@ class ElabRequest extends React.Component {
         var parts = elaboration.split('_');
         console.log('PARTS ARE: ' + parts);
         that.updatedID = parts[parts.length-1];
-        var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
-            margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
-            fontWeight: '300', fontSize: '22px', display: 'inline-block'};
+
         return(
             <div key={elaboration}>
-              <div className="elaboration-question">
-                <p className="elaboration-question-text" key={parts}>
-                Question {that.updatedID}:<br/>
-                <p1 style={{backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid', width: '800px', fontSize: '20px'}} className="elaboration-question">{questions}</p1><br/>
-                </p>
-              </div>
-              <div className="elaboration-answer">
-                {answers != null && answers2.map(that.displayAnswer.bind(this,keys,elaboration, answer_owner))}
-                <form>
-                    <input
-                        style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
-                        type="text"
-                        className="form-control"
-                        defaultValue= {that.state.draft}
-                        onChange={that.editAnswer}/>
-                    <div>
-                        <a style={buttonStyle} onClick={() => {that.submitAnswer(elaboration);}}>
-                            Submit
-                        </a>
+              <div className="elaboration-question" style={containerStyle}>
+                    <p className="elaboration-question-text" key={parts}>
+                    Question {that.updatedID}:<br/>
+                    <p className="elaboration-question">{questions}</p><br/>
+                    </p>
+
+                  <div className="elaboration-answer">
+                    {answers != null && answers2.map(that.displayAnswer.bind(this,keys,elaboration, answer_owner))}
+                    <div className="elaboration-new-answer">
+                        <input
+                            style={inputStyle}
+                            type="text"
+                            className="form-control"
+                            defaultValue= {that.state.draft}
+                            onChange={that.editAnswer}/>
+                        <div className="elaboration-new-answer-button">
+                            <a style={buttonStyle} onClick={() => {that.submitAnswer(elaboration);}}>
+                                Submit
+                            </a>
+                            <a style={buttonStyle}> Cancel </a>
+                        </div>
                     </div>
-                </form>
+                  </div>
+
               </div>
             </div>
         );

@@ -15,7 +15,6 @@ class Answer extends React.Component {
             answer: [],
             a_userName: '',
             dataRetrieved: false,
-            expand: false,
         };
 
         this.targetID = undefined;
