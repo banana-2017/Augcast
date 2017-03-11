@@ -58,7 +58,7 @@ def generateTimestamp(video, filename, courseID, lectureID):
     # of slides and video frames
     while (index < length):
         # read from video
-        cap.set(cv2.CAP_PROP_POS_FRAMES, probeIndex)
+        cap.set(cv2.CAP_PROP_POS_MSEC, probeIndex * 1000)
         ret, image = cap.read()
         if image == None:
             break
