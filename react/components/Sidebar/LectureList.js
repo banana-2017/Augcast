@@ -243,6 +243,12 @@ class LectureList extends React.Component {
 
     searchInput (e) {
         let query = e.target.value;
+
+        if (query === '') {
+            this.setState ({visibleLectures: this.props.navCourse.lectures,
+                            resultArray: []});
+            return;
+        }
         var options = {
             shouldSort: true,
             threshold: 0.6,
@@ -257,14 +263,23 @@ class LectureList extends React.Component {
         var result = fuse.search(query);
 
         let visibleLectures = [];
+        let resultArray = {};
         console.log (result);
         for (var lecture in result) {
             if (visibleLectures.indexOf(result[lecture].lectureId) < 0) {
                 visibleLectures.push (result[lecture].lectureId);
+                resultArray[result[lecture].lectureId] = [];
             }
+
+            // storing the search results in an object
+            resultArray[result[lecture].lectureId].push (
+                result[lecture]
+            );
         }
 
-        this.setState ({visibleLectures: visibleLectures});
+        this.setState ({visibleLectures: visibleLectures,
+                        resultArray: resultArray});
+
         this.week = null;
         return result;
     }
