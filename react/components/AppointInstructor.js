@@ -1,7 +1,11 @@
 import React from 'react';
 import { database } from './../../database/database_init';
 import Fuse from "fuse.js";
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+
+import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
+import Snackbar from 'react-toolbox/lib/snackbar';
+import Dialog from 'react-toolbox/lib/dialog';
+
 
 class AppointInstructor extends React.Component {
     constructor(props) {
@@ -11,18 +15,22 @@ class AppointInstructor extends React.Component {
         this.state = {
             students: [],
             instructors: [],
-            searchResult: []
+            searchResult: [],
+
+            dialogActive: false,
+            snackbarActive: false
         };
 
         // Indicate the props that this class should have
-        console.log(this.props.course);
+        console.log("Props to AppointInstructor");
+        console.log("Course: ", this.props.course);
 
         // first time query database
-        this.updateArray();
+        this.update();
 
         // Bind the function
         this.addInstructor = this.addInstructor.bind(this);
-        this.updateArray = this.updateArray.bind(this);
+        this.update = this.update.bind(this);
         this.searchUser = this.searchUser.bind(this);
         this.searchInput = this.searchInput.bind(this);
         this.removeInstructor = this.removeInstructor.bind(this);
@@ -30,11 +38,11 @@ class AppointInstructor extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if(JSON.stringify(this.props.course) != JSON.stringify(nextProps)) {
-            this.updateArray();
+            this.update();
         }
     }
 
-    updateArray(){
+    update() {
         let studentsArray = [];
         let instructorsArray = [];
 
@@ -87,7 +95,7 @@ class AppointInstructor extends React.Component {
                 }
             }
 
-            that.updateArray();
+            that.update();
         });
     }
 
@@ -106,7 +114,7 @@ class AppointInstructor extends React.Component {
             }
 
             ref.update(updates);
-            that.updateArray();
+            that.update();
         })
     }
 
@@ -150,57 +158,90 @@ class AppointInstructor extends React.Component {
 
     render () {
         var that = this;
-        const optionsProp_student = {
-            onRowClick: function(row) {
-                that.addInstructor(row);
-            },
 
-            noDataText: "No Student Found"
+
+        var studentItem = function(student) {
+            let handleHiding = () => {
+                that.setState({snackbarActive: false});
+            }
+
+            return (
+                <div key={student.username}>
+                    <ListItem
+                        leftIcon="face"
+                        caption={student.username}
+                        legend={student.email}
+                        selectable={true}
+                        onClick={()=>{
+                            that.setState({snackbarActive: true});
+                            that.addInstructor(student);
+                        }}
+                        rightIcon="person_add"
+                    />
+
+                    <Snackbar
+                        action='Dismiss'
+                        active={that.state.snackbarActive}
+                        label={"You have added " + student.username + " to instructor."}
+                        timeout={2000}
+                        onClick={handleHiding}
+                        onTimeout={handleHiding}
+                        type='cancel'
+                    />
+                </div>
+            )
         }
 
-        const optionsProp_instructor = {
-            onRowClick: function(row) {
-                that.removeInstructor(row);
-            },
+        var instructorItem = function(instructor) {
+            let handleHiding = () => {
+                that.setState({dialogActive: false});
+            }
 
-            noDataText: "No Instructor Found"
+            let handleRemove = () => {
+                that.removeInstructor(instructor);
+                that.setState({dialogActive: !that.state.dialogActive});
+            }
+
+            return (
+                <div key={instructor.username}>
+                    <ListItem
+                        leftIcon="person"
+                        caption={instructor.username}
+                        selectable={true}
+                        onClick={()=>{that.setState({dialogActive: true})}}
+                        legend={instructor.email}/>
+
+                    <Dialog
+                        actions={[
+                            { label: "No", onClick: handleHiding },
+                            { label: "Yes", onClick: handleRemove }
+                        ]}
+                        active={that.state.dialogActive}
+                        onEscKeyDown={handleHiding}
+                        onOverlayClick={handleHiding}
+                        title="Are you sure?"
+                    >
+
+                        <p>Are you sure you want to remove {instructor.username}</p>
+                    </Dialog>
+                </div>
+
+            )
         }
-
-        const selectRowProp_student = {
-            mode: 'checkbox',
-            bgColor: '#ccccff',
-            hideSelectColumn: true,
-            clickToSelect: true
-        };
-
-        const selectRowProp_instructor = {
-            mode: 'checkbox',
-            bgColor: '#ff5050',
-            hideSelectColumn: true,
-            clickToSelect: true
-        };
 
         return (
             <div>
-                <big> Instructor List </big>
-                <BootstrapTable data={this.state.instructors} bordered={false}
-                                options={optionsProp_instructor} selectRow={selectRowProp_instructor}>
-                    <TableHeaderColumn dataField="username" isKey>Name</TableHeaderColumn>
-                    <TableHeaderColumn dataField="email">email</TableHeaderColumn>
-                </BootstrapTable>
-
-                <input type="text"
-                       placeholder="Appoint Instructors"
-                       onChange={this.searchInput}/>
-
-                <BootstrapTable data={this.state.searchResult} bordered={false}
-                                options={optionsProp_student} selectRow={selectRowProp_student}>
-                    <TableHeaderColumn dataField="username" isKey>Name</TableHeaderColumn>
-                    <TableHeaderColumn dataField="email">email</TableHeaderColumn>
-                </BootstrapTable>
-
+                <List>
+                    <ListSubHeader caption="Instructors"/>
+                    {this.state.instructors.map(instructorItem)}
+                </List>
+                <List>
+                    <ListSubHeader caption="Students"/>
+                    {this.state.students.map(studentItem)}
+                </List>
             </div>
-        );
+
+        )
     }
 }
 

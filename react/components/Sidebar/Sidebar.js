@@ -44,10 +44,10 @@ class Sidebar extends React.Component {
 
         // if the link contains course id
         if (this.props.courseID) {
-            database.ref('lectureIds/' + this.props.courseID).once('value').then(function(snapshot) {
-                that.lectureIds = snapshot.val();
+            database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
+                that.lectures = snapshot.val();
                 var course = that.courses[that.props.courseID];
-                var lecture = that.lectureIds[course.lectureIds[that.props.lectureNum]];
+                var lecture = that.lectures[course.lectures[that.props.lectureNum]];
 
                 // if the link also contains lecture num
                 if (that.props.courseID) {
@@ -77,8 +77,8 @@ class Sidebar extends React.Component {
      */
     selectCourse(course) {
         var that = this;
-        database.ref('lectureIds/' + course.id).once('value').then(function(snapshot) {
-            that.lectureIds = snapshot.val();
+        database.ref('lectures/' + course.id).once('value').then(function(snapshot) {
+            that.lectures = snapshot.val();
             browserHistory.push('/' + course.id);
             that.props.navigateCourse(course);
         });
@@ -94,7 +94,7 @@ class Sidebar extends React.Component {
         // render lecture list
         else if (this.props.navCourse) {
             return <LectureListContainer back={this.back}
-                                         lectures={this.lectureIds} />;
+                                         lectures={this.lectures} />;
         }
         // render course list
         else {

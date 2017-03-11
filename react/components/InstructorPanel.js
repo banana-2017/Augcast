@@ -1,23 +1,26 @@
 import React from 'react';
 import { database } from './../../database/database_init'
-import SplitPane from 'react-split-pane'
 
-/*
-import AppBar from 'react-toolbox/lib/app_bar';
-import Navigation from 'react-toolbox/lib/navigation';
-import Drawer from 'react-toolbox/lib/drawer';
-*/
+import { Layout, AppBar, NavDrawer, Navigation, Panel } from 'react-toolbox';
+import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
+import {Tab, Tabs} from 'react-toolbox';
 
+import PendingER from './PendingER'
 import AppointInstructor from './AppointInstructor';
 
 class InstructorPanel extends React.Component {
     constructor(props) {
         super(props);
-        this.testUser = "l1qiao";
+        this.testUser = "ajrengar";
 
         this.state = {
+            // States about data
             dataRetrieved: false,
-            currentCourse: undefined
+            currentCourse: undefined,
+
+            // States about UI
+            drawerActive: false,
+            tabIndex:1,
         };
 
         this.instructorCourses = [];
@@ -34,65 +37,64 @@ class InstructorPanel extends React.Component {
 
                     // use a counter to know whether the callbacks have finished or not
                     if(++counter === Object.keys(Ids).length) {
-                        that.setState({dataRetrieved: true});
+                        that.setState({lectureRetrieved: true});
                     }
                 })
             }
         });
-
-        this.selectCourse = this.selectCourse.bind(this);
-    }
-
-    selectCourse(course) {
-        this.setState({currentCourse: course});
     }
 
     render() {
         var that = this;
+
         var listItem = function(course) {
             return (
-                <li className="course-item" key={course.id} >
-                    <div id="courseLabel" onClick={() => {that.selectCourse(course);}}>
-                        <div className="course-title">
-                            <span className="course-number">{course.num}</span>
-                            <span className="course-section">{course.section}</span>
-                        </div>
-                        <div className="course-prof">{course.professor}</div>
-                        <div className="expand-button"></div>
-                    </div>
-                </li>
+                <div key={course.id}>
+                    <ListItem
+                        leftIcon="class"
+                        caption={course.id}
+                        legend={course.professor}
+                        disabled={course == that.state.currentCourse}
+                        onClick={()=>{that.setState({currentCourse: course, drawerActive: false});}}
+                    />
+                </div>
             )
         }
 
         return (
-            <SplitPane split="vertical" minSize={50} defaultSize={200}>
-                <div>
-                    {this.instructorCourses.map(listItem)}
-                </div>
-                <div>
-                    {typeof this.state.currentCourse != 'undefined' ?
-                        <AppointInstructor course={this.state.currentCourse}/> :
-                        <h1>Select a Course to start</h1>}
-                </div>
-            </SplitPane>
-        )
+            <div>
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+                <Layout>
+                    <NavDrawer active={this.state.drawerActive}
+                               onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
+                               permanentAt='xxxl'
+                               pinned={true}>
+                        {this.instructorCourses.map(listItem)}
+                    </NavDrawer>
 
-        /*
-         // Use react-tools
-         return (
-         <div>
-         <Drawer active={this.state.active} onOverlayClick={this.handleToggle}>
-         <h5>This is your Drawer.</h5>
-         <p>You can embed any content you want, for example a Menu.</p>
-         </Drawer>
+                    <Panel>
+                        <AppBar title="Instructor Panel"
+                                onLeftIconClick={()=>{this.setState({drawerActive: true})}}>
+                        </AppBar>
 
-         <AppBar title="Instructor Panel" leftIcon="menu">
-         <Navigation type="horizontal">
-         </Navigation>
-         </AppBar>
-         </div>
-         );
-         */
+                        <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
+                            <Tab label='Instructor Management'>
+                                {typeof this.state.currentCourse != 'undefined' ?
+                                    <AppointInstructor course={this.state.currentCourse}/> :
+                                    <h1>Select a Course to start</h1>}
+                            </Tab>
+                            <Tab label='Pending ERs'>
+                                {typeof this.state.currentCourse != 'undefined' ?
+                                    <PendingER course={this.state.currentCourse}/> :
+                                    <h1>Select a Course to start</h1>}
+                            </Tab>
+                            <Tab label='Third'><small>Third Content</small></Tab>
+                        </Tabs>
+                    </Panel>
+
+                </Layout>
+            </div>
+        );
     }
 }
 

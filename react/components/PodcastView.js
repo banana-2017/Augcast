@@ -44,14 +44,14 @@ class PodcastView extends React.Component {
         if (course != undefined && lecture != undefined) {
 
             // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
-            var ref = database.ref('courses/' + course.id + '/lectureIds/' + lecture.id);
+            var ref = database.ref('courses/' + course.id + '/lectures/' + lecture.id);
             this.setState({
                 firebaseListener: ref
             });
 
             // Listen to changes at ref's location in db
             ref.on('value', function(snapshot) {
-                console.log(JSON.stringify('db on lectureIds/' + course.id + '/' + lecture.id +': ' + JSON.stringify(snapshot.val())));
+                console.log(JSON.stringify('db on lectures/' + course.id + '/' + lecture.id +': ' + JSON.stringify(snapshot.val())));
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
