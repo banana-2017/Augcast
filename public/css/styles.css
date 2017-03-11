@@ -11,6 +11,17 @@
 .main {
     height: 100%;
     width: 100%;
+    padding-left: 256px;
+    display: table;
+}
+
+.blank {
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 24pt;
+    color: lightgray;
 }
 
 .fa {
