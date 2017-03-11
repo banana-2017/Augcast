@@ -12,3 +12,4 @@ labeler/assets
 *.pyc
 labeler/*.pyc
 script/*.json
+*.pem
