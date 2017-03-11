@@ -2,6 +2,8 @@
 // Responsible for uploading the PDF
 
 import React from 'react';
+import Dialog from 'material-ui/Dialog';
+import { connect } from 'react-redux';
 import { firebaseApp, storageRef, database } from './../../database/database_init';
 import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
 
@@ -18,14 +20,23 @@ class Upload extends React.Component {
             downloadURL: '',
             error: '',
             APIresult: '',
-            lectureID: ''
+            lectureID: '',
+            open: false
         };
 
         // Bind all functions so they can refer to "this" correctly
         //this.togglePlay = this.togglePlay.bind(this);
         this.handleFile = this.handleFile.bind(this);
         this.handleClear = this.handleClear.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.callLabelAPI = this.callLabelAPI.bind(this);
+    }
+
+    /**
+     * Handler for closing the dialog box.
+     */
+    handleClose() {
+        this.props.close();
     }
 
     /**
@@ -83,7 +94,7 @@ class Upload extends React.Component {
                     downloadURL: url
                 });
 
-                database.ref('lectures/' + that.props.course + '/' + that.props.lecture).update({
+                database.ref('lectures/' + that.props.navCourse.id + '/' + that.props.lecture.id).update({
                     slides_url: url
                 });
 
@@ -104,9 +115,9 @@ class Upload extends React.Component {
             },
             body: JSON.stringify({
                 pdfURL: url,
-                courseID: that.props.course,
-                lectureID: that.props.lecture,
-                mediaURL: that.props.mediaURL
+                courseID: that.props.navCourse.id,
+                lectureID: that.props.lecture.id,
+                mediaURL: that.props.lecture.video_url
             })
         }).then(function(response) {
             return response.json();
@@ -126,57 +137,81 @@ class Upload extends React.Component {
     }
 
     render () {
-        console.log('Rendering Upload page');
+        if (this.props.lecture) {
+            console.log(JSON.stringify({
+                courseID: this.props.navCourse.id,
+                lectureID: this.props.lecture.id,
+                mediaURL: this.props.lecture.video_url
+            }));
+        }
         return (
             <div
             style={{maxWidth: '300px', margin:'0 auto'}}>
+                <Dialog title="Upload a PDF file"
+                        modal={false}
+                        open={this.props.open}
+                        onRequestClose={this.handleClose} >
 
-                <h3>
-                    Upload a PDF file
-                </h3>
-                <p>
-                    There are no slides for this lecture yet.
-                    Upload the PDF here for the system to automatically generate
-                    timestamps for each slide!
-                </p>
-                <form
-                    ref='inputForm'>
-                <input
-                    ref='inputBox'
-                    type='file'
-                    style={{margin:'10px'}}
-                    accept='application/pdf'/>
+                    <p>
+                        There are no slides for this lecture yet.
+                        Upload the PDF here for the system to automatically generate
+                        timestamps for each slide!
+                    </p>
+                    <form
+                        ref='inputForm'>
+                    <input
+                        ref='inputBox'
+                        type='file'
+                        style={{margin:'10px'}}
+                        accept='application/pdf'/>
 
-                <Button
-                    bsStyle="default"
-                    bsSize="small"
-                    style={{margin:'10px'}}
-                    active={this.state.curSource == 2}
-                    onClick={this.handleClear}>
-                        Clear
-                </Button>
-                <Button
-                    bsStyle="success"
-                    bsSize="small"
-                    style={{margin:'10px'}}
-                    active={this.state.curSource == 2}
-                    onClick={this.handleFile}>
-                        <Glyphicon glyph="cloud-upload" />
-                        Upload
-                </Button>
-                </form>
-                {this.state.error}
+                    <Button
+                        bsStyle="default"
+                        bsSize="small"
+                        style={{margin:'10px'}}
+                        active={this.state.curSource == 2}
+                        onClick={this.handleClear}>
+                            Clear
+                    </Button>
+                    <Button
+                        bsStyle="default"
+                        bsSize="small"
+                        style={{margin:'10px'}}
+                        active={this.state.curSource == 2}
+                        onClick={this.handleClose}>
+                            close
+                    </Button>
+                    <Button
+                        bsStyle="success"
+                        bsSize="small"
+                        style={{margin:'10px'}}
+                        active={this.state.curSource == 2}
+                        onClick={this.handleFile}>
+                            <Glyphicon glyph="cloud-upload" />
+                            Upload
+                    </Button>
+                    </form>
+                    {this.state.error}
 
-                {this.state.uploadStarted != 0 ? <ProgressBar
-                    active
-                    now={this.state.uploadProgress}
-                    label={`${(this.state.uploadProgress).toFixed(2)}%`} /> : ''}
+                    {this.state.uploadStarted != 0 ? <ProgressBar
+                        active
+                        now={this.state.uploadProgress}
+                        label={`${(this.state.uploadProgress).toFixed(2)}%`} /> : ''}
 
-                <h3> {this.state.downloadURL != '' ? 'Download URL from Firebase:' : ''} </h3>
-                <a href={this.state.downloadURL}> {this.state.downloadURL} </a>
+                    <h3> {this.state.downloadURL != '' ? 'Download URL from Firebase:' : ''} </h3>
+                    <a href={this.state.downloadURL}> {this.state.downloadURL} </a>
+                </Dialog>
             </div>
         );
     }
 }
 
-export default Upload;
+function mapStateToProps (state) {
+    return {
+        navCourse:  state.navCourse,
+        currentLecture:  state.currentLecture
+    };
+}
+
+const UploadContainer = connect (mapStateToProps, null)(Upload);
+export default UploadContainer;

@@ -1,6 +1,6 @@
 import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
-import Home from './components/Home';
+import HomeContainer from './components/Home';
 import Login from './components/Login';
 import { createStore } from 'redux';
 import PodcastView from './components/PodcastView';
@@ -19,9 +19,11 @@ import React from 'react';      // used for jsx
 
 let store = createStore (appReducers);
 module.exports = (
-    <Route path="/" component = {App}>
-        <IndexRoute component = {Home} onEnter = {authenticate}>
-        </IndexRoute>
+    <Route path="/" component = {App} >
+        // <IndexRoute component = {HomeContainer} onEnter={authenticate} ></IndexRoute>
+        <IndexRoute component = {HomeContainer} ></IndexRoute>
+        <Route path="/login" component = {Login}/>
+
         <Route path="/podcastview" component={PodcastView} />
         <Route path="/login" component = {Login}/>
         <Route path="/upload" component = {Upload}/>

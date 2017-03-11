@@ -3,12 +3,55 @@
 
 import React from 'react';
 import FA from 'react-fontawesome';
+import IconButton from 'material-ui/IconButton';
+import ActionBackup from 'material-ui/svg-icons/action/backup';
+import ActionDone from 'material-ui/svg-icons/action/done';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
+import UploadContainer from '../Upload';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import PodcastView from '../PodcastView.js';
+//import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
+
+injectTapEventPlugin();
+
+class UploadButton extends React.Component {
+    constructor(props) {
+        super(props);
+
+        // initial states
+        this.state = {};
+    }
+
+    render() {
+        var that = this;
+        return (
+            <div className="slides-status">
+                <IconButton tooltip="Upload slides" onTouchTap={() => {that.props.onClick(that.props.lecture);}}>
+                    <ActionBackup />
+                </IconButton>
+            </div>
+        );
+    }
+}
+
+class DoneMark extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div className="slides-status">
+                <IconButton tooltip="Slides have been uploaded">
+                    <ActionDone />
+                </IconButton>
+            </div>
+        );
+    }
+}
 
 class LectureList extends React.Component {
     constructor(props) {
@@ -16,40 +59,36 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
-            render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined
+            upload: undefined,
+            modal: false
         };
-
-        // this.search = this.search.bind (this);
-        // this.searchInput = this.searchInput.bind (this);
-
-        // lecture slection variable
-        // this.dataArray = [];
 
         // inherit all course data
         this.course = this.props.navCourse;
-        // this.state.visibleCourses = this.courses.keys;
-
-        // // populate array for search
-        // for (var course in this.courses.data) {
-        //     let current = this.courses.data[course];
-        //     current.key = course;
-        //     this.dataArray.push(current);
-        // }
 
         // helper object
         this.calendar = {
             1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
             7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
         };
+
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+
     }
 
-
     selectLecture(lecture) {
-        console.log(lecture);
-        console.log(this.course);
         this.props.displayLecture(this.course, lecture);
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
-        // this.setState({render: lecture.id});
+    }
+
+    openModal(lecture) {
+        console.log(lecture);
+        this.setState({upload: lecture, modal: true});
+    }
+
+    closeModal() {
+        this.setState({upload: undefined, modal: false});
     }
 
     render () {
@@ -61,12 +100,17 @@ class LectureList extends React.Component {
             var month = that.calendar[lecture.month];
             return (
                 <li key={lecture.id}
-                    className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}
-                    onClick={() => {that.selectLecture(lecture);}}>
-                    Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
+                    className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
+                    <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
+                        Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
+                    </div>
+                    {(lecture.slides_url) ? <DoneMark /> : <UploadButton onClick={that.openModal} lecture={lecture}/>}
                 </li>
             );
         };
+
+        // Set page title
+        document.title = this.course.dept + ' ' + this.course.num + ' - Augcast';
 
         return (
             <div>
@@ -84,6 +128,7 @@ class LectureList extends React.Component {
                         </ul>
                     </div>
                 </div>
+                <UploadContainer lecture={this.state.upload} open={this.state.modal} close={this.closeModal}/>
             </div>
         );
     }

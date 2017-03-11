@@ -139,6 +139,7 @@ class ElabRequest extends React.Component {
                    <a style={buttonStyle} onClick={() => {that.removeAnswer(inputtedID, index);}}>
                      Delete
                    </a>}
+                     {<a style={buttonStyle}> Endorse </a>}
                  </form>
              </div>
         );
@@ -195,8 +196,7 @@ class ElabRequest extends React.Component {
             <div key={elaboration}>
               <div className="elaboration-question" style={containerStyle}>
                     <p className="elaboration-question-text" key={parts}>
-                    Question {that.updatedID}:<br/>
-                    <p className="elaboration-question">{questions}</p><br/>
+                    Question {that.updatedID}: <br/>{questions}<br/>
                     </p>
 
                       <div className="elaboration-answer">

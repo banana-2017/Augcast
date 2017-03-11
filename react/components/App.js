@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /*
  * Navbar, outer most components
@@ -7,9 +9,9 @@ class App extends React.Component {
 
     render () {
         return (
-            <div className="row">
+            <MuiThemeProvider>
                 {this.props.children}
-            </div>
+            </MuiThemeProvider>
         );
     }
 }
