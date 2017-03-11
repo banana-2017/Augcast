@@ -14,8 +14,15 @@ class SearchResultList extends React.Component {
 
             let {slide, contents} = result;
             let {query} = that.props;
-            let startIndex = contents.indexOf (query);
+
+            let startIndex = contents.toLowerCase().indexOf (query.toLowerCase());
             let queryLength = query.length;
+
+            // no exact match
+            if (startIndex < 0) {
+                startIndex = 0;
+                queryLength = 0;
+            }
             
             let endIndex = startIndex + queryLength;
             let prefix = contents.substring (0, startIndex);
