@@ -15,7 +15,7 @@ import routes from './routes';
 import {Router, browserHistory} from 'react-router';
 
 // firebase auth
-import {auth} from '../database/database_init';
+import {auth, database} from '../database/database_init';
 
 // setting up the redux store
 let store = createStore (appReducers,
@@ -36,18 +36,20 @@ auth.onAuthStateChanged(function(user) {
         var username = user.email.substring (0, user.email.length-9);
         if (user.displayName === null) {
             console.log ('username undefined');
+
             // create profile if not already defined
             auth.currentUser.updateProfile({
                 displayName: username,
-                instructorFor: [],
-                favorites: [],
-                questions: [],
-                answers: []
             }).then(function() {
                 console.log ('Profile creation successful');
                 store.dispatch (updateUser(user.displayName));
             }, function(error) {
                 console.log ('Profile creation unsuccessful: '+error);
+            });
+
+            database.ref('users/' + username).set({
+                username: username,
+                email: user.email,
             });
         }
 

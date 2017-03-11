@@ -118,6 +118,10 @@ html, body, .podcast-container, .pdf-view, .video-view {
     overflow: auto;
 }
 
+.pinned {
+    color: yellow
+}
+
 .course-item {
     position: relative;
     width: 100%;
@@ -176,11 +180,29 @@ html, body, .podcast-container, .pdf-view, .video-view {
 .lecture-item {
     position: relative;
     width: 100%;
-    font-size:16pt;
+    font-size:14pt;
     background: white;
     list-style: none;
+    display: table;
     padding: 12px;
     cursor: pointer;
+}
+
+.lecture-button {
+    position: relative;
+    width: 100%;
+    vertical-align: middle;
+    height: 100%;
+    font-size:14pt;
+    display: table-cell;
+}
+
+.lecture-item .slides-status {
+    float: right;
+    font-size: 12pt;
+    position: relative;
+    display: table-cell;
+    height: 100%;
 }
 
 .lecture-item.selected {

@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { navigateCourse } from '../../redux/actions';
+import { navigateCourse, displayLecture } from '../../redux/actions';
 import { browserHistory } from 'react-router';
 import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
@@ -17,7 +17,7 @@ class Sidebar extends React.Component {
 
         // Initial state
         this.state = {
-            display: 'loading',
+            loading: true
         };
 
         // functions
@@ -31,10 +31,9 @@ class Sidebar extends React.Component {
         var that = this;
         database.ref('courses').once('value').then(function(snapshot) {
             that.courses = snapshot.val();
-            that.setState({display: 'course'});
+            that.setState({loading: false});
         });
     }
-
 
     /**
      * Routine before rendering LectureList.
@@ -42,10 +41,21 @@ class Sidebar extends React.Component {
      */
     componentWillMount() {
         var that = this;
+
+        // if the link contains course id
         if (this.props.courseID) {
             database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
                 that.lectures = snapshot.val();
-                that.props.updateCourseState(that.courses[that.props.courseID], null);
+                var course = that.courses[that.props.courseID];
+                var lecture = that.lectures[course.lectures[that.props.lectureNum]];
+
+                // if the link also contains lecture num
+                if (that.props.courseID) {
+                    that.props.navigateCourse(that.courses[that.props.courseID]);
+                    if (that.props.lectureNum) {
+                        that.props.displayLecture(course, lecture);
+                    }
+                }
             });
         }
     }
@@ -77,7 +87,7 @@ class Sidebar extends React.Component {
 
     render () {
         // loading
-        if (this.state.display == 'loading') {
+        if (this.state.loading) {
             return <Spinner className="sidebar-loading" spinnerName="three-bounce" />;
         }
 
