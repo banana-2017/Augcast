@@ -31,7 +31,8 @@ def generateTimestamp(video, filename, courseID, lectureID):
 
     # Output json
     json_string = json.dumps(pdfdict, sort_keys=True, indent=4)
-    print (json_string)
+    print ('content' + '#' + courseID + '#' + lectureID + '#' + json_string)
+    sys.stdout.flush();
 
     # capture the video
     cap = cv2.VideoCapture(video)
@@ -200,6 +201,7 @@ def generateTimestampFromWeb(videoURL, pdfURL, courseID, lectureID):
 
 
     timestamp = generateTimestamp(media_name, pdf_name, courseID, lectureID)
+
     try:
         os.remove(media_name)
         os.remove(pdf_name)
