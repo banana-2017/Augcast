@@ -9,7 +9,8 @@ html, body, .podcast-container, .pdf-view, .video-view {
     width: 320px;
 }
 
-.app {
+#app {
+    position: fixed;
     height: 100%;
     width: 100%;
     display: inline;
@@ -35,7 +36,7 @@ html, body, .podcast-container, .pdf-view, .video-view {
 .main {
     position: fixed;
     height: 100%;
-    display: table;
+    display: inline-block;
     right: 0;
     width: calc(100% - 256px);
     width: -moz-calc(100% - 256px);
@@ -45,17 +46,22 @@ html, body, .podcast-container, .pdf-view, .video-view {
 .blank {
     height: 100%;
     width: 100%;
-    display: table-cell;
-    vertical-align: middle;
+    display: table;
     text-align: center;
     font-size: 24pt;
     color: lightgray;
+    margin: auto 0;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
     cursor: default;
+}
+
+.blank > p {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .fa {
@@ -361,9 +367,13 @@ li.lecture-item {
     top: 0;
     background: darkgray;
     display: inline-block;
-    overflow: auto;
     vertical-align: top;
     float: left;
+}
+
+.pdf-pages {
+    height: 100%;
+    overflow: scroll;
 }
 
 .pdf-page {
