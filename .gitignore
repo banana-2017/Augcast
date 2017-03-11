@@ -13,3 +13,5 @@ labeler/assets
 labeler/*.pyc
 script/*.json
 *.pem
+*.mp4
+*.pdf
