@@ -265,6 +265,7 @@ class LectureList extends React.Component {
         }
 
         this.setState ({visibleLectures: visibleLectures});
+        this.week = null;
         return result;
     }
 
@@ -286,6 +287,7 @@ class LectureList extends React.Component {
             var month = that.calendar[lecture.month];
 
             var weekSeparator = null;
+            console.log (that.week + ' ' + lecture.week);
             if (that.week != lecture.week) {
                 that.week = lecture.week;
                 weekSeparator = (<div className="week-separator">Week {lecture.week}</div>);
