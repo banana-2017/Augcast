@@ -186,7 +186,8 @@ class LectureList extends React.Component {
             upload: undefined,
             modal: false,
             visibleLectures: [],
-            resultArray: []
+            resultArray: [],
+            query: ''
         };
 
         // decide if week has changed in randering lecture list
@@ -280,8 +281,10 @@ class LectureList extends React.Component {
             );
         }
 
-        this.setState ({visibleLectures: visibleLectures,
-                        resultArray: resultArray});
+        this.setState (
+            {visibleLectures: visibleLectures,
+                resultArray: resultArray,
+                query: query});
 
         this.week = null;
         return result;
@@ -326,7 +329,7 @@ class LectureList extends React.Component {
                         </div>
                         <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                     </MenuItem>
-                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} />
+                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query}/>
                 </div>
             );
         };

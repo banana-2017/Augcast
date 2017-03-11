@@ -9,12 +9,31 @@ class SearchResultList extends React.Component {
     render () {
 
         var {resultList} = this.props;
+        var that = this;
         var listItem = function (result) {
+
+            let {slide, contents} = result;
+            let {query} = that.props;
+
+            let startIndex = contents.toLowerCase().indexOf (query.toLowerCase());
+            let queryLength = query.length;
+
+            // no exact match
+            if (startIndex < 0) {
+                startIndex = 0;
+                queryLength = 0;
+            }
+            
+            let endIndex = startIndex + queryLength;
+            let prefix = contents.substring (0, startIndex);
+            let queryMatch = contents.substring (startIndex, endIndex);
+            let suffix = contents.substring (endIndex);
+
             return (
                 <div>
-                    <span>{result.slide}</span>
+                    <span>{slide}</span>
                     <br/>
-                    <span>{result.contents}</span>
+                    <span>{prefix}<strong>{queryMatch}</strong>{suffix}</span>
                 </div>
             );
         };
