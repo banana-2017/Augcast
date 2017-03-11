@@ -1,7 +1,6 @@
 // Home.js
 // The landing page for our amazing app
 import React from 'react';
-import { Link } from 'react-router';
 import {connect} from 'react-redux';
 import SidebarContainer from './Sidebar/Sidebar.js';
 import PodcastViewContainer from './PodcastView.js';
@@ -13,7 +12,7 @@ class Home extends React.Component {
         // Initial state
         this.state = {
             playing: undefined
-        }
+        };
 
         this.selectLecture = this.selectLecture.bind(this);
     }
@@ -27,10 +26,10 @@ class Home extends React.Component {
         if (this.props.currentLecture) {
             main = <PodcastViewContainer />;
         } else {
-            main = <div className="blank">select lecture to start</div>
+            main = <div className="blank">select lecture to start</div>;
         }
 
-        document.title = "Augcast";
+        document.title = 'Augcast';
 
         return (
             <div>

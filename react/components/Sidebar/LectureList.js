@@ -10,23 +10,20 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { database } from './../../../database/database_init';
 
 // ui components
-import ActionBackup from 'material-ui/svg-icons/action/backup';
 import ActionCached from 'material-ui/svg-icons/action/cached';
-import ActionDone from 'material-ui/svg-icons/action/done';
 import Button from 'react-toolbox/lib/button';
 import Drawer from 'material-ui/Drawer';
 import FA from 'react-fontawesome';
-import FontIcon from 'react-toolbox/lib/font_icon';
 import IconButton from 'material-ui/IconButton';
-import Tooltip from 'react-toolbox/lib/tooltip';
-import {IconMenu, MenuItem, MenuDivider } from 'react-toolbox/lib/menu';
+// import Tooltip from 'react-toolbox/lib/tooltip';
+import {MenuItem} from 'react-toolbox/lib/menu';
 
 //import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
 
 injectTapEventPlugin();
 
-const TooltipButton = Tooltip(Button);
+// const TooltipButton = Tooltip(Button);
 
 class UploadButton extends React.Component {
     constructor(props) {
@@ -84,7 +81,7 @@ class UploadIconController extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {}
+        this.state = {};
     }
 
     componentDidMount() {

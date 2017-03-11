@@ -46,7 +46,7 @@ class Login extends React.Component {
 
     // TODO: needs styling
     render () {
-        document.title = "Login - Augcast";
+        document.title = 'Login - Augcast';
         return (
             <form onKeyDown={this.keyEvent} >
                 <FormGroup

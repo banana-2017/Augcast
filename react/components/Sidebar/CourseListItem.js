@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {IconMenu, MenuItem, MenuDivider } from 'react-toolbox/lib/menu';
+import {MenuItem} from 'react-toolbox/lib/menu';
 
 // ui elements
 import FA from 'react-fontawesome';
@@ -33,7 +33,7 @@ class CourseListItem extends React.Component {
         let {number, id, section, prof, selectCourse, course} = this.props;
 
         return (
-            <MenuItem className={ (course == this.props.currentCourse) ? "course-item selected" : "course-item" }
+            <MenuItem className={ (course == this.props.currentCourse) ? 'course-item selected' : 'course-item' }
             key={id}>
                 <div className="pin-button">
                     <FA onClick={() => {this.pinCourse(id);}}
