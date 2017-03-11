@@ -6,25 +6,34 @@ html, body, .podcast-container, .pdf-view, .video-view {
 /* login page animation */
 
 .login {
-    color: white;
+    width: 320px;
 }
-
-
 
 .app {
     height: 100%;
     width: 100%;
 }
 
-.main {
+.sidebar {
     height: 100%;
-    width: 100%;
-    padding-left: 256px;
+    width: 256px;
+    float: left;
+}
+
+.sidebar-drawer {
+    height: 100%;
+}
+
+.main {
+    position: relative;
+    height: 100%;
     display: table;
+    float: right;
 }
 
 .blank {
     height: 100%;
+    width: 100%;
     display: table-cell;
     vertical-align: middle;
     text-align: center;

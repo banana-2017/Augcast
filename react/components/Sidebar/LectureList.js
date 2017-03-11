@@ -240,8 +240,8 @@ class LectureList extends React.Component {
         document.title = this.course.dept + ' ' + this.course.num + ' - Augcast';
 
         return (
-            <div>
-                <Drawer className="nav">
+            <div className="sidebar">
+                <Drawer className="sidebar-drawer">
                     <div className="search-bar">
                         <div className="search-icon"><FA name='arrow-left' onClick={that.props.back}/></div>
                         <FormControl type="text"
