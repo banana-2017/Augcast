@@ -13,7 +13,6 @@ class PDFDisplay extends React.Component {
         // Initial state
         this.state = {
             page: 1,
-            file: props.pdfURL,
             pages: 1
         };
 
@@ -32,18 +31,31 @@ class PDFDisplay extends React.Component {
         this.props.onSkipToTime(timestamp);
     }
 
+    prettyTimestamp(timestamp) {
+        var minutes = parseInt(timestamp / 60);
+        var seconds = timestamp % 60;
+        if (seconds < 10) seconds = '0' + seconds;
+        if (minutes < 10) minutes = '0' + minutes;
+        return minutes + ':' + seconds;
+    }
+
     render() {
         var that = this;
         var sentinelArray = Array.from(Array(this.state.pages));
         var PDFpages = sentinelArray.map(function(x, i){
+            var stamp = that.props.timestamps != undefined ?
+                that.props.timestamps[i+1] :
+                undefined;
             return (
-                <div key={'ButtonPageCombo' + i} className="pdf-page" onClick={() => {that.skipToTime(i);}}>
-                    <div className="pdf-timestamp">{i}</div>
+                <div key={'ButtonPageCombo' + i} className="pdf-page" onClick={() => {that.skipToTime(stamp);}}>
+                    {(that.props.timestamps != undefined && !isNaN(stamp) && stamp != -1) ?
+                        <div className="pdf-timestamp">{'Skip to ' + that.prettyTimestamp(stamp)}</div>
+                            : <div></div>}
                     <PDF
                         key={'PDFPage' + i}
-                        file={that.state.file}
+                        file={that.props.pdfURL}
                         onDocumentComplete={that.onDocumentComplete}
-                        scale={0.3}
+                        scale={0.35}
                         page= {i + 1} />
                 </div>
             );

@@ -30,7 +30,10 @@ class VideoPlayer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.refs.basicvideo.currentTime = nextProps.timestamp;
+        console.log('Recieving prop timestamp: ' + JSON.stringify(nextProps.timestamp));
+        if (nextProps.timestamp != undefined) {
+            this.refs.basicvideo.currentTime = nextProps.timestamp;
+        }
     }
 
     togglePlay() {
@@ -92,13 +95,18 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
+        console.log(this.props);
+        var course = this.props.currentCourse;
+        var lecture = this.props.currentLecture;
+        var lectureNum = lecture.num;
+        var video_url = lecture.video_url;
         return (
             <div>
-                <h2>{this.props.lecture}</h2>
-                <div className="video_player_container">
+                <h2>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
+                <div className="video_api_containerplayer">
                     <br />
                     <video
-                        src={this.props.mediaURL}
+                        src={video_url}
                         autoPlay
                         width="600"
                         muted
@@ -107,8 +115,8 @@ class VideoPlayer extends React.Component {
                         controls>
                         Your browser does not support the video tag.
                     </video>
-                    <div className="video_api_container">
-                        <ButtonGroup>
+                    <div className="video-button-group-container">
+                        <ButtonGroup className='video-button-group'>
                             <Button bsStyle="default"  onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}><Glyphicon glyph="chevron-left" />Skip {SKIP_VALUE}s</Button>
                             <Button
                                 bsStyle="primary"
@@ -142,8 +150,8 @@ class VideoPlayer extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        course: state.currentCourse,
-        lecture:state.currentLecture
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture
     };
 }
 
