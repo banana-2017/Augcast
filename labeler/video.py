@@ -127,7 +127,7 @@ def generateTimestamp(video, filename, courseID, lectureID):
                         break
                 '''
                 if quitAppending == False:
-                    print ("appending")
+                    #print ("appending")
                     slides.append("")
                     slides.append(currentText)
                     timestamp.append(-1)
