@@ -359,6 +359,40 @@ li.lecture-item {
     vertical-align: top;
 }
 
+
+/******************************************************************************/
+/*************************    SLIDE SEARCH RESULTS    *************************/
+/******************************************************************************/
+
+li.match-result {
+    border-bottom: thin solid lightgray;
+    text-align: left;
+    padding: 16px;
+    height: auto;
+}
+
+li.match-result > div {
+    font-size: 8pt;
+    text-align: top;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+li.match-result > span {
+    display: none;
+}
+
+.match-slide {
+    position: absolute;
+    display: none;
+}
+
+.match-highlight {
+    font-weight: bold;
+    color: red;
+}
+
+
 /* pdf panel */
 
 .pdf-panel {
@@ -459,12 +493,13 @@ video {
     max-width: 300px;
 }
 
-/***************************  LOGIN ANIMATION  ********************************/
+/******************************************************************************/
+/*************************     LOGIN  ANIMATION     *************************/
+/******************************************************************************/
 
 div.login-wrapper{
     background: #252525;
 }
-
 .animateme {
     position: fixed;
     top: 0px;
@@ -474,7 +509,6 @@ div.login-wrapper{
     overflow: hidden;
     z-index: -1;
 }
-
 .bg-bubbles {
     position: absolute;
     top: 0;
@@ -497,7 +531,6 @@ div.login-wrapper{
     transition-timing-function: linear;
     opacity:0;
 }
-
 .bg-bubbles li:nth-child(1) {
     left: 3%;
     border-radius:50em;
@@ -596,7 +629,6 @@ div.login-wrapper{
     background:transparent;
     border:4px solid #353535;
 }
-
 .bg-bubbles li:nth-child(13) {
     left: 65%;
     width: 100px;
@@ -605,7 +637,6 @@ div.login-wrapper{
     animation-delay: 8s;
     border-radius:50em;
 }
-
 @-webkit-keyframes square {
     0% {
         -webkit-transform: translateY(0);
@@ -636,4 +667,3 @@ div.login-wrapper{
         opacity:0;
     }
 }
-

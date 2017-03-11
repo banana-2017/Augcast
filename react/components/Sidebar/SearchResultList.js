@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {MenuItem} from 'react-toolbox/lib/menu';
 
 class SearchResultList extends React.Component {
     constructor (props) {
@@ -30,11 +30,12 @@ class SearchResultList extends React.Component {
             let suffix = contents.substring (endIndex);
 
             return (
-                <div>
-                    <span>{slide}</span>
-                    <br/>
-                    <span>{prefix}<strong>{queryMatch}</strong>{suffix}</span>
-                </div>
+                <MenuItem className="match-result" key={slide}>
+                    <div className="match-slide">{slide}</div>
+                    <div className="match-text">
+                        {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
+                    </div>
+                </MenuItem>
             );
         };
 
