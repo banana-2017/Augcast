@@ -32,6 +32,7 @@ router.route('/label').post(function(req, res) {
     var PythonShell = require('python-shell');
     // Configure the python script's arguments
     var options = {
+        pythonPath: '/usr/local/bin/python2',
         mode: 'text',
         args: [req.body.pdf, req.body.media, req.body.courseID, req.body.lectureID]
     };

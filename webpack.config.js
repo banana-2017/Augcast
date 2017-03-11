@@ -1,4 +1,4 @@
-var webpack = require ('webpack');
+const webpack = require ('webpack');
 
 module.exports = {
     entry: __dirname+'/react/index.js',
@@ -21,8 +21,20 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader'
-            }
+                use: [
+                    "style-loader",
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: true,
+                            sourceMap: true,
+                            importLoaders: 1,
+                            localIdentName: "[name]--[local]--[hash:base64:8]"
+                        }
+                    },
+                    "postcss-loader" // has separate config, see postcss.config.js nearby
+                ]
+            },
         ]
     },
 
