@@ -12,9 +12,11 @@ html, body, .podcast-container, .pdf-view, .video-view {
 .app {
     height: 100%;
     width: 100%;
+    display: inline;
 }
 
 .sidebar {
+    position: relative;
     height: 100%;
     width: 256px;
     float: left;
@@ -29,6 +31,9 @@ html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
     display: table;
     float: right;
+    width: calc(100% - 256px);
+    width: -moz-calc(100% - 256px);
+    width: -webkit-calc(100% - 256px);
 }
 
 .blank {
