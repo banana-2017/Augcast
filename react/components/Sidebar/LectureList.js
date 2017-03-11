@@ -203,7 +203,21 @@ class LectureList extends React.Component {
         var that = this;
         // getting array of lectures of this course
         database.ref('/lectures/' + course).once('value').then(function(snapshot) {
-            that.setState ({lectures: Object.values(snapshot.val())});
+            let lectureList = snapshot.val();
+            let searchData = [];
+
+
+            for (var lecture  in lectureList) {
+                for (var slide in lectureList[lecture].contents) {
+                    searchData.push ({
+                        lectureId: lecture,
+                        slide: slide,
+                        contents: lectureList[lecture].contents[slide]
+                    });
+                }
+            }
+
+            that.setState ({lectures: searchData});
         });
     }
 
