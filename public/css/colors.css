@@ -1,0 +1,32 @@
+.pin-button .fa.pinned {
+    color: #fed602;
+}
+
+.pin-button .fa:hover {
+    color: #fed602;
+    font-size: 20pt;
+}
+
+.lecture-item.selected {
+    background: #f1ca8c;
+}
+
+.course-item.selected {
+    background: #f1ca8c;
+}
+
+
+.search-box {
+    background: #483401;
+}
+
+li.course-item {
+    background: #faf3e8;
+}
+li.lecture-item {
+    background: #faf3e8;
+}
+
+.slides-status button {
+    color:rgba(169, 68, 66, 0.67)
+}
