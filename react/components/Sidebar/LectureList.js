@@ -2,11 +2,6 @@
 // List all lectures of podcast-enabled courses
 
 import React from 'react';
-import FA from 'react-fontawesome';
-import IconButton from 'material-ui/IconButton';
-import ActionBackup from 'material-ui/svg-icons/action/backup';
-import ActionCached from 'material-ui/svg-icons/action/cached';
-import ActionDone from 'material-ui/svg-icons/action/done';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import { FormControl } from 'react-bootstrap';
@@ -14,11 +9,21 @@ import UploadContainer from '../Upload';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { database } from './../../../database/database_init';
 
+// ui components
+import ActionCached from 'material-ui/svg-icons/action/cached';
+import Button from 'react-toolbox/lib/button';
+import Drawer from 'material-ui/Drawer';
+import FA from 'react-fontawesome';
+import IconButton from 'material-ui/IconButton';
+// import Tooltip from 'react-toolbox/lib/tooltip';
+import {MenuItem} from 'react-toolbox/lib/menu';
 
 //import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
 
 injectTapEventPlugin();
+
+// const TooltipButton = Tooltip(Button);
 
 class UploadButton extends React.Component {
     constructor(props) {
@@ -32,9 +37,8 @@ class UploadButton extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-                <IconButton tooltip="Upload slides" onTouchTap={() => {that.props.onClick(that.props.iconLecture);}}>
-                    <ActionBackup />
-                </IconButton>
+            <Button icon='cloud_upload' className="upload-button"
+                    onClick={() => {that.props.onClick(that.props.iconLecture);}} />
             </div>
         );
     }
@@ -48,9 +52,7 @@ class DoneMark extends React.Component {
     render() {
         return (
             <div className="slides-status">
-                <IconButton tooltip="Slides have been uploaded">
-                    <ActionDone />
-                </IconButton>
+                <Button icon="done" />
             </div>
         );
     }
@@ -79,7 +81,7 @@ class UploadIconController extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {}
+        this.state = {};
     }
 
     componentDidMount() {
@@ -217,13 +219,20 @@ class LectureList extends React.Component {
             var lecture = that.props.lectures[lectureID];
             var month = that.calendar[lecture.month];
             return (
-                <li key={lecture.id}
+                <MenuItem key={lecture.id}
                     className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
                     <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
-                        Week {lecture.week}, {lecture.day}, {month}/{lecture.date}
+                        <div className="lecture-calendar">
+                            <div className="lecture-month">{month}</div>
+                            <div className="lecture-date">{lecture.date}</div>
+                        </div>
+                        <div className="lecture-info">
+                            <span className="lecture-num">Lecture {lecture.num}</span>
+                            <span className="lecture-week">Week {lecture.week}</span>
+                        </div>
                     </div>
                     <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
-                </li>
+                </MenuItem>
             );
         };
 
@@ -231,8 +240,8 @@ class LectureList extends React.Component {
         document.title = this.course.dept + ' ' + this.course.num + ' - Augcast';
 
         return (
-            <div>
-                <div className="nav">
+            <div className="sidebar">
+                <Drawer className="sidebar-drawer">
                     <div className="search-bar">
                         <div className="search-icon"><FA name='arrow-left' onClick={that.props.back}/></div>
                         <FormControl type="text"
@@ -241,11 +250,11 @@ class LectureList extends React.Component {
                                      className="search-box" />
                     </div>
                     <div className="lectures-wrapper">
-                        <ul className="lecture-list">
+                        <div className="lecture-list">
                             {that.props.navCourse.lectures.map(listItem)}
-                        </ul>
+                        </div>
                     </div>
-                </div>
+                </Drawer>
                 <UploadContainer lecture={this.state.upload} open={this.state.modal} close={this.closeModal}/>
             </div>
         );
