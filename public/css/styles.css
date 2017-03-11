@@ -20,6 +20,12 @@ html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
     width: 256px;
     float: left;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: default;
 }
 
 .sidebar-drawer {
@@ -202,13 +208,6 @@ li.course-item {
     background: darkgray;
     color: white;
     text-align: center;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-    cursor: default;
-
 }
 
 .lecture-list {
