@@ -58,6 +58,7 @@ html, body, .podcast-container, .pdf-view, .video-view {
     top: 0;
     margin: 0;
     position: fixed;
+    overflow: auto;
 }
 
 /* sidebar elements */
@@ -191,6 +192,12 @@ li.course-item {
     bottom: 0;
 }
 
+.week-separator {
+    background: darkgray;
+    color: white;
+    text-align: center;
+}
+
 .lecture-list {
     position: relative;
     padding: 0;
@@ -253,13 +260,6 @@ li.lecture-item {
 .lecture-day {
     display: table-cell;
     vertical-align: middle;
-}
-
-.lecture-week {
-    padding-left: 10px;
-    display: table-cell;
-    vertical-align: middle;
-    font-weight: 200;
 }
 
 .lecture-item .slides-status {
