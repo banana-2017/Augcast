@@ -2,6 +2,7 @@ import React from 'react';
 import { database } from './../../database/database_init';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import ElabRequest from './ElabRequest';
 
 const SKIP_VALUE = 10;
 
@@ -138,6 +139,10 @@ class VideoPlayer extends React.Component {
                         <br />
 
                         <h4 className="main__h2">Timestamp: {this.props.timestamp}</h4>
+                        <div>
+                            <ElabRequest timestamp={this.props.timestamp} />
+                        </div>
+
 
                     </div>
                 </div>
