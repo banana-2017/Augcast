@@ -17,6 +17,7 @@ import FA from 'react-fontawesome';
 import IconButton from 'material-ui/IconButton';
 // import Tooltip from 'react-toolbox/lib/tooltip';
 import {MenuItem} from 'react-toolbox/lib/menu';
+import SearchResultList from './SearchResultList';
 
 //import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
@@ -184,7 +185,8 @@ class LectureList extends React.Component {
             lectures: [],
             upload: undefined,
             modal: false,
-            visibleLectures: []
+            visibleLectures: [],
+            resultArray: []
         };
 
         // decide if week has changed in randering lecture list
@@ -324,6 +326,7 @@ class LectureList extends React.Component {
                         </div>
                         <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                     </MenuItem>
+                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} />
                 </div>
             );
         };
