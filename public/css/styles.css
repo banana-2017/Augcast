@@ -5,8 +5,12 @@ html, body, .podcast-container, .pdf-view, .video-view {
 
 /* login page animation */
 
-.login {
-    width: 320px;
+div.login {
+    width: 360px;
+    margin: 0 auto;
+}
+
+.input-email {
 }
 
 #app {
