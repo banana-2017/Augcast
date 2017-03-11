@@ -255,6 +255,16 @@ class LectureList extends React.Component {
 
         var fuse = new Fuse(this.state.lectures, options);
         var result = fuse.search(query);
+
+        let visibleLectures = [];
+        console.log (result);
+        for (var lecture in result) {
+            if (visibleLectures.indexOf(result[lecture].lectureId) < 0) {
+                visibleLectures.push (result[lecture].lectureId);
+            }
+        }
+
+        this.setState ({visibleLectures: visibleLectures});
         return result;
     }
 
