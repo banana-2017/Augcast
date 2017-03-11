@@ -157,6 +157,7 @@ class ElabRequest extends React.Component {
         //console.log('elaboration is :' + elaboration);
         var allRequests = this.allRequests;
         //console.log('allRequests is :' + allRequests);
+        var questions = allRequests[elaboration].content;
         var that = this;
 
         var contents = allRequests[elaboration].content;
