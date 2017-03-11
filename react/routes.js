@@ -11,7 +11,6 @@ import Sidebar from './components/Sidebar/Sidebar';
 import appReducers from './redux/reducers';
 import ElabRequest from './components/ElabRequest';
 
-
 // eslint-disable-next-line
 import React from 'react';      // used for jsx
 

@@ -33,12 +33,30 @@ class Home extends React.Component {
 
         return (
             <div>
+<<<<<<< HEAD
                 <SidebarContainer courseID={this.props.params.courseID}
                                   lectureNum={this.props.params.lectureNum}
                                   selectLecture={this.selectLecture} />
                 <div className="main">
                     {main}
                 </div>
+=======
+            <h1>Home</h1>
+            <Link to="/test">Open Sidebar (/test)</Link>
+            <br/>
+            <Link to="/podcastview">Open PodcastView (/podcastview)</Link>
+            <br/>
+            <Link to="/upload">Open Upload Page (/upload)</Link>
+            <br/>
+            <Link to="/pdf">Open PDF Display Page (/pdf)</Link>
+            <br/>
+            <Link to="/elab-request">Open Elab-Request Page</Link>
+            <div className="main">
+                <SidebarContainer courseID={this.props.params.courseID}
+                                  lectureNum={this.props.params.lectureNum}
+                                  selectLecture={this.selectLecture} />
+                {main}
+>>>>>>> 01d2b9f52136502bbc1012273e8b1a57458bb501
             </div>
         );
     }
