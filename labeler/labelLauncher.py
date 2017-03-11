@@ -29,3 +29,4 @@ if __name__ == '__main__':
     # Output json
     json_string = json.dumps(timemap,sort_keys=True, indent=4)
     print ('result' + '#' + courseID + '#' + lectureID + json_string)
+    sys.stdout.flush();

@@ -175,11 +175,13 @@ def generateTimestamp(video, filename, courseID, lectureID):
 
         # current progress
         print ('progress'+'#'+courseID+'#'+lectureID+'#'+str(round((index*100/length))))
+        sys.stdout.flush();
 
         if debug == True:
             print ("#################", index ,"##################")
             print ("current Timestamp")
             print (timestamp)
+            sys.stdout.flush();
 
     # closure
     cap.release()
@@ -187,31 +189,21 @@ def generateTimestamp(video, filename, courseID, lectureID):
     return timestamp
 
 def generateTimestampFromWeb(videoURL, pdfURL, courseID, lectureID):
-    opener = urllib.URLopener()
     media_name = "media.mp4"
     pdf_name = "slides.pdf"
-    '''
-    if not os.getcwd()[-7:] == 'labeler':
-        media_name = 'labeler/' + media_name
-        pdf_name = 'labeler/' + pdf_name
-    '''
-    sys.stderr.write("there")
+
+    print("at " + str(os.getcwd()));
+    sys.stdout.flush();
+
+    opener = urllib.URLopener()
     opener.retrieve(videoURL, media_name)
     opener.retrieve(pdfURL, pdf_name)
-    sys.stderr.write("here")
+    print("here")
+    sys.stdout.flush();
 
-    if os.getcwd()[-7:] == 'labeler':
-        sys.stderr.write("running")
-        timestamp = generateTimestamp("media.mp4", "slides.pdf", courseID, lectureID)
-    else:
-        print("what's happening")
-        timestamp = generateTimestamp(media_name, pdf_name, courseID, lectureID)
+    timestamp = generateTimestamp("media.mp4", "slides.pdf", courseID, lectureID)
 
-    if not os.getcwd()[-7:] == 'labeler':
-        os.remove(pdf_name)
-        os.remove(media_name)
-    else:
-        os.remove("media.mp4")
-        os.remove("slides.pdf")
+    os.remove("media.mp4")
+    os.remove("slides.pdf")
 
     return timestamp

@@ -33,16 +33,17 @@ router.route('/label').post(function(req, res) {
     // Configure the python script's arguments
     var options = {
         mode: 'text',
-        args: [req.body.media, req.body.pdf, req.body.courseID, req.body.lectureID]
+        args: [req.body.mediaURL, req.body.pdfURL, req.body.courseID, req.body.lectureID]
     };
 
     var pyshell = new PythonShell('./labeler/labelLauncher.py', options);
-    
+
     // Listen to script's stdout, which outputs percentage of labeling complete.
     // Whenever updated, upload progress to Firebase so frontend can display
     // the progress of the labeling.
     pyshell.on('message', function (pythonStdout) {
         // received a message sent from the Python script (a simple "print" statement)
+        console.log(pythonStdout);
         var split = pythonStdout.split('#');
         //console.log('Python stdout: ' + split);
 
