@@ -45,7 +45,7 @@ class ElabRequest extends React.Component {
     componentDidMount() {
         var that = this;
         database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture).once('value').then(function(snapshot) {
-            console.log('PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture);
+            console.log('PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture + '/' + that.props.timestamp);
             that.setState({allRequests: snapshot.val()});
             if(that.state.allRequests!=null){
                 that.setState({requestID: Object.keys(snapshot.val())});
@@ -62,7 +62,7 @@ class ElabRequest extends React.Component {
         this.setState({requestID: undefined});
         var that = this;
         database.ref('/elaborations/' + newProps.course + '/' + newProps.lecture).once('value').then(function(snapshot) {
-            console.log('NEW PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture);
+            console.log('NEW PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture + '/' + that.props.timestamp);
             that.setState({allRequests: snapshot.val()});
             if(that.state.allRequests!=null){
                 that.setState({requestID: Object.keys(snapshot.val())});
@@ -86,7 +86,7 @@ class ElabRequest extends React.Component {
         var that = this;
         console.log('FB Query called by ' + id);
         database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture).once('value').then(function(snapshot) {
-            console.log('PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture);
+            console.log('PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture + '/' + that.props.timestamp);
             that.setState({allRequests: snapshot.val()});
             if(that.state.allRequests!=null){
                 that.setState({requestID: Object.keys(snapshot.val())});
@@ -107,7 +107,7 @@ class ElabRequest extends React.Component {
         var updates = {};
         this.updatedID = parseInt(this.updatedID)+1;
         this.setState({updatedID: this.updatedID});
-        updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + (NAME + this.updatedID)] = postData;
+        updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + (NAME + this.updatedID)] = postData;
         database.ref().update(updates);
         //window.location.reload();
 
@@ -120,12 +120,12 @@ class ElabRequest extends React.Component {
         var that = this;
         var updates = {};
         console.log('inputtedID is :' + inputtedID);
-        var newPostKey = database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + inputtedID + '/' + 'answers').push().key;
+        var newPostKey = database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + that.props.timestamp + '/' + inputtedID + '/' + 'answers').push().key;
         var answerObj = {
             content: that.state.draft,
             a_username: this.props.username,
         };
-        updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
+        updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + that.props.timestamp + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
         //window.location.reload();
 
@@ -139,7 +139,7 @@ class ElabRequest extends React.Component {
         console.log('index in removeAnswer is :' + index);
         console.log('inputtedID in removeAnswer is :' + inputtedID);
         console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
-        database.ref('/elaborations/' + that.props.course + '/' + this.props.lecture + '/' + inputtedID + '/answers/' + index).remove();
+        database.ref('/elaborations/' + that.props.course + '/' + this.props.lecture + '/' + that.props.timestamp + '/' + inputtedID + '/answers/' + index).remove();
         //window.location.reload();
 
         // Firebase query once //
@@ -149,7 +149,7 @@ class ElabRequest extends React.Component {
     removeQuestion(inputtedID){
         var that = this;
         console.log('inputtedID in removeQuestion is :' + inputtedID);
-        database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture + '/' + inputtedID).remove();
+        database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture + '/' + that.props.timestamp + '/' + inputtedID).remove();
         window.location.reload();
     }
 
