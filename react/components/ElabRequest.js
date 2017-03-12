@@ -217,7 +217,7 @@ class ElabRequest extends React.Component {
                         endorsed={this.state.endorsed}
                         author={this.state.author}
                         handleSubmit={this.handleSubmit}
-                        dataRetrieved={this.state.dataRetrieved}/>;
+                        dataRetrieved={this.state.dataRetrieved}/>
           </div>
         );
     }

@@ -9,6 +9,7 @@ import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
 import CourseListContainer from './CourseList.js';
 import LectureListContainer from './LectureList.js';
+import { MenuItem } from 'react-toolbox/lib/menu';
 
 class Sidebar extends React.Component {
 
