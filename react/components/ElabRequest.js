@@ -3,7 +3,6 @@ import { database } from './../../database/database_init';
 import Question from './Question';
 import CurrentQuestion from './CurrentQuestion';
 import {connect} from 'react-redux';
-//import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
 ElabRequest
@@ -28,8 +27,6 @@ class ElabRequest extends React.Component {
             requestID: undefined
         };
         this.updatedID = 0;
-
-        console.log('INITIALIZING');
 
         // Bind all functions so they can refer to "this" correctly
         this.handleEdit = this.handleEdit.bind(this);
@@ -72,13 +69,13 @@ class ElabRequest extends React.Component {
     }
 
     // edit field for submitting ER
-    handleEdit(event) {
-        this.setState({content: event.target.value});
+    handleEdit(content) {
+        this.setState({content: content});
     }
 
     // edit answer for each ER
-    editAnswer(event){
-        this.setState({draft: event.target.value});
+    editAnswer(answer){
+        this.setState({draft: answer});
     }
 
     // Firebase query once //

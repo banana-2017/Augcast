@@ -470,7 +470,8 @@ li.match-result > span {
     border: 0;
     width: 100%;
     padding: 2px;
-    font-size: 12pt;
+    font-size: 10pt;
+    font-weight:100;
     font-weight: 100;
     vertical-align: middle;
 }
@@ -594,7 +595,7 @@ video {
     margin: 10px;
 }
 
-li.elab-post {
+li.elab-post, div.elab-post {
     width: 100%;
     display:block;
     height: auto;
@@ -621,6 +622,23 @@ button.elab-new {
     background: gray;
     color: white!important;
     width: 100%;
+}
+
+form.elab-ask-form {
+    margin: 10px 0;
+    width: 100%;
+}
+
+div.elab-input {
+    width: 100%;
+}
+
+div.elab-input > label {
+    font-weight: 200;
+}
+
+div.elab-answer-button {
+    text-align: right;
 }
 
 .video-control-button:hover {
