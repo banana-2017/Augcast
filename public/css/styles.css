@@ -6,11 +6,23 @@ html, body, .podcast-container, .pdf-view, .video-view {
 /* login page animation */
 
 div.login {
-    width: 360px;
+    position: relative;
     margin: 0 auto;
+    width: 480px;
+    top: 30%;
 }
 
-.input-email {
+div.login > div.login-title {
+    padding: 16px 16px 0;
+}
+
+div.login-input {
+    float: right;
+    padding: 0 16px;
+}
+
+button.login-button {
+    height: 54px;
 }
 
 #app {
@@ -53,6 +65,7 @@ div.login {
     display: table;
     text-align: center;
     font-size: 24pt;
+    font-weight: 200;
     color: lightgray;
     margin: auto 0;
     -webkit-user-select: none;
@@ -396,7 +409,6 @@ li.match-result > span {
     color: red;
 }
 
-
 /* pdf panel */
 
 .pdf-panel {
@@ -498,7 +510,7 @@ video {
 }
 
 /******************************************************************************/
-/*************************     LOGIN  ANIMATION     *************************/
+/*************************     LOGIN    ANIMATION     *************************/
 /******************************************************************************/
 
 div.login-wrapper{

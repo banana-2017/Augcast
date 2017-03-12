@@ -8,7 +8,7 @@ import {auth} from '../../database/database_init';
 // UI components
 import Input from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
-import { Card } from 'react-toolbox/lib/card';
+import { Card, CardTitle } from 'react-toolbox/lib/card';
 
 
 class Login extends React.Component {
@@ -60,9 +60,12 @@ class Login extends React.Component {
                     </ul>
                 </div>
                 <Card className="login">
-                    <Input className="input-email" type="email" label="Your UCSD Email" icon="email" value={this.state.email} onChange={this.emailChange} />
-                    <Input className="input-password" type="password" label="Password" icon="vpn_key" value={this.state.password} onChange={this.passwordChange} />
-                    <Button label="LOG IN" flat primary onClick={this.authenticate}/>
+                    <CardTitle className="login-title" title="Welcome to Augcast" />
+                    <div className="login-input">
+                        <Input className="email-input" type="email" label="Your UCSD Email" icon="email" value={this.state.email} onChange={this.emailChange} />
+                        <Input className="password-input" type="password" label="Password" icon="vpn_key" value={this.state.password} onChange={this.passwordChange} />
+                    </div>
+                    <Button className="login-button" label="LOG IN" flat primary onClick={this.authenticate}/>
                 </Card>
             </div>
         );
