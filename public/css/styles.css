@@ -618,6 +618,19 @@ li.elab-post, div.elab-post {
     font-style: italic;
 }
 
+.elab-delete {
+    color: lightgray;
+    font-size: 8pt;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.elab-delete:hover {
+    color: gray;
+    text-decoration: none;
+}
+
+
 button.elab-new {
     background: gray;
     color: white!important;
