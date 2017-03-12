@@ -2,13 +2,13 @@ import React from 'react';
 import { database } from './../../database/database_init';
 import Question from './Question';
 import CurrentQuestion from './CurrentQuestion';
+import {connect} from 'react-redux';
 //import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
 ElabRequest
 */
 const NAME = 'elaboration_id_';
-var user = 'Kiki';
 
 class ElabRequest extends React.Component {
     constructor(props) {
@@ -105,7 +105,7 @@ class ElabRequest extends React.Component {
         var postData = {
             content:this.state.content,
             endorsed:this.state.endorsed,
-            author:user,
+            author:this.props.username,
         };
         var updates = {};
         this.updatedID = parseInt(this.updatedID)+1;
@@ -126,7 +126,7 @@ class ElabRequest extends React.Component {
         var newPostKey = database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + inputtedID + '/' + 'answers').push().key;
         var answerObj = {
             content: that.state.draft,
-            a_username: user,
+            a_username: this.props.username,
         };
         updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
@@ -198,7 +198,7 @@ class ElabRequest extends React.Component {
             <div key={elaboration}>
               <CurrentQuestion elaboration={elaboration} question={questions}
               answers={answers2} answer_owner={answer_owner} parts={parts} keys={keys}
-              removeAnswer={this.removeAnswer} removeQuestion={this.removeQuestion} submitAnswer={this.submitAnswer} editAnswer={this.editAnswer} question_owner={question_owner} user={user} course={this.props.course} lecture={this.props.lecture}/>
+              removeAnswer={this.removeAnswer} removeQuestion={this.removeQuestion} submitAnswer={this.submitAnswer} editAnswer={this.editAnswer} question_owner={question_owner} user={this.props.username} course={this.props.course} lecture={this.props.lecture}/>
             </div>
         );
     }
@@ -226,4 +226,12 @@ class ElabRequest extends React.Component {
     }
 }
 
-export default ElabRequest;
+function mapStateToProps (state) {
+    return {
+        username: state.username,
+        currentCourse: state.currentCourse
+    };
+}
+
+const ElabRequestContainer = connect(mapStateToProps)(ElabRequest);
+export default ElabRequestContainer;

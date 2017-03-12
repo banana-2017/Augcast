@@ -1,6 +1,6 @@
 import React from 'react';
 
-var user = 'Kiki';
+var user = 'Alan';
 
 class CurrentQuestion extends React.Component {
     constructor(props) {
@@ -41,7 +41,7 @@ class CurrentQuestion extends React.Component {
             <div className="elaboration-oneAnswer" key={index}>
                 <li className="elaboration-oneAnswer-text">{answerText} ----- Posted By {owner}</li>
                 <form>
-                    {owner==user&&
+                    {owner==this.props.user&&
                     <a style={buttonStyle} onClick={() => {this.props.removeAnswer(inputtedID, index);}}>
                         Delete
                     </a>}
@@ -81,7 +81,6 @@ class CurrentQuestion extends React.Component {
 
                         <div className="elaboration-new-answer-button">
                             <a style={buttonStyle} onClick={() => {this.props.submitAnswer(this.props.elaboration);
-                                            this.toggleExpand();
                             }}>
                                 Submit
                             </a>
