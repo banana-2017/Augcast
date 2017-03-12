@@ -3,6 +3,11 @@ html, body, .podcast-container, .pdf-view, .video-view {
     font-family: Roboto, sans-serif;
 }
 
+hr {
+    border-top: 1px solid lightgray;
+    margin-bottom: 0;
+}
+
 /* login page animation */
 
 div.login {
@@ -485,18 +490,13 @@ li.match-result > span {
     text-align: center;
     position: relative;
     background: none;
-    /* white-space: nowrap; */
-    /* width: 100%; */
-    /* display: flex; */
     overflow: hidden;
     height: 100%;
     vertical-align: top;
     text-align: center;
-    /* float: left; */
 }
 
 .video-container {
-    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     background: black;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
 }
@@ -528,23 +528,25 @@ video {
 }
 
 .video-button-group-container {
-    margin: 0 auto;
-    max-width: 300px;
-    position: absolute;
-    display: none;
+    position: relative;
+    margin-bottom: 5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .video-button-group {
-    display: inline;
     margin: 0 auto;
     max-width: 300px;
     color: white;
 }
 
 .video-control-button {
-    margin: 4px;
-    display: inline;
+    margin: 8px;
     cursor: pointer;
+    display: inline;
 }
 
 /***************************   elab  requests  ********************************/
@@ -554,7 +556,6 @@ video {
     height: 100%;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     padding: 16px;
-    display: flex;
     flex-direction: column;
 }
 
@@ -583,13 +584,56 @@ video {
 .elab-list {
     width: 100%;
     text-align: left;
+    font-weight: 200;
+}
+
+.elab-empty {
+    text-align: center;
+    font-style: italic;
+    color: lightgray;
+    margin: 10px;
+}
+
+li.elab-post {
+    width: 100%;
+    display:block;
+    height: auto;
+    padding: 8px;
+    font-size: 10pt;
+    border-bottom: thin solid lightgray;
+}
+
+.elab-post > span {
+    display: none;
+}
+
+.elab-question {
+    width: 100%;
+    float: left;
+}
+
+.elab-question-author {
+    float: right;
+    font-style: italic;
+}
+
+button.elab-new {
+    background: gray;
+    color: white!important;
+    width: 100%;
 }
 
 .video-control-button:hover {
-    color: green;
+    color: gray;
 }
 
 span.current-speed {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: default;
     margin: 4px;
 }
 

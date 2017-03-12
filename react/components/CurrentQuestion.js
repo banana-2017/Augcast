@@ -1,4 +1,5 @@
 import React from 'react';
+import {MenuItem} from 'react-toolbox/lib/menu';
 
 class CurrentQuestion extends React.Component {
     constructor(props) {
@@ -91,11 +92,9 @@ class CurrentQuestion extends React.Component {
             );
         } else {
             return (
-                <div className="elaboration-question" style={containerStyle}>
-                    <p className="elaboration-question-text" key={this.props.parts} onClick={this.toggleExpand}>
-                        {this.props.question} (asked by {this.props.question_owner}) <br/>
-                    </p>
-                </div>
+                <MenuItem className="elab-post" style={containerStyle} onClick={this.toggleExpand} key={this.props.parts}>
+                    <div className="elab-question">{this.props.question}</div><div className="elab-question-author">{this.props.question_owner}</div>
+                </MenuItem>
             );
         }
     }

@@ -1,5 +1,7 @@
 import React from 'react';
-// import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
+import { Button } from 'react-toolbox/lib/button';
+import Tooltip from 'react-toolbox/lib/tooltip';
+const TooltipButton = Tooltip(Button);
 
 /**
  ElabRequest
@@ -52,12 +54,14 @@ class Question extends React.Component {
     }
 
     newRequest() {
-        var containerStyle = {backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
-            width: '800px', fontSize: '25px'};
+        var containerStyle = {};
+        // var containerStyle = {backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
+        //     width: '800px', fontSize: '25px'};
         if (this.state.editing) {
-            var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
-                margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
-                fontWeight: '300', fontSize: '22px', display: 'inline-block'};
+            var buttonStyle = {};
+            // var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
+            //     margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
+            //     fontWeight: '300', fontSize: '22px', display: 'inline-block'};
 
             return(
                 <div className="request-new" style={containerStyle}>
@@ -85,18 +89,16 @@ class Question extends React.Component {
         } else {
             var textStyle;
             if(this.state.hover) {
-                textStyle = {backgroundColor: '#efb430', borderColor: '#efb430', borderStyle: 'solid',
-                    width: '800px', fontSize: '25px', color: 'white'};
+                textStyle = {};
+                // textStyle = {backgroundColor: '#efb430', borderColor: '#efb430', borderStyle: 'solid',
+                //     width: '800px', fontSize: '25px', color: 'white'};
             } else {
                 textStyle = containerStyle;
             }
             return (
-                <div className="request-new" style={textStyle}>
-                    <text onClick={this.toggleEdit}
-                          className="request-list-answer" onMouseOver={this.toggleHover} onMouseLeave={this.toggleHover}>
-                        New Elaboration Request
-                    </text>
-                </div>
+                <Button className="elab-new" onClick={this.toggleEdit}>
+                        Ask a question
+                </Button>
             );
         }
     }

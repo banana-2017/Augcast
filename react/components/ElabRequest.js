@@ -153,9 +153,7 @@ class ElabRequest extends React.Component {
 
     // Display ER to user
     displayQuestion(elaboration) {
-        //console.log('elaboration is :' + elaboration);
         var allRequests = this.state.allRequests;
-        //console.log('allRequests is :' + allRequests);
         var that = this;
 
         var questions = allRequests[elaboration].content;
@@ -202,7 +200,7 @@ class ElabRequest extends React.Component {
         return (
           <div className="elab-container">
               <div className="elab-list">
-                  { this.state.dataRetrieved && this.state.requestID!=undefined ? this.state.requestID.map(this.displayQuestion) : <p>Ask the first question</p> }
+                  { this.state.dataRetrieved && this.state.requestID!=undefined ? this.state.requestID.map(this.displayQuestion) : <div className="elab-empty">No questions yet</div> }
               </div>
               <Question content={this.state.content}
                         handleEdit={this.handleEdit}
