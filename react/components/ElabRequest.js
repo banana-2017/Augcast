@@ -208,15 +208,16 @@ class ElabRequest extends React.Component {
 
         return (
           <div className="elab-container">
-              <div style={{
-                  textAlign: 'center',
-                  margin: '0 auto',
-              }}>
-              <h2>All Questions & Answers</h2>
-              {this.state.dataRetrieved && this.state.requestID!=undefined ? this.state.requestID.map(this.displayQuestion) : <p> No Question & Answer Posted </p> }
+              <div>
+                  <h2>All Questions & Answers</h2>
+                  {this.state.dataRetrieved && this.state.requestID!=undefined ? this.state.requestID.map(this.displayQuestion) : <p> No Question & Answer Posted </p> }
               </div>
-              <Question content={this.state.content} handleEdit={this.handleEdit} endorsed={this.state.endorsed}
-              author={this.state.author} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
+              <Question content={this.state.content}
+                        handleEdit={this.handleEdit}
+                        endorsed={this.state.endorsed}
+                        author={this.state.author}
+                        handleSubmit={this.handleSubmit}
+                        dataRetrieved={this.state.dataRetrieved}/>;
           </div>
         );
     }
