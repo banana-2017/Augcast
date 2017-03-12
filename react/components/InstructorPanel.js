@@ -25,7 +25,10 @@ class InstructorPanel extends React.Component {
             tabIndex:1,
         };
 
+        console.log("Props to InstructorPanel: ");
         console.log(this.props.username);
+        console.log("--------------------")
+
         this.instructorCourses = [];
 
         // query the database to get instructor courses

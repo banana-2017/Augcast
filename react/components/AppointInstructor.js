@@ -28,10 +28,10 @@ class AppointInstructor extends React.Component {
         // Indicate the props that this class should have
         console.log("Props to AppointInstructor: ");
         console.log("Course: ", this.props.course);
+        console.log("--------------------")
 
         // first time query database
         this.update();
-
 
         // Bind the function
         this.addInstructor = this.addInstructor.bind(this);
@@ -164,12 +164,21 @@ class AppointInstructor extends React.Component {
     render () {
         var that = this;
 
+        let handleSnackHiding = () => {
+            that.setState({snackbarActive: false});
+        }
+
+        let handleDialogHiding = () => {
+            that.setState({dialogActive: false});
+        }
+
+        let handleRemove = () => {
+            that.removeInstructor(that.state.instructor);
+            that.setState({dialogActive: !that.state.dialogActive});
+        }
+
 
         var studentItem = function(student) {
-            let handleHiding = () => {
-                that.setState({snackbarActive: false});
-            }
-
             return (
                 <div key={student.username}>
                     <ListItem
@@ -181,32 +190,13 @@ class AppointInstructor extends React.Component {
                             that.setState({snackbarActive: true, student: student});
                             that.addInstructor(student);
                         }}
-                        rightIcon="person_add"
-                    />
+                        rightIcon="person_add"/>
 
-                    <Snackbar
-                        action='Dismiss'
-                        active={that.state.snackbarActive}
-                        label={"You have added " + that.state.student.username + " to instructor."}
-                        timeout={2000}
-                        onClick={handleHiding}
-                        onTimeout={handleHiding}
-                        type='cancel'
-                    />
                 </div>
             )
         }
 
         var instructorItem = function(instructor) {
-            let handleHiding = () => {
-                that.setState({dialogActive: false});
-            }
-
-            let handleRemove = () => {
-                that.removeInstructor(that.state.instructor);
-                that.setState({dialogActive: !that.state.dialogActive});
-            }
-
             return (
                 <div key={instructor.username}>
                     <ListItem
@@ -218,33 +208,47 @@ class AppointInstructor extends React.Component {
                         }}
                         legend={instructor.email}/>
 
-                    <Dialog
-                        actions={[
-                            { label: "No", onClick: handleHiding },
-                            { label: "Yes", onClick: handleRemove }
-                        ]}
-                        active={that.state.dialogActive}
-                        onEscKeyDown={handleHiding}
-                        onOverlayClick={handleHiding}
-                        title="Are you sure?">
-
-                        <p>Are you sure you want to remove {that.state.instructor.username}</p>
-                    </Dialog>
                 </div>
 
             )
         }
 
         return (
+
             <div>
                 <List>
                     <ListSubHeader caption="Instructors"/>
                     {this.state.instructors.map(instructorItem)}
+
                 </List>
                 <List>
                     <ListSubHeader caption="Students"/>
                     {this.state.students.map(studentItem)}
+
                 </List>
+
+                <Dialog
+                    actions={[
+                        { label: "No", onClick: handleDialogHiding },
+                        { label: "Yes", onClick: handleRemove }
+                    ]}
+                    active={that.state.dialogActive}
+                    onEscKeyDown={handleDialogHiding}
+                    onOverlayClick={handleDialogHiding}
+                    title="Are you sure?">
+
+                    <p>Are you sure you want to remove {that.state.instructor.username}</p>
+                </Dialog>
+
+                <Snackbar
+                    action='Dismiss'
+                    active={that.state.snackbarActive}
+                    label={"You have added " + that.state.student.username + " to instructor."}
+                    timeout={2000}
+                    onClick={handleSnackHiding}
+                    onTimeout={handleSnackHiding}
+                    type='cancel'/>
+
             </div>
 
         )

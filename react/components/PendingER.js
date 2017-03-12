@@ -16,6 +16,8 @@ class PendingER extends React.Component {
 
         // Props
         console.log("Props to PendingER: ");
+        console.log(this.props.course);
+        console.log("--------------------")
 
         // Instance Variable
         this.pendingERs = [];
