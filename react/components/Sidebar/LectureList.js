@@ -249,11 +249,9 @@ class LectureList extends React.Component {
             return;
         }
         var options = {
+            include: ['matches'],
             shouldSort: true,
             threshold: 0.6,
-            location: 0,
-            distance: 70,
-            maxPatternLength: 32,
             minMatchCharLength: 1,
             keys: ['contents']
         };
@@ -263,14 +261,19 @@ class LectureList extends React.Component {
 
         let visibleLectures = [];
         let resultArray = {};
+
+        // for every result
         for (var lecture in result) {
-            if (visibleLectures.indexOf(result[lecture].lectureId) < 0) {
-                visibleLectures.push (result[lecture].lectureId);
-                resultArray[result[lecture].lectureId] = [];
+
+            let match = result[lecture];
+            // if a new lecture, push ro visiblelectures and create a new object in resultArray
+            if (visibleLectures.indexOf(result[lecture].item.lectureId) < 0) {
+                visibleLectures.push (result[lecture].item.lectureId);
+                resultArray[result[lecture].item.lectureId] = [];
             }
 
-            // storing the search results in an object
-            resultArray[result[lecture].lectureId].push (
+            // storing the search results(object and matches) in an object
+            resultArray[result[lecture].item.lectureId].push (
                 result[lecture]
             );
         }
