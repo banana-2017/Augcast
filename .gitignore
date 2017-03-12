@@ -15,3 +15,4 @@ script/*.json
 *.pem
 *.mp4
 *.pdf
+utility/input.json
