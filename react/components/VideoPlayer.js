@@ -2,6 +2,7 @@ import React from 'react';
 import { database } from './../../database/database_init';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import ElabRequest from './ElabRequest';
 
 // ui components
 import FA from 'react-fontawesome';
@@ -130,7 +131,8 @@ class VideoPlayer extends React.Component {
 
                     </div>
                 </div>
-
+                <ElabRequest timestamp={this.props.timestamp} lecture={this.props.currentLecture.id}
+                course={this.props.currentCourse.id} />
             </div>
         );
     }
