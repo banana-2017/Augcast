@@ -13,9 +13,13 @@ class SearchResultList extends React.Component {
         var listItem = function (result) {
 
             let {slide, contents} = result;
-            let {query} = that.props;
+            let {lecture, query} = that.props;
+            let formattedString = contents.toLowerCase().replace(/’|'| |_/g,'');
+            query = query.toLowerCase().replace(/’|'| |_/g,'');
 
-            let startIndex = contents.toLowerCase().indexOf (query.toLowerCase());
+            let startIndex = formattedString.indexOf (query);
+            console.log (startIndex);
+            //console.log (contents.toLowerCase());
             let queryLength = query.length;
 
             // no exact match
@@ -30,7 +34,7 @@ class SearchResultList extends React.Component {
             let suffix = contents.substring (endIndex);
 
             return (
-                <div>
+                <div key={(lecture+slide)}>
                     <span>{slide}</span>
                     <br/>
                     <span>{prefix}<strong>{queryMatch}</strong>{suffix}</span>

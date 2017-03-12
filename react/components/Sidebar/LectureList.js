@@ -94,7 +94,6 @@ class UploadIconController extends React.Component {
 
         if (course != undefined && lecture != undefined) {
 
-            // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
             var ref = database.ref('/lectures/' + course.id + '/' + lecture.id);
 
             // Listen to changes at ref's location in db
@@ -110,7 +109,6 @@ class UploadIconController extends React.Component {
             });
 
         }
-        console.log('controller mounted');
     }
 
     componentWillReceiveProps(newProps) {
@@ -215,7 +213,6 @@ class LectureList extends React.Component {
         var that = this;
 
         this.setState ({visibleLectures: this.props.navCourse.lectures});
-        console.log (this.state.visibleLectures);
 
         // getting array of lectures of this course
         database.ref('/lectures/' + course).once('value').then(function(snapshot) {
@@ -240,7 +237,6 @@ class LectureList extends React.Component {
     }
 
     selectLecture(lecture) {
-        console.log('selecting lecture');
         this.props.displayLecture(this.course, lecture);
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
     }
@@ -267,7 +263,6 @@ class LectureList extends React.Component {
 
         let visibleLectures = [];
         let resultArray = {};
-        console.log (result);
         for (var lecture in result) {
             if (visibleLectures.indexOf(result[lecture].lectureId) < 0) {
                 visibleLectures.push (result[lecture].lectureId);
@@ -290,7 +285,6 @@ class LectureList extends React.Component {
     }
 
     openModal(lecture) {
-        console.log(lecture);
         this.setState({upload: lecture, modal: true});
     }
 
@@ -307,7 +301,6 @@ class LectureList extends React.Component {
             var month = that.calendar[lecture.month];
 
             var weekSeparator = null;
-            console.log (that.week + ' ' + lecture.week);
             if (that.week != lecture.week) {
                 that.week = lecture.week;
                 weekSeparator = (<div className="week-separator">Week {lecture.week}</div>);
@@ -328,7 +321,7 @@ class LectureList extends React.Component {
                         </div>
                         <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                     </MenuItem>
-                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query}/>
+                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} lecture={lecture}/>
                 </div>
             );
         };
