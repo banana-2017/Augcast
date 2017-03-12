@@ -1,5 +1,6 @@
 import React from 'react';
 import { database } from './../../database/database_init';
+import { FormControl } from 'react-bootstrap';
 import Fuse from "fuse.js";
 
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
@@ -22,6 +23,7 @@ class AppointInstructor extends React.Component {
 
             dialogActive: false,
             snackbarActive: false
+
 
         };
 
@@ -100,6 +102,7 @@ class AppointInstructor extends React.Component {
                 }
             }
 
+            that.setState({searchResult: []});
             that.update();
         });
     }
@@ -157,6 +160,7 @@ class AppointInstructor extends React.Component {
             }
         }
 
+        console.log(searchResults);
         // Set the search result to be the state so that the component will refresh when the data changes
         this.setState({searchResult: searchResults});
     }
@@ -216,6 +220,10 @@ class AppointInstructor extends React.Component {
         return (
 
             <div>
+                <FormControl type="text"
+                             placeholder="Search Users"
+                             onChange={this.searchInput}
+                             />
                 <List>
                     <ListSubHeader caption="Instructors"/>
                     {this.state.instructors.map(instructorItem)}
@@ -223,7 +231,7 @@ class AppointInstructor extends React.Component {
                 </List>
                 <List>
                     <ListSubHeader caption="Students"/>
-                    {this.state.students.map(studentItem)}
+                    {this.state.searchResult.map(studentItem)}
 
                 </List>
 
