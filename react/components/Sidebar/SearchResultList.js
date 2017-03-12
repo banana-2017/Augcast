@@ -7,7 +7,6 @@ class SearchResultList extends React.Component {
     }
 
     render () {
-
         var {resultList} = this.props;
         var that = this;
         var listItem = function (result) {
