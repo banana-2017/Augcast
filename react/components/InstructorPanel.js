@@ -68,7 +68,7 @@ class InstructorPanel extends React.Component {
         }
 
         return (
-            <Layout>
+            <Layout className="instructor-panel">
                 <NavDrawer active={this.state.drawerActive}
                            onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
                            permanentAt='xxxl'
