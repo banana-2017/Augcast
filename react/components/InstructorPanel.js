@@ -13,7 +13,8 @@ class InstructorPanel extends React.Component {
     constructor(props) {
         super(props);
 
-        this.testUser = "l1qiao";
+        this.testUser = "zhq005";
+	//this.testUser = this.props.username;
 
         this.state = {
             // States about data
@@ -68,8 +69,9 @@ class InstructorPanel extends React.Component {
         }
 
         return (
-            <Layout>
-                <NavDrawer onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
+            <Layout className="instructor-panel">
+                <NavDrawer active={this.state.drawerActive}
+                           onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
                            permanentAt='xxxl'
                            pinned={true}
                            scrollY={true}>
@@ -89,7 +91,7 @@ class InstructorPanel extends React.Component {
                                     username={this.testUser}/> :
                                 <div className="blank">Select a Course to start</div>}
                         </Tab>
-                        <Tab label='Pending ERs'>
+                        <Tab label='Pending Questions'>
                             {typeof this.state.currentCourse != 'undefined' ?
                                 <PendingER course={this.state.currentCourse}/> :
                                 <div className="blank">Select a Course to start</div>}

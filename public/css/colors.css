@@ -1,0 +1,74 @@
+:root {
+    --list-item-background: #faf3e8;
+    --list-selected-background: #f1ca8c;
+    --search-bar-text: #faf3e8;
+}
+body {
+    color: #483401;
+}
+
+.search-box {
+    background: #483401;
+}
+
+.search-icon {
+    color: var(--search-bar-text);
+}
+
+/* Chrome/Opera/Safari */
+.search-box::-webkit-input-placeholder {
+    color: var(--search-bar-text);
+}
+/* Firefox 19+ */
+.search-box::-moz-placeholder {
+    color: var(--search-bar-text);
+}
+/* IE 10+ */
+.search-box:-ms-input-placeholder {
+    color: var(--search-bar-text);
+}
+/* Firefox 18- */
+.search-box:-moz-placeholder {
+    color: var(--search-bar-text);
+}
+
+li.course-item {
+    background: var(--list-item-background);
+}
+
+.course-item.selected {
+    background: var(--list-selected-background)
+}
+
+.course-item.selected:hover {
+    background: #f1ca8c;
+}
+
+.pin-button .fa.pinned {
+    color: #fed602;
+}
+
+.pin-button .fa:hover {
+    color: #fed602;
+}
+
+.slides-status button {
+    color: #483401 !important;
+}
+
+li.lecture-item {
+    background: var(--list-item-background);
+}
+
+.lecture-item.selected {
+    background: var(--list-selected-background);
+}
+
+.lecture-item.selected:hover {
+    background: #f1ca8c;
+}
+
+.week-separator {
+    background: rgba(124, 91, 28, 0.74);
+    color: #faf3e8;
+}

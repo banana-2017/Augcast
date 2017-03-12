@@ -3,13 +3,35 @@ html, body, .podcast-container, .pdf-view, .video-view {
     font-family: Roboto, sans-serif;
 }
 
-/* login page animation */
-
-.login {
-    width: 320px;
+hr {
+    border-top: 1px solid lightgray;
+    margin-bottom: 0;
 }
 
-.app {
+/* login page animation */
+
+div.login {
+    position: relative;
+    margin: 0 auto;
+    width: 480px;
+    top: 30%;
+}
+
+div.login > div.login-title {
+    padding: 16px 16px 0;
+}
+
+div.login-input {
+    float: right;
+    padding: 0 16px;
+}
+
+button.login-button {
+    height: 54px;
+}
+
+#app {
+    position: fixed;
     height: 100%;
     width: 100%;
     display: inline;
@@ -20,17 +42,32 @@ html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
     width: 256px;
     float: left;
+    margin-right: 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: default;
 }
 
 .sidebar-drawer {
     height: 100%;
 }
 
+div.instructor-panel {
+    background: white;
+}
+
+div.instructor-panel .blank {
+    display: none;
+}
+
 .main {
-    position: relative;
+    position: fixed;
     height: 100%;
-    display: table;
-    float: right;
+    display: inline-block;
+    right: 0;
     width: calc(100% - 256px);
     width: -moz-calc(100% - 256px);
     width: -webkit-calc(100% - 256px);
@@ -39,10 +76,24 @@ html, body, .podcast-container, .pdf-view, .video-view {
 .blank {
     height: 100%;
     width: 100%;
-    display: table-cell;
-    vertical-align: middle;
+    display: table;
     text-align: center;
     font-size: 24pt;
+    font-weight: 200;
+    color: white;
+    margin: auto 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: default;
+    background: white;
+}
+
+.blank > p {
+    display: table-cell;
+    vertical-align: middle;
     color: lightgray;
 }
 
@@ -52,12 +103,13 @@ html, body, .podcast-container, .pdf-view, .video-view {
 }
 
 [data-reactroot] {
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-    margin: 0;
-    position: fixed;
+    /* height: 100%; */
+    /* width: 100%; */
+    /* left: 0; */
+    /* top: 0; */
+    /* margin: 0; */
+    /* position: fixed; */
+    /* overflow: auto; */
 }
 
 /* sidebar elements */
@@ -170,7 +222,10 @@ li.course-item {
 }
 
 .course-section {
-    padding-left: 8px;
+    padding-left: 6px;
+    font-size: 16pt;
+    font-weight:100;
+    color: rgba(0,0,0,0.4);
 }
 
 .course-prof {
@@ -189,6 +244,12 @@ li.course-item {
     width: inherit;
     display: block;
     bottom: 0;
+}
+
+.week-separator {
+    background: darkgray;
+    color: white;
+    text-align: center;
 }
 
 .lecture-list {
@@ -216,6 +277,7 @@ li.lecture-item {
     float: left;
     position: relative;
     height: 100%;
+    width: 100%;
     font-size:14pt;
     padding: 8px 0 8px 0;
 }
@@ -253,13 +315,6 @@ li.lecture-item {
 .lecture-day {
     display: table-cell;
     vertical-align: middle;
-}
-
-.lecture-week {
-    padding-left: 10px;
-    display: table-cell;
-    vertical-align: middle;
-    font-weight: 200;
 }
 
 .lecture-item .slides-status {
@@ -336,13 +391,51 @@ li.lecture-item {
 }
 
 .content-panel {
+    padding: 0 10px;
     width: 100%;
     height: 100%;
-    position: fixed;
     left: 256px;
     top: 0;
     display: inline-block;
     vertical-align: top;
+    background: darkgray;
+}
+
+
+/******************************************************************************/
+/*************************    SLIDE SEARCH RESULTS    *************************/
+/******************************************************************************/
+
+li.match-result {
+    border-bottom: thin solid lightgray;
+    text-align: left;
+    padding: 16px 16px 24px 16px;
+    height: auto;
+}
+
+li.match-result > div {
+    font-size: 8pt;
+    text-align: top;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+li.match-result > span {
+    display: none;
+}
+
+.match-slide {
+    font-size: 6pt;
+    position: absolute;
+    right: 8px;
+    bottom: 4px;
+    display: block;
+    color: gray;
+}
+
+.match-highlight {
+    font-weight: bold;
+    color: red;
 }
 
 /* pdf panel */
@@ -350,17 +443,22 @@ li.lecture-item {
 .pdf-panel {
     position: relative;
     height: 100%;
+    width: 25%;
     top: 0;
-    background: darkgray;
     display: inline-block;
-    overflow: auto;
     vertical-align: top;
     float: left;
+}
+
+.pdf-pages {
+    height: 100%;
+    overflow: scroll;
 }
 
 .pdf-page {
     position: relative;
     margin: 10px;
+    margin-left: 0;
     cursor: pointer;
     display: table;
     text-align: center;
@@ -377,9 +475,10 @@ li.lecture-item {
     color: white;
     border: 0;
     width: 100%;
-    margin: 0 0 5px 0;
     padding: 2px;
-    font-size: 12pt;
+    font-size: 10pt;
+    font-weight:100;
+    font-weight: 100;
     vertical-align: middle;
 }
 
@@ -389,26 +488,41 @@ li.lecture-item {
 }
 
 .pdf-page canvas {
+    width: 100%;
+    max-width: 100%;
     position: relative;
 }
 
 .video-panel {
     text-align: center;
     position: relative;
-    /* white-space: nowrap; */
-    /* width: 100%; */
-    /* display: inline-block; */
+    background: none;
     overflow: hidden;
-    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     height: 100%;
     vertical-align: top;
     text-align: center;
-    /* float: left; */
+}
+
+.video-container {
+    background: black;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
 }
 
 .video-wrapper {
-    text-align: center;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.video-title {
+    margin: 0;
+}
+
+video {
+    width: 100%;
+    max-width: 75%;
+    height: auto;
+    margin: 0 auto;
 }
 
 .loadingSideBar {
@@ -420,26 +534,156 @@ li.lecture-item {
     margin:-25px 0 -50px;
 }
 
-.video-player {
-    margin: 0 auto;
-}
-
 .video-button-group-container {
-    margin: 0 auto;
-    max-width: 300px;
+    position: relative;
+    margin-bottom: 5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .video-button-group {
     margin: 0 auto;
     max-width: 300px;
+    color: white;
 }
 
-/***************************  LOGIN ANIMATION  ********************************/
+.video-control-button {
+    margin: 8px;
+    cursor: pointer;
+    display: inline;
+}
+
+/***************************   elab  requests  ********************************/
+.info-container {
+    background: white;
+    margin-top: 10px;
+    height: 100%;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
+    padding: 16px;
+    flex-direction: column;
+}
+
+.info-meta {
+    text-align: left;
+}
+
+.info-lecture {
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16pt;
+    font-weight: 200;
+}
+
+.info-date {
+    color: rgba(0,0,0,0.5);
+}
+
+.elab-container {
+    height: 100%;
+    max-height: 100%;
+    bottom: 0px;
+}
+
+.elab-list {
+    width: 100%;
+    text-align: left;
+    font-weight: 200;
+}
+
+.elab-empty {
+    text-align: center;
+    font-style: italic;
+    color: lightgray;
+    margin: 10px;
+}
+
+li.elab-post, div.elab-post {
+    width: 100%;
+    display:block;
+    height: auto;
+    padding: 8px;
+    font-size: 10pt;
+    border-bottom: thin solid lightgray;
+}
+
+.elab-post > span {
+    display: none;
+}
+
+.elab-question {
+    width: 100%;
+    float: left;
+}
+
+.elab-question-author {
+    float: right;
+    font-style: italic;
+}
+
+.elab-delete {
+    color: lightgray;
+    font-size: 8pt;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.elab-delete:hover {
+    color: gray;
+    text-decoration: none;
+}
+
+
+button.elab-new {
+    background: gray;
+    color: white!important;
+    width: 100%;
+}
+
+form.elab-ask-form {
+    margin: 10px 0;
+    width: 100%;
+}
+
+div.elab-input {
+    width: 100%;
+}
+
+div.elab-input > label {
+    font-weight: 200;
+}
+
+div.elab-answer-button {
+    text-align: right;
+}
+
+.video-control-button:hover {
+    color: gray;
+}
+
+span.current-speed {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: default;
+    margin: 4px;
+}
+
+/******************************************************************************/
+/*************************     LOGIN    ANIMATION     *************************/
+/******************************************************************************/
 
 div.login-wrapper{
     background: #252525;
+    height: 100%;
+    width: 100%;
+    position: fixed;
 }
-
 .animateme {
     position: fixed;
     top: 0px;
@@ -449,7 +693,6 @@ div.login-wrapper{
     overflow: hidden;
     z-index: -1;
 }
-
 .bg-bubbles {
     position: absolute;
     top: 0;
@@ -472,7 +715,6 @@ div.login-wrapper{
     transition-timing-function: linear;
     opacity:0;
 }
-
 .bg-bubbles li:nth-child(1) {
     left: 3%;
     border-radius:50em;
@@ -571,7 +813,6 @@ div.login-wrapper{
     background:transparent;
     border:4px solid #353535;
 }
-
 .bg-bubbles li:nth-child(13) {
     left: 65%;
     width: 100px;
@@ -580,7 +821,6 @@ div.login-wrapper{
     animation-delay: 8s;
     border-radius:50em;
 }
-
 @-webkit-keyframes square {
     0% {
         -webkit-transform: translateY(0);
@@ -611,4 +851,3 @@ div.login-wrapper{
         opacity:0;
     }
 }
-
