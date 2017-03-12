@@ -89,7 +89,7 @@ class InstructorPanel extends React.Component {
                                 <AppointInstructor course={this.state.currentCourse}/> :
                                 <div className="blank">Select a Course to start</div>}
                         </Tab>
-                        <Tab label='Pending ERs'>
+                        <Tab label='Pending Questions'>
                             {typeof this.state.currentCourse != 'undefined' ?
                                 <PendingER course={this.state.currentCourse}/> :
                                 <div className="blank">Select a Course to start</div>}
