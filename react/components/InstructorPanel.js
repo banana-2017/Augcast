@@ -92,7 +92,7 @@ class InstructorPanel extends React.Component {
                     </Tabs>
                 </Panel>
             </Layout>
-        )
+        );
     }
 }
 
