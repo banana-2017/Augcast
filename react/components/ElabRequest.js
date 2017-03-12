@@ -54,7 +54,7 @@ class ElabRequest extends React.Component {
         });
     }
 
-    //new props are in newProps
+    // new props are in newProps
     // old props are in this.props
     // Do query using info in newProps
     componentWillReceiveProps(newProps) {

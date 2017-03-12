@@ -106,7 +106,6 @@ class VideoPlayer extends React.Component {
         var video_url = lecture.video_url;
         return (
             <div className="video-wrapper">
-                <h2>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
                 <div className="video-container">
                     <video src={video_url} autoPlay width="600" muted
                            id="basicvideo" ref="basicvideo" controls>
@@ -126,11 +125,9 @@ class VideoPlayer extends React.Component {
                             <FA className="speed-up video-control-button" name="plus"
                                 onClick={this.increasePlaybackRate} />
                         </ButtonGroup>
-
-                        <h4 className="main__h2">Timestamp: {this.props.timestamp}</h4>
-
                     </div>
                 </div>
+                <div>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</div>
                 <ElabRequest timestamp={this.props.timestamp} lecture={this.props.currentLecture.id}
                 course={this.props.currentCourse.id} />
             </div>

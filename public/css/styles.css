@@ -414,6 +414,7 @@ li.match-result > span {
 .pdf-panel {
     position: relative;
     height: 100%;
+    width: 25%;
     top: 0;
     background: darkgray;
     display: inline-block;
@@ -457,6 +458,8 @@ li.match-result > span {
 }
 
 .pdf-page canvas {
+    width: 100%;
+    max-width: 100%;
     position: relative;
 }
 
@@ -472,6 +475,10 @@ li.match-result > span {
     vertical-align: top;
     text-align: center;
     /* float: left; */
+}
+
+.video-container {
+    background: black;
 }
 
 .video-title {
@@ -494,20 +501,18 @@ video {
     margin:-25px 0 -50px;
 }
 
-.video-player {
-    margin: 0 auto;
-}
-
 .video-button-group-container {
     margin: 0 auto;
     max-width: 300px;
+    position: absolute;
+    display: none;
 }
 
 .video-button-group {
     display: inline;
     margin: 0 auto;
     max-width: 300px;
-    display: none;
+    color: white;
 }
 
 /***************************   elab  requests  ********************************/
