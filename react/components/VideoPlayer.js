@@ -113,7 +113,7 @@ class VideoPlayer extends React.Component {
         return (
             <div className="video-wrapper">
                 <div className="video-container">
-                    <video src={video_url} autoPlay width="600" muted
+                    <video src={video_url} autoPlay width="600"
                            id="basicvideo" ref="basicvideo" controls>
                             Your browser does not support the video tag.
                     </video>
