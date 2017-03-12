@@ -328,7 +328,7 @@ class LectureList extends React.Component {
                         </div>
                         <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                     </MenuItem>
-                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} lecture={lecture}/>
+                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} selectLecture={() => {that.selectLecture(lecture);}}/>
                 </div>
             );
         };

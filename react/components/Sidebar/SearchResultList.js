@@ -8,14 +8,13 @@ class SearchResultList extends React.Component {
 
     render () {
         var {resultList} = this.props;
+        var that = this;
 
         var listItem = function (result) {
 
             let {slide, contents} = result.item;
 
             let indices = result.matches[0].indices[0];
-            console.log (result);
-            console.log (indices);
             let queryStartIndex = indices[0];
             let queryEndIndex = indices[1] + 1;
 
@@ -42,7 +41,7 @@ class SearchResultList extends React.Component {
             let suffix = contents.substring (queryEndIndex, suffixEnd);
 
             return (
-                <MenuItem className="match-result" key={slide}>
+                <MenuItem onClick={that.props.selectLecture} className="match-result" key={slide}>
                     <div className="match-slide">Slide {slide}</div>
                     <div className="match-text">
                         {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}

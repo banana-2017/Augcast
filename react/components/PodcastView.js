@@ -40,12 +40,10 @@ class PodcastView extends React.Component {
 
         if (course != undefined && lecture != undefined) {
 
-            // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
             var ref = database.ref('/lectures/' + course.id + '/' + lecture.id);
 
             // Listen to changes at ref's location in db
             var pdfRef = ref.on('value', function(snapshot) {
-                console.log('POD MOUNT snapshot.val: ' + JSON.stringify(snapshot.val()));
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
@@ -86,8 +84,6 @@ class PodcastView extends React.Component {
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
 
             var pdfRef = newRef.on('value', function(snapshot) {
-                console.log('POD PROPS snapshot.val: ' + JSON.stringify(snapshot.val()));
-
                 that.setState({
 
                     lectureInfo: snapshot.val()

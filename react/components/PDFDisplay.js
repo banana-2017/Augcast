@@ -27,7 +27,6 @@ class PDFDisplay extends React.Component {
     }
 
     skipToTime(timestamp) {
-        console.log('PDFDisplay skipToTime: ' + timestamp);
         this.props.onSkipToTime(timestamp);
     }
 

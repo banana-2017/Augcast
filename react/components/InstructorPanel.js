@@ -2,19 +2,18 @@ import React from 'react';
 import { database } from './../../database/database_init';
 import { connect } from 'react-redux';
 
-import { Layout, AppBar, NavDrawer, Navigation, Panel } from 'react-toolbox';
-import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
+import { Layout, AppBar, NavDrawer, Panel } from 'react-toolbox';
+import { ListItem } from 'react-toolbox/lib/list';
 import {Tab, Tabs} from 'react-toolbox';
 
-import PendingER from './PendingER'
+import PendingER from './PendingER';
 import AppointInstructor from './AppointInstructor';
 
 class InstructorPanel extends React.Component {
     constructor(props) {
         super(props);
 
-        this.testUser = "zhq005";
-	//this.testUser = this.props.username;
+        this.testUser = 'zhq005';
 
         this.state = {
             // States about data
@@ -25,10 +24,6 @@ class InstructorPanel extends React.Component {
             drawerActive: false,
             tabIndex:1,
         };
-
-        console.log("Props to InstructorPanel: ");
-        console.log(this.props.username);
-        console.log("--------------------")
 
         this.instructorCourses = [];
 
@@ -46,7 +41,7 @@ class InstructorPanel extends React.Component {
                     if(++counter === Object.keys(Ids).length) {
                         that.setState({lectureRetrieved: true});
                     }
-                })
+                });
             }
         });
     }
@@ -65,13 +60,13 @@ class InstructorPanel extends React.Component {
                         onClick={()=>{that.setState({currentCourse: course});}}
                     />
                 </div>
-            )
-        }
+            );
+        };
 
         return (
             <Layout className="instructor-panel">
                 <NavDrawer active={this.state.drawerActive}
-                           onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
+                           onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive});}}
                            permanentAt='xxxl'
                            pinned={true}
                            scrollY={true}>
@@ -80,10 +75,10 @@ class InstructorPanel extends React.Component {
 
                 <Panel>
                     <AppBar title="Instructor Panel"
-                            onLeftIconClick={()=>{this.setState({drawerActive: true})}}>
+                            onLeftIconClick={()=>{this.setState({drawerActive: true});}}>
                     </AppBar>
 
-                    <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
+                    <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index});}} fixed>
                         <Tab label='Instructor Management'>
                             {typeof this.state.currentCourse != 'undefined' ?
                                 <AppointInstructor course={this.state.currentCourse}/> :
