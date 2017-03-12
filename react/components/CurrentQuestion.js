@@ -51,7 +51,6 @@ class CurrentQuestion extends React.Component {
                     <a style={buttonStyle} onClick={() => {this.props.removeAnswer(inputtedID, index);}}>
                         Delete
                     </a>}
-                    {<a style={buttonStyle}> Endorse </a>}
                 </form>
             </div>
         );

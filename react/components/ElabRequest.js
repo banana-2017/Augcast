@@ -2,7 +2,6 @@ import React from 'react';
 import { database } from './../../database/database_init';
 import Question from './Question';
 import CurrentQuestion from './CurrentQuestion';
-import {connect} from 'react-redux';
 //import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 /**
@@ -10,9 +9,6 @@ ElabRequest
 */
 const NAME = 'elaboration_id_';
 var user = 'Kiki';
-var course = 'cse100-b-0';
-
-
 
 class ElabRequest extends React.Component {
     constructor(props) {
@@ -26,27 +22,19 @@ class ElabRequest extends React.Component {
             endorsed:'',
             content: 'Please write your question here...',
             dataRetrieved: false,
+            // Used to store all elab info from database
+            allRequests: undefined,
+            // All elab ID under it
+            requestID: undefined,
+            // Grab the updated ID for content
+            updatedID: 0,
+            // Array to store answer
+            answerArray: [],
         };
 
-        // Used to store all elab info from database
-        this.allRequests = undefined;
-        // All elab ID under it
-        this.requestID = undefined;
-        // Grab the updated ID for content
-        this.updatedID = 0;
-        // Array to store answer
         this.answerArray = [];
-        this.temp = [];
+        this.updatedID = 0;
 
-        // Grab initial data from database
-        var that = this;
-        database.ref('/elaborations/' + course).once('value').then(function(snapshot) {
-            that.allRequests = snapshot.val();
-            if(that.allRequests!=null){
-                that.requestID = Object.keys(snapshot.val());
-            }
-            that.setState({dataRetrieved: true});
-        });
         console.log('INITIALIZING');
 
         // Bind all functions so they can refer to "this" correctly
@@ -57,6 +45,36 @@ class ElabRequest extends React.Component {
         this.editAnswer = this.editAnswer.bind(this);
         this.submitAnswer = this.submitAnswer.bind(this);
         this.removeAnswer = this.removeAnswer.bind(this);
+    }
+
+    componentDidMount() {
+      // Grab initial data from database
+        var that = this;
+        database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture).once('value').then(function(snapshot) {
+            console.log('PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture);
+            that.setState({allRequests: snapshot.val()});
+            if(that.state.allRequests!=null){
+                that.setState({requestID: Object.keys(snapshot.val())});
+            }
+            that.setState({dataRetrieved: true});
+        });
+    }
+
+    componentWillReceiveProps(newProps) {
+      //new props are in newProps
+      // old props are in this.props
+      // Do query using info in newProps
+        this.setState({allRequests: undefined});
+        this.setState({requestID: undefined});
+        var that = this;
+        database.ref('/elaborations/' + newProps.course + '/' + newProps.lecture).once('value').then(function(snapshot) {
+            console.log('NEW PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture);
+            that.setState({allRequests: snapshot.val()});
+            if(that.state.allRequests!=null){
+                that.setState({requestID: Object.keys(snapshot.val())});
+            }
+            that.setState({dataRetrieved: true});
+        });
     }
 
     // edit field for submitting ER
@@ -71,6 +89,7 @@ class ElabRequest extends React.Component {
 
     // updating ER to database
     handleSubmit() {
+        this.setState({updatedID: 0});
         var postData = {
             content:this.state.content,
             endorsed:this.state.endorsed,
@@ -78,7 +97,8 @@ class ElabRequest extends React.Component {
         };
         var updates = {};
         this.updatedID = parseInt(this.updatedID)+1;
-        updates['/elaborations/' + course + '/' + (NAME + this.updatedID)] = postData;
+        this.setState({updatedID: this.updatedID});
+        updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + (NAME + this.updatedID)] = postData;
         database.ref().update(updates);
         window.location.reload();
     }
@@ -88,15 +108,15 @@ class ElabRequest extends React.Component {
         var that = this;
         var updates = {};
         console.log('inputtedID is :' + inputtedID);
-        var newPostKey = database.ref('/elaborations/' + course + '/' + inputtedID + '/' + 'answers').push().key;
+        var newPostKey = database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + inputtedID + '/' + 'answers').push().key;
         var answerObj = {
             content: that.state.draft,
             a_username: user,
         };
-        updates['/elaborations/' + course + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
+        updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
-        that.answerArray = that.answerArray.concat(that.state.draft);
-        window.location.reload();
+        that.answerArray =  that.answerArray.concat(that.state.draft);
+        //window.location.reload();
     }
 
     // remove answer of ID from database
@@ -105,21 +125,21 @@ class ElabRequest extends React.Component {
         console.log('index in removeAnswer is :' + index);
         console.log('inputtedID in removeAnswer is :' + inputtedID);
         console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
-        database.ref('/elaborations/' + course + '/' + inputtedID + '/answers/' + index).remove();
-        window.location.reload();
+        database.ref('/elaborations/' + that.props.course + '/' + this.props.lecture + '/' + inputtedID + '/answers/' + index).remove();
+        //window.location.reload();
     }
 
     removeQuestion(inputtedID){
         console.log('inputtedID in removeQuestion is :' + inputtedID);
-        database.ref('/elaborations/' + course + '/' + inputtedID).remove();
-        window.location.reload();
+        database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + inputtedID).remove();
+        //window.location.reload();
     }
 
 
     // Display ER to user
     displayQuestion(elaboration) {
         //console.log('elaboration is :' + elaboration);
-        var allRequests = this.allRequests;
+        var allRequests = this.state.allRequests;
         //console.log('allRequests is :' + allRequests);
         var that = this;
 
@@ -166,8 +186,10 @@ class ElabRequest extends React.Component {
     render() {
         //console.log('content in Elab: ' + this.state.content);
         //console.log('dataRetrieved in Elab: ' + this.state.dataRetrieved);
-        console.log('allRequests in Elab: ' + this.allRequests);
-        console.log('requestID in Elab: ' + this.requestID);
+        console.log('allRequests in Elab: ' + JSON.stringify(this.state.allRequests));
+        console.log('requestID in Elab: ' + this.state.requestID);
+        console.log('course in Elab : ' + this.props.course);
+        console.log('lecture in Elab : ' + this.props.lecture);
         return (
           <div className="elab-container">
               <div style={{
@@ -175,7 +197,7 @@ class ElabRequest extends React.Component {
                   margin: '0 auto',
               }}>
               <h2>All Questions & Answers</h2>
-              {this.state.dataRetrieved && this.requestID!=undefined ? this.requestID.map(this.displayQuestion) : <p> No Question & Answer Posted </p> }
+              {this.state.dataRetrieved && this.state.requestID!=undefined ? this.state.requestID.map(this.displayQuestion) : <p> No Question & Answer Posted </p> }
               </div>
               <Question content={this.state.content} handleEdit={this.handleEdit} endorsed={this.state.endorsed}
               author={this.state.author} handleSubmit={this.handleSubmit} dataRetrieved={this.state.dataRetrieved}/>;
@@ -184,11 +206,4 @@ class ElabRequest extends React.Component {
     }
 }
 
-function mapStateToProps (state) {
-    return {
-        username: state.username
-    };
-}
-
-const ElabRequestContainer = connect(mapStateToProps)(ElabRequest);
-export default ElabRequestContainer;
+export default ElabRequest;

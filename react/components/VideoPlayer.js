@@ -139,7 +139,8 @@ class VideoPlayer extends React.Component {
 
                     <h4 className="main__h2">Timestamp: {this.props.timestamp}</h4>
                 </div>
-                <ElabRequest timestamp={this.props.timestamp} />
+                <ElabRequest timestamp={this.props.timestamp} lecture={this.props.currentLecture.id}
+                course={this.props.currentCourse.id} />
             </div>
         );
     }
