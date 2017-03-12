@@ -59,7 +59,7 @@ class CurrentQuestion extends React.Component {
             return (
                 <div className="elaboration-question" style={containerStyle}>
                     <p className="elaboration-question-text" key={this.props.parts}>
-                        {this.props.question}<br/>
+                        {this.props.question} ---- By {this.props.answer_owner}<br/>
                     </p>
 
 
@@ -73,7 +73,7 @@ class CurrentQuestion extends React.Component {
                             className="elaboration-answer-input"
                             style={inputStyle}
                             type="text"
-                            defaultValue={this.state.draft}
+                            placeholder={this.state.draft}
                             onChange={this.props.editAnswer}/>
 
                         <div className="elaboration-new-answer-button">
@@ -92,7 +92,7 @@ class CurrentQuestion extends React.Component {
             return (
                 <div className="elaboration-question" style={containerStyle}>
                     <p className="elaboration-question-text" key={this.props.parts} onClick={this.toggleExpand}>
-                        {this.props.question}<br/>
+                        {this.props.question} (asked by {this.props.answer_owner}) <br/>
                     </p>
                 </div>
             );

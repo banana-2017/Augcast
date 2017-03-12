@@ -66,10 +66,13 @@ class Question extends React.Component {
                             className="request-new-input"
                             style={{margin: '5px 5px 5px 5px', width: '780px', height: '100px'}}
                             type="text"
-                            defaultValue= {this.props.content}
+                            placeholder= 'Please write your question here...'
                             onChange={this.props.handleEdit}/>
                         <div className="request-buttons">
-                            <a style={buttonStyle} onClick={this.props.handleSubmit}>
+                            <a style={buttonStyle} onClick={() =>
+                              {this.props.handleSubmit();
+                                this.toggleEdit();
+                            }}>
                                 Submit
                             </a>
                             <a style={buttonStyle} onClick={this.cancelButton}>
