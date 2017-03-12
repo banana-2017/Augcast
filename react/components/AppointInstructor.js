@@ -247,16 +247,6 @@ class AppointInstructor extends React.Component {
 
                     <p>Are you sure you want to remove {that.state.instructor.username}</p>
                 </Dialog>
-
-                <Snackbar
-                    action='Dismiss'
-                    active={that.state.snackbarActive}
-                    label={"You have added " + that.state.student.username + " to instructor."}
-                    timeout={2000}
-                    onClick={handleSnackHiding}
-                    onTimeout={handleSnackHiding}
-                    type='cancel'/>
-
             </div>
 
         )

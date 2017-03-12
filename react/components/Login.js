@@ -1,11 +1,13 @@
 import React from 'react';
-import {FormGroup, FormControl, Button} from 'react-bootstrap';
 import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {logIn} from '../redux/actions';
 import {auth} from '../../database/database_init';
-import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox/lib/card';
+
+// UI components
 import Input from 'react-toolbox/lib/input';
+import { Button } from 'react-toolbox/lib/button';
+import { Card, CardTitle } from 'react-toolbox/lib/card';
 
 
 class Login extends React.Component {
@@ -49,53 +51,22 @@ class Login extends React.Component {
     // TODO: needs styling
     render () {
         document.title = 'Login - Augcast';
-        // return (
-        //     <div className="login-wrapper">
-        //         <div className="animateme">
-        //             <ul className="bg-bubbles">
-        //                 <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
-        //             </ul>
-        //         </div>
-        //         <div className="login">
-        //             <Input type='email' label='Your UCSD Email' icon='email' value={this.state.email} onChange={this.emailChange} />
-        //             <Input type='password' label='Password' icon='vpn_key' value={this.state.password} onChange={this.passwordChange} />
-        //         </div>
-        //     </div>
-        // );
         return (
-            <form>
-                <FormGroup
-                    controlId="email"
-                    validationState={this.emailValidation()}>
-                    <FormControl
-                        type="text"
-                        placeholder="@ucsd.edu"
-                        onChange={this.emailChange}
-                        value={this.state.email}
-                        style= {
-                        {   padding: '20px',
-                            margin: '20px',
-                            width: '400px'
-                        }}/>
-                    <FormControl.Feedback />
-                </FormGroup>
-                <FormGroup
-                    controlId="password">
-                    <FormControl
-                        type="password"
-                        onChange={this.passwordChange}
-                        value={this.state.password}
-                        style= {
-                        {   padding: '20px',
-                            margin: '20px',
-                            width: '400px'
-                        }}
-                        placeholder="password"/>
-                    <FormControl.Feedback />
-                    <div id="errorMessage">{this.state.failureMessage}</div>
-                    <Button style={{margin:'20px'}} bsStyle="success" onClick={this.authenticate}>Login</Button>
-                </FormGroup>
-            </form>
+            <div className="login-wrapper">
+                <div className="animateme">
+                    <ul className="bg-bubbles">
+                        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+                    </ul>
+                </div>
+                <Card className="login">
+                    <CardTitle className="login-title" title="Welcome to Augcast" />
+                    <div className="login-input">
+                        <Input className="email-input" type="email" label="Your UCSD Email" icon="email" value={this.state.email} onChange={this.emailChange} />
+                        <Input className="password-input" type="password" label="Password" icon="vpn_key" value={this.state.password} onChange={this.passwordChange} />
+                    </div>
+                    <Button className="login-button" label="LOG IN" flat primary onClick={this.authenticate}/>
+                </Card>
+            </div>
         );
     }
 
@@ -137,15 +108,15 @@ class Login extends React.Component {
         }
     }
 
-    passwordChange (e) {
+    passwordChange (password) {
         this.setState ({
-            password: e.target.value
+            password: password
         });
     }
 
-    emailChange (e) {
+    emailChange (email) {
         this.setState ({
-            email: e.target.value
+            email: email
         });
     }
 

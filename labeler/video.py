@@ -58,7 +58,7 @@ def generateTimestamp(video, filename, courseID, lectureID):
     # of slides and video frames
     while (index < length):
         # read from video
-        cap.set(cv2.CAP_PROP_POS_FRAMES, probeIndex)
+        cap.set(cv2.CAP_PROP_POS_MSEC, probeIndex * 1000)
         ret, image = cap.read()
         if image == None:
             break
@@ -127,7 +127,7 @@ def generateTimestamp(video, filename, courseID, lectureID):
                         break
                 '''
                 if quitAppending == False:
-                    print ("appending")
+                    #print ("appending")
                     slides.append("")
                     slides.append(currentText)
                     timestamp.append(-1)
@@ -175,11 +175,13 @@ def generateTimestamp(video, filename, courseID, lectureID):
 
         # current progress
         print ('progress'+'#'+courseID+'#'+lectureID+'#'+str(round((index*100/length))))
+        sys.stdout.flush();
 
         if debug == True:
             print ("#################", index ,"##################")
             print ("current Timestamp")
             print (timestamp)
+            sys.stdout.flush();
 
     # closure
     cap.release()
@@ -187,12 +189,21 @@ def generateTimestamp(video, filename, courseID, lectureID):
     return timestamp
 
 def generateTimestampFromWeb(videoURL, pdfURL, courseID, lectureID):
-    opener = urllib.URLopener()
     media_name = "media.mp4"
     pdf_name = "slides.pdf"
+
+    print("at " + str(os.getcwd()));
+    sys.stdout.flush();
+
+    opener = urllib.URLopener()
     opener.retrieve(videoURL, media_name)
     opener.retrieve(pdfURL, pdf_name)
-    timestamp = generateTimestamp(media_name, pdf_name, courseID, lectureID)
-    os.remove(pdf_name)
-    os.remove(media_name)
+    print("here")
+    sys.stdout.flush();
+
+    timestamp = generateTimestamp("media.mp4", "slides.pdf", courseID, lectureID)
+
+    os.remove("media.mp4")
+    os.remove("slides.pdf")
+
     return timestamp

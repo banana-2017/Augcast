@@ -10,6 +10,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 import {authenticate} from './index';
 import InstructorPanel from './components/InstructorPanel';
 
+
 // eslint-disable-next-line
 import React from 'react';      // used for jsx
 

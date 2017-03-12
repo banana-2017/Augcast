@@ -1,7 +1,11 @@
 import React from 'react';
 import { database } from './../../database/database_init';
-import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
+import {ButtonGroup} from 'react-bootstrap';
 import { connect } from 'react-redux';
+import ElabRequest from './ElabRequest';
+
+// ui components
+import FA from 'react-fontawesome';
 
 const SKIP_VALUE = 10;
 
@@ -27,6 +31,13 @@ class VideoPlayer extends React.Component {
         this.updateCurTime = this.updateCurTime.bind(this);
         this.updateCurTimeFromDB = this.updateCurTimeFromDB.bind(this);
 
+        // helper object
+        this.calendar = {
+            1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
+            7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
+            'Mon': 'Monday', 'Tue': 'Tuesday', 'Wed': 'Wednesday',
+            'Thu': 'Thursday', 'Fri': 'Friday', 'Sat': 'Saturday', 'Sun': 'Sunday'
+        };
     }
 
     componentWillReceiveProps(nextProps) {
@@ -98,51 +109,39 @@ class VideoPlayer extends React.Component {
         console.log(this.props);
         var course = this.props.currentCourse;
         var lecture = this.props.currentLecture;
-        var lectureNum = lecture.num;
         var video_url = lecture.video_url;
         return (
             <div className="video-wrapper">
-                <h2>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</h2>
-                <div className="video_api_containerplayer">
-                    <br />
-                    <video
-                        src={video_url}
-                        autoPlay
-                        width="600"
-                        muted
-                        id="basicvideo"
-                        ref="basicvideo"
-                        controls>
-                        Your browser does not support the video tag.
+                <div className="video-container">
+                    <video src={video_url} autoPlay width="600" muted
+                           id="basicvideo" ref="basicvideo" controls>
+                            Your browser does not support the video tag.
                     </video>
                     <div className="video-button-group-container">
                         <ButtonGroup className='video-button-group'>
-                            <Button bsStyle="default"  onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}><Glyphicon glyph="chevron-left" />Skip {SKIP_VALUE}s</Button>
-                            <Button
-                                bsStyle="primary"
-                                onClick={this.togglePlay}>
-                                    {!this.state.playing ?
-                                        <div><Glyphicon glyph="play" /> Play</div>  :
-                                        <div><Glyphicon glyph="pause" /> Pause</div>
-                                    }
-                            </Button>
-
-                            <Button bsStyle="default"  onClick={() => {this.refs.basicvideo.currentTime += SKIP_VALUE;}}>Skip {SKIP_VALUE}s <Glyphicon glyph="chevron-right" /></Button>
+                            <FA className="rewind video-control-button" name="backward"
+                                onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}/>
+                            <FA className="toggle-play video-control-button" name={this.state.playing ? 'pause' : 'play'}
+                                onClick={this.togglePlay}/>
+                            <FA className="fastforward video-control-button" name="forward"
+                                onClick={() => {this.refs.basicvideo.currentTime += SKIP_VALUE;}}/>
+                            <FA className="speed-up video-control-button" name="minus"
+                                onClick={this.decreasePlaybackRate} />
+                            <span className="current-speed">Speed: {Math.abs(this.state.playbackRate).toFixed(2)}x</span>
+                            <FA className="speed-up video-control-button" name="plus"
+                                onClick={this.increasePlaybackRate} />
                         </ButtonGroup>
-
-                        <br />
-
-                        <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.decreasePlaybackRate}><Glyphicon glyph="chevron-left" /></Button>
-                        Speed: {Math.abs(this.state.playbackRate).toFixed(2)}x
-                        <Button style={{margin:'10px'}} bsStyle="default" bsSize="small" onClick={this.increasePlaybackRate}><Glyphicon glyph="chevron-right" /></Button>
-
-                        <br />
-
-                        <h4 className="main__h2">Timestamp: {this.props.timestamp}</h4>
-
                     </div>
                 </div>
-
+                <div className="info-container">
+                    <div className="info-meta">
+                        <div className="info-lecture">{course.dept} {course.num}: {course.subject} ({course.section})</div>
+                        <div className="info-date">Week {lecture.week}, {this.calendar[lecture.day]}, {this.calendar[lecture.month]} {lecture.date}</div>
+                    </div>
+                    <hr/>
+                    <ElabRequest timestamp={this.props.timestamp} lecture={this.props.currentLecture.id}
+                                 course={this.props.currentCourse.id} />
+                </div>
             </div>
         );
     }

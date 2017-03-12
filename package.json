@@ -50,6 +50,7 @@
     "ldapjs": "^1.0.1",
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.17.0",
+    "plyr": "^2.0.11",
     "postcss": "^5.2.16",
     "postcss-cssnext": "^2.9.0",
     "postcss-each": "^0.9.3",
