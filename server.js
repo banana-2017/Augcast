@@ -37,7 +37,7 @@ router.route('/label').post(function(req, res) {
         args: [req.body.mediaURL, req.body.pdfURL, req.body.courseID, req.body.lectureID]
     };
 
-    var pyshell = new PythonShell('./labeler/labelLauncher.py', options);
+    var pyshell = new PythonShell('./labeler/stdoutTest.py', options);
 
     // Listen to script's stdout, which outputs percentage of labeling complete.
     // Whenever updated, upload progress to Firebase so frontend can display
@@ -51,7 +51,7 @@ router.route('/label').post(function(req, res) {
         // If receiving progress updateLectures, upload the progress
         if (split[0] === 'progress') {
             console.log('Updating lecture ' + split[2] + ' progress: ' + split[3]);
-            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).updateLectures({
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 labelProgress: Number(split[3])
             });
         }
@@ -59,7 +59,7 @@ router.route('/label').post(function(req, res) {
         // If receiving slide text contents, upload the contents
         else if (split[0] === 'content') {
             console.log('Updating lecture ' + split[2] + ' content: ' + split[3]);
-            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).updateLectures({
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 contents: JSON.parse(split[3])
             });
         }
@@ -67,7 +67,7 @@ router.route('/label').post(function(req, res) {
         // If receiving final timestamps, upload the timestamps
         else if (split[0] === 'result'){
             console.log('Updating lecture ' + split[2] + ' final timestamps: ' + split[3]);
-            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).updateLectures({
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 timestamps: JSON.parse(split[3])
             });
         }
