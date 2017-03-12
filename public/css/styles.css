@@ -543,8 +543,15 @@ video {
 }
 
 .info-lecture {
-    font-size: 20pt;
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16pt;
     font-weight: 200;
+}
+
+.info-date {
+    color: rgba(0,0,0,0.5);
 }
 
 .elab-container {

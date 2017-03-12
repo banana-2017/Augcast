@@ -136,8 +136,8 @@ class VideoPlayer extends React.Component {
                 </div>
                 <div className="info-container">
                     <div className="info-meta">
-                        <div className="info-lecture">Week {lecture.week}, {this.calendar[lecture.day]}</div>
-                        <div className="info-course">{lecture.month}/{lecture.date}</div>
+                        <div className="info-lecture">{course.dept} {course.num}: {course.subject} ({course.section})</div>
+                        <div className="info-date">Week {lecture.week}, {this.calendar[lecture.day]}, {this.calendar[lecture.month]} {lecture.date}</div>
                     </div>
                     <ElabRequest timestamp={this.props.timestamp} lecture={this.props.currentLecture.id}
                                  course={this.props.currentCourse.id} />
