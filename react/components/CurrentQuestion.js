@@ -1,7 +1,5 @@
 import React from 'react';
 
-var user = 'Alan';
-
 class CurrentQuestion extends React.Component {
     constructor(props) {
         super(props);
@@ -52,7 +50,6 @@ class CurrentQuestion extends React.Component {
 
     display(){
         var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',fontWeight: '300', fontSize: '22px', display: 'inline-block'};
-        var buttonStyle2 = {backgroundColor: '#efb430', width: '120px', height: '20px', textAlign: 'center', margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',fontWeight: '300', fontSize: '14px', display: 'inline-block'};
         var containerStyle = {backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
             width: '800px', fontSize: '20px'};
         var inputStyle = {margin: '5px 5px 5px 5px', width: '780px', height: '100px'};

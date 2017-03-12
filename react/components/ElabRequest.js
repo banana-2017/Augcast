@@ -25,9 +25,7 @@ class ElabRequest extends React.Component {
             // Used to store all elab info from database
             allRequests: undefined,
             // All elab ID under it
-            requestID: undefined,
-            // Grab the updated ID for content
-            updatedID: 0
+            requestID: undefined
         };
         this.updatedID = 0;
 
@@ -36,7 +34,6 @@ class ElabRequest extends React.Component {
         // Bind all functions so they can refer to "this" correctly
         this.handleEdit = this.handleEdit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
         this.displayQuestion = this.displayQuestion.bind(this);
         this.editAnswer = this.editAnswer.bind(this);
         this.submitAnswer = this.submitAnswer.bind(this);
@@ -44,8 +41,8 @@ class ElabRequest extends React.Component {
         this.firebaseQuery = this.firebaseQuery.bind(this);
     }
 
+    // Grab initial data from database
     componentDidMount() {
-      // Grab initial data from database
         var that = this;
         database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture).once('value').then(function(snapshot) {
             console.log('PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture);
@@ -57,10 +54,10 @@ class ElabRequest extends React.Component {
         });
     }
 
+    //new props are in newProps
+    // old props are in this.props
+    // Do query using info in newProps
     componentWillReceiveProps(newProps) {
-      //new props are in newProps
-      // old props are in this.props
-      // Do query using info in newProps
         this.setState({allRequests: undefined});
         this.setState({requestID: undefined});
         var that = this;
@@ -84,8 +81,8 @@ class ElabRequest extends React.Component {
         this.setState({draft: event.target.value});
     }
 
+    // Firebase query once //
     firebaseQuery(id){
-      // Firebase query once //
         var that = this;
         console.log('FB Query called by ' + id);
         database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture).once('value').then(function(snapshot) {
@@ -186,9 +183,9 @@ class ElabRequest extends React.Component {
                 }
             });
         }
-        console.log('answers2 is :' + answers2);
+        console.log('answers array (answer2) is :' + answers2);
         console.log('answer_owner is :' + answer_owner);
-        console.log('keys is :' + keys);
+        //console.log('keys is :' + keys);
         //console.log('requestID is :' + this.requestID);
         //console.log('keys of answers: ' + Object.keys(answers));
         var parts = elaboration.split('_');
