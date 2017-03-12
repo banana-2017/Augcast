@@ -7,7 +7,6 @@ import Upload from './components/Upload';
 import PDFDisplay from './components/PDFDisplay';
 import Test from './components/Test';
 import Sidebar from './components/Sidebar/Sidebar';
-import {authenticate} from './index';
 
 
 // eslint-disable-next-line

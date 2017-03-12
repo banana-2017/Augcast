@@ -7,27 +7,39 @@ class SearchResultList extends React.Component {
     }
 
     render () {
-
         var {resultList} = this.props;
         var that = this;
         var listItem = function (result) {
 
-            let {slide, contents} = result;
-            let {query} = that.props;
+            let {slide, contents} = result.item;
+            let {lecture} = that.props;
 
-            let startIndex = contents.toLowerCase().indexOf (query.toLowerCase());
-            let queryLength = query.length;
+            let indices = result.matches[0].indices[0];
+            let queryStartIndex = indices[0];
+            let queryEndIndex = indices[1] + 1;
 
             // no exact match
-            if (startIndex < 0) {
-                startIndex = 0;
-                queryLength = 0;
+            if (queryStartIndex< 0) {
+                queryStartIndex = 0;
             }
 
-            let endIndex = startIndex + queryLength;
-            let prefix = contents.substring (0, startIndex);
-            let queryMatch = contents.substring (startIndex, endIndex);
-            let suffix = contents.substring (endIndex);
+            console.log (queryStartIndex, queryEndIndex);
+            // creating prefix
+            let prefix = contents.substring (queryStartIndex-50, queryStartIndex);
+
+            if (prefix !== '') {
+                prefix = '....' + prefix;
+            }
+
+            let queryMatch = contents.substring (queryStartIndex, queryEndIndex);
+
+            let suffixEnd = queryEndIndex + 80;
+            let sentenceEnd = contents.indexOf ('.', queryEndIndex + 1) + 1;
+            if (sentenceEnd > 0) {
+                suffixEnd = sentenceEnd;
+            }
+
+            let suffix = contents.substring (queryEndIndex, suffixEnd);
 
             return (
                 <MenuItem className="match-result" key={slide}>
