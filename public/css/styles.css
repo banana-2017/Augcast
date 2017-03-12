@@ -481,7 +481,7 @@ li.match-result > span {
 
 video {
     width: 100%;
-    max-width: 95%;
+    max-width: 75%;
     height: auto;
     margin: 0 auto;
 }
