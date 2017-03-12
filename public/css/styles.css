@@ -505,8 +505,23 @@ video {
 }
 
 .video-button-group {
+    display: inline;
     margin: 0 auto;
     max-width: 300px;
+}
+
+.video-control-button {
+    margin: 4px;
+    display: inline;
+    cursor: pointer;
+}
+
+.video-control-button:hover {
+    color: green;
+}
+
+span.current-speed {
+    margin: 4px;
 }
 
 /******************************************************************************/
