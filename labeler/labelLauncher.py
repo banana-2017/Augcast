@@ -22,12 +22,14 @@ if __name__ == '__main__':
     # Generate the timestamps
     timestamp = generateTimestampFromWeb(media_url, pdf_url, courseID, lectureID)
 
+
     # Convert list to dict for json output
     timemap = {}
     for i in range(len(timestamp)):
         timemap[i+1] = timestamp[i]
 
+
     # Output json
-    json_string = json.dumps(timemap,sort_keys=True, indent=4)
+    json_string = json.dumps(timemap, sort_keys = True)
     print ('result' + '#' + courseID + '#' + lectureID + '#' + json_string)
     sys.stdout.flush();

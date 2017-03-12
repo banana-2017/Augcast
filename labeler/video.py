@@ -28,9 +28,9 @@ def generateTimestamp(video, filename, courseID, lectureID):
     pdfdict = {}
     for i in range(len(pdftext)):
         pdfdict[i+1] = pdftext[i]
-
     # Output json
-    json_string = json.dumps(pdfdict, sort_keys=True, indent=4)
+    json_string = json.dumps(pdfdict, sort_keys=True)
+
     print ('content' + '#' + courseID + '#' + lectureID + '#' + json_string)
     sys.stdout.flush();
 
@@ -61,7 +61,7 @@ def generateTimestamp(video, filename, courseID, lectureID):
         # read from video
         cap.set(cv2.CAP_PROP_POS_MSEC, probeIndex * 1000)
         ret, image = cap.read()
-        if image == None:
+        if image is None:
             break
         height, width, depth = image.shape
 
@@ -69,7 +69,7 @@ def generateTimestamp(video, filename, courseID, lectureID):
         # optical character recognition
         tess.set_image(image.ctypes, width, height, depth)
         nextText = tess.get_text()
-        if nextText == None:
+        if nextText is None:
             nextText = "."
         else:
             nextText = nextText.strip()
@@ -145,9 +145,9 @@ def generateTimestamp(video, filename, courseID, lectureID):
             newSlide = False
 
 
-
+        #print(nextText)
         # jump through video frames if nextText is similar to currentText
-        if (similar(currentText, nextText) > 0.8): ##very very similar
+        if similar(currentText, nextText) > 0.7 or similar(currentText[:20], nextText[:20])>0.8 or len(re.sub(r'\W+', '', nextText)) < 20 : ##very very similar
             index = probeIndex
             probeIndex += defaultProbeRate
             #print("probeIndex", probeIndex)
