@@ -27,12 +27,8 @@ class ElabRequest extends React.Component {
             // All elab ID under it
             requestID: undefined,
             // Grab the updated ID for content
-            updatedID: 0,
-            // Array to store answer
-            answerArray: [],
+            updatedID: 0
         };
-
-        this.answerArray = [];
         this.updatedID = 0;
 
         console.log('INITIALIZING');
@@ -45,6 +41,7 @@ class ElabRequest extends React.Component {
         this.editAnswer = this.editAnswer.bind(this);
         this.submitAnswer = this.submitAnswer.bind(this);
         this.removeAnswer = this.removeAnswer.bind(this);
+        this.firebaseQuery = this.firebaseQuery.bind(this);
     }
 
     componentDidMount() {
@@ -87,8 +84,23 @@ class ElabRequest extends React.Component {
         this.setState({draft: event.target.value});
     }
 
+    firebaseQuery(id){
+      // Firebase query once //
+        var that = this;
+        console.log('FB Query called by ' + id);
+        database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture).once('value').then(function(snapshot) {
+            console.log('PATH: '+ '/elaborations/' + that.props.course + '/' + that.props.lecture);
+            that.setState({allRequests: snapshot.val()});
+            if(that.state.allRequests!=null){
+                that.setState({requestID: Object.keys(snapshot.val())});
+            }
+            that.setState({dataRetrieved: true});
+        });
+    }
+
     // updating ER to database
     handleSubmit() {
+        console.log('In HandleSubmit');
         this.setState({updatedID: 0});
         var postData = {
             content:this.state.content,
@@ -100,7 +112,10 @@ class ElabRequest extends React.Component {
         this.setState({updatedID: this.updatedID});
         updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + (NAME + this.updatedID)] = postData;
         database.ref().update(updates);
-        window.location.reload();
+        //window.location.reload();
+
+        // Firebase query once //
+        this.firebaseQuery();
     }
 
     // Update answer to database
@@ -115,8 +130,10 @@ class ElabRequest extends React.Component {
         };
         updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
-        that.answerArray =  that.answerArray.concat(that.state.draft);
         //window.location.reload();
+
+        // Firebase query once //
+        this.firebaseQuery();
     }
 
     // remove answer of ID from database
@@ -127,12 +144,16 @@ class ElabRequest extends React.Component {
         console.log('Answer before removing inside removeAnswer: ' + that.answerArray);
         database.ref('/elaborations/' + that.props.course + '/' + this.props.lecture + '/' + inputtedID + '/answers/' + index).remove();
         //window.location.reload();
+
+        // Firebase query once //
+        this.firebaseQuery();
     }
 
     removeQuestion(inputtedID){
+        var that = this;
         console.log('inputtedID in removeQuestion is :' + inputtedID);
-        database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + inputtedID).remove();
-        //window.location.reload();
+        database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture + '/' + inputtedID).remove();
+        window.location.reload();
     }
 
 
@@ -165,7 +186,6 @@ class ElabRequest extends React.Component {
                 }
             });
         }
-        that.answerArray = answers2;
         console.log('answers2 is :' + answers2);
         console.log('answer_owner is :' + answer_owner);
         console.log('keys is :' + keys);
@@ -178,7 +198,7 @@ class ElabRequest extends React.Component {
             <div key={elaboration}>
               <CurrentQuestion elaboration={elaboration} question={questions}
               answers={answers2} answer_owner={answer_owner} parts={parts} keys={keys}
-              removeAnswer={this.removeAnswer} submitAnswer={this.submitAnswer} editAnswer={this.editAnswer}/>
+              removeAnswer={this.removeAnswer} removeQuestion={this.removeQuestion} submitAnswer={this.submitAnswer} editAnswer={this.editAnswer} question_owner={question_owner} user={user} course={this.props.course} lecture={this.props.lecture}/>
             </div>
         );
     }

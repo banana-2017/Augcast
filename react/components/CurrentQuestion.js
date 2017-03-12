@@ -10,14 +10,8 @@ class CurrentQuestion extends React.Component {
             content: 'Please write your question here...',
             draft:'Please write your answer here...',
             endorsed: false,
-            expand: false,
-            elaboration: this.props.elaboration,
-            question: this.props.question,
-            answers: this.props.answers,
-            answer_owner: this.props.answer_owner,
-            parts: this.props.parts,
-            keys: this.props.keys,
-        }
+            expand: false
+        };
 
         this.displayAnswer = this.displayAnswer.bind(this);
         this.display = this.display.bind(this);
@@ -57,9 +51,8 @@ class CurrentQuestion extends React.Component {
     }
 
     display(){
-        var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',
-            margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',
-            fontWeight: '300', fontSize: '22px', display: 'inline-block'};
+        var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',fontWeight: '300', fontSize: '22px', display: 'inline-block'};
+        var buttonStyle2 = {backgroundColor: '#efb430', width: '120px', height: '20px', textAlign: 'center', margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',fontWeight: '300', fontSize: '14px', display: 'inline-block'};
         var containerStyle = {backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
             width: '800px', fontSize: '20px'};
         var inputStyle = {margin: '5px 5px 5px 5px', width: '780px', height: '100px'};
@@ -68,13 +61,14 @@ class CurrentQuestion extends React.Component {
         if (this.state.expand) {
             return (
                 <div className="elaboration-question" style={containerStyle}>
-                    <p className="elaboration-question-text" key={this.state.parts}>
-                        {this.state.question}<br/>
+                    <p className="elaboration-question-text" key={this.props.parts}>
+                        {this.props.question}<br/>
                     </p>
 
+
                     <div className="elaboration-answer">
-                        {this.state.answers.map(
-                            this.displayAnswer.bind(extra, this.state.keys, this.state.elaboration, this.state.answer_owner))}
+                        {this.props.answers.map(
+                            this.displayAnswer.bind(extra, this.props.keys, this.props.elaboration, this.props.answer_owner))}
                     </div>
 
                     <div className="elaboration-new-answer">
@@ -86,7 +80,7 @@ class CurrentQuestion extends React.Component {
                             onChange={this.props.editAnswer}/>
 
                         <div className="elaboration-new-answer-button">
-                            <a style={buttonStyle} onClick={() => {this.props.submitAnswer(this.state.elaboration);
+                            <a style={buttonStyle} onClick={() => {this.props.submitAnswer(this.props.elaboration);
                                             this.toggleExpand();
                             }}>
                                 Submit
@@ -101,8 +95,8 @@ class CurrentQuestion extends React.Component {
         } else {
             return (
                 <div className="elaboration-question" style={containerStyle}>
-                    <p className="elaboration-question-text" key={this.state.parts} onClick={this.toggleExpand}>
-                        {this.state.question}<br/>
+                    <p className="elaboration-question-text" key={this.props.parts} onClick={this.toggleExpand}>
+                        {this.props.question}<br/>
                     </p>
                 </div>
             );

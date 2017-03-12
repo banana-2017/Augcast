@@ -15,6 +15,7 @@ class Question extends React.Component {
             author: '',
             editing: false,
             hover: false,
+            rerender:0,
         };
 
         // Bind all functions so they can refer to "this" correctly
@@ -39,15 +40,15 @@ class Question extends React.Component {
         this.setState({hover: !this.state.hover});
     }
 
-    cancelButton(event) {
-        {this.toggleHover()}
-        {this.toggleEdit()}
+    cancelButton() {
+        {this.toggleHover();}
+        {this.toggleEdit();}
     }
 
-    submitButton(event) {
-        {this.toggleHover()}
-        {this.toggleEdit()}
-        {this.props.handleSubmit()}
+    submitButton() {
+        {this.toggleHover();}
+        {this.toggleEdit();}
+        {this.props.handleSubmit();}
     }
 
     newRequest() {
