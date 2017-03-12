@@ -39,14 +39,13 @@ class UploadButton extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-                <Button icon='cloud_upload' className="upload-button"
-                        onClick={() => {that.props.onClick(that.props.iconLecture);}} />
+                <TooltipButton icon='cloud_upload'
+                               className="upload-button"
+                               tooltip="Upload slides for this lecture"
+                               tooltipPosition="right"
+                               onClick={() => {that.props.onClick(that.props.iconLecture);}} />
             </div>
         );
-                // <TooltipButton icon='cloud_upload'
-                //                className="upload-button"
-                //                tooltip="Upload"
-                //                onClick={() => {that.props.onClick(that.props.iconLecture);}} />
     }
 }
 
@@ -73,11 +72,11 @@ class LabelingProgressChart extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-                <IconButton
-                    tooltip={'Progress: ' + that.props.progress}
-                    onTouchTap={() => {that.props.onClick(that.props.iconLecture);}}>
-                    <ActionCached />
-                </IconButton>
+                <TooltipButton icon='cached'
+                               className="upload-button"
+                               tooltip={'Progress: ' + that.props.progress + '%'}
+                               tooltipPosition="right"
+                               onClick={() => {that.props.onClick(that.props.iconLecture);}} />
             </div>
         );
     }

@@ -87,13 +87,13 @@ button.login-button {
 }
 
 [data-reactroot] {
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-    margin: 0;
-    position: fixed;
-    overflow: auto;
+    /* height: 100%; */
+    /* width: 100%; */
+    /* left: 0; */
+    /* top: 0; */
+    /* margin: 0; */
+    /* position: fixed; */
+    /* overflow: auto; */
 }
 
 /* sidebar elements */
@@ -530,6 +530,9 @@ span.current-speed {
 
 div.login-wrapper{
     background: #252525;
+    height: 100%;
+    width: 100%;
+    position: fixed;
 }
 .animateme {
     position: fixed;
