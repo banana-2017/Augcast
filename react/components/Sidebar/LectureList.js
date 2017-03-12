@@ -15,7 +15,7 @@ import Button from 'react-toolbox/lib/button';
 import Drawer from 'material-ui/Drawer';
 import FA from 'react-fontawesome';
 import IconButton from 'material-ui/IconButton';
-// import Tooltip from 'react-toolbox/lib/tooltip';
+import Tooltip from 'react-toolbox/lib/tooltip';
 import {MenuItem} from 'react-toolbox/lib/menu';
 import SearchResultList from './SearchResultList';
 
@@ -25,7 +25,7 @@ import Fuse from 'fuse.js';
 
 injectTapEventPlugin();
 
-// const TooltipButton = Tooltip(Button);
+const TooltipButton = Tooltip(Button);
 
 class UploadButton extends React.Component {
     constructor(props) {
@@ -39,10 +39,14 @@ class UploadButton extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-            <Button icon='cloud_upload' className="upload-button"
-                    onClick={() => {that.props.onClick(that.props.iconLecture);}} />
+                <Button icon='cloud_upload' className="upload-button"
+                        onClick={() => {that.props.onClick(that.props.iconLecture);}} />
             </div>
         );
+                // <TooltipButton icon='cloud_upload'
+                //                className="upload-button"
+                //                tooltip="Upload"
+                //                onClick={() => {that.props.onClick(that.props.iconLecture);}} />
     }
 }
 
