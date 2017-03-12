@@ -41,7 +41,7 @@ class SearchResultList extends React.Component {
 
             return (
                 <MenuItem className="match-result" key={slide}>
-                    <div className="match-slide">{slide}</div>
+                    <div className="match-slide">Slide {slide}</div>
                     <div className="match-text">
                         {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
                     </div>

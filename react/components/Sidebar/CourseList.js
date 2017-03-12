@@ -14,7 +14,7 @@ import FA from 'react-fontawesome';
 import {database} from '../../../database/database_init';
 
 // custom react components
-import  CourseListItem from './CourseListItem';
+import CourseListItem from './CourseListItem';
 
 
 class CourseList extends React.Component {
