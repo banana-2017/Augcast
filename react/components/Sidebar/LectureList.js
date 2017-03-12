@@ -10,11 +10,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { database } from './../../../database/database_init';
 
 // ui components
-import ActionCached from 'material-ui/svg-icons/action/cached';
 import Button from 'react-toolbox/lib/button';
 import Drawer from 'material-ui/Drawer';
 import FA from 'react-fontawesome';
-import IconButton from 'material-ui/IconButton';
 import Tooltip from 'react-toolbox/lib/tooltip';
 import {MenuItem} from 'react-toolbox/lib/menu';
 import SearchResultList from './SearchResultList';
@@ -271,7 +269,7 @@ class LectureList extends React.Component {
         // for every result
         for (var lecture in result) {
 
-            let match = result[lecture];
+            // let match = result[lecture];
             // if a new lecture, push ro visiblelectures and create a new object in resultArray
             if (visibleLectures.indexOf(result[lecture].item.lectureId) < 0) {
                 visibleLectures.push (result[lecture].item.lectureId);

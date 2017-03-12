@@ -1,6 +1,6 @@
 import React from 'react';
 import { database } from './../../database/database_init';
-import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
+import {ButtonGroup} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ElabRequest from './ElabRequest';
 
@@ -109,7 +109,6 @@ class VideoPlayer extends React.Component {
         console.log(this.props);
         var course = this.props.currentCourse;
         var lecture = this.props.currentLecture;
-        var lectureNum = lecture.num;
         var video_url = lecture.video_url;
         return (
             <div className="video-wrapper">
@@ -122,7 +121,7 @@ class VideoPlayer extends React.Component {
                         <ButtonGroup className='video-button-group'>
                             <FA className="rewind video-control-button" name="backward"
                                 onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}/>
-                            <FA className="toggle-play video-control-button" name={this.state.playing ? "pause" : "play"}
+                            <FA className="toggle-play video-control-button" name={this.state.playing ? 'pause' : 'play'}
                                 onClick={this.togglePlay}/>
                             <FA className="fastforward video-control-button" name="forward"
                                 onClick={() => {this.refs.basicvideo.currentTime += SKIP_VALUE;}}/>

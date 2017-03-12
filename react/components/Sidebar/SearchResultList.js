@@ -8,11 +8,9 @@ class SearchResultList extends React.Component {
 
     render () {
         var {resultList} = this.props;
-        var that = this;
         var listItem = function (result) {
 
             let {slide, contents} = result.item;
-            let {lecture} = that.props;
 
             let indices = result.matches[0].indices[0];
             let queryStartIndex = indices[0];

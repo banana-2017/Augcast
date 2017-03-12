@@ -1,5 +1,4 @@
 import React from 'react';
-import {FormGroup, FormControl} from 'react-bootstrap';
 import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {logIn} from '../redux/actions';
