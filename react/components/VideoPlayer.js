@@ -31,6 +31,13 @@ class VideoPlayer extends React.Component {
         this.updateCurTime = this.updateCurTime.bind(this);
         this.updateCurTimeFromDB = this.updateCurTimeFromDB.bind(this);
 
+        // helper object
+        this.calendar = {
+            1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
+            7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
+            'Mon': 'Monday', 'Tue': 'Tuesday', 'Wed': 'Wednesday',
+            'Thu': 'Thursday', 'Fri': 'Friday', 'Sat': 'Saturday', 'Sun': 'Sunday'
+        };
     }
 
     componentWillReceiveProps(nextProps) {
@@ -127,9 +134,14 @@ class VideoPlayer extends React.Component {
                         </ButtonGroup>
                     </div>
                 </div>
-                <div>{course.dept} {course.num} Lecture {lectureNum}, {lecture.month}/{lecture.date}</div>
-                <ElabRequest timestamp={this.props.timestamp} lecture={this.props.currentLecture.id}
-                course={this.props.currentCourse.id} />
+                <div className="info-container">
+                    <div className="info-meta">
+                        <div className="info-lecture">Week {lecture.week}, {this.calendar[lecture.day]}</div>
+                        <div className="info-course">{lecture.month}/{lecture.date}</div>
+                    </div>
+                    <ElabRequest timestamp={this.props.timestamp} lecture={this.props.currentLecture.id}
+                                 course={this.props.currentCourse.id} />
+                </div>
             </div>
         );
     }

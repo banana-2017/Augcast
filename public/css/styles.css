@@ -37,6 +37,7 @@ button.login-button {
     height: 100%;
     width: 256px;
     float: left;
+    margin-right: 10px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -57,6 +58,7 @@ button.login-button {
     width: calc(100% - 256px);
     width: -moz-calc(100% - 256px);
     width: -webkit-calc(100% - 256px);
+    background: darkgray;
 }
 
 .blank {
@@ -66,7 +68,7 @@ button.login-button {
     text-align: center;
     font-size: 24pt;
     font-weight: 200;
-    color: lightgray;
+    color: white;
     margin: auto 0;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -206,7 +208,10 @@ li.course-item {
 }
 
 .course-section {
-    padding-left: 8px;
+    padding-left: 6px;
+    font-size: 16pt;
+    font-weight:100;
+    color: rgba(0,0,0,0.4);
 }
 
 .course-prof {
@@ -416,7 +421,6 @@ li.match-result > span {
     height: 100%;
     width: 25%;
     top: 0;
-    background: darkgray;
     display: inline-block;
     vertical-align: top;
     float: left;
@@ -466,11 +470,11 @@ li.match-result > span {
 .video-panel {
     text-align: center;
     position: relative;
+    background: none;
     /* white-space: nowrap; */
     /* width: 100%; */
     /* display: flex; */
     overflow: scroll;
-    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     height: 100%;
     vertical-align: top;
     text-align: center;
@@ -478,7 +482,11 @@ li.match-result > span {
 }
 
 .video-container {
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     background: black;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+    margin-left: 10px;
 }
 
 .video-title {
@@ -515,15 +523,32 @@ video {
     color: white;
 }
 
-/***************************   elab  requests  ********************************/
-.elab-container {
-    bottom: 0px;
-}
-
 .video-control-button {
     margin: 4px;
     display: inline;
     cursor: pointer;
+}
+
+/***************************   elab  requests  ********************************/
+.info-container {
+    background: white;
+    margin-top: 10px;
+    margin-left: 10px;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
+    padding: 16px;
+}
+
+.info-meta {
+    text-align: left;
+}
+
+.info-lecture {
+    font-size: 20pt;
+    font-weight: 200;
+}
+
+.elab-container {
+    bottom: 0px;
 }
 
 .video-control-button:hover {
