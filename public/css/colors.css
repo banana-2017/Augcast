@@ -1,3 +1,8 @@
+:root {
+    --list-item-background: #faf3e8;
+    --list-selected-background: #f1ca8c;
+    --search-bar-text: #faf3e8;
+}
 body {
     color: #483401;
 }
@@ -7,32 +12,32 @@ body {
 }
 
 .search-icon {
-    color: #faf3e8;
+    color: var(--search-bar-text);
 }
 
 /* Chrome/Opera/Safari */
 .search-box::-webkit-input-placeholder {
-    color: #faf3e8;
+    color: var(--search-bar-text);
 }
 /* Firefox 19+ */
 .search-box::-moz-placeholder {
-    color: #faf3e8;
+    color: var(--search-bar-text);
 }
 /* IE 10+ */
 .search-box:-ms-input-placeholder {
-    color: #faf3e8;
+    color: var(--search-bar-text);
 }
 /* Firefox 18- */
 .search-box:-moz-placeholder {
-    color: #faf3e8;
+    color: var(--search-bar-text);
 }
 
 li.course-item {
-    background: #faf3e8;
+    background: var(--list-item-background);
 }
 
 .course-item.selected {
-    background: #f1ca8c;
+    background: var(--list-selected-background)
 }
 
 .course-item.selected:hover {
@@ -52,11 +57,11 @@ li.course-item {
 }
 
 li.lecture-item {
-    background: #faf3e8;
+    background: var(--list-item-background);
 }
 
 .lecture-item.selected {
-    background: #f1ca8c;
+    background: var(--list-selected-background);
 }
 
 .lecture-item.selected:hover {
