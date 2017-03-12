@@ -255,13 +255,14 @@ class LectureList extends React.Component {
         var options = {
             include: ['matches'],
             shouldSort: true,
-            threshold: 1,
+            threshold: 0.5,
             minMatchCharLength: 1,
             keys: ['contents']
         };
 
         var fuse = new Fuse(this.state.lectures, options);
         var result = fuse.search(query);
+        console.log (result.length)
 
         let visibleLectures = [];
         let resultArray = {};
