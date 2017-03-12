@@ -116,7 +116,7 @@ class PendingER extends React.Component {
                     <Card style={{width: '%100'}}>
                         <CardTitle
                             title={ER.title}
-                            subtitle={"Author: " + ER.author + ER.email}
+                            subtitle={"Author: " + ER.author}
                         />
                         <CardText>{ER.content}</CardText>
                         <CardActions>

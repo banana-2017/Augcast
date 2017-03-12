@@ -13,7 +13,8 @@ class InstructorPanel extends React.Component {
     constructor(props) {
         super(props);
 
-        this.testUser = "l1qiao";
+        this.testUser = "zhq005";
+	//this.testUser = this.props.username;
 
         this.state = {
             // States about data
