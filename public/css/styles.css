@@ -51,6 +51,14 @@ button.login-button {
     height: 100%;
 }
 
+.instructor-entrance {
+    text-align: center;
+    position: fixed;
+    z-index: 2000;
+    width: 100%;
+    bottom: 0;
+}
+
 .main {
     position: fixed;
     height: 100%;
