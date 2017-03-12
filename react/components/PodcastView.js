@@ -127,15 +127,14 @@ class PodcastView extends React.Component {
 
             return (
                 <div className="content-panel">
-                    <div className="pdf-panel">
-                        {this.props.currentLecture != undefined
-                            && this.state.lectureInfo.slides_url != undefined ?
+                    {this.props.currentLecture != undefined && this.state.lectureInfo.slides_url != undefined ?
+                        <div className="pdf-panel">
                             <PDFDisplay
                                 onSkipToTime={this.handleSkipToTime}
                                 timestamps={this.state.lectureInfo.timestamps}
-                                pdfURL={this.state.lectureInfo.slides_url}/>
-                            : <div></div>}
-                    </div>
+                                pdfURL={this.state.lectureInfo.slides_url} />
+                        </div> :
+                        <div></div>}
                     <div className = "video-panel">
                         <VideoPlayer timestamp={this.state.timestamp} />
                     </div>

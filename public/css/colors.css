@@ -35,6 +35,10 @@ li.course-item {
     background: #f1ca8c;
 }
 
+.course-item.selected:hover {
+    background: #f1ca8c;
+}
+
 .pin-button .fa.pinned {
     color: #fed602;
 }
@@ -52,6 +56,10 @@ li.lecture-item {
 }
 
 .lecture-item.selected {
+    background: #f1ca8c;
+}
+
+.lecture-item.selected:hover {
     background: #f1ca8c;
 }
 

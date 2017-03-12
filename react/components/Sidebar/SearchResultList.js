@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {MenuItem} from 'react-toolbox/lib/menu';
 
 class SearchResultList extends React.Component {
     constructor (props) {
@@ -7,34 +7,45 @@ class SearchResultList extends React.Component {
     }
 
     render () {
-
         var {resultList} = this.props;
-        var that = this;
         var listItem = function (result) {
 
-            let {slide, contents} = result;
-            let {query} = that.props;
+            let {slide, contents} = result.item;
 
-            let startIndex = contents.toLowerCase().indexOf (query.toLowerCase());
-            let queryLength = query.length;
+            let indices = result.matches[0].indices[0];
+            let queryStartIndex = indices[0];
+            let queryEndIndex = indices[1] + 1;
 
             // no exact match
-            if (startIndex < 0) {
-                startIndex = 0;
-                queryLength = 0;
+            if (queryStartIndex< 0) {
+                queryStartIndex = 0;
             }
 
-            let endIndex = startIndex + queryLength;
-            let prefix = contents.substring (0, startIndex);
-            let queryMatch = contents.substring (startIndex, endIndex);
-            let suffix = contents.substring (endIndex);
+            console.log (queryStartIndex, queryEndIndex);
+            // creating prefix
+            let prefix = contents.substring (queryStartIndex-50, queryStartIndex);
+
+            if (prefix !== '') {
+                prefix = '....' + prefix;
+            }
+
+            let queryMatch = contents.substring (queryStartIndex, queryEndIndex);
+
+            let suffixEnd = queryEndIndex + 80;
+            let sentenceEnd = contents.indexOf ('.', queryEndIndex + 1) + 1;
+            if (sentenceEnd > 0) {
+                suffixEnd = sentenceEnd;
+            }
+
+            let suffix = contents.substring (queryEndIndex, suffixEnd);
 
             return (
-                <div>
-                    <span>{slide}</span>
-                    <br/>
-                    <span>{prefix}<strong>{queryMatch}</strong>{suffix}</span>
-                </div>
+                <MenuItem className="match-result" key={slide}>
+                    <div className="match-slide">{slide}</div>
+                    <div className="match-text">
+                        {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
+                    </div>
+                </MenuItem>
             );
         };
 
