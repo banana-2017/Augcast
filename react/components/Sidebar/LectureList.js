@@ -10,12 +10,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { database } from './../../../database/database_init';
 
 // ui components
-import ActionCached from 'material-ui/svg-icons/action/cached';
 import Button from 'react-toolbox/lib/button';
 import Drawer from 'material-ui/Drawer';
 import FA from 'react-fontawesome';
-import IconButton from 'material-ui/IconButton';
-// import Tooltip from 'react-toolbox/lib/tooltip';
+import Tooltip from 'react-toolbox/lib/tooltip';
 import {MenuItem} from 'react-toolbox/lib/menu';
 import SearchResultList from './SearchResultList';
 
@@ -25,7 +23,7 @@ import Fuse from 'fuse.js';
 
 injectTapEventPlugin();
 
-// const TooltipButton = Tooltip(Button);
+const TooltipButton = Tooltip(Button);
 
 class UploadButton extends React.Component {
     constructor(props) {
@@ -39,8 +37,11 @@ class UploadButton extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-            <Button icon='cloud_upload' className="upload-button"
-                    onClick={() => {that.props.onClick(that.props.iconLecture);}} />
+                <TooltipButton icon='cloud_upload'
+                               className="upload-button"
+                               tooltip="Upload slides for this lecture"
+                               tooltipPosition="right"
+                               onClick={() => {that.props.onClick(that.props.iconLecture);}} />
             </div>
         );
     }
@@ -54,7 +55,10 @@ class DoneMark extends React.Component {
     render() {
         return (
             <div className="slides-status">
-                <Button icon="done" />
+                <TooltipButton icon="done"
+                               className="done-mark"
+                               tooltip="Slides sucessfully synced!"
+                               tooltipPosition="right"/>
             </div>
         );
     }
@@ -69,11 +73,11 @@ class LabelingProgressChart extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-                <IconButton
-                    tooltip={'Progress: ' + that.props.progress}
-                    onTouchTap={() => {that.props.onClick(that.props.iconLecture);}}>
-                    <ActionCached />
-                </IconButton>
+                <TooltipButton icon='cached'
+                               className="upload-button"
+                               tooltip={'Progress: ' + that.props.progress + '%'}
+                               tooltipPosition="right"
+                               onClick={() => {that.props.onClick(that.props.iconLecture);}} />
             </div>
         );
     }
@@ -251,7 +255,7 @@ class LectureList extends React.Component {
         var options = {
             include: ['matches'],
             shouldSort: true,
-            threshold: 0.2,
+            threshold: 1,
             minMatchCharLength: 1,
             keys: ['contents']
         };
@@ -265,7 +269,7 @@ class LectureList extends React.Component {
         // for every result
         for (var lecture in result) {
 
-            let match = result[lecture];
+            // let match = result[lecture];
             // if a new lecture, push ro visiblelectures and create a new object in resultArray
             if (visibleLectures.indexOf(result[lecture].item.lectureId) < 0) {
                 visibleLectures.push (result[lecture].item.lectureId);

@@ -14,6 +14,8 @@ class SearchResultList extends React.Component {
             let {slide, contents} = result.item;
 
             let indices = result.matches[0].indices[0];
+            console.log (result);
+            console.log (indices);
             let queryStartIndex = indices[0];
             let queryEndIndex = indices[1] + 1;
 
@@ -28,7 +30,6 @@ class SearchResultList extends React.Component {
             if (prefix !== '') {
                 prefix = '....' + prefix;
             }
-
             let queryMatch = contents.substring (queryStartIndex, queryEndIndex);
 
             // creating suffix
@@ -42,7 +43,7 @@ class SearchResultList extends React.Component {
 
             return (
                 <MenuItem className="match-result" key={slide}>
-                    <div className="match-slide">{slide}</div>
+                    <div className="match-slide">Slide {slide}</div>
                     <div className="match-text">
                         {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
                     </div>
