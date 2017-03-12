@@ -56,12 +56,12 @@ button.login-button {
     height: 100%;
 }
 
-.instructor-entrance {
-    text-align: center;
-    position: fixed;
-    z-index: 2000;
-    width: 100%;
-    bottom: 0;
+div.instructor-panel {
+    background: white;
+}
+
+div.instructor-panel .blank {
+    display: none;
 }
 
 .main {

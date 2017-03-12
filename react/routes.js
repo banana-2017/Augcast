@@ -7,12 +7,11 @@ import Upload from './components/Upload';
 import PDFDisplay from './components/PDFDisplay';
 import Test from './components/Test';
 import Sidebar from './components/Sidebar/Sidebar';
-
+import {authenticate} from './index';
+import InstructorPanel from './components/InstructorPanel';
 
 // eslint-disable-next-line
 import React from 'react';      // used for jsx
-
-
 
 module.exports = (
     <Route path="/" component = {App} >
@@ -24,6 +23,7 @@ module.exports = (
         <Route path="/test" component={Test} />
         <Route path="/sidebar" component={Sidebar} />
         <Route path="/pdfdisplay" component={PDFDisplay} />
+        <Route path="/instructor" component={InstructorPanel} />
         <Route path="/:courseID" component={HomeContainer}>
             <Route path="/:courseID/:lectureNum" component={HomeContainer} />
         </Route>

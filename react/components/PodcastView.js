@@ -83,7 +83,6 @@ class PodcastView extends React.Component {
 
             // Create and store new listener so it can too be removed
             var that = this;
-            // console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
 
             var pdfRef = newRef.on('value', function(snapshot) {
