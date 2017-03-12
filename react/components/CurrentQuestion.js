@@ -59,7 +59,7 @@ class CurrentQuestion extends React.Component {
             return (
                 <div className="elaboration-question" style={containerStyle}>
                     <p className="elaboration-question-text" key={this.props.parts}>
-                        {this.props.question} <br/>
+                        {this.props.question} (asked by {this.props.question_owner}) <br/>
                     </p>
 
 
