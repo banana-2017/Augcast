@@ -57,7 +57,10 @@ class DoneMark extends React.Component {
     render() {
         return (
             <div className="slides-status">
-                <Button icon="done" />
+                <TooltipButton icon="done"
+                               className="done-mark"
+                               tooltip="Slides sucessfully synced!"
+                               tooltipPosition="right"/>
             </div>
         );
     }
