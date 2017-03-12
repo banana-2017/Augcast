@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {MenuItem} from 'react-toolbox/lib/menu';
 
 class SearchResultList extends React.Component {
     constructor (props) {
@@ -8,11 +8,10 @@ class SearchResultList extends React.Component {
 
     render () {
         var {resultList} = this.props;
-        var that = this;
+
         var listItem = function (result) {
 
             let {slide, contents} = result.item;
-            let {lecture} = that.props;
 
             let indices = result.matches[0].indices[0];
             let queryStartIndex = indices[0];
@@ -23,7 +22,6 @@ class SearchResultList extends React.Component {
                 queryStartIndex = 0;
             }
 
-            console.log (queryStartIndex, queryEndIndex);
             // creating prefix
             let prefix = contents.substring (queryStartIndex-50, queryStartIndex);
 
@@ -33,6 +31,7 @@ class SearchResultList extends React.Component {
 
             let queryMatch = contents.substring (queryStartIndex, queryEndIndex);
 
+            // creating suffix
             let suffixEnd = queryEndIndex + 80;
             let sentenceEnd = contents.indexOf ('.', queryEndIndex + 1) + 1;
             if (sentenceEnd > 0) {
@@ -42,11 +41,12 @@ class SearchResultList extends React.Component {
             let suffix = contents.substring (queryEndIndex, suffixEnd);
 
             return (
-                <div key={(lecture+slide)}>
-                    <span>{slide}</span>
-                    <br/>
-                    <span>{prefix}<strong>{queryMatch}</strong>{suffix}</span>
-                </div>
+                <MenuItem className="match-result" key={slide}>
+                    <div className="match-slide">{slide}</div>
+                    <div className="match-text">
+                        {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
+                    </div>
+                </MenuItem>
             );
         };
 

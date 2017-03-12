@@ -251,7 +251,7 @@ class LectureList extends React.Component {
         var options = {
             include: ['matches'],
             shouldSort: true,
-            threshold: 0.6,
+            threshold: 0.2,
             minMatchCharLength: 1,
             keys: ['contents']
         };
