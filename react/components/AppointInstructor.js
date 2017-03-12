@@ -26,7 +26,7 @@ class AppointInstructor extends React.Component {
         };
 
         // Indicate the props that this class should have
-        console.log("Props to AppointInstructor");
+        console.log("Props to AppointInstructor: ");
         console.log("Course: ", this.props.course);
 
         // first time query database
@@ -42,7 +42,7 @@ class AppointInstructor extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(JSON.stringify(this.props.course) != JSON.stringify(nextProps)) {
+        if(JSON.stringify(this.props.course) != JSON.stringify(nextProps.course)) {
             this.update();
         }
     }

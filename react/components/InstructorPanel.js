@@ -25,6 +25,7 @@ class InstructorPanel extends React.Component {
             tabIndex:1,
         };
 
+        console.log(this.props.username);
         this.instructorCourses = [];
 
         // query the database to get instructor courses
@@ -57,56 +58,52 @@ class InstructorPanel extends React.Component {
                         caption={course.id}
                         legend={course.professor}
                         disabled={course == that.state.currentCourse}
-                        onClick={()=>{that.setState({currentCourse: course, drawerActive: false});}}
+                        onClick={()=>{that.setState({currentCourse: course});}}
                     />
                 </div>
             )
         }
 
         return (
-            <div>
-                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-                <Layout>
-                    <NavDrawer active={this.state.drawerActive}
-                               onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
-                               permanentAt='xxxl'
-                               pinned={true}
-                               scrollY={true}>
-                        {this.instructorCourses.map(listItem)}
-                    </NavDrawer>
+            <Layout>
+                <NavDrawer active={this.state.drawerActive}
+                           onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
+                           permanentAt='xxxl'
+                           pinned={true}
+                           scrollY={true}>
+                    {this.instructorCourses.map(listItem)}
+                </NavDrawer>
 
-                    <Panel>
-                        <AppBar title="Instructor Panel"
-                                onLeftIconClick={()=>{this.setState({drawerActive: true})}}>
-                        </AppBar>
+                <Panel>
+                    <AppBar title="Instructor Panel"
+                            onLeftIconClick={()=>{this.setState({drawerActive: true})}}>
+                    </AppBar>
 
-                        <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
-                            <Tab label='Instructor Management'>
-                                {typeof this.state.currentCourse != 'undefined' ?
-                                    <AppointInstructor course={this.state.currentCourse}/> :
-                                    <h1>Select a Course to start</h1>}
-                            </Tab>
-                            <Tab label='Pending ERs'>
-                                {typeof this.state.currentCourse != 'undefined' ?
-                                    <PendingER course={this.state.currentCourse}/> :
-                                    <h1>Select a Course to start</h1>}
-                            </Tab>
-                            <Tab label='Third'><small>Third Content</small></Tab>
-                        </Tabs>
-                    </Panel>
-                </Layout>
-            </div>
-        );
+                    <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
+                        <Tab label='Instructor Management'>
+                            {typeof this.state.currentCourse != 'undefined' ?
+                                <AppointInstructor course={this.state.currentCourse}/> :
+                                <div className="blank">Select a Course to start</div>}
+                        </Tab>
+                        <Tab label='Pending ERs'>
+                            {typeof this.state.currentCourse != 'undefined' ?
+                                <PendingER course={this.state.currentCourse}/> :
+                                <div className="blank">Select a Course to start</div>}
+                        </Tab>
+                    </Tabs>
+                </Panel>
+            </Layout>
+        )
     }
 }
-/*
+
 function mapStateToProps(state) {
     return {
         username: state.username
-
     };
 }
 
 const InstructorPanelContainer = connect (mapStateToProps, null)(InstructorPanel);
-*/
-export default InstructorPanel;
+export default InstructorPanelContainer;
+
+//export default InstructorPanel;

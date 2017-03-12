@@ -15,15 +15,14 @@ class PendingER extends React.Component {
         }
 
         // Props
-        console.log("Props to PendingER");
-        console.log("Course: ", this.props.course);
+        console.log("Props to PendingER: ");
 
         // Instance Variable
         this.pendingERs = [];
         this.lectures = [];
-        this.counter1 = [];
+        this.counter1;
 
-        this.updateLectures();
+        this.updateLectures(this.props.course);
 
         // Bind the function
         this.updateLectures = this.updateLectures.bind(this);
@@ -31,15 +30,18 @@ class PendingER extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(JSON.stringify(this.props.course) != JSON.stringify(nextProps)) {
-            this.updateLectures();
+        if(JSON.stringify(this.props.course) != JSON.stringify(nextProps.course)) {
+            this.setState({dataRetrieved: false, ERGroups: []});
+            this.pendingERs = [];
+            this.lectures = [];
+            this.updateLectures(nextProps.course);
         }
     }
 
-    updateLectures() {
+    updateLectures(course) {
         // Query database to get the list of lecture ids for this course
         var that = this;
-        database.ref('lectures/' + that.props.course.id).once('value').then(function(snapshot) {
+        database.ref('lectures/' + course.id).once('value').then(function(snapshot) {
             let lectures_temp = [];
             let lectureList = snapshot.val();
 
@@ -48,17 +50,20 @@ class PendingER extends React.Component {
                 let lecture = lectureList[index];
 
                 lectures_temp.push(lecture);
-                that.updateERs(lecture.id, Object.keys(lectureList).length, that.counter1);
+            }
+            that.lectures = lectures_temp;
+
+            for(var i = 0; i < that.lectures.length; i++) {
+                that.updateERs(that.lectures[i].id, Object.keys(lectureList).length)
             }
 
-            that.lectures = lectures_temp;
         });
     }
 
     /*
      * Get the ERs from the elaborations directory
      */
-    updateERs(lectureId, totalLecture, counter1) {
+    updateERs(lectureId, totalLecture) {
         var that = this;
 
         database.ref('elaborations/' + lectureId).once('value').then(function(snapshot) {
@@ -78,7 +83,6 @@ class PendingER extends React.Component {
                     // use a counter to know whether the callbacks have finished or not
                     if (counter == Object.keys(snapshot.val()).length) {
                         that.pendingERs.push(pendingERs_temp);
-                        console.log(that.pendingERs);
                     }
                     counter++;
                 });
@@ -106,7 +110,7 @@ class PendingER extends React.Component {
 
         let ERItem = function(ER) {
             return (
-                <div key={ER.key}>
+                <div key={ER.content}>
                     <Card style={{width: '%100'}}>
                         <CardTitle
                             title={ER.title}
@@ -143,7 +147,7 @@ class PendingER extends React.Component {
         };
 
         return (
-            <div key="1">
+            <div>
                 {that.state.dataRetrieved ? that.state.ERGroups.map(ERGroupItem) :
                     <ProgressBar type='circular' mode='indeterminate' multicolor />}
             </div>
