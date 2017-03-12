@@ -1,4 +1,5 @@
 import React from 'react';
+import {MenuItem} from 'react-toolbox/lib/menu';
 
 class CurrentQuestion extends React.Component {
     constructor(props) {
@@ -50,14 +51,15 @@ class CurrentQuestion extends React.Component {
 
     display(){
         var buttonStyle = {backgroundColor: '#efb430', width: '150px', height: '40px', textAlign: 'center',margin: '10px 10px 5px 3px', boxShadow: '3px 3px 5px rgba(60, 60, 60, 0.4)', color: '#fff',fontWeight: '300', fontSize: '22px', display: 'inline-block'};
-        var containerStyle = {backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
-            width: '800px', fontSize: '20px'};
+        // var containerStyle = {backgroundColor: 'white', borderColor: '#efb430', borderStyle: 'solid',
+        //     width: '800px', fontSize: '20px'};
+        var containerStyle = {};
         var inputStyle = {margin: '5px 5px 5px 5px', width: '780px', height: '100px'};
         var extra = [];
 
         if (this.state.expand) {
             return (
-                <div className="elaboration-question" style={containerStyle}>
+                <div className="elab-question-expanded" style={containerStyle}>
                     <p className="elaboration-question-text" key={this.props.parts}>
                         {this.props.question} (asked by {this.props.question_owner}) <br/>
                     </p>
@@ -90,11 +92,9 @@ class CurrentQuestion extends React.Component {
             );
         } else {
             return (
-                <div className="elaboration-question" style={containerStyle}>
-                    <p className="elaboration-question-text" key={this.props.parts} onClick={this.toggleExpand}>
-                        {this.props.question} (asked by {this.props.question_owner}) <br/>
-                    </p>
-                </div>
+                <MenuItem className="elab-post" style={containerStyle} onClick={this.toggleExpand} key={this.props.parts}>
+                    <div className="elab-question">{this.props.question}</div><div className="elab-question-author">{this.props.question_owner}</div>
+                </MenuItem>
             );
         }
     }

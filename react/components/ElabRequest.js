@@ -153,9 +153,7 @@ class ElabRequest extends React.Component {
 
     // Display ER to user
     displayQuestion(elaboration) {
-        //console.log('elaboration is :' + elaboration);
         var allRequests = this.state.allRequests;
-        //console.log('allRequests is :' + allRequests);
         var that = this;
 
         var questions = allRequests[elaboration].content;
@@ -163,61 +161,53 @@ class ElabRequest extends React.Component {
         var answers = allRequests[elaboration].answers;
         var answer_owner = [];
         var keys = undefined;
-        if(answers!=null&&answers!=undefined){
-            console.log('answers is :' + JSON.stringify(answers));
+        if (answers != null && answers != undefined){
             keys = Object.keys(answers);
         }
         var answers2 = [];
-        if(answers!=null && answers != undefined){
+        if (answers != null && answers != undefined){
             JSON.parse(JSON.stringify(answers), (key, value) => {
                 if(key=='content'){
-                    console.log(value);
                     answers2 = answers2.concat(value);
                 }
                 if(key=='a_username'){
-                    console.log(value);
                     answer_owner = answer_owner.concat(value);
                 }
             });
         }
-        console.log('answers array (answer2) is :' + answers2);
-        console.log('answer_owner is :' + answer_owner);
-        //console.log('keys is :' + keys);
-        //console.log('requestID is :' + this.requestID);
-        //console.log('keys of answers: ' + Object.keys(answers));
         var parts = elaboration.split('_');
-        console.log('PARTS ARE: ' + parts);
         that.updatedID = parts[parts.length-1];
         return(
-            <div key={elaboration}>
-              <CurrentQuestion elaboration={elaboration} question={questions}
-              answers={answers2} answer_owner={answer_owner} parts={parts} keys={keys}
-              removeAnswer={this.removeAnswer} removeQuestion={this.removeQuestion} submitAnswer={this.submitAnswer} editAnswer={this.editAnswer} question_owner={question_owner} user={this.props.username} course={this.props.course} lecture={this.props.lecture}/>
-            </div>
+            <CurrentQuestion key={elaboration}
+                             elaboration={elaboration}
+                             question={questions}
+                             answers={answers2}
+                             answer_owner={answer_owner}
+                             parts={parts}
+                             keys={keys}
+                             removeAnswer={this.removeAnswer}
+                             removeQuestion={this.removeQuestion}
+                             submitAnswer={this.submitAnswer}
+                             editAnswer={this.editAnswer}
+                             question_owner={question_owner}
+                             user={this.props.username}
+                             course={this.props.course}
+                             lecture={this.props.lecture} />
         );
     }
 
     render() {
-        //console.log('content in Elab: ' + this.state.content);
-        //console.log('dataRetrieved in Elab: ' + this.state.dataRetrieved);
-        console.log('allRequests in Elab: ' + JSON.stringify(this.state.allRequests));
-        console.log('requestID in Elab: ' + this.state.requestID);
-        console.log('course in Elab : ' + this.props.course);
-        console.log('lecture in Elab : ' + this.props.lecture);
-        console.log('timestampe: ' + this.props.timestamp);
-
         return (
           <div className="elab-container">
-              <div>
-                  <h2>All Questions & Answers</h2>
-                  {this.state.dataRetrieved && this.state.requestID!=undefined ? this.state.requestID.map(this.displayQuestion) : <p> No Question & Answer Posted </p> }
+              <div className="elab-list">
+                  { this.state.dataRetrieved && this.state.requestID!=undefined ? this.state.requestID.map(this.displayQuestion) : <div className="elab-empty">No questions yet</div> }
               </div>
               <Question content={this.state.content}
                         handleEdit={this.handleEdit}
                         endorsed={this.state.endorsed}
                         author={this.state.author}
                         handleSubmit={this.handleSubmit}
-                        dataRetrieved={this.state.dataRetrieved}/>;
+                        dataRetrieved={this.state.dataRetrieved}/>
           </div>
         );
     }
