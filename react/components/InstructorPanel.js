@@ -69,8 +69,7 @@ class InstructorPanel extends React.Component {
 
         return (
             <Layout>
-                <NavDrawer active={this.state.drawerActive}
-                           onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
+                <NavDrawer onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
                            permanentAt='xxxl'
                            pinned={true}
                            scrollY={true}>
@@ -85,7 +84,9 @@ class InstructorPanel extends React.Component {
                     <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
                         <Tab label='Instructor Management'>
                             {typeof this.state.currentCourse != 'undefined' ?
-                                <AppointInstructor course={this.state.currentCourse}/> :
+                                <AppointInstructor
+                                    course={this.state.currentCourse}
+                                    username={this.testUser}/> :
                                 <div className="blank">Select a Course to start</div>}
                         </Tab>
                         <Tab label='Pending ERs'>

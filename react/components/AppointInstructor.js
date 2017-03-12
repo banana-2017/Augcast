@@ -30,6 +30,7 @@ class AppointInstructor extends React.Component {
         // Indicate the props that this class should have
         console.log("Props to AppointInstructor: ");
         console.log("Course: ", this.props.course);
+        console.log("Course: ", this.props.username);
         console.log("--------------------")
 
         // first time query database
@@ -67,7 +68,9 @@ class AppointInstructor extends React.Component {
                 let instructorCourse = user.instructorFor;
                 if (typeof instructorCourse != 'undefined' &&
                     Object.values(instructorCourse).includes(that.props.course.id)) {
-                    instructorsArray.push(user);
+                    if(user.username != that.props.username) {
+                        instructorsArray.push(user);
+                    }
                 }
                 else {
                     studentsArray.push(user);
@@ -252,10 +255,11 @@ class AppointInstructor extends React.Component {
                     action='Dismiss'
                     active={that.state.snackbarActive}
                     label={"You have added " + that.state.student.username + " to instructor."}
-                    timeout={2000}
+                    timeout={10000}
                     onClick={handleSnackHiding}
                     onTimeout={handleSnackHiding}
-                    type='cancel'/>
+                    type='cancel'
+                    />
 
             </div>
 

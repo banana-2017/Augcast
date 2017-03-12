@@ -290,6 +290,10 @@ li.lecture-item {
     background: lightblue;
 }
 
+.snackbar {
+    z-index:99
+}
+
 .sidebar-loading {
     width:100px;
     height:50px;
