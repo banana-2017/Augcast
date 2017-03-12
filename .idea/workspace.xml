@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3ae903f1-9782-477d-a7bb-68ba94919beb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/components/AppointInstructor.js" afterPath="$PROJECT_DIR$/react/components/AppointInstructor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/components/InstructorPanel.js" afterPath="$PROJECT_DIR$/react/components/InstructorPanel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/components/PendingER.js" afterPath="$PROJECT_DIR$/react/components/PendingER.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/routes.js" afterPath="$PROJECT_DIR$/react/routes.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -49,8 +45,8 @@
       <file leaf-file-name="routes.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/react/routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="18" column="8" lean-forward="false" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+            <state relative-caret-position="140">
+              <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -315,12 +311,12 @@
       <workItem from="1489183924995" duration="9887000" />
       <workItem from="1489205240369" duration="38404000" />
       <workItem from="1489286908792" duration="74000" />
-      <workItem from="1489287104486" duration="2079000" />
+      <workItem from="1489287104486" duration="2117000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="106652000" />
+    <option name="totallyTimeSpent" value="106690000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -445,8 +441,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/react/routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="18" column="8" lean-forward="false" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+        <state relative-caret-position="140">
+          <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
           <folding />
         </state>
       </provider>
