@@ -1,9 +1,12 @@
 import React from 'react';
 import { database } from './../../database/database_init';
-import ProgressBar from 'react-toolbox/lib/progress_bar';
+import { connect } from 'react-redux';
+import { displayLecture } from '../redux/actions';
+import { browserHistory } from 'react-router';
 
 import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox/lib/card';
 import {Button} from 'react-toolbox/lib/button';
+import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 class PendingER extends React.Component {
     constructor(props) {
@@ -55,22 +58,107 @@ class PendingER extends React.Component {
                 timestampsArray.push(timestamp);
             }
 
-            let lecture = {lecture: this.lecturesObj[lecture_key], timestamps: timestampsArray}
+            let lecture = {detail: this.lecturesObj[lecture_key], timestamps: timestampsArray}
             this.lecturesArray.push(lecture);
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if(JSON.stringify(this.props.course) != JSON.stringify(nextProps.course)) {
-            this.setState({dataRetrieved: false, ERGroups: []});
-            this.pendingERs = [];
-            this.lectures = [];
-            this.updateLectures(nextProps.course);
-        }
+    navigateER(lecture) {
+        console.log(lecture);
+        this.props.displayLecture(this.props.course, lecture);
+        browserHistory.push('/' + this.props.course.id + '/' + lecture.num);
     }
 
-    navigateER() {
+
+    render() {
+        var that = this;
+
+        let ERItem = function(ER, lecture) {
+            return (
+                <div key={ER.content}>
+                    <Card style={{width: '%100'}}>
+                        <CardTitle
+                            title={ER.title}
+                            subtitle={"Author: " + ER.author + ER.email}
+                        />
+                        <CardText>{ER.content}</CardText>
+                        <CardActions>
+                            <Button label="Answer" onClick={()=>{
+                                that.props.handleToggle();
+                                that.navigateER(lecture);
+                            }}/>
+                            <Button label="Dismiss" />
+                        </CardActions>
+                    </Card>
+                </div>
+            )
+        };
+
+        let timestampItem = function(timestamp, lecture) {
+            let time = timestamp.time;
+            let ERs = timestamp.ERs;
+
+            return (
+                <div key={time}>
+                    <p>{"At time " + time}</p>
+                    {ERs.map( function(x) { return ERItem(x, lecture) } )}
+                </div>
+            )
+        }
+
+        let lectureItem = function (lecture) {
+            if(lecture != null) {
+                // lecture detail
+                let lectureObj = lecture.detail;
+                let lectureId = lectureObj.id;
+                let week = lectureObj.week;
+                let day = lectureObj.day;
+
+                // timestamps
+                let timestamps = lecture.timestamps;
+
+                if(timestamps == null) {
+                    return
+                }
+                else {
+                    return (
+                        <div key={lectureId}>
+                            <p>{lectureId + "   Week " + week + " " + day}</p>
+                            {timestamps.map( function(x) { return timestampItem(x, lectureObj); } )}
+                        </div>
+                    )
+                }
+            }
+        };
+
+        return (
+            <div>
+                {that.state.dataRetrieved ? that.lecturesArray.map(lectureItem) :
+                    <ProgressBar type='circular' mode='indeterminate' multicolor />}
+            </div>
+        );
     }
+}
+
+function mapStateToProps (state) {
+    return {
+        currentLecture:  state.currentLecture,
+        currentCourse: state.currentCourse
+    };
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        displayLecture: (currentCourse, currentLecture) => {
+            dispatch (displayLecture(currentCourse, currentLecture));
+        }
+
+    };
+}
+
+const PendingERContainer = connect (mapStateToProps, mapDispatchToProps)(PendingER);
+export default PendingERContainer;
+
 /*
     updateLectures(course) {
         // Query database to get the list of lecture ids for this.elaborationsObj
@@ -128,91 +216,3 @@ class PendingER extends React.Component {
         });
     }
     */
-
-    render() {
-        var that = this;
-
-        let ERItem = function(ER) {
-            return (
-                <div key={ER.content}>
-                    <Card style={{width: '%100'}}>
-                        <CardTitle
-                            title={ER.title}
-                            subtitle={"Author: " + ER.author + ER.email}
-                        />
-                        <CardText>{ER.content}</CardText>
-                        <CardActions>
-                            <Button label="Answer"/>
-                            <Button label="Dismiss" />
-                        </CardActions>
-                    </Card>
-                </div>
-            )
-        };
-
-        let timestampItem = function(timestamp) {
-            let time = timestamp.time;
-            let ERs = timestamp.ERs;
-
-            return (
-                <div key={time}>
-                    <p>{"At time " + time}</p>
-                    {ERs.map(ERItem)}
-                </div>
-            )
-        }
-
-        // lecturesArray                 timestampsArray    ERsArray
-        // [{lecture: lectureObj, timestamps: [{time: time, ERs: [ERs, ...]}, ...], ...]
-        let lectureItem = function (lecture) {
-            if(lecture != null) {
-                // lecture detail
-                let lectureId = lecture.id;
-                let week = lecture.week;
-                let day = lecture.day;
-
-                // timestamps
-                let timestamps = lecture.timestamps;
-
-                if(timestamps == null) {
-                    return
-                }
-                else {
-                    return (
-                        <div key={lectureId}>
-                            <p>{lectureId + "   Week " + week + " " + day}</p>
-                            {timestamps.map(timestampItem)}
-                        </div>
-                    )
-                }
-            }
-        };
-
-        return (
-            <div>
-                {that.state.dataRetrieved ? that.lecturesArray.map(lectureItem) :
-                    <ProgressBar type='circular' mode='indeterminate' multicolor />}
-            </div>
-        );
-    }
-}
-
-function mapStateToProps (state) {
-    return {
-        currentLecture:  state.currentLecture,
-        currentCourse: state.currentCourse
-    };
-}
-
-function mapDispatchToProps (dispatch) {
-    return {
-        displayLecture: (currentCourse, currentLecture) => {
-            dispatch (displayLecture(currentCourse, currentLecture));
-        }
-
-    };
-}
-
-const PendingERContainer = connect (mapStateToProps, mapDispatchToProps)(PendingER);
-
-export default PendingERContainer;

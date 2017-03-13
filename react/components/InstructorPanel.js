@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 
 import Tooltip from 'react-toolbox/lib/tooltip';
 import { Layout, AppBar, NavDrawer, Navigation, Panel } from 'react-toolbox';
-import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
 import {Tab, Tabs} from 'react-toolbox';
 import {Button, IconButton} from 'react-toolbox/lib/button';
-import Dialog from 'react-toolbox/lib/dialog';
+import Dialog from 'material-ui/Dialog';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import PendingER from './PendingER'
 import AppointInstructor from './AppointInstructor';
@@ -34,25 +34,39 @@ class InstructorPanel extends React.Component {
     render() {
         var that = this;
 
+        const customContentStyle = {
+            width: '100%',
+            maxWidth: 'none',
+            height: '100%',
+            maxHeight: 'none',
+
+        };
+
         // If the instructor panel has been opened, display the dialog
         if(that.state.dialogActive) {
             return (
-                <Dialog active={this.state.dialogActive}
-                        onEscKeyDown={this.handleToggle}
-                        onOverlayClick={this.handleToggle}
-                        title='My awesome dialog'>
+                <div>
+                    <Dialog
+                        title="InstructorPanel"
+                        modal={false}
+                        open={this.state.dialogActive}
+                        autoScrollBodyContent={true}
+                        autoDetectWindowHeight={true}
+                        contentStyle={customContentStyle}
+                        onRequestClose={this.handleToggle}
+                    >
+                        <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
+                            <Tab label='Instructor Management'>
+                                <AppointInstructor
+                                    course={this.props.course} username={this.props.username} />
+                            </Tab>
+                            <Tab label='Pending ERs'>
+                                <PendingER course={this.props.course} handleToggle={this.handleToggle}/>
+                            </Tab>
+                        </Tabs>
 
-                    <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
-                        <Tab label='Instructor Management'>
-                            <AppointInstructor
-                                course={this.props.course}
-                                username={this.props.username} />
-                        </Tab>
-                        <Tab label='Pending ERs'>
-                            <PendingER course={this.props.course} />
-                        </Tab>
-                    </Tabs>
-                </Dialog>
+                    </Dialog>
+                </div>
             )
         }
 
