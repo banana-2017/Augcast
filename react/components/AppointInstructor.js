@@ -163,7 +163,6 @@ class AppointInstructor extends React.Component {
             }
         }
 
-        console.log(searchResults);
         // Set the search result to be the state so that the component will refresh when the data changes
         this.setState({searchResult: searchResults});
     }

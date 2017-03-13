@@ -2,104 +2,71 @@ import React from 'react';
 import { database } from './../../database/database_init';
 import { connect } from 'react-redux';
 
+import Tooltip from 'react-toolbox/lib/tooltip';
 import { Layout, AppBar, NavDrawer, Navigation, Panel } from 'react-toolbox';
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
 import {Tab, Tabs} from 'react-toolbox';
+import {Button, IconButton} from 'react-toolbox/lib/button';
+import Dialog from 'react-toolbox/lib/dialog';
 
 import PendingER from './PendingER'
 import AppointInstructor from './AppointInstructor';
+
+const TooltipButton = Tooltip(Button);
 
 class InstructorPanel extends React.Component {
     constructor(props) {
         super(props);
 
-        this.testUser = "zhq005";
-	//this.testUser = this.props.username;
-
         this.state = {
-            // States about data
-            dataRetrieved: false,
-            currentCourse: undefined,
-
             // States about UI
-            drawerActive: false,
+            dialogActive: false,
             tabIndex:1,
         };
 
-        console.log("Props to InstructorPanel: ");
-        console.log(this.props.username);
-        console.log("--------------------")
+        this.handleToggle = this.handleToggle.bind(this);
+    }
 
-        this.instructorCourses = [];
-
-        // query the database to get instructor courses
-        var that = this;
-        database.ref('users/' + that.testUser + '/instructorFor').once('value').then(function (snapshot1) {
-            let Ids = snapshot1.val();
-            let counter = 0;
-
-            for (var index in Ids) {
-                database.ref('courses/' + Ids[index]).once('value').then(function(snapshot2){
-                    that.instructorCourses.push(snapshot2.val());
-
-                    // use a counter to know whether the callbacks have finished or not
-                    if(++counter === Object.keys(Ids).length) {
-                        that.setState({lectureRetrieved: true});
-                    }
-                })
-            }
-        });
+    handleToggle() {
+        this.setState({dialogActive: !this.state.dialogActive})
     }
 
     render() {
         var that = this;
 
-        var listItem = function(course) {
+        // If the instructor panel has been opened, display the dialog
+        if(that.state.dialogActive) {
             return (
-                <div key={course.id}>
-                    <ListItem
-                        leftIcon="class"
-                        caption={course.id}
-                        legend={course.professor}
-                        disabled={course == that.state.currentCourse}
-                        onClick={()=>{that.setState({currentCourse: course});}}
-                    />
-                </div>
-            )
-        }
-
-        return (
-            <Layout className="instructor-panel">
-                <NavDrawer active={this.state.drawerActive}
-                           onOverlayClick={()=>{this.setState({drawerActive: !this.state.drawerActive})}}
-                           permanentAt='xxxl'
-                           pinned={true}
-                           scrollY={true}>
-                    {this.instructorCourses.map(listItem)}
-                </NavDrawer>
-
-                <Panel>
-                    <AppBar title="Instructor Panel"
-                            onLeftIconClick={()=>{this.setState({drawerActive: true})}}>
-                    </AppBar>
+                <Dialog active={this.state.dialogActive}
+                        onEscKeyDown={this.handleToggle}
+                        onOverlayClick={this.handleToggle}
+                        title='My awesome dialog'>
 
                     <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
                         <Tab label='Instructor Management'>
-                            {typeof this.state.currentCourse != 'undefined' ?
-                                <AppointInstructor
-                                    course={this.state.currentCourse}
-                                    username={this.testUser}/> :
-                                <div className="blank">Select a Course to start</div>}
+                            <AppointInstructor
+                                course={this.props.course}
+                                username={this.props.username} />
                         </Tab>
-                        <Tab label='Pending Questions'>
-                            {typeof this.state.currentCourse != 'undefined' ?
-                                <PendingER course={this.state.currentCourse}/> :
-                                <div className="blank">Select a Course to start</div>}
+                        <Tab label='Pending ERs'>
+                            <PendingER course={this.props.course} />
                         </Tab>
                     </Tabs>
-                </Panel>
-            </Layout>
-        )
+                </Dialog>
+            )
+        }
+
+        // If the instructor panel has not been opened, display the button
+        else {
+            return (
+                <TooltipButton
+                    icon="class"
+                    className="instructor-button"
+                    tooltip="Open Instructor Panel"
+                    tooltipPosition="right"
+                    onClick={()=>{that.setState({dialogActive: true})}} />
+            )
+        }
     }
 }
 
@@ -111,5 +78,3 @@ function mapStateToProps(state) {
 
 const InstructorPanelContainer = connect (mapStateToProps, null)(InstructorPanel);
 export default InstructorPanelContainer;
-
-//export default InstructorPanel;

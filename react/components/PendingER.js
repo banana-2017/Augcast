@@ -14,21 +14,50 @@ class PendingER extends React.Component {
             dataRetrieved: false
         }
 
-        // Props
-        console.log("Props to PendingER: ");
-        console.log(this.props.course);
-        console.log("--------------------")
 
         // Instance Variable
         this.pendingERs = [];
-        this.lectures = [];
-        this.counter1;
 
-        this.updateLectures(this.props.course);
+        this.elaborationsObj = {};
+        this.lecturesObj = {};
+        this.lecturesArray = [];
+
+        var that = this;
+        database.ref('lectures/' + that.props.course.id).once('value').then(function(snapshot) {
+            that.lecturesObj = snapshot.val();
+            database.ref('elaborations/' + that.props.course.id).once('value').then(function(snapshot){
+                that.elaborationsObj = snapshot.val();
+
+                that.update();
+                that.setState({dataRetrieved: true});
+            });
+        });
 
         // Bind the function
-        this.updateLectures = this.updateLectures.bind(this);
-        this.updateERs = this.updateERs.bind(this);
+        this.navigateER = this.navigateER.bind(this);
+        this.update = this.update.bind(this);
+    }
+
+    // lecturesArray                 timestampsArray    ERsArray
+    // [{lecture: lectureObj, timestamps: [{time: time, ERs: [ERs, ...]}, ...], ...]
+    update() {
+        for(let lecture_key in this.elaborationsObj) {
+
+            let timestampsArray = []
+            for(let timestamp_key in this.elaborationsObj[lecture_key]) {
+
+                let ERsArray = [];
+                for(let ER in this.elaborationsObj[lecture_key][timestamp_key]) {
+                    ERsArray.push(this.elaborationsObj[lecture_key][timestamp_key][ER]);
+                }
+
+                let timestamp = {time: timestamp_key, ERs: ERsArray};
+                timestampsArray.push(timestamp);
+            }
+
+            let lecture = {lecture: this.lecturesObj[lecture_key], timestamps: timestampsArray}
+            this.lecturesArray.push(lecture);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -40,20 +69,15 @@ class PendingER extends React.Component {
         }
     }
 
+    navigateER() {
+    }
+/*
     updateLectures(course) {
-        // Query database to get the list of lecture ids for this course
+        // Query database to get the list of lecture ids for this.elaborationsObj
         var that = this;
         database.ref('lectures/' + course.id).once('value').then(function(snapshot) {
-            let lectures_temp = [];
             let lectureList = snapshot.val();
-
-            that.counter1 = 1;
-            for(var index in lectureList) {
-                let lecture = lectureList[index];
-
-                lectures_temp.push(lecture);
-            }
-            that.lectures = lectures_temp;
+            that.lectures = Object.values(lectureList);
 
             for(var i = 0; i < that.lectures.length; i++) {
                 that.updateERs(that.lectures[i].id, Object.keys(lectureList).length)
@@ -62,9 +86,6 @@ class PendingER extends React.Component {
         });
     }
 
-    /*
-     * Get the ERs from the elaborations directory
-     */
     updateERs(lectureId, totalLecture) {
         var that = this;
 
@@ -106,6 +127,7 @@ class PendingER extends React.Component {
 
         });
     }
+    */
 
     render() {
         var that = this;
@@ -116,11 +138,11 @@ class PendingER extends React.Component {
                     <Card style={{width: '%100'}}>
                         <CardTitle
                             title={ER.title}
-                            subtitle={"Author: " + ER.author}
+                            subtitle={"Author: " + ER.author + ER.email}
                         />
                         <CardText>{ER.content}</CardText>
                         <CardActions>
-                            <Button label="Answer" />
+                            <Button label="Answer"/>
                             <Button label="Dismiss" />
                         </CardActions>
                     </Card>
@@ -128,20 +150,38 @@ class PendingER extends React.Component {
             )
         };
 
+        let timestampItem = function(timestamp) {
+            let time = timestamp.time;
+            let ERs = timestamp.ERs;
 
-        let ERGroupItem = function (ERGroup) {
-            if(ERGroup != null) {
-                let lecture = ERGroup.lecture;
-                let group = ERGroup.group;
+            return (
+                <div key={time}>
+                    <p>{"At time " + time}</p>
+                    {ERs.map(ERItem)}
+                </div>
+            )
+        }
 
-                if(group == null) {
+        // lecturesArray                 timestampsArray    ERsArray
+        // [{lecture: lectureObj, timestamps: [{time: time, ERs: [ERs, ...]}, ...], ...]
+        let lectureItem = function (lecture) {
+            if(lecture != null) {
+                // lecture detail
+                let lectureId = lecture.id;
+                let week = lecture.week;
+                let day = lecture.day;
+
+                // timestamps
+                let timestamps = lecture.timestamps;
+
+                if(timestamps == null) {
                     return
                 }
                 else {
                     return (
-                        <div key={ERGroup.id}>
-                            <p>{lecture.id + "   Week " + lecture.week + " " + lecture.day}</p>
-                            {group.map(ERItem)}
+                        <div key={lectureId}>
+                            <p>{lectureId + "   Week " + week + " " + day}</p>
+                            {timestamps.map(timestampItem)}
                         </div>
                     )
                 }
@@ -150,11 +190,29 @@ class PendingER extends React.Component {
 
         return (
             <div>
-                {that.state.dataRetrieved ? that.state.ERGroups.map(ERGroupItem) :
+                {that.state.dataRetrieved ? that.lecturesArray.map(lectureItem) :
                     <ProgressBar type='circular' mode='indeterminate' multicolor />}
             </div>
         );
     }
 }
 
-export default PendingER;
+function mapStateToProps (state) {
+    return {
+        currentLecture:  state.currentLecture,
+        currentCourse: state.currentCourse
+    };
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        displayLecture: (currentCourse, currentLecture) => {
+            dispatch (displayLecture(currentCourse, currentLecture));
+        }
+
+    };
+}
+
+const PendingERContainer = connect (mapStateToProps, mapDispatchToProps)(PendingER);
+
+export default PendingERContainer;

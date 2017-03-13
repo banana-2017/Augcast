@@ -401,6 +401,16 @@ li.lecture-item {
     background: darkgray;
 }
 
+.instructor-panel {
+	float: right;
+	width: 5%;
+	height: 100%;
+	line-height: inherit;
+	text-align: center;
+	display: table;
+	position: absolute;
+}
+
 
 /******************************************************************************/
 /*************************    SLIDE SEARCH RESULTS    *************************/
