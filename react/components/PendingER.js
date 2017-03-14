@@ -51,11 +51,11 @@ class PendingER extends React.Component {
 
                 let ERsArray = [];
                 for(let ER_key in this.elaborationsObj[lecture_key][timestamp_key]) {
-                    // Add helper fields to facilitate modifying database
                     let ER_temp = this.elaborationsObj[lecture_key][timestamp_key][ER_key];
 
-                    // If the instructor has ignored that ER, then not display it
-                    if(ER_temp.ignore == null) {
+                    // If the instructor has ignored that ER or it has a answer, then not display it
+                    if(ER_temp.answers == null && ER_temp.ignore == null) {
+                        // Add helper fields to facilitate modifying database
                         ER_temp.lecture_ref = lecture_key;
                         ER_temp.timestamp_ref = timestamp_key;
                         ER_temp.id = ER_key;
@@ -94,8 +94,7 @@ class PendingER extends React.Component {
         // Remove it from array in state so that the page will be refreshed
         for(let i = 0; i < ERsArray_temp.length; i++) {
             if(ERsArray_temp[i].lecture.id == ER.lecture_ref) {
-                console.log(ERsArray_temp[i].timestamps);
-                for(let j = 0; j < (ERsArray_temp[i].timestamps).length; i++) {
+                for(let j = 0; j < (ERsArray_temp[i].timestamps).length; j++) {
                     let index = (ERsArray_temp[i].timestamps[j].ERs).indexOf(ER);
                     if(index >= 0) {
                         ERsArray_temp[i].timestamps[j].ERs.splice(index, 1);
