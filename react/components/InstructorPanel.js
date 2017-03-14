@@ -34,12 +34,12 @@ class InstructorPanel extends React.Component {
     render() {
         var that = this;
 
-        const customContentStyle = {
+        const contentStyle = {
             width: '100%',
-            maxWidth: 'none',
+            maxWidth: '1000px',
             height: '100%',
-            maxHeight: 'none',
-
+            maxHeight: '1000px',
+            top: '-200px'
         };
 
         // If the instructor panel has been opened, display the dialog
@@ -51,8 +51,8 @@ class InstructorPanel extends React.Component {
                         modal={false}
                         open={this.state.dialogActive}
                         autoScrollBodyContent={true}
-                        autoDetectWindowHeight={true}
-                        contentStyle={customContentStyle}
+                        autoDetectWindowHeight={false}
+                        contentStyle={contentStyle}
                         onRequestClose={this.handleToggle}
                     >
                         <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>

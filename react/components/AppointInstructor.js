@@ -3,11 +3,11 @@ import { database } from './../../database/database_init';
 import { FormControl } from 'react-bootstrap';
 import Fuse from "fuse.js";
 
+
+import AutoComplete from 'material-ui/AutoComplete';
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
 import Snackbar from 'react-toolbox/lib/snackbar';
 import Dialog from 'react-toolbox/lib/dialog';
-import Input from 'react-toolbox/lib/input';
-
 
 class AppointInstructor extends React.Component {
     constructor(props) {
@@ -15,8 +15,8 @@ class AppointInstructor extends React.Component {
 
         // Initial state
         this.state = {
-            students: [],
-            instructors: [],
+            studentsArray: [],
+            instructorsArray: [],
             searchResult: [],
             instructor: {username: 0},
             student: {username: 0},
@@ -26,12 +26,6 @@ class AppointInstructor extends React.Component {
 
 
         };
-
-        // Indicate the props that this class should have
-        console.log("Props to AppointInstructor: ");
-        console.log("Course: ", this.props.course);
-        console.log("Course: ", this.props.username);
-        console.log("--------------------")
 
         // first time query database
         this.update();
@@ -51,8 +45,8 @@ class AppointInstructor extends React.Component {
     }
 
     update() {
-        let studentsArray = [];
-        let instructorsArray = [];
+        let students_temp = [];
+        let instructors_temp = [];
 
         // query the users directory
         var that = this;
@@ -69,15 +63,15 @@ class AppointInstructor extends React.Component {
                 if (typeof instructorCourse != 'undefined' &&
                     Object.values(instructorCourse).includes(that.props.course.id)) {
                     if(user.username != that.props.username) {
-                        instructorsArray.push(user);
+                        instructors_temp.push(user);
                     }
                 }
                 else {
-                    studentsArray.push(user);
+                    students_temp.push(user);
                 }
             }
 
-            that.setState({students: studentsArray, instructors: instructorsArray});
+            that.setState({studentsArray: students_temp, instructorsArray: instructors_temp});
         })
     }
 
@@ -145,7 +139,7 @@ class AppointInstructor extends React.Component {
         };
 
         // fuse = {item: "user object", score: "0 means perfect match"}
-        let fuse = new Fuse(this.state.students, options);
+        let fuse = new Fuse(this.state.studentsArray, options);
         return fuse.search(query);
     }
 
@@ -222,13 +216,21 @@ class AppointInstructor extends React.Component {
         return (
 
             <div>
+                <AutoComplete
+                    floatingLabelText="Search for New Instructor"
+                    hintText="Enter Email to search"
+                    filter={AutoComplete.noFilter}
+                    openOnFocus={true}
+                    dataSource={this.state.studentsArray}
+                />
+
                 <FormControl type="text"
                              placeholder="Search Users"
                              onChange={this.searchInput}
                              />
                 <List>
                     <ListSubHeader caption="Instructors"/>
-                    {this.state.instructors.map(instructorItem)}
+                    {this.state.instructorsArray.map(instructorItem)}
 
                 </List>
                 <List>

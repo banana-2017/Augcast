@@ -4,16 +4,17 @@ import { connect } from 'react-redux';
 import { displayLecture } from '../redux/actions';
 import { browserHistory } from 'react-router';
 
-import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox/lib/card';
-import {Button} from 'react-toolbox/lib/button';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
+import {Card, CardActions, CardHeader, CardText, CardTitle, CardMedia} from 'material-ui/Card';
+
+import FlatButton from 'material-ui/FlatButton';
 
 class PendingER extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            ERGroups: [],
+            lecturesTimestampERsArray: [],
             dataRetrieved: false
         }
 
@@ -23,7 +24,6 @@ class PendingER extends React.Component {
 
         this.elaborationsObj = {};
         this.lecturesObj = {};
-        this.lecturesArray = [];
 
         var that = this;
         database.ref('lectures/' + that.props.course.id).once('value').then(function(snapshot) {
@@ -39,34 +39,74 @@ class PendingER extends React.Component {
         // Bind the function
         this.navigateER = this.navigateER.bind(this);
         this.update = this.update.bind(this);
+        this.ignoreER = this.ignoreER.bind(this);
     }
 
-    // lecturesArray                 timestampsArray    ERsArray
-    // [{lecture: lectureObj, timestamps: [{time: time, ERs: [ERs, ...]}, ...], ...]
     update() {
+        let lecturesArray = [];
         for(let lecture_key in this.elaborationsObj) {
 
             let timestampsArray = []
             for(let timestamp_key in this.elaborationsObj[lecture_key]) {
 
                 let ERsArray = [];
-                for(let ER in this.elaborationsObj[lecture_key][timestamp_key]) {
-                    ERsArray.push(this.elaborationsObj[lecture_key][timestamp_key][ER]);
+                for(let ER_key in this.elaborationsObj[lecture_key][timestamp_key]) {
+                    // Add helper fields to facilitate modifying database
+                    let ER_temp = this.elaborationsObj[lecture_key][timestamp_key][ER_key];
+
+                    // If the instructor has ignored that ER, then not display it
+                    if(ER_temp.ignore == null) {
+                        ER_temp.lecture_ref = lecture_key;
+                        ER_temp.timestamp_ref = timestamp_key;
+                        ER_temp.id = ER_key;
+
+                        ERsArray.push(ER_temp);
+                    }
                 }
 
                 let timestamp = {time: timestamp_key, ERs: ERsArray};
                 timestampsArray.push(timestamp);
             }
 
-            let lecture = {detail: this.lecturesObj[lecture_key], timestamps: timestampsArray}
-            this.lecturesArray.push(lecture);
+            let lecture = {lecture: this.lecturesObj[lecture_key], timestamps: timestampsArray};
+            lecturesArray.push(lecture);
         }
+
+        this.setState({lecturesTimestampERsArray: lecturesArray});
     }
 
     navigateER(lecture) {
-        console.log(lecture);
         this.props.displayLecture(this.props.course, lecture);
         browserHistory.push('/' + this.props.course.id + '/' + lecture.num);
+    }
+
+    // lecturesArray                 timestampsArray    ERsArray
+    // [{lecture: lectureObj, timestamps: [{time: time, ERs: [ERs, ...]}, ...], ...]
+    ignoreER(ER) {
+        let ERsArray_temp = this.state.lecturesTimestampERsArray;
+
+        // Update the database so that this ER will not be displayed
+        let ERObj = database.ref('elaborations/' + this.props.course.id + '/' + ER.lecture_ref + '/' + ER.timestamp_ref + '/' + ER.id);
+        let updates = {};
+        updates["ignore"] = true;
+        ERObj.update(updates);
+
+        // Remove it from array in state so that the page will be refreshed
+        for(let i = 0; i < ERsArray_temp.length; i++) {
+            if(ERsArray_temp[i].lecture.id == ER.lecture_ref) {
+                console.log(ERsArray_temp[i].timestamps);
+                for(let j = 0; j < (ERsArray_temp[i].timestamps).length; i++) {
+                    let index = (ERsArray_temp[i].timestamps[j].ERs).indexOf(ER);
+                    if(index >= 0) {
+                        ERsArray_temp[i].timestamps[j].ERs.splice(index, 1);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        this.setState({lectureTimestampERsArray: ERsArray_temp});
     }
 
 
@@ -74,20 +114,31 @@ class PendingER extends React.Component {
         var that = this;
 
         let ERItem = function(ER, lecture) {
+            let author = ER.author;
+            let email = ER.email;
+            let content = ER.content;
+
             return (
-                <div key={ER.content}>
-                    <Card style={{width: '%100'}}>
-                        <CardTitle
-                            title={ER.title}
-                            subtitle={"Author: " + ER.author + ER.email}
+                <div key={content}>
+                    <Card>
+                        <CardHeader
+                            title={author}
+                            subtitle={email}
+                            actAsExpander={true}
+                            showExpandableButton={true}
                         />
-                        <CardText>{ER.content}</CardText>
+                        <CardTitle title="Card title" subtitle="Card subtitle" />
+                        <CardText expandable={true}>
+                            {ER.content}
+                        </CardText>
                         <CardActions>
-                            <Button label="Answer" onClick={()=>{
+                            <FlatButton label="Detail" onClick={()=>{
                                 that.props.handleToggle();
                                 that.navigateER(lecture);
                             }}/>
-                            <Button label="Dismiss" />
+                            <FlatButton label="Ignore" onClick={()=>{
+                                that.ignoreER(ER);
+                            }}/>
                         </CardActions>
                     </Card>
                 </div>
@@ -104,12 +155,12 @@ class PendingER extends React.Component {
                     {ERs.map( function(x) { return ERItem(x, lecture) } )}
                 </div>
             )
-        }
+        };
 
         let lectureItem = function (lecture) {
             if(lecture != null) {
                 // lecture detail
-                let lectureObj = lecture.detail;
+                let lectureObj = lecture.lecture;
                 let lectureId = lectureObj.id;
                 let week = lectureObj.week;
                 let day = lectureObj.day;
@@ -117,10 +168,7 @@ class PendingER extends React.Component {
                 // timestamps
                 let timestamps = lecture.timestamps;
 
-                if(timestamps == null) {
-                    return
-                }
-                else {
+                if(timestamps != null) {
                     return (
                         <div key={lectureId}>
                             <p>{lectureId + "   Week " + week + " " + day}</p>
@@ -133,7 +181,7 @@ class PendingER extends React.Component {
 
         return (
             <div>
-                {that.state.dataRetrieved ? that.lecturesArray.map(lectureItem) :
+                {that.state.dataRetrieved ? that.state.lecturesTimestampERsArray.map(lectureItem) :
                     <ProgressBar type='circular' mode='indeterminate' multicolor />}
             </div>
         );
@@ -160,59 +208,11 @@ const PendingERContainer = connect (mapStateToProps, mapDispatchToProps)(Pending
 export default PendingERContainer;
 
 /*
-    updateLectures(course) {
-        // Query database to get the list of lecture ids for this.elaborationsObj
-        var that = this;
-        database.ref('lectures/' + course.id).once('value').then(function(snapshot) {
-            let lectureList = snapshot.val();
-            that.lectures = Object.values(lectureList);
+ <CardMedia
+ >
+ slide page
+ overlay title: CSE101 Week 5 day 1
+ overlay subtitle: slide 1
+ </CardMedia>
+ */
 
-            for(var i = 0; i < that.lectures.length; i++) {
-                that.updateERs(that.lectures[i].id, Object.keys(lectureList).length)
-            }
-
-        });
-    }
-
-    updateERs(lectureId, totalLecture) {
-        var that = this;
-
-        database.ref('elaborations/' + lectureId).once('value').then(function(snapshot) {
-            let pendingERs_temp = [];
-
-            if (snapshot.val() == null) {
-                that.pendingERs.push(null);
-            }
-            else {
-                let counter = 1;
-                snapshot.forEach(function (childSnapShot) {
-                    if (childSnapShot.hasChild("answers") == false) {
-                        let pendingER = childSnapShot.val();
-                        pendingERs_temp.push(pendingER);
-                    }
-
-                    // use a counter to know whether the callbacks have finished or not
-                    if (counter == Object.keys(snapshot.val()).length) {
-                        that.pendingERs.push(pendingERs_temp);
-                    }
-                    counter++;
-                });
-            }
-
-            if (that.counter1 == totalLecture) {
-                let ERGroups_temp = [];
-                for(var i = 0; i < that.lectures.length; i++) {
-                    let current = {};
-                    current.lecture = that.lectures[i];
-                    current.group = that.pendingERs[i];
-                    current.id = i;
-                    ERGroups_temp.push(current);
-                }
-
-                that.setState({dataRetrieved: true, ERGroups: ERGroups_temp});
-            }
-            that.counter1++;
-
-        });
-    }
-    */
