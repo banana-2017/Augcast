@@ -52,9 +52,9 @@ class CourseList extends React.Component {
     }
 
     componentDidMount () {
-        // get the favorites array, set state for pinned courses
         var that = this;
 
+        // get the favorites array, set state for pinned courses
         database.ref('users/'+this.props.username+'/favorites').once('value').then(function(snapshot) {
             let favoriteArray = snapshot.val();
 
@@ -72,6 +72,7 @@ class CourseList extends React.Component {
             }
         });
 
+        // get the instructorFor array, set state for instructor courses
         database.ref('users/' + this.props.username + '/instructorFor').once('value').then(function(snapshot) {
             let instructorForArray = snapshot.val();
 
@@ -142,7 +143,7 @@ class CourseList extends React.Component {
 
         updates['/users/' + this.props.username + '/favorites'] = favoriteArray;
         this.setState({favoriteArray: favoriteArray});
-        database.ref().updateLectures(updates);
+        database.ref().update(updates);
     }
 
 
@@ -158,7 +159,7 @@ class CourseList extends React.Component {
 
         updates['/users/' + this.props.username + '/favorites'] = favoriteArray;
         this.setState({favoriteArray: favoriteArray});
-        database.ref().updateLectures(updates);
+        database.ref().update(updates);
     }
 
     // moves pinned courses to the top

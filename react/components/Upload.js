@@ -181,6 +181,65 @@ class FileUploader extends React.Component {
 
 }
 
+class UploadComplete extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            downloadURL: '',
+            isInstructor: false,
+        };
+
+        let that = this;
+
+        this.lectureRef = database.ref('lectures/' + this.props.currentCourse.id + '/' + this.props.currentLecture.id);
+
+        // Get the pdfUrl
+        this.lectureRef.once('value').then(function(snapshot){
+            let lecture = snapshot.val();
+            that.setState({downloadURL: lecture.slides_url})
+        });
+
+        // Get the user information for instructor validation
+        database.ref('users/' + this.props.username + '/instructorFor').once('value').then(function(snapshot) {
+            let instructorFor = snapshot.val();
+            let isInstructor = instructorFor.includes(that.props.currentCourse.id);
+            that.setState({isInstructor: isInstructor})
+        });
+
+        this.handleDelete = this.handleDelete.bind(this);
+    }
+
+    handleDelete() {
+        let updates = {};
+        updates['/slides_url'] = null;
+        updates['/timestamps'] = null;
+        updates['/labelProgress'] = null;
+
+        this.lectureRef.update(updates);
+    }
+
+    render() {
+        let that = this;
+        return (
+            <div>
+                <p>Labeling Complete</p>
+                <a href={that.state.downloadURL}>Open PDF file</a>
+                <br/>
+
+                <Button
+                    bsStyle="warning"
+                    bsSize="small"
+                    style={{margin:'10px'}}
+                    disabled={!that.state.isInstructor}
+                    onClick={this.handleDelete}>
+                    Delete PDF file
+                </Button>
+            </div>
+        )
+    }
+}
+
 class DynamicDisplay extends React.Component {
     constructor(props) {
         super(props);
@@ -195,7 +254,12 @@ class DynamicDisplay extends React.Component {
 
         // If there are timestamps in DB, display a labeling complete message
         if (this.props.currentLecture.timestamps != undefined) {
-            return (<div>Labeling complete!</div>);
+            return (
+                <UploadComplete
+                    currentCourse={this.props.currentCourse}
+                    currentLecture={this.props.currentLecture}
+                    username={this.props.username}/>
+            );
         }
 
         // If there is labeling progress, display the progress bar
@@ -216,7 +280,6 @@ class DynamicDisplay extends React.Component {
                         now={this.props.currentLecture.labelProgress}
                         label={`${(this.props.currentLecture.labelProgress).toFixed(2)}%`} />
                 </div>
-
             );
         }
 
@@ -344,6 +407,7 @@ class Upload extends React.Component {
                     <DynamicDisplay
                         currentCourse={this.props.navCourse}
                         currentLecture={this.state.lectureInfo}
+                        username={this.props.username}
                         onClose={this.handleClose}
                         onUploadInProgress={this.handleUploadInProgress}/>
                 </Dialog>
@@ -356,7 +420,7 @@ function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
         currentLecture:  state.currentLecture,
-        navCourse: state.navCourse
+        navCourse: state.navCourse,
     };
 }
 
