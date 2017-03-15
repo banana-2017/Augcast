@@ -32,9 +32,11 @@ router.route('/label').post(function(req, res) {
     var PythonShell = require('python-shell');
     // Configure the python script's arguments
     var options = {
+        pythonPath: '/usr/local/bin/python2',
         mode: 'text',
-        args: [req.body.pdf, req.body.media, req.body.courseID, req.body.lectureID]
+        args: [req.body.mediaURL, req.body.pdfURL, req.body.courseID, req.body.lectureID]
     };
+
     var pyshell = new PythonShell('./labeler/stdoutTest.py', options);
 
     // Listen to script's stdout, which outputs percentage of labeling complete.
@@ -42,10 +44,11 @@ router.route('/label').post(function(req, res) {
     // the progress of the labeling.
     pyshell.on('message', function (pythonStdout) {
         // received a message sent from the Python script (a simple "print" statement)
+        console.log(pythonStdout);
         var split = pythonStdout.split('#');
         //console.log('Python stdout: ' + split);
 
-        // If receiving progress update, upload the progress
+        // If receiving progress updateLectures, upload the progress
         if (split[0] === 'progress') {
             console.log('Updating lecture ' + split[2] + ' progress: ' + split[3]);
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({

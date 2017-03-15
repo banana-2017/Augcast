@@ -83,7 +83,6 @@ class PodcastView extends React.Component {
 
             // Create and store new listener so it can too be removed
             var that = this;
-            // console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
 
             var pdfRef = newRef.on('value', function(snapshot) {
@@ -127,15 +126,14 @@ class PodcastView extends React.Component {
 
             return (
                 <div className="content-panel">
-                    <div className="pdf-panel">
-                        {this.props.currentLecture != undefined
-                            && this.state.lectureInfo.slides_url != undefined ?
+                    {this.props.currentLecture != undefined && this.state.lectureInfo.slides_url != undefined ?
+                        <div className="pdf-panel">
                             <PDFDisplay
                                 onSkipToTime={this.handleSkipToTime}
                                 timestamps={this.state.lectureInfo.timestamps}
-                                pdfURL={this.state.lectureInfo.slides_url}/>
-                            : <div></div>}
-                    </div>
+                                pdfURL={this.state.lectureInfo.slides_url} />
+                        </div> :
+                        <div></div>}
                     <div className = "video-panel">
                         <VideoPlayer timestamp={this.state.timestamp} />
                     </div>
