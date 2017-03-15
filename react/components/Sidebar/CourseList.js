@@ -84,7 +84,6 @@ class CourseList extends React.Component {
             let visibleCourses = that.state.visibleCourses;
             for (var course in visibleCourses) {
                 if (instructorForArray.includes(visibleCourses[course])) {
-                    console.log(visibleCourses[course]);
                     that.moveToTop (visibleCourses[course]);
                 }
             }

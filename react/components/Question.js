@@ -93,5 +93,5 @@ class Question extends React.Component {
         );
     }
 }
-//<Button style={{margin:'10px'}} bsStyle="success" onClick={this.updateQuestionFromDB}><Glyphicon glyph="save" /> Update</Button>
+
 export default Question;

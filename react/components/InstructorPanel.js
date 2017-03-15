@@ -7,7 +7,7 @@ import { Layout, AppBar, NavDrawer, Navigation, Panel } from 'react-toolbox';
 import {Tab, Tabs} from 'react-toolbox';
 import {Button, IconButton} from 'react-toolbox/lib/button';
 import Dialog from 'material-ui/Dialog';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+
 
 import PendingER from './PendingER'
 import AppointInstructor from './AppointInstructor';
@@ -78,7 +78,8 @@ class InstructorPanel extends React.Component {
                     className="instructor-button"
                     tooltip="Open Instructor Panel"
                     tooltipPosition="right"
-                    onClick={()=>{that.setState({dialogActive: true})}} />
+                    onClick={()=>{that.setState({dialogActive: true})}}
+                />
             )
         }
     }

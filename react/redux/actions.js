@@ -9,6 +9,7 @@ export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 
 export const NAVIGATE_COURSE = 'NAVIGATE_COURSE';
 export const DISPLAY_LECTURE = 'DISPLAY_LECTURE';
+export const SKIP_TO_TIME = 'SKIP_TO_TIME';
 export const UPDATE_USER = 'UPDATE_USER';
 export const IS_INSTRUCTOR = 'IS_INSTRUCTOR';
 export const IS_FETCHING = 'IS_FETCHING';
@@ -91,6 +92,13 @@ export function displayLecture (currentCourse, currentLecture) {
         type: DISPLAY_LECTURE,
         currentCourse: currentCourse,
         currentLecture: currentLecture
+    };
+}
+
+export function skipToTime (currentTime) {
+    return {
+        type: SKIP_TO_TIME,
+        currentTime: currentTime
     };
 }
 

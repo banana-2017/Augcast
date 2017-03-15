@@ -1,10 +1,12 @@
 import React from 'react';
+import PDF from 'react-pdf-js';
 import { database } from './../../database/database_init';
 import { connect } from 'react-redux';
-import { displayLecture } from '../redux/actions';
+import { displayLecture, skipToTime } from '../redux/actions';
 import { browserHistory } from 'react-router';
 
 import ProgressBar from 'react-toolbox/lib/progress_bar';
+import TextField from 'material-ui/TextField';
 import {Card, CardActions, CardHeader, CardText, CardTitle, CardMedia} from 'material-ui/Card';
 
 import FlatButton from 'material-ui/FlatButton';
@@ -15,7 +17,11 @@ class PendingER extends React.Component {
 
         this.state = {
             lecturesTimestampERsArray: [],
-            dataRetrieved: false
+            dataRetrieved: false,
+            lectureInfo : {
+                timestamps: undefined,
+                pdf_url: undefined
+            },
         }
 
 
@@ -25,6 +31,7 @@ class PendingER extends React.Component {
         this.elaborationsObj = {};
         this.lecturesObj = {};
 
+        // Database query
         var that = this;
         database.ref('lectures/' + that.props.course.id).once('value').then(function(snapshot) {
             that.lecturesObj = snapshot.val();
@@ -42,6 +49,12 @@ class PendingER extends React.Component {
         this.ignoreER = this.ignoreER.bind(this);
     }
 
+    /*
+     * Fill the lecturesArray by unpacking the elaborationsObj and lecturesObj
+     * The structure of lecturesArray is:
+     * lecturesArray                 timestampsArray    ERsArray
+     * [{lecture: lectureObj, pdf: pdfUrl, timestamps: [{time: time, ERs: [ERs, ...]}, ...], ...]
+     */
     update() {
         let lecturesArray = [];
         for(let lecture_key in this.elaborationsObj) {
@@ -75,13 +88,18 @@ class PendingER extends React.Component {
         this.setState({lecturesTimestampERsArray: lecturesArray});
     }
 
-    navigateER(lecture) {
+    /*
+     * Jump to certain lecture and timestamp of certain ER
+     */
+    navigateER(lecture, timestamp) {
+        this.props.skipToTime(Number(timestamp));
         this.props.displayLecture(this.props.course, lecture);
         browserHistory.push('/' + this.props.course.id + '/' + lecture.num);
     }
 
-    // lecturesArray                 timestampsArray    ERsArray
-    // [{lecture: lectureObj, timestamps: [{time: time, ERs: [ERs, ...]}, ...], ...]
+    /*
+     * Ignore ER
+     */
     ignoreER(ER) {
         let ERsArray_temp = this.state.lecturesTimestampERsArray;
 
@@ -112,52 +130,68 @@ class PendingER extends React.Component {
     render() {
         var that = this;
 
-        let ERItem = function(ER, lecture) {
-            let author = ER.author;
-            let email = ER.email;
-            let content = ER.content;
+        let ERItem = function(ER, lecture, time) {
+            if(ER != null) {
+                let author = ER.author;
+                let email = ER.email;
+                let content = ER.content;
+                let timestamp = ER.timestamp_ref;
+                let slides_url = lecture.slides_url;
+                let timestamps = lecture.timestamps;
 
-            return (
-                <div key={content}>
-                    <Card>
-                        <CardHeader
-                            title={author}
-                            subtitle={email}
-                            actAsExpander={true}
-                            showExpandableButton={true}
-                        />
-                        <CardTitle title="Card title" subtitle="Card subtitle" />
-                        <CardText expandable={true}>
-                            {ER.content}
-                        </CardText>
-                        <CardActions>
-                            <FlatButton label="Detail" onClick={()=>{
-                                that.props.handleToggle();
-                                that.navigateER(lecture);
-                            }}/>
-                            <FlatButton label="Ignore" onClick={()=>{
-                                that.ignoreER(ER);
-                            }}/>
-                        </CardActions>
-                    </Card>
-                </div>
-            )
+                return (
+                    <div key={content}>
+                        <Card>
+                            <CardHeader
+                                title={"Asked by " + author}
+                                actAsExpander={true}
+                                showExpandableButton={true}
+                            />
+                            <CardText>
+                                {ER.content}
+                            </CardText>
+
+                            {timestamps != null ?
+                                (<CardMedia expandable={true}>
+                                    <PDF file={slides_url}
+                                         page={timestamps.indexOf(Number(time))}
+                                         scale={1}
+                                    />
+                                </CardMedia>) : null}
+
+                            <CardActions>
+                                <FlatButton label="Detail" onClick={() => {
+                                    that.props.handleToggle();
+                                    that.navigateER(lecture, timestamp);
+                                }}/>
+                                <FlatButton label="Ignore" onClick={() => {
+                                    that.ignoreER(ER);
+                                }}/>
+                            </CardActions>
+                        </Card>
+                    </div>
+                )
+            }
         };
 
         let timestampItem = function(timestamp, lecture) {
-            let time = timestamp.time;
-            let ERs = timestamp.ERs;
+            if(timestamp.ERs.length > 0) {
+                let time = timestamp.time;
+                let ERs = timestamp.ERs;
 
-            return (
-                <div key={time}>
-                    <p>{"At time " + time}</p>
-                    {ERs.map( function(x) { return ERItem(x, lecture) } )}
-                </div>
-            )
+                return (
+                    <div key={time}>
+                        <p>{"At time " + time}</p>
+                        {ERs.map(function (x) {
+                            return ERItem(x, lecture, time)
+                        })}
+                    </div>
+                )
+            }
         };
 
         let lectureItem = function (lecture) {
-            if(lecture != null) {
+            if(lecture.timestamps.length > 0) {
                 // lecture detail
                 let lectureObj = lecture.lecture;
                 let lectureId = lectureObj.id;
@@ -187,31 +221,18 @@ class PendingER extends React.Component {
     }
 }
 
-function mapStateToProps (state) {
-    return {
-        currentLecture:  state.currentLecture,
-        currentCourse: state.currentCourse
-    };
-}
-
 function mapDispatchToProps (dispatch) {
     return {
         displayLecture: (currentCourse, currentLecture) => {
             dispatch (displayLecture(currentCourse, currentLecture));
+        },
+        skipToTime: (currentTime) => {
+            dispatch (skipToTime(currentTime));
         }
-
     };
 }
 
-const PendingERContainer = connect (mapStateToProps, mapDispatchToProps)(PendingER);
+const PendingERContainer = connect (null, mapDispatchToProps)(PendingER);
 export default PendingERContainer;
 
-/*
- <CardMedia
- >
- slide page
- overlay title: CSE101 Week 5 day 1
- overlay subtitle: slide 1
- </CardMedia>
- */
 

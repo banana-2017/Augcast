@@ -3,7 +3,6 @@ import { database } from './../../database/database_init';
 
 import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
-import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
@@ -196,7 +195,7 @@ class AppointInstructor extends React.Component {
                     open={this.state.dialogActive}
                     onRequestClose={handleDialogHiding}
                 >
-                    {"Are you sure you want to remove instructor " + this.state.instructor.username}
+                    {"Are you sure you want to remove instructor " + this.state.instructor.username + " ?"}
                 </Dialog>
 
             </div>

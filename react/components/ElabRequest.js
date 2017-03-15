@@ -197,7 +197,8 @@ class ElabRequest extends React.Component {
         return (
           <div className="elab-container">
               <div className="elab-list">
-                  { this.state.dataRetrieved && this.state.requestID!=undefined ? this.state.requestID.map(this.displayQuestion) : <div className="elab-empty">No questions yet</div> }
+                  { this.state.dataRetrieved && this.state.requestID!=undefined ?
+                      this.state.requestID.map(this.displayQuestion) : <div className="elab-empty">No questions yet</div> }
               </div>
               <Question content={this.state.content}
                         handleEdit={this.handleEdit}
