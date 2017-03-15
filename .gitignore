@@ -18,3 +18,4 @@ script/*.json
 *.mp4
 *.pdf
 utility/input.json
+.idea/*

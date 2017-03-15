@@ -144,7 +144,8 @@ class UploadIconController extends React.Component {
         //Remove the database listener
         if (this.state.firebaseListener != undefined) {
             this.state.firebaseListener.off('value', this.state.firebaseCallback);
-        }    }
+        }
+    }
 
     render() {
 
