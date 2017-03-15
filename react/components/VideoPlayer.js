@@ -41,7 +41,6 @@ class VideoPlayer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('Recieving prop timestamp: ' + JSON.stringify(nextProps.timestamp));
         if (nextProps.timestamp != undefined) {
             this.refs.basicvideo.currentTime = nextProps.timestamp;
         }
@@ -106,7 +105,7 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
-        console.log(this.props);
+        //console.log(this.props);
         var course = this.props.currentCourse;
         var lecture = this.props.currentLecture;
         var video_url = lecture.video_url;
@@ -150,7 +149,8 @@ class VideoPlayer extends React.Component {
 function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
-        currentLecture: state.currentLecture
+        currentLecture: state.currentLecture,
+        currentTIme: state.currentTime
     };
 }
 

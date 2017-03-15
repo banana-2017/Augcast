@@ -345,6 +345,10 @@ li.lecture-item {
     background: lightblue;
 }
 
+.snackbar {
+    z-index:99
+}
+
 .sidebar-loading {
     width:100px;
     height:50px;
@@ -395,6 +399,16 @@ li.lecture-item {
     display: inline-block;
     vertical-align: top;
     background: darkgray;
+}
+
+.instructor-panel {
+	float: right;
+	width: 5%;
+	height: 100%;
+	line-height: inherit;
+	text-align: center;
+	display: table;
+	position: absolute;
 }
 
 

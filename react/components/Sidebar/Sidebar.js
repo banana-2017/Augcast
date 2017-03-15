@@ -40,7 +40,7 @@ class Sidebar extends React.Component {
         this.back = this.back.bind(this);
         this.selectCourse = this.selectCourse.bind(this);
 
-        // course slection variable
+        // course selection variable
         this.courses = undefined;
 
         // database query
