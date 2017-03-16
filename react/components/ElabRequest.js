@@ -36,6 +36,7 @@ class ElabRequest extends React.Component {
         this.editAnswer = this.editAnswer.bind(this);
         this.submitAnswer = this.submitAnswer.bind(this);
         this.removeAnswer = this.removeAnswer.bind(this);
+        this.removeQuestion = this.removeQuestion.bind(this);
         this.firebaseQuery = this.firebaseQuery.bind(this);
         //this.showEntireList = this.showEntireList.bind(this);
         //this.displayQuestion2 = this.displayQuestion2.bind(this);
@@ -136,7 +137,6 @@ class ElabRequest extends React.Component {
         };
         updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
-        //window.location.reload();
 
         // Firebase query once //
         this.firebaseQuery();
@@ -157,6 +157,7 @@ class ElabRequest extends React.Component {
         console.log('inputtedID in removeQuestion is :' + inputtedID);
         database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + inputtedID).remove();
         //window.location.reload();
+        this.firebaseQuery();
     }
 /*
     renderList(){
