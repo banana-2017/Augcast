@@ -20,6 +20,7 @@ class ElabRequest extends React.Component {
             a_username:'',
             endorsed:'',
             content: '',
+            draft: '',
             dataRetrieved: false,
             // Used to store all elab info from database
             allRequests: undefined,
@@ -122,6 +123,10 @@ class ElabRequest extends React.Component {
 
     // Update answer to database
     submitAnswer(inputtedID) {
+        if(this.state.draft==''){
+            alert('You did not write any answer!');
+            return;
+        }
         var updates = {};
         console.log('inputtedID is :' + inputtedID);
         var newPostKey = database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + inputtedID + '/' + 'answers').push().key;
