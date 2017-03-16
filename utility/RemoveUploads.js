@@ -17,7 +17,11 @@ admin.database().ref('/lectures/').on('value', function(snapshot) {
 
             var cur = curCourse[lec];
 
-            //console.log('on ' + cur.id + '\n');
+            // Skip the Goo-labeled slides
+            if (cur.id == 'cse101-b-0' ||
+                cur.id == 'cse101-b-1' ||
+                cur.id == 'cse101-b-2' ||
+                cur.id == 'cse101-b-3') continue;
 
             if (cur.labelProgress != undefined
                 || cur.slides_url != undefined || cur.timestamps != undefined) {
