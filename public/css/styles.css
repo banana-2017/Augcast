@@ -415,8 +415,16 @@ div.instructor-panel {
     flex-direction: column;
 }
 
-.instructor-panel {
-    bottom: 0;
+div.instructor-panel h6 {
+    flex: 1;
+    margin: 0;
+}
+
+.instructor-panel-tabs {
+    flex: 2;
+    margin-top: 10px;
+    height: 100%;
+    max-height: 100%;
 }
 
 div.instructor-appointment, div.pending-elabs {
