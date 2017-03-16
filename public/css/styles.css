@@ -55,14 +55,6 @@ button.login-button {
     height: 100%;
 }
 
-div.instructor-panel {
-    background: white;
-}
-
-div.instructor-panel .blank {
-    display: none;
-}
-
 .main {
     position: fixed;
     height: 100%;
@@ -401,14 +393,25 @@ li.lecture-item {
     background: darkgray;
 }
 
+div.instructor-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    top: 50%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
 .instructor-panel {
-	float: right;
-	width: 5%;
-	height: 100%;
-	line-height: inherit;
-	text-align: center;
-	display: table;
-	position: absolute;
+    bottom: 0;
+}
+
+div.instructor-appointment, div.pending-elabs {
+    height: 100%;
+    overflow: scroll;
 }
 
 

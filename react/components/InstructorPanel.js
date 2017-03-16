@@ -6,7 +6,7 @@ import Tooltip from 'react-toolbox/lib/tooltip';
 import { Layout, AppBar, NavDrawer, Navigation, Panel } from 'react-toolbox';
 import {Tab, Tabs} from 'react-toolbox';
 import {Button, IconButton} from 'react-toolbox/lib/button';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'react-toolbox/lib/dialog';
 
 
 import PendingER from './PendingER'
@@ -34,34 +34,24 @@ class InstructorPanel extends React.Component {
     render() {
         var that = this;
 
-        const contentStyle = {
-            width: '100%',
-            maxWidth: '1000px',
-            height: '100%',
-            maxHeight: '1000px',
-            top: '-200px'
-        };
-
         // If the instructor panel has been opened, display the dialog
         if(that.state.dialogActive) {
             return (
                 <div>
-                    <Dialog
-                        title="InstructorPanel"
-                        modal={false}
-                        open={this.state.dialogActive}
-                        autoScrollBodyContent={true}
-                        autoDetectWindowHeight={false}
-                        contentStyle={contentStyle}
-                        onRequestClose={this.handleToggle}
-                    >
-                        <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
+                    <Dialog title={this.props.course.dept + " " + this.props.course.num + " (" + this.props.course.section + "): Manage Course"}
+                            className="instructor-panel"
+                            modal={true}
+                            active={this.state.dialogActive}
+                            autoScrollBodyContent={true}
+                            autoDetectWindowHeight={false}
+                            onOverlayClick={this.handleToggle} >
+
+                        <Tabs className="instructor-panel-tabs" index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
                             <Tab label='Instructor Management'>
-                                <AppointInstructor
-                                    course={this.props.course} username={this.props.username} />
+                                <AppointInstructor className="tab-content"course={this.props.course} username={this.props.username} />
                             </Tab>
-                            <Tab label='Pending ERs'>
-                                <PendingER course={this.props.course} handleToggle={this.handleToggle}/>
+                            <Tab label='Pending Elaboration Requests'>
+                                <PendingER className="tab-content" course={this.props.course} handleToggle={this.handleToggle}/>
                             </Tab>
                         </Tabs>
 

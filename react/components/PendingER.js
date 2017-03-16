@@ -140,7 +140,7 @@ class PendingER extends React.Component {
                 let timestamps = lecture.timestamps;
 
                 return (
-                    <div key={content}>
+                    <div key={ER.id}>
                         <Card>
                             <CardHeader
                                 title={"Asked by " + author}

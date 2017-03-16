@@ -42,7 +42,7 @@ class CourseListItem extends React.Component {
                         className={(this.props.favorite) ? 'pinned': ' unpinned'}/>
                 </div>
 
-                <div className="instructor-panel">
+                <div className="instructor-button">
                     {this.props.instructorFor ? <InstructorPanel course={course}/> : null}
                 </div>
 

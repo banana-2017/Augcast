@@ -176,7 +176,7 @@ class AppointInstructor extends React.Component {
         ];
 
         return (
-            <div>
+            <div className="instructor-appointment">
                 <AutoComplete
                     floatingLabelText="Search for New Instructor"
                     filter={AutoComplete.fuzzyFilter}
