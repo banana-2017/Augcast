@@ -56,14 +56,6 @@ button.login-button {
     height: 100%;
 }
 
-div.instructor-panel {
-    background: white;
-}
-
-div.instructor-panel .blank {
-    display: none;
-}
-
 .main {
     position: fixed;
     height: 100%;
@@ -355,6 +347,10 @@ li.lecture-item {
     background: lightblue;
 }
 
+.snackbar {
+    z-index:99
+}
+
 .sidebar-loading {
     width:100px;
     height:50px;
@@ -394,6 +390,38 @@ li.lecture-item {
     float: right;
     width: 32px;
     height: 100%;
+}
+
+.content-panel {
+    padding: 0 10px;
+    width: 100%;
+    height: 100%;
+    left: 256px;
+    top: 0;
+    display: inline-block;
+    vertical-align: top;
+    background: darkgray;
+}
+
+div.instructor-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    top: 50%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.instructor-panel {
+    bottom: 0;
+}
+
+div.instructor-appointment, div.pending-elabs {
+    height: 100%;
+    overflow: scroll;
 }
 
 /******************************************************************************/

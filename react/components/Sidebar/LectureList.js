@@ -53,12 +53,14 @@ class DoneMark extends React.Component {
     }
 
     render() {
+        var that = this;
         return (
             <div className="slides-status">
                 <TooltipButton icon="done"
                                className="done-mark"
-                               tooltip="Slides sucessfully synced!"
-                               tooltipPosition="right"/>
+                               tooltip="Slides successfully synced!"
+                               tooltipPosition="right"
+                               onClick={() => {that.props.onClick(that.props.iconLecture);}}/>
             </div>
         );
     }
@@ -144,7 +146,8 @@ class UploadIconController extends React.Component {
         //Remove the database listener
         if (this.state.firebaseListener != undefined) {
             this.state.firebaseListener.off('value', this.state.firebaseCallback);
-        }    }
+        }
+    }
 
     render() {
 
@@ -155,7 +158,11 @@ class UploadIconController extends React.Component {
 
         // If there are timestamps in DB, display check mark
         if (this.state.lectureInfo.timestamps != undefined) {
-            return (<DoneMark/>);
+            return (
+                <DoneMark
+                    onClick={this.props.uploadButtonOnClick}
+                    iconLecture={this.props.iconLecture}/>
+            );
         }
 
         // If there is progress in the database, display a progress pie chart
@@ -354,7 +361,9 @@ class LectureList extends React.Component {
                         </div>
                     </div>
                 </Drawer>
-                <UploadContainer lecture={this.state.upload} open={this.state.modal} close={this.closeModal}/>
+                <UploadContainer username={this.props.username}
+                                 lecture={this.state.upload}
+                                 open={this.state.modal} close={this.closeModal}/>
             </div>
         );
     }
@@ -365,7 +374,8 @@ function mapStateToProps (state) {
     return {
         navCourse:  state.navCourse,
         currentLecture:  state.currentLecture,
-        currentCourse: state.currentCourse
+        currentCourse: state.currentCourse,
+        username: state.username
     };
 }
 
