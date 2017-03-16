@@ -45,7 +45,9 @@ router.route('/label').post(function(req, res) {
     pyshell.on('message', function (pythonStdout) {
         // received a message sent from the Python script (a simple "print" statement)
         console.log(pythonStdout);
-        var split = pythonStdout.split('#');
+        var arr = pythonStdout.split('#');
+        var split = arr.splice(0,3);
+        split.push(arr.join('#'));
         //console.log('Python stdout: ' + split);
 
         // If receiving progress update, upload the progress
