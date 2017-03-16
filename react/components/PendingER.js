@@ -6,7 +6,6 @@ import { displayLecture, skipToTime } from '../redux/actions';
 import { browserHistory } from 'react-router';
 
 import ProgressBar from 'react-toolbox/lib/progress_bar';
-import TextField from 'material-ui/TextField';
 import {Card, CardActions, CardHeader, CardText, CardTitle, CardMedia} from 'material-ui/Card';
 
 import FlatButton from 'material-ui/FlatButton';

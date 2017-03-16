@@ -34,10 +34,12 @@ class InstructorPanel extends React.Component {
     render() {
         var that = this;
 
+
         // If the instructor panel has been opened, display the dialog
         if(that.state.dialogActive) {
             return (
                 <div>
+
                     <Dialog title={this.props.course.dept + " " + this.props.course.num + " (" + this.props.course.section + "): Manage Course"}
                             className="instructor-panel"
                             modal={true}
@@ -56,7 +58,10 @@ class InstructorPanel extends React.Component {
                         </Tabs>
 
                     </Dialog>
+
+
                 </div>
+
             )
         }
 
@@ -83,3 +88,44 @@ function mapStateToProps(state) {
 
 const InstructorPanelContainer = connect (mapStateToProps, null)(InstructorPanel);
 export default InstructorPanelContainer;
+
+/*
+
+ <Dialog title={this.props.course.dept + " " + this.props.course.num + " (" + this.props.course.section + "): Manage Course"}
+ className="instructor-panel"
+ modal={true}
+ active={this.state.dialogActive}
+ autoScrollBodyContent={true}
+ autoDetectWindowHeight={false}
+ onOverlayClick={this.handleToggle} >
+
+ <Tabs className="instructor-panel-tabs" index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
+ <Tab label='Instructor Management'>
+ <AppointInstructor className="tab-content"course={this.props.course} username={this.props.username} />
+ </Tab>
+ <Tab label='Pending Elaboration Requests'>
+ <PendingER className="tab-content" course={this.props.course} handleToggle={this.handleToggle}/>
+ </Tab>
+ </Tabs>
+
+ </Dialog>
+
+ <Dialog title={this.props.course.dept + " " + this.props.course.num + " (" + this.props.course.section + "): Manage Course"}
+ className="instructor-panel"
+ modal={false}
+ open={this.state.dialogActive}
+ autoScrollBodyContent={true}
+ autoDetectWindowHeight={false}
+ onRequestClose={this.handleToggle}
+ >
+ <Tabs index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
+ <Tab label='Instructor Management'>
+ <AppointInstructor
+ course={this.props.course} username={this.props.username} />
+ </Tab>
+ <Tab label='Pending ERs'>
+ <PendingER course={this.props.course} handleToggle={this.handleToggle}/>
+ </Tab>
+ </Tabs>
+ </Dialog>
+ */
