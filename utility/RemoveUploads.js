@@ -1,15 +1,14 @@
-var admin = require("firebase-admin");
-var serviceAccount = require("../database/serviceAccountKey.json");
+var admin = require('firebase-admin');
+var serviceAccount = require('../database/serviceAccountKey.json');
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://augcast-465ef.firebaseio.com"
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: 'https://augcast-465ef.firebaseio.com'
 });
 
 // Remove all uploaded content across all lectures
-admin.database().ref('/lectures/').on("value", function(snapshot) {
+admin.database().ref('/lectures/').on('value', function(snapshot) {
     var lectures = snapshot.val();
-    var that = this;
     for (var course in lectures) {
 
         var curCourse = lectures[course];
@@ -18,7 +17,11 @@ admin.database().ref('/lectures/').on("value", function(snapshot) {
 
             var cur = curCourse[lec];
 
-            //console.log('on ' + cur.id + '\n');
+            // Skip the Goo-labeled slides
+            if (cur.id == 'cse101-b-0' ||
+                cur.id == 'cse101-b-1' ||
+                cur.id == 'cse101-b-2' ||
+                cur.id == 'cse101-b-3') continue;
 
             if (cur.labelProgress != undefined
                 || cur.slides_url != undefined || cur.timestamps != undefined) {
@@ -31,8 +34,8 @@ admin.database().ref('/lectures/').on("value", function(snapshot) {
     }
 
     admin.database().ref('/lectures/').update(lectures);
-//    process.exit();
+    //    process.exit();
 
 }, function (errorObject) {
-  console.log("The read failed: " + errorObject.code);
+    console.log('The read failed: ' + errorObject.code);
 });

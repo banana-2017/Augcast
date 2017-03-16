@@ -10,20 +10,20 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { database } from './../../../database/database_init';
 
 // ui components
-import ActionCached from 'material-ui/svg-icons/action/cached';
 import Button from 'react-toolbox/lib/button';
 import Drawer from 'material-ui/Drawer';
 import FA from 'react-fontawesome';
-import IconButton from 'material-ui/IconButton';
-// import Tooltip from 'react-toolbox/lib/tooltip';
+import Tooltip from 'react-toolbox/lib/tooltip';
 import {MenuItem} from 'react-toolbox/lib/menu';
+import SearchResultList from './SearchResultList';
 
 //import PodcastView from '../PodcastView.js';
 import { displayLecture } from '../../redux/actions';
+import Fuse from 'fuse.js';
 
 injectTapEventPlugin();
 
-// const TooltipButton = Tooltip(Button);
+const TooltipButton = Tooltip(Button);
 
 class UploadButton extends React.Component {
     constructor(props) {
@@ -37,8 +37,11 @@ class UploadButton extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-            <Button icon='cloud_upload' className="upload-button"
-                    onClick={() => {that.props.onClick(that.props.iconLecture);}} />
+                <TooltipButton icon='cloud_upload'
+                               className="upload-button"
+                               tooltip="Upload slides for this lecture"
+                               tooltipPosition="right"
+                               onClick={() => {that.props.onClick(that.props.iconLecture);}} />
             </div>
         );
     }
@@ -52,7 +55,10 @@ class DoneMark extends React.Component {
     render() {
         return (
             <div className="slides-status">
-                <Button icon="done" />
+                <TooltipButton icon="done"
+                               className="done-mark"
+                               tooltip="Slides sucessfully synced!"
+                               tooltipPosition="right"/>
             </div>
         );
     }
@@ -67,20 +73,20 @@ class LabelingProgressChart extends React.Component {
         var that = this;
         return (
             <div className="slides-status">
-                <IconButton
-                    tooltip={'Progress: ' + that.props.progress}
-                    onTouchTap={() => {that.props.onClick(that.props.iconLecture);}}>
-                    <ActionCached />
-                </IconButton>
+                <TooltipButton icon='cached'
+                               className="upload-button"
+                               tooltip={'Progress: ' + that.props.progress + '%'}
+                               tooltipPosition="right"
+                               onClick={() => {that.props.onClick(that.props.iconLecture);}} />
             </div>
         );
     }
 }
 
 class UploadIconController extends React.Component {
+
     constructor(props) {
         super(props);
-
         this.state = {};
     }
 
@@ -92,7 +98,6 @@ class UploadIconController extends React.Component {
 
         if (course != undefined && lecture != undefined) {
 
-            // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
             var ref = database.ref('/lectures/' + course.id + '/' + lecture.id);
 
             // Listen to changes at ref's location in db
@@ -108,7 +113,6 @@ class UploadIconController extends React.Component {
             });
 
         }
-        console.log('controller mounted');
     }
 
     componentWillReceiveProps(newProps) {
@@ -179,8 +183,13 @@ class LectureList extends React.Component {
 
         // Initial state
         this.state = {
+            render: (this.props.currentLecture) ? this.props.currentLecture.id : undefined,
+            lectures: [],
             upload: undefined,
             modal: false,
+            visibleLectures: [],
+            resultArray: [],
+            query: ''
         };
 
         // decide if week has changed in randering lecture list
@@ -188,6 +197,7 @@ class LectureList extends React.Component {
 
         // inherit all course data
         this.course = this.props.navCourse;
+        this.searchInput = this.searchInput.bind(this);
 
         // helper object
         this.calendar = {
@@ -199,7 +209,35 @@ class LectureList extends React.Component {
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+    }
 
+    componentDidMount () {
+
+        let course = this.props.navCourse.id;
+        var that = this;
+
+        this.setState ({visibleLectures: this.props.navCourse.lectures});
+
+        // getting array of lectures of this course
+        database.ref('/lectures/' + course).once('value').then(function(snapshot) {
+            let lectureList = snapshot.val();
+            let searchData = [];
+
+            for (var lecture  in lectureList) {
+                var i = 0;
+                for (var slide in lectureList[lecture].contents) {
+                    searchData.push ({
+                        index: i,
+                        lectureId: lecture,
+                        slide: slide,
+                        contents: lectureList[lecture].contents[slide]
+                    });
+                    i++;
+                }
+            }
+
+            that.setState ({lectures: searchData});
+        });
     }
 
     selectLecture(lecture) {
@@ -207,8 +245,53 @@ class LectureList extends React.Component {
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
     }
 
+    searchInput (e) {
+        let query = e.target.value;
+
+        if (query === '') {
+            this.setState ({ visibleLectures: this.props.navCourse.lectures, resultArray: []});
+            return;
+        }
+        var options = {
+            include: ['matches'],
+            shouldSort: true,
+            threshold: 0.2,
+            minMatchCharLength: 1,
+            keys: ['contents']
+        };
+
+        var fuse = new Fuse(this.state.lectures, options);
+        var result = fuse.search(query);
+
+        let visibleLectures = [];
+        let resultArray = {};
+
+        // for every result
+        for (var lecture in result) {
+
+            // let match = result[lecture];
+            // if a new lecture, push ro visiblelectures and create a new object in resultArray
+            if (visibleLectures.indexOf(result[lecture].item.lectureId) < 0) {
+                visibleLectures.push (result[lecture].item.lectureId);
+                resultArray[result[lecture].item.lectureId] = [];
+            }
+
+            // storing the search results(object and matches) in an object
+            resultArray[result[lecture].item.lectureId].push (
+                result[lecture]
+            );
+        }
+
+        this.setState (
+            {visibleLectures: visibleLectures,
+                resultArray: resultArray,
+                query: query});
+
+        this.week = null;
+        return result;
+    }
+
     openModal(lecture) {
-        console.log(lecture);
         this.setState({upload: lecture, modal: true});
     }
 
@@ -231,10 +314,9 @@ class LectureList extends React.Component {
             }
 
             return (
-                <div className="lecture-wrapper">
+                <div className="lecture-wrapper" key={lecture.id}>
                     {weekSeparator}
-                    <MenuItem key={lecture.id}
-                        className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
+                    <MenuItem className={(that.props.currentLecture && lecture.id == that.props.currentLecture.id) ? 'lecture-item selected' : 'lecture-item'}>
                         <div className="lecture-button" onClick={() => {that.selectLecture(lecture);}}>
                             <div className="lecture-calendar">
                                 <div className="lecture-month">{month}</div>
@@ -246,6 +328,7 @@ class LectureList extends React.Component {
                         </div>
                         <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                     </MenuItem>
+                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} lecture={lecture}/>
                 </div>
             );
         };
@@ -266,7 +349,7 @@ class LectureList extends React.Component {
                     </div>
                     <div className="lectures-wrapper">
                         <div className="lecture-list">
-                            {that.props.navCourse.lectures.map(listItem)}
+                            {that.state.visibleLectures.map(listItem)}
                         </div>
                     </div>
                 </Drawer>
@@ -280,7 +363,8 @@ class LectureList extends React.Component {
 function mapStateToProps (state) {
     return {
         navCourse:  state.navCourse,
-        currentLecture:  state.currentLecture
+        currentLecture:  state.currentLecture,
+        currentCourse: state.currentCourse
     };
 }
 
@@ -289,6 +373,7 @@ function mapDispatchToProps (dispatch) {
         displayLecture: (currentCourse, currentLecture) => {
             dispatch (displayLecture(currentCourse, currentLecture));
         }
+
     };
 }
 

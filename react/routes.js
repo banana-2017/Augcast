@@ -8,24 +8,24 @@ import PDFDisplay from './components/PDFDisplay';
 import Test from './components/Test';
 import Sidebar from './components/Sidebar/Sidebar';
 import {authenticate} from './index';
-
+import InstructorPanel from './components/InstructorPanel';
+import NotFound from './components/NotFound';
 
 // eslint-disable-next-line
 import React from 'react';      // used for jsx
 
-
-
 module.exports = (
     <Route path="/" component = {App} >
-        // <IndexRoute component = {HomeContainer} onEnter={authenticate} ></IndexRoute>
-        <IndexRoute component = {HomeContainer} ></IndexRoute>
+        <IndexRoute component = {HomeContainer} /*onEnter={authenticate}*//>
         <Route path="/login" component = {Login}/>
         <Route path="/podcastview" component={PodcastView} />
         <Route path="/upload" component = {Upload}/>
         <Route path="/pdf" component={PDFDisplay} />
         <Route path="/test" component={Test} />
         <Route path="/sidebar" component={Sidebar} />
+        <Route path="/404" component={NotFound} />
         <Route path="/pdfdisplay" component={PDFDisplay} />
+        <Route path="/instructor" component={InstructorPanel} />
         <Route path="/:courseID" component={HomeContainer}>
             <Route path="/:courseID/:lectureNum" component={HomeContainer} />
         </Route>

@@ -14,7 +14,7 @@ import FA from 'react-fontawesome';
 import {database} from '../../../database/database_init';
 
 // custom react components
-import  CourseListItem from './CourseListItem';
+import CourseListItem from './CourseListItem';
 
 
 class CourseList extends React.Component {
@@ -33,7 +33,7 @@ class CourseList extends React.Component {
         this.pushToFavorites = this.pushToFavorites.bind (this);
         this.removeFromFavorites = this.removeFromFavorites.bind(this);
 
-        // lecture slection variable
+        // lecture selection variable
         this.dataArray = [];
 
         // inherit all course data
@@ -50,7 +50,7 @@ class CourseList extends React.Component {
         }
     }
 
-    componentWillMount () {
+    componentDidMount () {
         // get the favorites array, set state for pinned courses
         var that = this;
 
@@ -83,6 +83,8 @@ class CourseList extends React.Component {
             minMatchCharLength: 1,
             keys: ['course', 'professor', 'subject']
         };
+
+        console.log ('searching in courselist');
 
         var fuse = new Fuse(this.dataArray, options);
         var result = fuse.search(query);
@@ -122,7 +124,7 @@ class CourseList extends React.Component {
 
         updates['/users/' + this.props.username + '/favorites'] = favoriteArray;
         this.setState({favoriteArray: favoriteArray});
-        database.ref().update(updates);
+        database.ref().updateLectures(updates);
     }
 
 
@@ -138,7 +140,7 @@ class CourseList extends React.Component {
 
         updates['/users/' + this.props.username + '/favorites'] = favoriteArray;
         this.setState({favoriteArray: favoriteArray});
-        database.ref().update(updates);
+        database.ref().updateLectures(updates);
     }
 
     // moves pinned courses to the top
