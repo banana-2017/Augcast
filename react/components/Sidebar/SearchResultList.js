@@ -8,6 +8,7 @@ class SearchResultList extends React.Component {
 
     render () {
         var {resultList} = this.props;
+
         var listItem = function (result) {
 
             let {slide, contents} = result.item;
@@ -21,7 +22,6 @@ class SearchResultList extends React.Component {
                 queryStartIndex = 0;
             }
 
-            console.log (queryStartIndex, queryEndIndex);
             // creating prefix
             let prefix = contents.substring (queryStartIndex-50, queryStartIndex);
 
@@ -31,6 +31,7 @@ class SearchResultList extends React.Component {
 
             let queryMatch = contents.substring (queryStartIndex, queryEndIndex);
 
+            // creating suffix
             let suffixEnd = queryEndIndex + 80;
             let sentenceEnd = contents.indexOf ('.', queryEndIndex + 1) + 1;
             if (sentenceEnd > 0) {

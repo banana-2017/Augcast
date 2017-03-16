@@ -29,13 +29,9 @@ class CurrentQuestion extends React.Component {
         var index = rawIndex[filler];
         return(
             <div className="elaboration-oneAnswer" key={index}>
-                <div className="elaboration-oneAnswer-text">{answerText} ----- Posted By {owner}</div>
-                <form>
-                    {owner==this.props.user&&
-                    <a onClick={() => {this.props.removeAnswer(inputtedID, index);}}>
-                        Delete
-                    </a>}
-                </form>
+                <div className="elaboration-oneAnswer-text">
+                    {answerText} (post by {owner}) {owner==this.props.user && <a className="elab-delete" onClick={() => {this.props.removeAnswer(inputtedID, index);}}>Delete</a>}
+                </div>
             </div>
         );
     }

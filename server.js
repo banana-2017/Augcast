@@ -28,25 +28,40 @@ router.get('/', function(req, res) {
 });
 
 router.route('/label').post(function(req, res) {
-    // Create a new Python thread and run labeling script
-    var PythonShell = require('python-shell');
-    // Configure the python script's arguments
-    var options = {
-        pythonPath: '/usr/local/bin/python2',
-        mode: 'text',
-        args: [req.body.mediaURL, req.body.pdfURL, req.body.courseID, req.body.lectureID]
-    };
 
-    var pyshell = new PythonShell('./labeler/stdoutTest.py', options);
 
-    // Listen to script's stdout, which outputs percentage of labeling complete.
-    // Whenever updated, upload progress to Firebase so frontend can display
-    // the progress of the labeling.
-    pyshell.on('message', function (pythonStdout) {
-        // received a message sent from the Python script (a simple "print" statement)
+    var spawn = require('child_process').spawn;
+    var process = spawn('python3',
+        ['./labeler/stdoutTest.py',
+            req.body.mediaURL,
+            req.body.pdfURL,
+            req.body.courseID,
+            req.body.lectureID]);
+
+    process.stdout.on('data', function(buffer) {
+        var pythonStdout = buffer.toString();
         console.log(pythonStdout);
-        var split = pythonStdout.split('#');
+        var arr = pythonStdout.split('#');
+        var split = arr.splice(0,3);
+        split.push(arr.join('#'));
         //console.log('Python stdout: ' + split);
+
+        // If receiving progress updateLectures, upload the progress
+        if (split[0] === 'mismatch') {
+            console.log('Updating lecture ' + split[2] + ' mismatch: ' + split[3]);
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
+                labelProgress: 0
+            });
+        }
+
+        // If receiving progress updateLectures, upload the progress
+        if (split[0] === 'audio') {
+            console.log('Updating lecture ' + split[2] + ' audio: ' + split[3]);
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
+                labelProgress: 0
+            });
+        }
+
 
         // If receiving progress updateLectures, upload the progress
         if (split[0] === 'progress') {
@@ -73,11 +88,9 @@ router.route('/label').post(function(req, res) {
         }
     });
 
-    // When the script's stdout is closed, the script has finished.
-    // Set the progress to 100, signifying completion.
-    pyshell.end(function (err) {
-        if (err) throw err;
-        console.log('Finished python script');
+    process.stderr.on('data', function(buffer) {
+        console.log('CAUGHT ERROR ');
+        console.log(buffer.toString());
     });
 
     // Send response to button press (not important what that is)
