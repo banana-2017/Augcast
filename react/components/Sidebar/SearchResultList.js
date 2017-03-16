@@ -10,17 +10,26 @@ class SearchResultList extends React.Component {
         this.searchResultClicked = this.searchResultClicked.bind (this);
     }
 
-    searchResultClicked () {
+    /**
+     * updates redux state with
+     * 1. all slides of the lecture that matched
+     * 2. exact slide that was clicked
+     *
+     * also calls selectLecture to update PodcastView (check selectLecture in
+     * LectureList)
+     */
+    searchResultClicked (slide) {
         let {updateSearchSlides, selectLecture, resultList} = this.props;
         let matchedSlides = [];
 
+        // getting all matched slides
         for (var item in resultList) {
             let result = resultList[item];
             console.log (result);
             matchedSlides.push (result.item.slide);
         }
 
-        updateSearchSlides(matchedSlides);
+        updateSearchSlides(matchedSlides, slide);
 
         // change the podcast view;
         selectLecture();
@@ -62,7 +71,7 @@ class SearchResultList extends React.Component {
 
 
             return (
-                <MenuItem onClick={that.searchResultClicked} className="match-result" key={slide}>
+                <MenuItem onClick={() => {that.searchResultClicked(slide);}} className="match-result" key={slide}>
                     <div className="match-slide">Slide {slide}</div>
                     <div className="match-text">
                         {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
@@ -85,8 +94,8 @@ class SearchResultList extends React.Component {
 
 function mapDispatchToProps (dispatch) {
     return {
-        updateSearchSlides: (slides) => {
-            dispatch (updateSearchSlides(slides));
+        updateSearchSlides: (slides, slide) => {
+            dispatch (updateSearchSlides(slides, slide));
         }
     };
 }

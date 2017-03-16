@@ -6,6 +6,8 @@ import { DISPLAY_LECTURE, LOG_OUT, LOG_IN_SUCCESS,LOG_IN_FAILURE,
 * state of the app
 * loggedIn: true if user is logged in, false otherwise
 * currentCourse: ID of the course currently selected
+* slides: all matched slides of the lecture
+* slide: the slide that was clicked in the search results
 */
 const initialState = {
     isFetching: false,
@@ -15,7 +17,8 @@ const initialState = {
     currentLecture: undefined,
     userType: 'STUDENT',
     username: undefined,
-    searchSlides: []
+    searchSlides: [],
+    jumpSlide: undefined
 };
 
 
@@ -88,7 +91,8 @@ function appReducers (state, action) {
 
     case UPDATE_SEARCH_SLIDES: {
         return Object.assign ({}, state, {
-            searchSlides: action.slides
+            searchSlides: action.slides,
+            jumpSlide: action.slide
         });
     }
 

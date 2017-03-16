@@ -102,10 +102,13 @@ export function updateUser (username) {
     };
 }
 
-export function updateSearchSlides (slides) {
+export function updateSearchSlides (slides, slide) {
+    // slides: all matched slides of the lecture
+    // slide: the slide that was clicked
     return {
         type: UPDATE_SEARCH_SLIDES,
-        slides: slides
+        slides: slides,
+        slide: slide
     };
 }
 
