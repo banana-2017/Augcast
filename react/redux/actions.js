@@ -8,6 +8,7 @@ export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 
 export const NAVIGATE_COURSE = 'NAVIGATE_COURSE';
+export const UPDATE_SEARCH_SLIDES = 'UPDATE_SEARCH_SLIDES';
 export const DISPLAY_LECTURE = 'DISPLAY_LECTURE';
 export const UPDATE_USER = 'UPDATE_USER';
 export const IS_INSTRUCTOR = 'IS_INSTRUCTOR';
@@ -98,6 +99,13 @@ export function updateUser (username) {
     return {
         type: UPDATE_USER,
         username: username
+    };
+}
+
+export function updateSearchSlides (slides) {
+    return {
+        type: UPDATE_SEARCH_SLIDES,
+        slides: slides
     };
 }
 

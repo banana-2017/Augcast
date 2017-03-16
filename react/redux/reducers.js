@@ -1,5 +1,6 @@
 import { DISPLAY_LECTURE, LOG_OUT, LOG_IN_SUCCESS,LOG_IN_FAILURE,
-         LOG_IN_REQUEST, NAVIGATE_COURSE, IS_INSTRUCTOR, UPDATE_USER } from './actions';
+         LOG_IN_REQUEST, NAVIGATE_COURSE, IS_INSTRUCTOR, UPDATE_USER,
+         UPDATE_SEARCH_SLIDES} from './actions';
 
 /**
 * state of the app
@@ -14,6 +15,7 @@ const initialState = {
     currentLecture: undefined,
     userType: 'STUDENT',
     username: undefined,
+    searchSlides: []
 };
 
 
@@ -84,6 +86,11 @@ function appReducers (state, action) {
         });
     }
 
+    case UPDATE_SEARCH_SLIDES: {
+        return Object.assign ({}, state, {
+            searchSlides: action.slides
+        });
+    }
 
     }
 
