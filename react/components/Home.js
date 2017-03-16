@@ -36,9 +36,7 @@ class Home extends React.Component {
                 <SidebarContainer courseID={this.props.params.courseID}
                                   lectureNum={this.props.params.lectureNum}
                                   selectLecture={this.selectLecture} />
-                <div className="main">
-                    {main}
-                </div>
+                <div className="main">{main}</div>
             </div>
         );
     }
