@@ -96,6 +96,17 @@ class PodcastView extends React.Component {
                 firebaseCallback: pdfRef
             });
         }
+
+        // getting lectureInfo and timestamp from the state
+        let {lectureInfo, timestamp} = this.state;
+
+        if (newProps.jumpSlide !== undefined) {
+            if (timestamp !== lectureInfo.timestamps[newProps.jumpSlide]) {
+                this.setState ({
+                    timestamp: lectureInfo.timestamps[newProps.jumpSlide]
+                });
+            }
+        }
     }
 
     // Destructor, removes database listener when component is unmounted
@@ -143,7 +154,8 @@ class PodcastView extends React.Component {
 function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
-        currentLecture: state.currentLecture
+        currentLecture: state.currentLecture,
+        jumpSlide: state.jumpSlide
     };
 }
 
