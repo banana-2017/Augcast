@@ -5,6 +5,7 @@
     --search-bar-bg: #685741;
     --pinned: #fed602;
     --week-bg: rgba(124, 91, 28, 0.74);
+    --input-text-highlight-color: #603D1E;
 }
 
 .lecture-list {

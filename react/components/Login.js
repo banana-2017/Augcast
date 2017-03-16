@@ -9,7 +9,6 @@ import Input from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
 import { Card, CardTitle } from 'react-toolbox/lib/card';
 
-
 class Login extends React.Component {
 
     constructor (props) {
@@ -64,7 +63,9 @@ class Login extends React.Component {
                         <Input className="email-input" type="email" label="Your UCSD Email" icon="email" value={this.state.email} onChange={this.emailChange} />
                         <Input className="password-input" type="password" label="Password" icon="vpn_key" value={this.state.password} onChange={this.passwordChange} />
                     </div>
-                    <Button className="login-button" label="LOG IN" flat primary onClick={this.authenticate}/>
+                    <Button className="login-button"
+                            label="LOG IN" flat primary
+                            onClick={this.authenticate}/>
                 </div>
             </div>
         );

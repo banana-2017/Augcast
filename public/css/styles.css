@@ -24,7 +24,7 @@ div.login-title {
     height: 100px;
     background-size: 100%;
     background-position: center;
-    background: url('/logo.svg') no-repeat center center;
+    background: url('/img/logo.svg') no-repeat center center;
     margin: 0 auto;
 }
 
