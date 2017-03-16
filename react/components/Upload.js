@@ -102,7 +102,7 @@ class FileUploader extends React.Component {
     callLabelAPI(url) {
         var that = this;
 
-        fetch('http://localhost:8080/api/label', {
+        fetch('http://34.206.125.227/api/label', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
