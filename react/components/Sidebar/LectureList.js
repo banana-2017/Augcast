@@ -236,9 +236,11 @@ class LectureList extends React.Component {
                 }
             }
 
+            // lectures is an array of objects defined as above
             that.setState ({lectures: searchData});
         });
     }
+
 
     selectLecture(lecture) {
         this.props.displayLecture(this.course, lecture);
@@ -261,17 +263,19 @@ class LectureList extends React.Component {
         };
 
         var fuse = new Fuse(this.state.lectures, options);
+
+        // result is an array of objects
         var result = fuse.search(query);
-        console.log (result.length)
 
         let visibleLectures = [];
-        let resultArray = {};
+        let resultArray = {};   
 
         // for every result
         for (var lecture in result) {
 
-            // let match = result[lecture];
-            // if a new lecture, push ro visiblelectures and create a new object in resultArray
+            // note: an element in result has a .item as well as a .matches
+
+            // if a new lecture, push to visiblelectures and create a new object in resultArray
             if (visibleLectures.indexOf(result[lecture].item.lectureId) < 0) {
                 visibleLectures.push (result[lecture].item.lectureId);
                 resultArray[result[lecture].item.lectureId] = [];
