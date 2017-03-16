@@ -12,15 +12,15 @@ import CourseListContainer from './CourseList.js';
 import LectureListContainer from './LectureList.js';
 import { MenuItem } from 'react-toolbox/lib/menu';
 
-class InstructorEntrance extends React.Component {
+class Logout extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <MenuItem className="instructor-entrance">
-                <Link to="/instructor">Instructor Entrance</Link>
+            <MenuItem className="logout-button">
+                Logout
             </MenuItem>
         );
     }
@@ -116,9 +116,9 @@ class Sidebar extends React.Component {
                 <div className="sidebar">
                     {this.props.navCourse ? <LectureListContainer back={this.back} lectures={this.lectures} />
                                           : <CourseListContainer courses={this.courses} selectCourse={this.selectCourse} />}
+                    <Logout />
                 </div>
             );
-                    // <InstructorEntrance />
         }
     }
 

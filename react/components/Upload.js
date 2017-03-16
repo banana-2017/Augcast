@@ -2,9 +2,9 @@
 // Responsible for uploading the PDF
 
 import React from 'react';
-import Dialog from 'react-toolbox/lib/Dialog';
+import Dialog from 'react-toolbox/lib/dialog';
 import { connect } from 'react-redux';
-import Button from 'react-toolbox/lib/Button';
+import Button from 'react-toolbox/lib/button';
 import { firebaseApp, storageRef, database } from './../../database/database_init';
 import { ProgressBar, Glyphicon } from 'react-bootstrap';
 
