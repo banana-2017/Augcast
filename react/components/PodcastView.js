@@ -46,6 +46,14 @@ class PodcastView extends React.Component {
             var pdfRef = ref.on('value', function(snapshot) {
                 that.setState({
                     lectureInfo: snapshot.val()
+                },
+                function () {
+                    let {lectureInfo} = that.state;
+                    if (that.props.jumpSlide !== undefined) {
+                        that.setState ({
+                            timestamp: lectureInfo.timestamps[that.props.jumpSlide]
+                        });
+                    }
                 });
             });
 
@@ -54,11 +62,13 @@ class PodcastView extends React.Component {
                 firebaseCallback: pdfRef
             });
 
+
         } else {
             this.setState({
                 firstRender: true
             });
         }
+
     }
 
     // This method is called whenever the props are updated (i.e. a new lecture is selected in Sidebar)
@@ -98,14 +108,12 @@ class PodcastView extends React.Component {
         }
 
         // getting lectureInfo and timestamp from the state
-        let {lectureInfo, timestamp} = this.state;
+        let {lectureInfo} = this.state;
 
         if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
-            if (timestamp !== lectureInfo.timestamps[newProps.jumpSlide]) {
-                this.setState ({
-                    timestamp: lectureInfo.timestamps[newProps.jumpSlide]
-                });
-            }
+            this.setState ({
+                timestamp: lectureInfo.timestamps[newProps.jumpSlide]
+            });
         }
     }
 
