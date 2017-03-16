@@ -123,6 +123,11 @@ div.instructor-panel .blank {
     z-index: 2;
 }
 
+.search-box:focus {
+    box-shadow: none;
+    outline: 0 none;
+}
+
 .search-icon {
     position: absolute;
     display: table;
@@ -170,6 +175,10 @@ div.instructor-panel .blank {
 /* Firefox 18- */
 .search-box:-moz-placeholder {
     color: lightgray;
+}
+
+.back-button {
+    cursor: pointer;
 }
 
 /* course list */
@@ -386,18 +395,6 @@ li.lecture-item {
     height: 100%;
 }
 
-.content-panel {
-    padding: 0 10px;
-    width: 100%;
-    height: 100%;
-    left: 256px;
-    top: 0;
-    display: inline-block;
-    vertical-align: top;
-    background: darkgray;
-}
-
-
 /******************************************************************************/
 /*************************    SLIDE SEARCH RESULTS    *************************/
 /******************************************************************************/
@@ -434,6 +431,27 @@ li.match-result > span {
     color: red;
 }
 
+.end-of-line {
+    margin: 10px;
+    text-align: center;
+    color: gray;
+    font-weight: 100;
+    font-style: italic;
+}
+
+
+.content-panel {
+    padding: 0 10px;
+    width: 100%;
+    height: 100%;
+    left: 256px;
+    top: 0;
+    display: inline-block;
+    vertical-align: top;
+    background: darkgray;
+}
+
+
 /* pdf panel */
 
 .pdf-panel {
@@ -452,9 +470,11 @@ li.match-result > span {
 }
 
 .pdf-page {
+    width: calc(100% - 10px);
     position: relative;
     margin: 10px;
     margin-left: 0;
+    min-height: 50px;
     cursor: pointer;
     display: table;
     text-align: center;

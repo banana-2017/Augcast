@@ -341,7 +341,7 @@ class LectureList extends React.Component {
             <div className="sidebar">
                 <Drawer className="sidebar-drawer">
                     <div className="search-bar">
-                        <div className="search-icon"><FA name='arrow-left' onClick={that.props.back}/></div>
+                        <div className="search-icon"><FA className="back-button" name='arrow-left' onClick={that.props.back}/></div>
                         <FormControl type="text"
                                      placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
                                      onChange={this.searchInput}
@@ -350,6 +350,7 @@ class LectureList extends React.Component {
                     <div className="lectures-wrapper">
                         <div className="lecture-list">
                             {that.state.visibleLectures.map(listItem)}
+                            <div className="end-of-line">end of results</div>
                         </div>
                     </div>
                 </Drawer>

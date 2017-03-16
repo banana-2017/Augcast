@@ -2,10 +2,11 @@
 // Responsible for uploading the PDF
 
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'react-toolbox/lib/Dialog';
 import { connect } from 'react-redux';
+import Button from 'react-toolbox/lib/Button';
 import { firebaseApp, storageRef, database } from './../../database/database_init';
-import { ProgressBar, Button, Glyphicon } from 'react-bootstrap';
+import { ProgressBar, Glyphicon } from 'react-bootstrap';
 
 
 class FileUploader extends React.Component {
@@ -138,38 +139,18 @@ class FileUploader extends React.Component {
                     Upload the PDF here for the system to automatically generate
                     timestamps for each slide!
                 </p>
-                <form
-                    ref='inputForm'>
-                <input
-                    ref='inputBox'
-                    type='file'
-                    style={{margin:'10px'}}
-                    accept='application/pdf'/>
-                <Button
-                    bsStyle="default"
-                    bsSize="small"
-                    disabled={this.state.uploadProgress >= 0}
-                    style={{margin:'10px'}}
-                    onClick={this.props.handleClose}>
-                        Close
-                </Button>
-                <Button
-                    bsStyle="warning"
-                    bsSize="small"
-                    style={{margin:'10px'}}
-                    disabled={this.state.uploadProgress >= 0}
-                    onClick={this.handleClear}>
-                        Clear selection
-                </Button>
-                <Button
-                    bsStyle="success"
-                    bsSize="small"
-                    style={{margin:'10px'}}
-                    onClick={this.handleFile}>
-                        <Glyphicon glyph="cloud-upload" />
-                        Upload
-                </Button>
-                </form>
+                <input className='pdf-upload'
+                       type='file'
+                       style={{margin:'10px'}}
+                       accept='application/pdf'/>
+                <Button disabled={this.state.uploadProgress >= 0}
+                        style={{margin:'10px'}}
+                        onClick={this.props.handleClose}> Close </Button>
+                <Button style={{margin:'10px'}}
+                        disabled={this.state.uploadProgress >= 0}
+                        onClick={this.handleClear}> Clear selection </Button>
+                <Button style={{margin:'10px'}}
+                        onClick={this.handleFile}> Upload </Button>
                 {this.state.error}
                 {this.state.uploadProgress >= 0 ? <ProgressBar
                     active
@@ -222,11 +203,10 @@ class DynamicDisplay extends React.Component {
 
         else {
             return (
-                <FileUploader
-                currentCourse={this.props.currentCourse}
-                currentLecture={this.props.currentLecture}
-                handleUploadInProgress={this.props.onUploadInProgress}
-                handleClose={this.props.onClose}/>
+                <FileUploader currentCourse={this.props.currentCourse}
+                              currentLecture={this.props.currentLecture}
+                              handleUploadInProgress={this.props.onUploadInProgress}
+                              handleClose={this.props.onClose}/>
             );
         }
     }
@@ -338,7 +318,7 @@ class Upload extends React.Component {
             <div>
                 <Dialog title="Upload a PDF file"
                         modal={false}
-                        open={this.props.open}
+                        active={this.props.open}
                         onRequestClose={this.handleClose} >
 
                     <DynamicDisplay

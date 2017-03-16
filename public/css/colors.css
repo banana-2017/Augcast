@@ -1,14 +1,18 @@
 :root {
-    --list-item-background: #faf3e8;
-    --list-selected-background: #f1ca8c;
+    --list-item-bg: #faf3e8;
+    --list-selected-bg:#f1ca8c;
     --search-bar-text: #faf3e8;
+    --search-bar-bg: #685741;
+    --pinned: #fed602;
+    --week-bg: rgba(124, 91, 28, 0.74);
 }
-body {
-    color: #483401;
+
+.lecture-list {
+    background: var(--list-item-bg);
 }
 
 .search-box {
-    background: #483401;
+    background: var(--search-bar-bg);
 }
 
 .search-icon {
@@ -19,10 +23,12 @@ body {
 .search-box::-webkit-input-placeholder {
     color: var(--search-bar-text);
 }
+
 /* Firefox 19+ */
 .search-box::-moz-placeholder {
     color: var(--search-bar-text);
 }
+
 /* IE 10+ */
 .search-box:-ms-input-placeholder {
     color: var(--search-bar-text);
@@ -33,11 +39,11 @@ body {
 }
 
 li.course-item {
-    background: var(--list-item-background);
+    background: var(--list-item-bg);
 }
 
 .course-item.selected {
-    background: var(--list-selected-background)
+    background: var(--list-selected-bg)
 }
 
 .course-item.selected:hover {
@@ -45,11 +51,11 @@ li.course-item {
 }
 
 .pin-button .fa.pinned {
-    color: #fed602;
+    color: var(--pinned);
 }
 
 .pin-button .fa:hover {
-    color: #fed602;
+    color: var(--pinned);
 }
 
 .slides-status button {
@@ -57,11 +63,11 @@ li.course-item {
 }
 
 li.lecture-item {
-    background: var(--list-item-background);
+    background: var(--list-item-bg);
 }
 
 .lecture-item.selected {
-    background: var(--list-selected-background);
+    background: var(--list-selected-bg);
 }
 
 .lecture-item.selected:hover {
@@ -69,6 +75,6 @@ li.lecture-item {
 }
 
 .week-separator {
-    background: rgba(124, 91, 28, 0.74);
+    background: var(--week-bg);
     color: #faf3e8;
 }
