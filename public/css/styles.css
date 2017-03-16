@@ -1,6 +1,7 @@
 html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
     font-family: Roboto, sans-serif;
+    background: #f7f7f7;
 }
 
 hr {
@@ -13,26 +14,33 @@ hr {
 div.login {
     position: relative;
     margin: 0 auto;
-    top: 30%;
+    padding: 16px;
+    width: 600px;
+    top: 25%;
 }
 
-viewbox.login-title {
-    padding: 16px;
-    width: 50%;
-    height: auto;
+div.login-title {
+    width: 100%;
+    height: 100px;
     background-size: 100%;
     background-position: center;
-    background: url('/logo.svg');
+    background: url('/logo.svg') no-repeat center center;
     margin: 0 auto;
 }
 
 div.login-input {
     float: right;
-    padding: 0 16px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+div.login-input > input {
+    margin: 10px 0;
 }
 
 button.login-button {
     height: 54px;
+    width: 100%;
 }
 
 #app {
@@ -751,7 +759,7 @@ li.logout-button {
 /******************************************************************************/
 
 div.login-wrapper{
-    background: #252525;
+    background: #f7f7f7;
     height: 100%;
     width: 100%;
     position: fixed;
@@ -779,7 +787,7 @@ div.login-wrapper{
     display: block;
     width: 40px;
     height: 40px;
-    background-color: #353535;
+    background-color: #603D1E;
     bottom: 60px;
     -webkit-animation: square 25s infinite;
     animation: square 25s infinite;
@@ -791,7 +799,7 @@ div.login-wrapper{
     left: 3%;
     border-radius:50em;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #603D1E;
 }
 .bg-bubbles li:nth-child(2) {
     left: 6%;
@@ -819,7 +827,7 @@ div.login-wrapper{
 .bg-bubbles li:nth-child(5) {
     left: 70%;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #603D1E;
 }
 .bg-bubbles li:nth-child(6) {
     left: 90%;
@@ -829,7 +837,7 @@ div.login-wrapper{
     animation-delay: 3s;
     border-radius:50em;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #603D1E;
 }
 .bg-bubbles li:nth-child(7) {
     left: 32%;
@@ -838,7 +846,7 @@ div.login-wrapper{
     -webkit-animation-delay: 7s;
     animation-delay: 7s;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #603D1E;
 }
 .bg-bubbles li:nth-child(8) {
     left: 55%;
@@ -859,7 +867,7 @@ div.login-wrapper{
     animation-duration: 40s;
     border-radius:50em;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #603D1E;
 }
 .bg-bubbles li:nth-child(10) {
     left: 90%;
@@ -883,7 +891,7 @@ div.login-wrapper{
     -webkit-animation-delay: 7s;
     animation-delay: 7s;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #603D1E;
 }
 .bg-bubbles li:nth-child(13) {
     left: 65%;
@@ -900,12 +908,12 @@ div.login-wrapper{
         opacity:0;
     }
     50% {
-        opacity:1;
+        opacity:0.2;
     }
     100% {
         -webkit-transform: translateY(-700px) rotate(600deg);
         transform: translateY(-700px) rotate(600deg);
-        opacity:1;
+        opacity:0.2;
     }
 }
 @keyframes square {
@@ -915,7 +923,7 @@ div.login-wrapper{
         opacity:0;
     }
     50% {
-        opacity:1;
+        opacity:0.2;
     }
     100% {
         -webkit-transform: translateY(-700px) rotate(600deg);
