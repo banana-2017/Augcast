@@ -207,7 +207,8 @@ button.login-button {
 
 li.course-item {
     width: 100%;
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
     height: 64px;
     padding: 0;
     border-bottom: thin solid lightgray;
@@ -219,6 +220,7 @@ li.course-item {
 }
 
 .course-button {
+    float: middle;
     padding: 8px 0 8px 0;
     height: 100%;
     width: 100%;
@@ -332,14 +334,15 @@ li.lecture-item {
     vertical-align: middle;
 }
 
-.lecture-item .slides-status {
+div.status-button {
+    float: right;
     position: absolute;
     right: 0;
     height: 100%;
     text-align: center;
 }
 
-.slides-status > button {
+.status-button > button {
     display: table-cell;
     height: 100%;
     min-width: 0;
@@ -348,7 +351,7 @@ li.lecture-item {
     width: 48px;
 }
 
-.slides-status > button > span.material-icons {
+.status-button > button > span.material-icons {
     margin-right: 0;
 }
 

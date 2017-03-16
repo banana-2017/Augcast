@@ -14,7 +14,7 @@ import AppointInstructor from './AppointInstructor';
 
 const TooltipButton = Tooltip(Button);
 
-class InstructorPanel extends React.Component {
+class InstructorButton extends React.Component {
     constructor(props) {
         super(props);
 
@@ -64,7 +64,7 @@ class InstructorPanel extends React.Component {
         else {
             return (
                 <TooltipButton
-                    icon="class"
+                    icon="person"
                     className="instructor-button"
                     tooltip="Open Instructor Panel"
                     tooltipPosition="right"
@@ -81,5 +81,5 @@ function mapStateToProps(state) {
     };
 }
 
-const InstructorPanelContainer = connect (mapStateToProps, null)(InstructorPanel);
-export default InstructorPanelContainer;
+const InstructorButtonContainer = connect (mapStateToProps, null)(InstructorButton);
+export default InstructorButtonContainer;

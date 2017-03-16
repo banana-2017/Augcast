@@ -36,7 +36,7 @@ class UploadButton extends React.Component {
     render() {
         var that = this;
         return (
-            <div className="slides-status">
+            <div className="status-button">
                 <TooltipButton icon='cloud_upload'
                                className="upload-button"
                                tooltip="Upload slides for this lecture"
@@ -55,7 +55,7 @@ class DoneMark extends React.Component {
     render() {
         var that = this;
         return (
-            <div className="slides-status">
+            <div className="status-button">
                 <TooltipButton icon="done"
                                className="done-mark"
                                tooltip="Slides successfully synced!"
@@ -74,7 +74,7 @@ class LabelingProgressChart extends React.Component {
     render() {
         var that = this;
         return (
-            <div className="slides-status">
+            <div className="status-button">
                 <TooltipButton icon='cached'
                                className="upload-button"
                                tooltip={'Progress: ' + that.props.progress + '%'}

@@ -5,7 +5,7 @@ import {MenuItem} from 'react-toolbox/lib/menu';
 // ui elements
 import FA from 'react-fontawesome';
 
-import InstructorPanel from '../InstructorPanel';
+import InstructorButton from '../InstructorPanel';
 
 // render single course item
 class CourseListItem extends React.Component {
@@ -41,17 +41,15 @@ class CourseListItem extends React.Component {
                         name={(this.props.favorite) ? 'star' : 'star-o'}
                         className={(this.props.favorite) ? 'pinned': ' unpinned'}/>
                 </div>
-
-                <div className="instructor-button">
-                    {this.props.instructorFor ? <InstructorPanel course={course}/> : null}
-                </div>
-
                 <div className="course-button" onClick={() => {selectCourse(course);}}>
                     <div className="course-title">
                         <span className="course-number">{number}</span>
                         <span className="course-section">{section}</span>
                     </div>
                     <div className="course-prof">{prof}</div>
+                </div>
+                <div className="status-button">
+                    {this.props.instructorFor ? <InstructorButton course={course}/> : null}
                 </div>
             </MenuItem>
         );
