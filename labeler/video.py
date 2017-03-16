@@ -38,7 +38,7 @@ def generateTimestamp(video, filename, courseID, lectureID):
 
     # capture the video
     cap = cv2.VideoCapture(video)
-    length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    length = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_COUNT))
 
     tess = Tesseract()
 
@@ -62,7 +62,7 @@ def generateTimestamp(video, filename, courseID, lectureID):
     # of slides and video frames
     while (index < length):
         # read from video
-        cap.set(cv2.CAP_PROP_POS_MSEC, probeIndex * 1000)
+        cap.set(cv2.cv.CV_CAP_PROP_POS_MSEC, probeIndex * 1000)
 
         ret, image = cap.read()
         if image is None:
@@ -201,7 +201,7 @@ def generateTimestamp(video, filename, courseID, lectureID):
         sys.stdout.flush();
 
         # error handling for wrong slide
-        if (int_progress > 10 and len(timestamp) <= 1) or (int_progress > 20 and len(timestamp <= 2)):
+        if (int_progress > 20 and len(timestamp) <= 1):
             timestamp[0] = -2
             return timestamp
 

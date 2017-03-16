@@ -31,9 +31,8 @@ router.route('/label').post(function(req, res) {
 
 
     var spawn = require('child_process').spawn;
-    var process = spawn('python3',
-        ['./labeler/stdoutTest.py',
-            req.body.mediaURL,
+    var process = spawn('./labeler/labelLauncher.py',
+        [req.body.mediaURL,
             req.body.pdfURL,
             req.body.courseID,
             req.body.lectureID]);
@@ -89,7 +88,6 @@ router.route('/label').post(function(req, res) {
     });
 
     process.stderr.on('data', function(buffer) {
-        console.log('CAUGHT ERROR ');
         console.log(buffer.toString());
     });
 
