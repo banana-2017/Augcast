@@ -13,12 +13,17 @@ hr {
 div.login {
     position: relative;
     margin: 0 auto;
-    width: 480px;
     top: 30%;
 }
 
-div.login > div.login-title {
-    padding: 16px 16px 0;
+viewbox.login-title {
+    padding: 16px;
+    width: 50%;
+    height: auto;
+    background-size: 100%;
+    background-position: center;
+    background: url('/logo.svg');
+    margin: 0 auto;
 }
 
 div.login-input {

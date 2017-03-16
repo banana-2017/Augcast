@@ -51,15 +51,15 @@ class Login extends React.Component {
     // TODO: needs styling
     render () {
         document.title = 'Login - Augcast';
+                // <div className="animateme">
+                //     <ul className="bg-bubbles">
+                //         <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+                //     </ul>
+                // </div>
         return (
-            <div className="login-wrapper">
-                <div className="animateme">
-                    <ul className="bg-bubbles">
-                        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
-                    </ul>
-                </div>
+            <div className="login-wrapper-white">
                 <Card className="login">
-                    <CardTitle className="login-title" title="Welcome to Augcast" />
+                    <viewbox className="login-title" />
                     <div className="login-input">
                         <Input className="email-input" type="email" label="Your UCSD Email" icon="email" value={this.state.email} onChange={this.emailChange} />
                         <Input className="password-input" type="password" label="Password" icon="vpn_key" value={this.state.password} onChange={this.passwordChange} />
