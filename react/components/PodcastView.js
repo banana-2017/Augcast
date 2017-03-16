@@ -100,7 +100,7 @@ class PodcastView extends React.Component {
         // getting lectureInfo and timestamp from the state
         let {lectureInfo, timestamp} = this.state;
 
-        if (newProps.jumpSlide !== undefined) {
+        if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
             if (timestamp !== lectureInfo.timestamps[newProps.jumpSlide]) {
                 this.setState ({
                     timestamp: lectureInfo.timestamps[newProps.jumpSlide]
