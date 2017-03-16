@@ -429,6 +429,7 @@ div.instructor-panel {
     height: 50%;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 div.instructor-panel h6 {
@@ -445,7 +446,6 @@ div.instructor-panel h6 {
 
 div.instructor-appointment, div.pending-elabs {
     height: 100%;
-    overflow: scroll;
 }
 
 /******************************************************************************/

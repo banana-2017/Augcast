@@ -34,10 +34,12 @@ class InstructorButton extends React.Component {
     render() {
         var that = this;
 
+
         // If the instructor panel has been opened, display the dialog
         if(that.state.dialogActive) {
             return (
                 <div>
+
                     <Dialog title={this.props.course.dept + " " + this.props.course.num + " (" + this.props.course.section + "): Manage Course"}
                             className="instructor-panel"
                             modal={true}
@@ -56,7 +58,10 @@ class InstructorButton extends React.Component {
                         </Tabs>
 
                     </Dialog>
+
+
                 </div>
+
             )
         }
 
