@@ -21,7 +21,7 @@ class InstructorButton extends React.Component {
         this.state = {
             // States about UI
             dialogActive: false,
-            tabIndex:1,
+            tabIndex:0,
         };
 
         this.handleToggle = this.handleToggle.bind(this);
@@ -58,8 +58,6 @@ class InstructorButton extends React.Component {
                         </Tabs>
 
                     </Dialog>
-
-
                 </div>
 
             )
