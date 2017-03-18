@@ -124,7 +124,7 @@ class CourseList extends React.Component {
 
         updates['/users/' + this.props.username + '/favorites'] = favoriteArray;
         this.setState({favoriteArray: favoriteArray});
-        database.ref().updateLectures(updates);
+        database.ref().update(updates);
     }
 
 
@@ -140,7 +140,7 @@ class CourseList extends React.Component {
 
         updates['/users/' + this.props.username + '/favorites'] = favoriteArray;
         this.setState({favoriteArray: favoriteArray});
-        database.ref().updateLectures(updates);
+        database.ref().update(updates);
     }
 
     // moves pinned courses to the top
