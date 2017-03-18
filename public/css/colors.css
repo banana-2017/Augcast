@@ -1,11 +1,14 @@
 :root {
-    --list-item-bg: #faf3e8;
+    --search-bar-bg: #a3c883;
+    --search-bar-text: white;
+    --list-item-bg: white;
     --list-selected-bg:#f1ca8c;
-    --search-bar-text: #faf3e8;
-    --search-bar-bg: #685741;
-    --pinned: #fed602;
-    --week-bg: rgba(124, 91, 28, 0.74);
+    --pinned: #ffd016;
+    --week-bg: #5b7641;
+    --week-text: white;
     --input-text-highlight-color: #603D1E;
+
+    --main-background: #f7f7f7;
 }
 
 .lecture-list {
@@ -77,5 +80,9 @@ li.lecture-item {
 
 .week-separator {
     background: var(--week-bg);
-    color: #faf3e8;
+    color: var(--week-text);
+}
+
+.main {
+    background: var(--main-background);
 }

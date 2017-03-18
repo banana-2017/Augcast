@@ -86,7 +86,6 @@ button.login-button {
     text-align: center;
     font-size: 24pt;
     font-weight: 200;
-    color: white;
     margin: auto 0;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -94,12 +93,11 @@ button.login-button {
     -o-user-select: none;
     user-select: none;
     cursor: default;
-    background: white;
 }
 
 .blank > p {
     display: table-cell;
-    vertical-align: middle;
+    vertical-align: bottom;
     color: lightgray;
 }
 
@@ -275,6 +273,7 @@ li.course-item.selected > div.selected-indicator {
     background: darkgray;
     color: white;
     text-align: center;
+    border-bottom: thin solid lightgray;
 }
 
 .lecture-list {
@@ -542,6 +541,10 @@ li.match-result > span {
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
 }
 
+.pdf-unclickable {
+    cursor: not-allowed;
+}
+
 .pdf-timestamp {
     position: absolute;
     bottom: 0;
@@ -764,6 +767,12 @@ li.logout-button {
     background: green;
     z-index: 2;
     display: none;
+}
+
+/******************************************************************************/
+/**********************************   404   ************************************
+/******************************************************************************/
+.not-found {
 }
 
 /******************************************************************************/

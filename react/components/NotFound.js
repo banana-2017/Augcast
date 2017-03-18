@@ -10,7 +10,10 @@ class NotFound extends React.Component {
     render () {
         console.log("Peanut Butter Jelly Time!");
         return (
-            <div className="banana" />
+            <div className="not-found">
+                <div className="banana" />
+                404 NOT FOUND
+            </div>
         );
     }
 }

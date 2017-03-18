@@ -120,8 +120,6 @@ class VideoPlayer extends React.Component {
                         <ButtonGroup className='video-button-group'>
                             <FA className="rewind video-control-button" name="backward"
                                 onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}/>
-                            <FA className="toggle-play video-control-button" name={this.state.playing ? 'pause' : 'play'}
-                                onClick={this.togglePlay}/>
                             <FA className="fastforward video-control-button" name="forward"
                                 onClick={() => {this.refs.basicvideo.currentTime += SKIP_VALUE;}}/>
                             <FA className="speed-up video-control-button" name="minus"
