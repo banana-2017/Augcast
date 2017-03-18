@@ -1,6 +1,6 @@
 import { DISPLAY_LECTURE, LOG_OUT, LOG_IN_SUCCESS,LOG_IN_FAILURE,
          LOG_IN_REQUEST, NAVIGATE_COURSE, IS_INSTRUCTOR, UPDATE_USER,
-         UPDATE_SEARCH_SLIDES} from './actions';
+         UPDATE_SEARCH_SLIDES, UPDATE_JUMP_SLIDE} from './actions';
 
 /**
 * state of the app
@@ -92,6 +92,12 @@ function appReducers (state, action) {
     case UPDATE_SEARCH_SLIDES: {
         return Object.assign ({}, state, {
             searchSlides: action.slides,
+            jumpSlide: action.slide
+        });
+    }
+
+    case UPDATE_JUMP_SLIDE: {
+        return Object.assign ({}, state, {
             jumpSlide: action.slide
         });
     }
