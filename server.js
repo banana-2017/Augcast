@@ -36,7 +36,7 @@ router.route('/label').post(function(req, res) {
             req.body.pdfURL,
             req.body.courseID,
             req.body.lectureID]);
-    
+
     // Increment number of active processes
     adminDatabase.ref('/server').once('value').then(function(snapshot) {
         adminDatabase.ref('/server/').update({
@@ -91,10 +91,14 @@ router.route('/label').post(function(req, res) {
 
             // Decrement number of active processes and upload final timestamps
             adminDatabase.ref('/server').once('value').then(function(snapshot) {
-                var updates = {};
-                updates['/server/'] = {processCount: snapshot.val().processCount - 1};
-                updates['/lectures/'+split[1]+'/'+split[2]] = {timestamps: JSON.parse(split[3])};
-                adminDatabase.ref().update(updates);
+
+                adminDatabase.ref('/server/').update({
+                    processCount: snapshot.val().processCount - 1
+                });
+
+                adminDatabase.ref('/lectures/' + split[1] + '/' + split[2]).update({
+                    timestamps: JSON.parse(split[3])
+                });
             });
         }
     });
