@@ -78,7 +78,10 @@ router.route('/label').post(function(req, res) {
         }
 
         // If receiving slide text contents, upload the contents
-        else if (split[0] === 'content') {
+        if (split[0] === 'content') {
+
+            console.log('\n\nUPDATING CONTENT\n\n');
+
             console.log('Updating lecture ' + split[2] + ' content: ' + split[3]);
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 contents: JSON.parse(split[3])
