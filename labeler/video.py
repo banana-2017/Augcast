@@ -200,11 +200,6 @@ def generateTimestamp(video, filename, courseID, lectureID):
         print ('progress'+'#'+courseID+'#'+lectureID+'#'+str(int_progress))
         sys.stdout.flush();
 
-        # error handling for wrong slide
-        if (int_progress > 20 and len(timestamp) <= 1):
-            timestamp[0] = -2
-            return timestamp
-
         if debug == True:
             print ("#################", index ,"##################")
             print ("current Timestamp")
