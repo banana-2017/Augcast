@@ -84,7 +84,6 @@ class Question extends React.Component {
     }
 
     render() {
-        //console.log('Question in content: ' + this.props.content);
         return (
             <div>
                 {this.props.dataRetrieved ? this.updateFields : '' }

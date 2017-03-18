@@ -3,28 +3,12 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import {Link} from 'react-router';
 import { navigateCourse, displayLecture } from '../../redux/actions';
 import { browserHistory } from 'react-router';
 import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
 import CourseListContainer from './CourseList.js';
 import LectureListContainer from './LectureList.js';
-import { MenuItem } from 'react-toolbox/lib/menu';
-
-class InstructorEntrance extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <MenuItem className="instructor-entrance">
-                <Link to="/instructor">Instructor Entrance</Link>
-            </MenuItem>
-        );
-    }
-}
 
 class Sidebar extends React.Component {
 
@@ -103,8 +87,6 @@ class Sidebar extends React.Component {
 
     render () {
 
-        var list = null;
-
         // loading
         if (this.state.loading) {
             return <Spinner className="sidebar-loading" spinnerName="three-bounce" />;
@@ -118,7 +100,6 @@ class Sidebar extends React.Component {
                                           : <CourseListContainer courses={this.courses} selectCourse={this.selectCourse} />}
                 </div>
             );
-                    // <InstructorEntrance />
         }
     }
 
