@@ -1,3 +1,4 @@
+.idea/
 node_modules
 bundle.js
 public/bundle.js
@@ -10,3 +11,4 @@ database/serviceAccountKey.json
 labeler
 .DS_Store
 script/*.json
+npm-debug.*
