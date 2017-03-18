@@ -51,7 +51,7 @@ class FileUploader extends React.Component {
         database.ref('/server').once('value').then(function(server_snapshot) {
             if (server_snapshot.val().processCount >= 2) {
                 that.setState({
-                    status: 'There are 2 PDFs already being processed! Please wait for them to complete and try again, our poor server is working really hard.'
+                    error: 'There are 2 PDFs already being processed! Please wait for them to complete and try again, our poor server is working really hard.'
                 });
             } else {
                 that.setState({
