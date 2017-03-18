@@ -243,9 +243,11 @@ class LectureList extends React.Component {
                 }
             }
 
+            // lectures is an array of objects defined as above
             that.setState ({lectures: searchData});
         });
     }
+
 
     selectLecture(lecture) {
         this.props.displayLecture(this.course, lecture);
@@ -262,22 +264,25 @@ class LectureList extends React.Component {
         var options = {
             include: ['matches'],
             shouldSort: true,
-            threshold: 0.2,
+            threshold: 0.3,
             minMatchCharLength: 1,
             keys: ['contents']
         };
 
         var fuse = new Fuse(this.state.lectures, options);
+
+        // result is an array of objects
         var result = fuse.search(query);
 
         let visibleLectures = [];
-        let resultArray = {};
+        let resultArray = {};   
 
         // for every result
         for (var lecture in result) {
 
-            // let match = result[lecture];
-            // if a new lecture, push ro visiblelectures and create a new object in resultArray
+            // note: an element in result has a .item as well as a .matches
+
+            // if a new lecture, push to visiblelectures and create a new object in resultArray
             if (visibleLectures.indexOf(result[lecture].item.lectureId) < 0) {
                 visibleLectures.push (result[lecture].item.lectureId);
                 resultArray[result[lecture].item.lectureId] = [];
@@ -335,7 +340,7 @@ class LectureList extends React.Component {
                         </div>
                         <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                     </MenuItem>
-                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} lecture={lecture}/>
+                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} selectLecture={() => {that.selectLecture(lecture);}}/>
                 </div>
             );
         };

@@ -8,6 +8,7 @@ export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 
 export const NAVIGATE_COURSE = 'NAVIGATE_COURSE';
+export const UPDATE_SEARCH_SLIDES = 'UPDATE_SEARCH_SLIDES';
 export const DISPLAY_LECTURE = 'DISPLAY_LECTURE';
 export const SKIP_TO_TIME = 'SKIP_TO_TIME';
 export const UPDATE_USER = 'UPDATE_USER';
@@ -106,6 +107,16 @@ export function updateUser (username) {
     return {
         type: UPDATE_USER,
         username: username
+    };
+}
+
+export function updateSearchSlides (slides, slide) {
+    // slides: all matched slides of the lecture
+    // slide: the slide that was clicked
+    return {
+        type: UPDATE_SEARCH_SLIDES,
+        slides: slides,
+        slide: slide
     };
 }
 

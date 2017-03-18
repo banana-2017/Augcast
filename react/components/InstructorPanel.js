@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 
 import Tooltip from 'react-toolbox/lib/tooltip';
 import { Layout, AppBar, NavDrawer, Navigation, Panel } from 'react-toolbox';
+import { ListItem } from 'react-toolbox/lib/list';
 import {Tab, Tabs} from 'react-toolbox';
 import {Button, IconButton} from 'react-toolbox/lib/button';
 import Dialog from 'react-toolbox/lib/dialog';
 
 
-import PendingER from './PendingER'
+import PendingER from './PendingER';
 import AppointInstructor from './AppointInstructor';
 
 const TooltipButton = Tooltip(Button);
@@ -61,7 +62,6 @@ class InstructorButton extends React.Component {
 
 
                 </div>
-
             )
         }
 

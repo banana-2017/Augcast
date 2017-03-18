@@ -41,14 +41,20 @@ class PodcastView extends React.Component {
 
         if (course != undefined && lecture != undefined) {
 
-            // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
             var ref = database.ref('/lectures/' + course.id + '/' + lecture.id);
 
             // Listen to changes at ref's location in db
             var pdfRef = ref.on('value', function(snapshot) {
-                //console.log('POD MOUNT snapshot.val: ' + JSON.stringify(snapshot.val()));
                 that.setState({
                     lectureInfo: snapshot.val()
+                },
+                function () {
+                    let {lectureInfo} = that.state;
+                    if (that.props.jumpSlide !== undefined) {
+                        that.setState ({
+                            timestamp: lectureInfo.timestamps[that.props.jumpSlide]
+                        });
+                    }
                 });
             });
 
@@ -57,11 +63,13 @@ class PodcastView extends React.Component {
                 firebaseCallback: pdfRef
             });
 
+
         } else {
             this.setState({
                 firstRender: true
             });
         }
+
     }
 
     // This method is called whenever the props are updated (i.e. a new lecture is selected in Sidebar)
@@ -90,8 +98,6 @@ class PodcastView extends React.Component {
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
 
             var pdfRef = newRef.on('value', function(snapshot) {
-                //console.log('POD PROPS snapshot.val: ' + JSON.stringify(snapshot.val()));
-
                 that.setState({
                     lectureInfo: snapshot.val()
                 });
@@ -101,6 +107,15 @@ class PodcastView extends React.Component {
             this.setState({
                 firebaseListener: newRef,
                 firebaseCallback: pdfRef
+            });
+        }
+
+        // getting lectureInfo and timestamp from the state
+        let {lectureInfo} = this.state;
+
+        if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
+            this.setState ({
+                timestamp: lectureInfo.timestamps[newProps.jumpSlide]
             });
         }
     }
@@ -151,7 +166,8 @@ function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
         currentLecture: state.currentLecture,
-        currentTime: state.currentTime
+        currentTime: state.currentTime,
+        jumpSlide: state.jumpSlide
     };
 }
 

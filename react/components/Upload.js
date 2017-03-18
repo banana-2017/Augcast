@@ -44,12 +44,10 @@ class FileUploader extends React.Component {
         // Check for .pdf extension. Weak method of checking filetype, but it's
         // the best we can do in the front end.
         if (!file.name.endsWith('.pdf')) {
-            console.log('This is not a PDF file');
             this.setState({error: 'The input is not a PDF file!'});
             return;
         }
 
-        console.log('User inputted file:' + file.name);
         this.setState({
             error: ''
         });
@@ -77,7 +75,6 @@ class FileUploader extends React.Component {
                 console.log('Error in FBS upload: ' + error.code);
             }, function () {
                 // Upload successful, get download URL
-                console.log('Upload successful!');
                 var url = uploadTask.snapshot.downloadURL;
                 that.setState({
                     downloadURL: url,
@@ -227,7 +224,6 @@ class DynamicDisplay extends React.Component {
     }
 
     render() {
-        console.log('rendering dynamic display');
         // If lectureInfo not loaded yet, do nothing.
         if (this.props.currentLecture == undefined) {
             return (<div>Loading...</div>);
@@ -280,7 +276,6 @@ class Upload extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log('CONSTRUCTOR');
 
         // Initial state
         this.state = {
@@ -313,7 +308,6 @@ class Upload extends React.Component {
 
         // Listen to changes at ref's location in db
         var uploadReference = ref.on('value', function(snapshot) {
-            console.log('UPLOAD didMount db on: ' + lecture.id);
             that.setState({
                 lectureInfo: snapshot.val()
             });
@@ -340,10 +334,8 @@ class Upload extends React.Component {
 
         // Create and store new listener so it can too be removed
         var that = this;
-        // console.log('PodcastView recieved new props: ' + JSON.stringify(newProps));
         var newRef = database.ref('lectures/' + newProps.navCourse.id + '/' + newProps.lecture.id);
 
-        console.log('UPLOAD received props, db on: ' + newProps.lecture.id);
         var uploadReference = newRef.on('value', function(snapshot) {
             that.setState({
                 lectureInfo: snapshot.val()

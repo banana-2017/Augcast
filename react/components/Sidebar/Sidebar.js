@@ -3,7 +3,6 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import {Link} from 'react-router';
 import { navigateCourse, displayLecture } from '../../redux/actions';
 import { browserHistory } from 'react-router';
 import { database } from './../../../database/database_init';
@@ -102,8 +101,6 @@ class Sidebar extends React.Component {
 
 
     render () {
-
-        var list = null;
 
         // loading
         if (this.state.loading) {
