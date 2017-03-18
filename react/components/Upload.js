@@ -55,11 +55,11 @@ class FileUploader extends React.Component {
                 });
                 return;
             } else {
-                this.setState({
+                that.setState({
                     error: ''
                 });
 
-                this.updateUploadInProgress(true);
+                that.updateUploadInProgress(true);
 
                 // Declare file to be PDF
                 var metadata = {
