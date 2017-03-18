@@ -45,8 +45,6 @@ class VideoPlayer extends React.Component {
         if (nextProps.timestamp == undefined ||
             isNaN(nextProps.timestamp) ||
             nextProps.timestamp < 0) {
-
-            alert('No timestamp for this slide! Can\'t jump to time.');
             return;
         }
 
@@ -94,10 +92,8 @@ class VideoPlayer extends React.Component {
     updateCurTime(evt) {
         console.log('evt.target.value == ' + evt.target.value);
         if (evt.target.value == undefined ||
-            isNan(evt.target.value) ||
+            isNaN(evt.target.value) ||
             evt.target.value < 0) {
-
-            alert('No timestamp for this slide! Can\'t jump to time.');
             return;
         }
 

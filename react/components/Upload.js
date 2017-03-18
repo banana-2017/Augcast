@@ -51,7 +51,7 @@ class FileUploader extends React.Component {
         database.ref('/server').once('value').then(function(server_snapshot) {
             if (server_snapshot.val().processCount >= 2) {
                 that.setState({
-                    error: 'There are 2 PDFs already being processed! Please wait for them to complete and try again, our poor server is working really hard.'
+                    error: 'There are 2 PDFs already being processed! \nPlease wait for them to complete and try again, our poor server is working really hard.'
                 });
             } else {
                 that.setState({
@@ -176,7 +176,7 @@ class FileUploader extends React.Component {
                         Upload
                 </Button>
                 </form>
-                {this.state.error}
+                <p><b>{this.state.error}</b></p>
                 {this.state.uploadProgress >= 0 ? <ProgressBar
                     active
                     now={this.state.uploadProgress}
@@ -184,7 +184,7 @@ class FileUploader extends React.Component {
                         {
                             this.state.uploadProgress != 100 ?
                             (this.state.uploadProgress).toFixed(2) + '%' :
-                            'Fetching video, please wait...'
+                            'Do not leave this page yet! Fetching video, please wait... (~30 seconds)'
                         }
                      /> : ''}
             </div>
@@ -217,8 +217,13 @@ class DynamicDisplay extends React.Component {
                         Analyzing PDF
                     </h3>
                     <br/>
-                    <p>Your submitted PDF is being analyzed for matching text in the video podcast.
-                        This process will take >40 minutes for a 50-minute lecture, depending on the text content of the podcast. Feel free to browse away and check back later on the progress!</p>
+                    <p>
+                        Your submitted PDF is being analyzed for matching text in the video podcast.
+                        This process will take >40 minutes for a 50-minute lecture,
+                        depending on the text content of the podcast.
+                        <br />
+                        <b>Feel free to browse away and check back later on the progress!</b>
+                    </p>
                     <br/>
                     <h4>Progress: </h4>
                     <br/>
