@@ -1,10 +1,8 @@
 import React from 'react';
-//import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import VideoPlayer from './VideoPlayer';
 import PDFDisplay from './PDFDisplay';
-import Upload from './Upload';
 import { database } from './../../database/database_init';
-import { ProgressBar } from 'react-bootstrap';
 
 /**
     VideoView - Will contain VideoPlayer
@@ -14,93 +12,148 @@ class PodcastView extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log('lecture prop: ' + JSON.stringify(this.props.lecture));
-
         // Initial state
         this.state = {
+            firebaseListener: undefined,
+            timestamp: 0,
             lectureInfo : {
-                timestampProgress: undefined,
+                labelProgress: undefined,
                 timestamps: undefined,
                 pdf_url: undefined
             }
         };
 
-        //var that = this;
-
         // Update the state whenever this lecture is updated in DB by python script
 
         this.handleSkipToTime = this.handleSkipToTime.bind(this);
-        this.PDFContainer = this.PDFContainer.bind(this);
     }
 
+    // This method is called only once, right after this component is created.
+    // We create a new database listener here so we our state changes Whenever
+    // something at our specified location in db changes.
+    componentDidMount() {
+        this.setState({timestamp: this.props.currentTime});
+
+        // Store reference to database listener so it can be removed
+        var that = this;
+        var course = this.props.currentCourse;
+        var lecture = this.props.currentLecture;
+
+        if (course != undefined && lecture != undefined) {
+
+            // console.log('PodcastView was mounted: ' + JSON.stringify(that.props));
+            var ref = database.ref('/lectures/' + course.id + '/' + lecture.id);
+
+            // Listen to changes at ref's location in db
+            var pdfRef = ref.on('value', function(snapshot) {
+                //console.log('POD MOUNT snapshot.val: ' + JSON.stringify(snapshot.val()));
+                that.setState({
+                    lectureInfo: snapshot.val()
+                });
+            });
+
+            this.setState({
+                firebaseListener: ref,
+                firebaseCallback: pdfRef
+            });
+
+        } else {
+            this.setState({
+                firstRender: true
+            });
+        }
+    }
+
+    // This method is called whenever the props are updated (i.e. a new lecture is selected in Sidebar)
+    // It will remove the old database listener and add one for the new lecture
+    componentWillReceiveProps(newProps) {
+        if (this.props.currentTime != newProps.currentTime) {
+            this.setState({timestamp: newProps.currentTime});
+        }
+
+        // Only change the database listener if the lectureID has changed
+        if (this.state.firstRender || (newProps.currentLecture.id != this.props.currentLecture.id)) {
+
+            if (this.state.firstRender) {
+                this.setState({
+                    firstRender: false
+                });
+            }
+
+            // Remove old database Listener
+            if (this.state.firebaseListener != undefined) {
+                this.state.firebaseListener.off('value', this.state.firebaseCallback);
+            }
+
+            // Create and store new listener so it can too be removed
+            var that = this;
+            var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
+
+            var pdfRef = newRef.on('value', function(snapshot) {
+                //console.log('POD PROPS snapshot.val: ' + JSON.stringify(snapshot.val()));
+
+                that.setState({
+                    lectureInfo: snapshot.val()
+                });
+
+            });
+
+            this.setState({
+                firebaseListener: newRef,
+                firebaseCallback: pdfRef
+            });
+        }
+    }
+
+    // Destructor, removes database listener when component is unmounted
+    componentWillUnmount() {
+        //Remove the database listener
+        if (this.state.firebaseListener != undefined) {
+            this.state.firebaseListener.off('value', this.state.firebaseCallback);
+        }
+    }
+
+    // Callback function passed to and executed by VideoPlayer
     handleSkipToTime(time) {
-        console.log('PodcastView handleSkipToTime: ' + time);
         this.setState({timestamp: time});
     }
 
-
-    // Displays either a progress bar if timestamping is in progress,
-    // the timestamped PDF if timestamping is complete,
-    // or an upload component if no PDF has been submitted yet.
-    PDFContainer() {
-        var that = this;
-        database.ref('lectures/' + this.props.lectureID).on('value', function(snapshot) {
-            console.log('db on lectures');
-            that.setState({
-                lectureInfo: snapshot.val()
-            });
-        });
-        // If there are timestamps in DB, display the PDF with them
-        if (this.state.lectureInfo.timestamps != undefined && this.state.lectureInfo.slides_url != undefined) {
-            return (
-                <PDFDisplay
-                    onSkipToTime={this.handleSkipToTime}
-                    timestamps={this.state.lectureInfo.timestamps}
-                    pdfURL={this.state.pdf_url}/>
-            );
-        }
-
-        // If there aren't timestamps in DB, then display a progress bar
-        else if (this.state.timestampProgress != undefined) {
-            return (
-                <div>
-                    <h3>Your submitted PDF is being analyzed for matching text in the video podcast.
-                        This process will take around 20 minutes, feel free to browse away and check back later on the progress.
-                    </h3>
-                    <br/>
-                    <h4>Progress: </h4>
-                    <br/>
-                    <ProgressBar
-                        active
-                        now={this.state.timestampProgress}
-                        label={`${(this.state.timestampProgress).toFixed(2)}%`} />
-                </div>
-            );
-        }
-
-        // If there isn't any PDF being processed for this lecture, render upload component
-        else if (this.state.timestampProgress == undefined) {
-            return (
-                <Upload/>
-            );
-        }
-    }
-
     render () {
+        if (this.props.currentLecture == undefined) {
+            return (<div>select a lecture to start</div>);
+        } else {
+            document.title = this.props.currentCourse.dept + ' '
+                           + this.props.currentCourse.num  + ': Lecture '
+                           + this.props.currentLecture.num
+                           + ' - Augcast';
 
-        return (
-            <div className="content-panel">
-                <div className="pdf-panel">
-                    <this.PDFContainer/>
+            return (
+                <div className="content-panel">
+                    {this.props.currentLecture != undefined && this.state.lectureInfo.slides_url != undefined ?
+                        <div className="pdf-panel">
+                            <PDFDisplay
+                                onSkipToTime={this.handleSkipToTime}
+                                timestamps={this.state.lectureInfo.timestamps}
+                                pdfURL={this.state.lectureInfo.slides_url} />
+                        </div> :
+                        <div></div>}
+                    <div className = "video-panel">
+                        <VideoPlayer timestamp={this.state.timestamp} />
+                    </div>
                 </div>
-                <div className = "video-panel">
-                    <VideoPlayer
-                        timestamp={this.state.timestamp}
-                        mediaURL={this.props.lecture == undefined ? undefined : this.props.lecture.video_url}/>
-                </div>
-            </div>
-        );
+            );
+        }
     }
 }
 
-export default PodcastView;
+
+function mapStateToProps (state) {
+    return {
+        currentCourse:  state.currentCourse,
+        currentLecture: state.currentLecture,
+        currentTime: state.currentTime
+    };
+}
+
+const PodcastViewContainer = connect (mapStateToProps)(PodcastView);
+export default PodcastViewContainer;

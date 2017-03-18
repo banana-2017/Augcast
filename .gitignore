@@ -7,8 +7,13 @@ server.bundle.js
 .swo
 database/credentials.json
 database/serviceAccountKey.json
-*.log
-labeler
+*.log*
+labeler/assets
 .DS_Store
+*.pyc
+labeler/*.pyc
 script/*.json
-npm-debug.*
+*.pem
+*.mp4
+*.pdf
+utility/input.json
