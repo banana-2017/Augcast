@@ -47,49 +47,59 @@ class FileUploader extends React.Component {
             return;
         }
 
-        this.setState({
-            error: ''
-        });
-
-        this.updateUploadInProgress(true);
-
-        // Declare file to be PDF
-        var metadata = {
-            contentType: 'application/pdf'
-        };
-        // Upload the file and metadata to 'lectureid/file.pdf' in FB Storage
-        var uploadTask = storageRef.child(that.props.currentLecture.id + '/' + file.name).put(file, metadata);
-
-
-        // Listener for state changes, errors, and completion of the upload
-        uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED,
-            function(snapshot) {
-                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // Check if the server is busy with 2 other PDFs right now
+        database.ref('/server').once('value').then(function(server_snapshot) {
+            if (server_snapshot.val().processCount >= 2) {
                 that.setState({
-                    uploadProgress: progress
+                    status: 'There are 2 PDFs already being processed! Please wait for them to complete and try again, our poor server is working really hard.'
                 });
-                // Get upload progress
-            }, function (error) {
-                // Handle errors in upload
-                console.log('Error in FBS upload: ' + error.code);
-            }, function () {
-                // Upload successful, get download URL
-                var url = uploadTask.snapshot.downloadURL;
-                that.setState({
-                    downloadURL: url,
+                return;
+            } else {
+                this.setState({
                     error: ''
                 });
 
-                that.updateUploadInProgress(false);
+                this.updateUploadInProgress(true);
 
-                database.ref('lectures/' + that.props.currentCourse.id + '/' + that.props.currentLecture.id).update({
-                    slides_url: url
-                });
+                // Declare file to be PDF
+                var metadata = {
+                    contentType: 'application/pdf'
+                };
+                // Upload the file and metadata to 'lectureid/file.pdf' in FB Storage
+                var uploadTask = storageRef.child(that.props.currentLecture.id + '/' + file.name).put(file, metadata);
 
-                // Call the label API with the new download URL
-                that.callLabelAPI(url);
-            });
 
+                // Listener for state changes, errors, and completion of the upload
+                uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED,
+                    function(snapshot) {
+                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        that.setState({
+                            uploadProgress: progress
+                        });
+                        // Get upload progress
+                    }, function (error) {
+                        // Handle errors in upload
+                        console.log('Error in FBS upload: ' + error.code);
+                    }, function () {
+                        // Upload successful, get download URL
+                        var url = uploadTask.snapshot.downloadURL;
+                        that.setState({
+                            downloadURL: url,
+                            error: ''
+                        });
+
+                        that.updateUploadInProgress(false);
+
+                        database.ref('lectures/' + that.props.currentCourse.id + '/' + that.props.currentLecture.id).update({
+                            slides_url: url
+                        });
+
+                        // Call the label API with the new download URL
+                        that.callLabelAPI(url);
+                    }
+                );
+            }
+        });
     }
 
     updateUploadInProgress(evt) {
@@ -203,7 +213,7 @@ class DynamicDisplay extends React.Component {
                     </h3>
                     <br/>
                     <p>Your submitted PDF is being analyzed for matching text in the video podcast.
-                        This process will take around 20 minutes, feel free to browse away and check back later on the progress.</p>
+                        This process will take >40 minutes for a 50-minute lecture, depending on the text content of the podcast. Speed is also affected by the number of simultaneously processing slides. Feel free to browse away and check back later on the progress!</p>
                     <br/>
                     <h4>Progress: </h4>
                     <br/>
