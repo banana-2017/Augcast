@@ -184,7 +184,7 @@ class FileUploader extends React.Component {
                         {
                             this.state.uploadProgress != 100 ?
                             (this.state.uploadProgress).toFixed(2) + '%' :
-                            'Please wait...'
+                            'Fetching video, please wait...'
                         }
                      /> : ''}
             </div>
@@ -218,7 +218,7 @@ class DynamicDisplay extends React.Component {
                     </h3>
                     <br/>
                     <p>Your submitted PDF is being analyzed for matching text in the video podcast.
-                        This process will take >40 minutes for a 50-minute lecture, depending on the text content of the podcast. Speed is also affected by the number of simultaneously processing slides. Feel free to browse away and check back later on the progress!</p>
+                        This process will take >40 minutes for a 50-minute lecture, depending on the text content of the podcast. Feel free to browse away and check back later on the progress!</p>
                     <br/>
                     <h4>Progress: </h4>
                     <br/>
