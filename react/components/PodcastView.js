@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import VideoPlayer from './VideoPlayer';
 import PDFDisplay from './PDFDisplay';
+import {updateJumpSlide} from '../redux/actions';
 import { database } from './../../database/database_init';
 
 /**
@@ -110,10 +112,17 @@ class PodcastView extends React.Component {
         // getting lectureInfo and timestamp from the state
         let {lectureInfo} = this.state;
 
+        console.log (newProps.jumpState + " " + lectureInfo.timestamps);
         if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
             this.setState ({
                 timestamp: lectureInfo.timestamps[newProps.jumpSlide]
+            }, () => {
+                this.setState ({
+                    timestamp: undefined
+                });
             });
+
+            this.props.updateJumpSlide (undefined);
         }
     }
 
@@ -167,5 +176,13 @@ function mapStateToProps (state) {
     };
 }
 
-const PodcastViewContainer = connect (mapStateToProps)(PodcastView);
+function mapDispatchToProps (dispatch) {
+    return {
+        updateJumpSlide : (slide) => {
+            dispatch (updateJumpSlide(slide));
+        }
+    };
+}
+
+const PodcastViewContainer = connect (mapStateToProps, mapDispatchToProps)(PodcastView);
 export default PodcastViewContainer;

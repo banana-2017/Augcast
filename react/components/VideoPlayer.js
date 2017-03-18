@@ -21,7 +21,7 @@ class VideoPlayer extends React.Component {
         this.state = {
             playbackRate: 1,
             status: 'Initialized',
-            playing: true
+            playing: true,
         };
 
         // Bind all functions so they can refer to "this" correctly
@@ -42,7 +42,7 @@ class VideoPlayer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         console.log('Recieving prop timestamp: ' + JSON.stringify(nextProps.timestamp));
-        if (nextProps.timestamp != undefined) {
+        if (nextProps.timestamp !== undefined) {
             this.refs.basicvideo.currentTime = nextProps.timestamp;
         }
     }
