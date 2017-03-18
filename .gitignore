@@ -19,3 +19,4 @@ script/*.json
 *.pdf
 utility/input.json
 .idea/*
+utility/sshCredentials.js
