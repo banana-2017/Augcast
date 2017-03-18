@@ -64,7 +64,7 @@ router.route('/label').post(function(req, res) {
 
         // If receiving progress updateLectures, upload the progress
         if (split[0] === 'progress') {
-            console.log('Updating lecture ' + split[2] + ' progress: ' + parseInt(split[3]);
+            console.log('Updating lecture ' + split[2] + ' progress: ' + parseInt(split[3]));
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 'labelProgress': parseInt(split[3])
             });
