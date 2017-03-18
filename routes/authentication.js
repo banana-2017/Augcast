@@ -2,7 +2,7 @@ import express from 'express';
 //import ActiveDirectory from 'activedirectory2';
 import bodyParser from 'body-parser';
 import SSH from 'simple-ssh';
-import {sshUser, sshPass} from '../utility/sshCredentials.json';
+import {sshUser, sshPass} from '../utility/sshCredentials.js';
 var router = express.Router();
 
 // parse application/json
