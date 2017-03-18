@@ -53,7 +53,6 @@ class FileUploader extends React.Component {
                 that.setState({
                     status: 'There are 2 PDFs already being processed! Please wait for them to complete and try again, our poor server is working really hard.'
                 });
-                return;
             } else {
                 that.setState({
                     error: ''
@@ -181,7 +180,13 @@ class FileUploader extends React.Component {
                 {this.state.uploadProgress >= 0 ? <ProgressBar
                     active
                     now={this.state.uploadProgress}
-                    label={`${(this.state.uploadProgress).toFixed(2)}%`} /> : ''}
+                    label=
+                        {
+                            this.state.uploadProgress != 100 ?
+                            (this.state.uploadProgress).toFixed(2) + '%' :
+                            'Please wait...'
+                        }
+                     /> : ''}
             </div>
         );
     }
