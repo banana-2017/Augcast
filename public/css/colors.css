@@ -44,7 +44,7 @@ li.course-item {
 }
 
 .course-item.selected {
-    background: var(--list-selected-bg)
+    /* background: var(--list-selected-bg) */
 }
 
 .course-item.selected:hover {

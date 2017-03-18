@@ -36,6 +36,7 @@ class CourseListItem extends React.Component {
         return (
             <MenuItem className={ (course == this.props.currentCourse) ? 'course-item selected' : 'course-item' }
                       key={id}>
+                <div className="selected-indicator" />
                 <div className="pin-button">
                     <FA onClick={() => {this.pinCourse(id);}}
                         name={(this.props.favorite) ? 'star' : 'star-o'}

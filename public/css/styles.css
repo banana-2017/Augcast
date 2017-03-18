@@ -215,8 +215,16 @@ li.course-item {
     vertical-align: top;
 }
 
-.course-item.selected {
-    background: lightgreen;
+li.course-item > div.selected-indicator {
+    position: absolute;
+    display: none;
+    width: 10px;
+    height: 100%;
+}
+
+li.course-item.selected > div.selected-indicator {
+    display: block;
+    background-color: black;
 }
 
 .course-button {
