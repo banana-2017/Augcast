@@ -3,6 +3,7 @@ import { database } from './../../database/database_init';
 import Question from './Question';
 import CurrentQuestion from './CurrentQuestion';
 import {connect} from 'react-redux';
+import Dialog from 'react-toolbox/lib/dialog';
 
 const NAME = 'elaboration_id_';
 
@@ -22,7 +23,11 @@ class ElabRequest extends React.Component {
             // Used to store all elab info from database
             allRequests: undefined,
             // All elab ID under it
-            requestID: undefined
+            requestID: undefined,
+
+            // UI state
+            alertActive: false,
+            alertText: "Nothing Wrong"
         };
         this.updatedID = 0;
 
@@ -115,14 +120,14 @@ class ElabRequest extends React.Component {
             this.firebaseQuery();
         }
         else{
-            alert('You did not include any text!');
+            this.setState({ alertText: 'You did not include any text!', alertActive: true })
         }
     }
 
     // Update answer to database
     submitAnswer(inputtedID) {
         if(this.state.draft==''){
-            alert('You did not write any answer!');
+            this.setState({ alertText: 'You did not write any answer!', alertActive: true })
             return;
         }
         var updates = {};
@@ -203,6 +208,10 @@ class ElabRequest extends React.Component {
     }
 
     render() {
+        let handleToggle = () => {
+            this.setState({alertActive: false});
+        };
+
         console.log('timestamp is: ' + this.props.timestamp);
         return (
           <div className="elab-container">
@@ -217,6 +226,14 @@ class ElabRequest extends React.Component {
                         handleSubmit={this.handleSubmit}
                         dataRetrieved={this.state.dataRetrieved}/>}
 
+              <Dialog
+                  actions={[ {label: "OK", onClick: handleToggle} ]}
+                  active={this.state.alertActive}
+                  onEscKeyDown={handleToggle}
+                  onOverlayClick={handleToggle}
+              >
+                  <p>{this.state.alertText}</p>
+              </Dialog>
           </div>
         );
     }
@@ -233,6 +250,7 @@ const ElabRequestContainer = connect(mapStateToProps)(ElabRequest);
 
 
 export default ElabRequestContainer;
+
 /*
     renderList(){
         console.log('Showing full list of answers');
