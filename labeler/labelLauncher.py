@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import sys
-print('Current path: ' + str(sys.path));
 from video import generateTimestamp
 from video import generateTimestampFromWeb
 import json
