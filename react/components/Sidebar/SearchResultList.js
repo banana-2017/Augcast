@@ -50,7 +50,7 @@ class SearchResultList extends React.Component {
 
             if (lecture !== undefined && lecture.timestamps[slide] != -1) {
                 let result = lecture.timestamps[slide];
-                formatTime = (result/60) + ':' + (result%60);
+                formatTime = Math.floor(result/60) + ':' + (('0' + (result%60)).slice(-2));
             }
 
             // no exact match
