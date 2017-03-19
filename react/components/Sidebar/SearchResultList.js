@@ -19,7 +19,7 @@ class SearchResultList extends React.Component {
      * LectureList)
      */
     searchResultClicked (slide) {
-        let {updateSearchSlides, selectLecture, resultList} = this.props;
+        let {updateSearchSlides, selectLecture} = this.props;
         let matchedSlides = [];
 
         // getting all matched slides
