@@ -20,9 +20,13 @@ You then need to create the project-specific ```credentials.json``` file in the 
 
 ## Built With
 
- * Node.js
- * Express
- * React
+ * Node + Express
+ * React + Redux
+ * Python
+ * Tesseract OCR
+ * OpenCV
+ * Beautiful Soup
+ * Firebase
  * Many APIs! Check our package.json to view them all.
 
 ## Contributors
