@@ -53,10 +53,10 @@ class Login extends React.Component {
                         <Input className="email-input" type="email" label="Your UCSD Email" icon="email" value={this.state.email} onChange={this.emailChange} />
                         <Input className="password-input" type="password" label="Password" icon="vpn_key" value={this.state.password} onChange={this.passwordChange} />
                     </div>
+                    {this.props.isFetching ? <div className="login-info">Logging in...</div> : <div className="login-error">{this.state.error}</div>}
                     <Button className="login-button"
                             label="LOG IN" flat primary
                             onClick={this.authenticate}/>
-                    <div id="login-error">{this.props.isFetching?'Logging in...':this.state.error}</div>
                 </div>
             </div>
         );
