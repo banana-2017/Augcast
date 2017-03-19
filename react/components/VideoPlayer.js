@@ -1,5 +1,4 @@
 import React from 'react';
-import { database } from './../../database/database_init';
 import {ButtonGroup} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ElabRequest from './ElabRequest';
@@ -29,7 +28,6 @@ class VideoPlayer extends React.Component {
         this.increasePlaybackRate = this.increasePlaybackRate.bind(this);
         this.decreasePlaybackRate = this.decreasePlaybackRate.bind(this);
         this.updateCurTime = this.updateCurTime.bind(this);
-        this.updateCurTimeFromDB = this.updateCurTimeFromDB.bind(this);
 
         // helper object
         this.calendar = {
@@ -41,9 +39,15 @@ class VideoPlayer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.timestamp != undefined) {
-            this.refs.basicvideo.currentTime = nextProps.timestamp;
+        console.log('Recieving prop timestamp: ' + JSON.stringify(nextProps.timestamp));
+
+        if (nextProps.timestamp == undefined ||
+            isNaN(nextProps.timestamp) ||
+            nextProps.timestamp < 0) {
+            return;
         }
+
+        this.refs.basicvideo.currentTime = nextProps.timestamp;
     }
 
     togglePlay() {
@@ -85,23 +89,14 @@ class VideoPlayer extends React.Component {
     }
 
     updateCurTime(evt) {
-        var numberStatus = !isNaN(evt.target.value) ? evt.target.value : 'That isnt even a number yo';
-        this.setState({
-            status: 'Seeking playhead to ' + numberStatus
-        });
+        console.log('evt.target.value == ' + evt.target.value);
+        if (evt.target.value == undefined ||
+            isNaN(evt.target.value) ||
+            evt.target.value < 0) {
+            return;
+        }
+
         this.refs.basicvideo.currentTime = Number(evt.target.value);
-    }
-
-    updateCurTimeFromDB() {
-        var that = this;    // Maintain current "this" in Firebase callback
-
-        // Fetch value from db and set currentTime
-        database.ref('/test/time').once('value').then(function(snapshot) {
-            that.refs.basicvideo.currentTime = Number(snapshot.val());
-            that.setState({
-                status: 'fetched value from db, seeking playhead to ' + snapshot.val()
-            });
-        });
     }
 
     render () {

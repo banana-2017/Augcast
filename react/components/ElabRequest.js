@@ -26,7 +26,7 @@ class ElabRequest extends React.Component {
 
             // UI state
             alertActive: false,
-            alertText: "Nothing Wrong"
+            alertText: 'Nothing Wrong'
         };
 
         this.updatedID = 0;
@@ -121,14 +121,14 @@ class ElabRequest extends React.Component {
             this.firebaseQuery();
         }
         else{
-            this.setState({ alertText: 'You did not include any text!', alertActive: true })
+            this.setState({ alertText: 'You did not include any text!', alertActive: true });
         }
     }
 
     // Update answer to database
     submitAnswer(inputtedID) {
         if(this.state.draft==''){
-            this.setState({ alertText: 'You did not write any answer!', alertActive: true })
+            this.setState({ alertText: 'You did not write any answer!', alertActive: true });
             return;
         }
 
@@ -226,7 +226,7 @@ class ElabRequest extends React.Component {
               {this.props.timestamp!=undefined && <Question handleEdit={this.handleEdit} handleSubmit={this.handleSubmit} />}
 
               <Dialog
-                  actions={[ {label: "OK", onClick: handleToggle} ]}
+                  actions={[ {label: 'OK', onClick: handleToggle} ]}
                   active={this.state.alertActive}
                   onEscKeyDown={handleToggle}
                   onOverlayClick={handleToggle}

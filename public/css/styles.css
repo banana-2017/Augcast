@@ -97,7 +97,7 @@ button.login-button {
 
 .blank > p {
     display: table-cell;
-    vertical-align: bottom;
+    vertical-align: middle;;
     color: lightgray;
 }
 

@@ -5,7 +5,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
+import { List, ListItem, ListSubHeader } from 'react-toolbox/lib/list';
 
 class AppointInstructor extends React.Component {
     constructor(props) {
@@ -63,7 +63,7 @@ class AppointInstructor extends React.Component {
             }
 
             that.setState({studentsArray: students_temp, instructorsArray: instructors_temp});
-        })
+        });
     }
 
     addInstructor(chosenUser) {
@@ -81,7 +81,7 @@ class AppointInstructor extends React.Component {
             }
             else {
                 if (Object.values(instructorCourses).includes(that.props.course.id)) {
-                    alert("duplicate");
+                    alert('duplicate');
                 }
                 else {
                     let updates = {};
@@ -104,13 +104,13 @@ class AppointInstructor extends React.Component {
             var updates = {};
             for(let index in courses) {
                 if(courses[index] === that.props.course.id) {
-                    updates[index] = null
+                    updates[index] = null;
                 }
             }
             ref.update(updates);
 
             that.update();
-        })
+        });
     }
 
     render () {
@@ -118,16 +118,18 @@ class AppointInstructor extends React.Component {
 
         let handleDialogHiding = () => {
             that.setState({dialogActive: false, student: {username: 0}});
-        }
+        };
 
         let handleAdd = (chosenRequest) => {
-            that.addInstructor(chosenRequest);
-        }
+            if(typeof chosenRequest === 'object') {
+                that.addInstructor(chosenRequest);
+            }
+        };
 
         let handleRemove = () => {
             that.removeInstructor(that.state.instructor);
             that.setState({dialogActive: !that.state.dialogActive});
-        }
+        };
 
         // Render the instructor item in the list under the search bar
         let instructorItem = function(instructor) {
@@ -144,7 +146,7 @@ class AppointInstructor extends React.Component {
 
                 </div>
 
-            )
+            );
         };
 
         // Render the student item in the search bar
@@ -157,7 +159,7 @@ class AppointInstructor extends React.Component {
                         secondaryText={student.email}
                     />
                 ),
-            }
+            };
 
             return (searchItem);
         };
@@ -182,6 +184,7 @@ class AppointInstructor extends React.Component {
                     filter={AutoComplete.fuzzyFilter}
                     onNewRequest={handleAdd}
                     dataSource={this.state.studentsArray.map(studentItem)}
+                    maxSearchResults={3}
                 />
 
                 <List>
@@ -195,7 +198,7 @@ class AppointInstructor extends React.Component {
                     open={this.state.dialogActive}
                     onRequestClose={handleDialogHiding}
                 >
-                    {"Are you sure you want to remove instructor " + this.state.instructor.username + " ?"}
+                    {'Are you sure you want to remove instructor ' + this.state.instructor.username + ' ?'}
                 </Dialog>
 
             </div>

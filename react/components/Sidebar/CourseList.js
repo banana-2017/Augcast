@@ -88,7 +88,7 @@ class CourseList extends React.Component {
                     that.moveToTop (visibleCourses[course]);
                 }
             }
-        })
+        });
     }
 
     // search course

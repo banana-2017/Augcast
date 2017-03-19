@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from 'react-toolbox/lib/button';
-import Tooltip from 'react-toolbox/lib/tooltip';
 import Input from 'react-toolbox/lib/input';
 
 class Question extends React.Component {

@@ -20,7 +20,8 @@ class PodcastView extends React.Component {
                 labelProgress: undefined,
                 timestamps: undefined,
                 pdf_url: undefined
-            }
+            },
+            randomSeed : 0
         };
 
         // Update the state whenever this lecture is updated in DB by python script
@@ -131,6 +132,11 @@ class PodcastView extends React.Component {
     // Callback function passed to and executed by VideoPlayer
     handleSkipToTime(time) {
         this.setState({timestamp: time});
+
+        // Hacky way to make videoplayer's props update even if state.timestamp didn't change
+        // We also give videoplayer this prop that will change every time, triggering rerender
+        this.setState({randomSeed: Math.random()});
+        console.log('forcing timestamp update');
     }
 
     render () {
@@ -153,7 +159,7 @@ class PodcastView extends React.Component {
                         </div> :
                         <div></div>}
                     <div className = "video-panel">
-                        <VideoPlayer timestamp={this.state.timestamp} />
+                        <VideoPlayer timestamp={this.state.timestamp} random={this.state.randomSeed}/>
                     </div>
                 </div>
             );
@@ -167,7 +173,8 @@ function mapStateToProps (state) {
         currentCourse:  state.currentCourse,
         currentLecture: state.currentLecture,
         currentTime: state.currentTime,
-        jumpSlide: state.jumpSlide
+        jumpSlide: state.jumpSlide,
+        randomSeed: state.randomSeed
     };
 }
 

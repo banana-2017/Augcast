@@ -28,38 +28,63 @@ router.get('/', function(req, res) {
 });
 
 router.route('/label').post(function(req, res) {
-    // Create a new Python thread and run labeling script
-    var PythonShell = require('python-shell');
-    // Configure the python script's arguments
-    var options = {
-        pythonPath: '/usr/local/bin/python2',
-        mode: 'text',
-        args: [req.body.mediaURL, req.body.pdfURL, req.body.courseID, req.body.lectureID]
-    };
 
-    var pyshell = new PythonShell('./labeler/stdoutTest.py', options);
 
-    // Listen to script's stdout, which outputs percentage of labeling complete.
-    // Whenever updated, upload progress to Firebase so frontend can display
-    // the progress of the labeling.
-    pyshell.on('message', function (pythonStdout) {
-        // received a message sent from the Python script (a simple "print" statement)
+    var spawn = require('child_process').spawn;
+    var process = spawn('./labeler/labelLauncher.py',
+        [req.body.mediaURL,
+            req.body.pdfURL,
+            req.body.courseID,
+            req.body.lectureID]);
+
+    // Increment number of active processes
+    adminDatabase.ref('/server').once('value').then(function(snapshot) {
+        adminDatabase.ref('/server/').update({
+            processCount: snapshot.val().processCount + 1
+        });
+    });
+
+    process.stdout.on('data', function(buffer) {
+        var pythonStdout = buffer.toString();
         console.log(pythonStdout);
         var arr = pythonStdout.split('#');
         var split = arr.splice(0,3);
         split.push(arr.join('#'));
+
+        console.log('\n\nSPLIT[0]: ' + split[0]);
+
         //console.log('Python stdout: ' + split);
 
         // If receiving progress updateLectures, upload the progress
-        if (split[0] === 'progress') {
-            console.log('Updating lecture ' + split[2] + ' progress: ' + split[3]);
+        if (split[0] === 'mismatch') {
+            console.log('Updating lecture ' + split[2] + ' mismatch: ' + split[3]);
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
-                labelProgress: Number(split[3])
+                labelProgress: 0
+            });
+        }
+
+        // If receiving progress updateLectures, upload the progress
+        if (split[0] === 'audio') {
+            console.log('Updating lecture ' + split[2] + ' audio: ' + split[3]);
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
+                labelProgress: 0
+            });
+        }
+
+
+        // If receiving progress updateLectures, upload the progress
+        if (split[0] === 'progress') {
+            console.log('Updating lecture ' + split[2] + ' progress: ' + parseInt(split[3]));
+            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
+                'labelProgress': parseInt(split[3])
             });
         }
 
         // If receiving slide text contents, upload the contents
-        else if (split[0] === 'content') {
+        if (split[0] === 'content') {
+
+            console.log('\n\nUPDATING CONTENT\n\n');
+
             console.log('Updating lecture ' + split[2] + ' content: ' + split[3]);
             adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
                 contents: JSON.parse(split[3])
@@ -69,17 +94,23 @@ router.route('/label').post(function(req, res) {
         // If receiving final timestamps, upload the timestamps
         else if (split[0] === 'result'){
             console.log('Updating lecture ' + split[2] + ' final timestamps: ' + split[3]);
-            adminDatabase.ref('/lectures/'+split[1]+'/'+split[2]).update({
-                timestamps: JSON.parse(split[3])
+
+            // Decrement number of active processes and upload final timestamps
+            adminDatabase.ref('/server').once('value').then(function(snapshot) {
+
+                adminDatabase.ref('/server/').update({
+                    processCount: snapshot.val().processCount - 1
+                });
+
+                adminDatabase.ref('/lectures/' + split[1] + '/' + split[2]).update({
+                    timestamps: JSON.parse(split[3])
+                });
             });
         }
     });
 
-    // When the script's stdout is closed, the script has finished.
-    // Set the progress to 100, signifying completion.
-    pyshell.end(function (err) {
-        if (err) throw err;
-        console.log('Finished python script');
+    process.stderr.on('data', function(buffer) {
+        console.log(buffer.toString());
     });
 
     // Send response to button press (not important what that is)
