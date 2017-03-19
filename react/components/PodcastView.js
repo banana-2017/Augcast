@@ -96,9 +96,21 @@ class PodcastView extends React.Component {
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
 
             var pdfRef = newRef.on('value', function(snapshot) {
-                that.setState({
+                let lectureInfo = snapshot.val();
+                let timestamp = undefined;
 
-                    lectureInfo: snapshot.val()
+                if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
+                    timestamp = lectureInfo.timestamps[newProps.jumpSlide];
+                }
+
+                that.setState({
+                    lectureInfo: snapshot.val(),
+                    timestamp: timestamp
+                }, () => {
+                    that.setState ({
+                        timestamp: undefined
+                    });
+                    that.props.updateJumpSlide (undefined);
                 });
 
             });
@@ -109,20 +121,20 @@ class PodcastView extends React.Component {
             });
         }
 
-        // getting lectureInfo and timestamp from the state
-        let {lectureInfo} = this.state;
-
-        console.log (newProps.jumpState + " " + lectureInfo.timestamps);
-        if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
-            this.setState ({
-                timestamp: lectureInfo.timestamps[newProps.jumpSlide]
-            }, () => {
+        else {
+            // if jumpSlide is updated, update timestamp
+            let {lectureInfo} = this.state;
+            if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
+                let timestamp = lectureInfo.timestamps[newProps.jumpSlide];
                 this.setState ({
-                    timestamp: undefined
+                    timestamp: timestamp
+                }, () => {
+                    this.setState ({
+                        timestamp: undefined
+                    });
+                    this.props.updateJumpSlide (undefined);
                 });
-            });
-
-            this.props.updateJumpSlide (undefined);
+            }
         }
     }
 

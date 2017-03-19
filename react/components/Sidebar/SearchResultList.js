@@ -25,12 +25,13 @@ class SearchResultList extends React.Component {
         // getting all matched slides
         for (var item in resultList) {
             let result = resultList[item];
-            console.log (result);
             matchedSlides.push (result.item.slide);
         }
 
-        updateSearchSlides(matchedSlides, slide);
 
+
+        updateSearchSlides(matchedSlides, slide);
+        
         // change the podcast view;
         selectLecture();
     }
