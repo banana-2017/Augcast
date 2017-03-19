@@ -9,7 +9,9 @@ export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 
 export const NAVIGATE_COURSE = 'NAVIGATE_COURSE';
 export const UPDATE_SEARCH_SLIDES = 'UPDATE_SEARCH_SLIDES';
+export const UPDATE_JUMP_SLIDE = 'UPDATE_JUMP_SLIDE';
 export const DISPLAY_LECTURE = 'DISPLAY_LECTURE';
+export const SKIP_TO_TIME = 'SKIP_TO_TIME';
 export const UPDATE_USER = 'UPDATE_USER';
 export const IS_INSTRUCTOR = 'IS_INSTRUCTOR';
 export const IS_FETCHING = 'IS_FETCHING';
@@ -95,6 +97,13 @@ export function displayLecture (currentCourse, currentLecture) {
     };
 }
 
+export function skipToTime (currentTime) {
+    return {
+        type: SKIP_TO_TIME,
+        currentTime: currentTime
+    };
+}
+
 export function updateUser (username) {
     return {
         type: UPDATE_USER,
@@ -108,6 +117,15 @@ export function updateSearchSlides (slides, slide) {
     return {
         type: UPDATE_SEARCH_SLIDES,
         slides: slides,
+        slide: slide
+    };
+}
+
+export function updateJumpSlide (slide) {
+    // slides: all matched slides of the lecture
+    // slide: the slide that was clicked
+    return {
+        type: UPDATE_JUMP_SLIDE,
         slide: slide
     };
 }

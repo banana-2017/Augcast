@@ -1,5 +1,6 @@
 .banana {
     animation: pbjtime 0.8s steps(1, start) infinite;
+    margin: 0 auto;
     width: 0.3em;
     height: 0.3em;
     position: relative;

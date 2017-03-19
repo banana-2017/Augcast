@@ -50,6 +50,8 @@ class CurrentQuestion extends React.Component {
                     <p className="elaboration-question-text" key={this.props.parts}>
                         {this.props.question} (asked by {this.props.question_owner}) <br/>
                     </p>
+                    {this.props.question_owner==this.props.user &&
+                     <a className="elab-delete" onClick={() => {this.props.removeQuestion(this.props.elaboration);}}>Delete</a>}
                     <div className="elaboration-answer">
                         {this.props.answers.map(
                             this.displayAnswer.bind(extra, this.props.keys, this.props.elaboration, this.props.answer_owner))}
@@ -72,7 +74,9 @@ class CurrentQuestion extends React.Component {
         } else {
             return (
                 <MenuItem className="elab-post" onClick={this.toggleExpand} key={this.props.parts}>
-                    <div className="elab-question">{this.props.question}</div><div className="elab-question-author">{this.props.question_owner}</div>
+                    <div className="elab-question">{this.props.question}</div>{this.props.question_owner==this.props.user &&
+                     <a className="elab-delete" onClick={() => {this.props.removeQuestion(this.props.elaboration);}}>Delete</a>}
+                     <div className="elab-question-author">{this.props.question_owner}</div>
                 </MenuItem>
             );
         }

@@ -1,4 +1,4 @@
-.idea
+.idea/
 *.log*
 node_modules
 bundle.js
@@ -18,4 +18,5 @@ script/*.json
 *.mp4
 *.pdf
 utility/input.json
+.idea/*
 utility/sshCredentials.js

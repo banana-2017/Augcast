@@ -1,6 +1,7 @@
 html, body, .podcast-container, .pdf-view, .video-view {
     height: 100%;
     font-family: Roboto, sans-serif;
+    background: #f7f7f7;
 }
 
 hr {
@@ -13,21 +14,33 @@ hr {
 div.login {
     position: relative;
     margin: 0 auto;
-    width: 480px;
-    top: 30%;
+    padding: 16px;
+    width: 600px;
+    top: 25%;
 }
 
-div.login > div.login-title {
-    padding: 16px 16px 0;
+div.login-title {
+    width: 100%;
+    height: 100px;
+    background-size: 100%;
+    background-position: center;
+    background: url('/img/logo.svg') no-repeat center center;
+    margin: 0 auto;
 }
 
 div.login-input {
     float: right;
-    padding: 0 16px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+div.login-input > input {
+    margin: 10px 0;
 }
 
 button.login-button {
     height: 54px;
+    width: 100%;
 }
 
 #app {
@@ -49,18 +62,11 @@ button.login-button {
     -o-user-select: none;
     user-select: none;
     cursor: default;
+    z-index: 1;
 }
 
 .sidebar-drawer {
     height: 100%;
-}
-
-div.instructor-panel {
-    background: white;
-}
-
-div.instructor-panel .blank {
-    display: none;
 }
 
 .main {
@@ -80,7 +86,6 @@ div.instructor-panel .blank {
     text-align: center;
     font-size: 24pt;
     font-weight: 200;
-    color: white;
     margin: auto 0;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -88,12 +93,11 @@ div.instructor-panel .blank {
     -o-user-select: none;
     user-select: none;
     cursor: default;
-    background: white;
 }
 
 .blank > p {
     display: table-cell;
-    vertical-align: middle;
+    vertical-align: middle;;
     color: lightgray;
 }
 
@@ -121,6 +125,11 @@ div.instructor-panel .blank {
     height: 48px;
     width: inherit;
     z-index: 2;
+}
+
+.search-box:focus {
+    box-shadow: none;
+    outline: 0 none;
 }
 
 .search-icon {
@@ -172,6 +181,10 @@ div.instructor-panel .blank {
     color: lightgray;
 }
 
+.back-button {
+    cursor: pointer;
+}
+
 /* course list */
 .course-wrapper {
     position: fixed;
@@ -192,18 +205,28 @@ div.instructor-panel .blank {
 
 li.course-item {
     width: 100%;
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
     height: 64px;
     padding: 0;
     border-bottom: thin solid lightgray;
     vertical-align: top;
 }
 
-.course-item.selected {
-    background: lightgreen;
+li.course-item > div.selected-indicator {
+    position: absolute;
+    display: none;
+    width: 10px;
+    height: 100%;
+}
+
+li.course-item.selected > div.selected-indicator {
+    display: block;
+    background-color: black;
 }
 
 .course-button {
+    float: middle;
     padding: 8px 0 8px 0;
     height: 100%;
     width: 100%;
@@ -250,6 +273,7 @@ li.course-item {
     background: darkgray;
     color: white;
     text-align: center;
+    border-bottom: thin solid lightgray;
 }
 
 .lecture-list {
@@ -317,14 +341,15 @@ li.lecture-item {
     vertical-align: middle;
 }
 
-.lecture-item .slides-status {
+div.status-button {
+    float: right;
     position: absolute;
     right: 0;
     height: 100%;
     text-align: center;
 }
 
-.slides-status > button {
+.status-button > button {
     display: table-cell;
     height: 100%;
     min-width: 0;
@@ -333,7 +358,7 @@ li.lecture-item {
     width: 48px;
 }
 
-.slides-status > button > span.material-icons {
+.status-button > button > span.material-icons {
     margin-right: 0;
 }
 
@@ -343,6 +368,10 @@ li.lecture-item {
 
 .lecture-item:hover {
     background: lightblue;
+}
+
+.snackbar {
+    z-index:99
 }
 
 .sidebar-loading {
@@ -397,6 +426,34 @@ li.lecture-item {
     background: darkgray;
 }
 
+div.instructor-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    top: 50%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+div.instructor-panel h6 {
+    flex: 1;
+    margin: 0;
+}
+
+.instructor-panel-tabs {
+    flex: 2;
+    margin-top: 10px;
+    height: 100%;
+    max-height: 100%;
+}
+
+div.instructor-appointment, div.pending-elabs {
+    height: 100%;
+}
 
 /******************************************************************************/
 /*************************    SLIDE SEARCH RESULTS    *************************/
@@ -434,6 +491,27 @@ li.match-result > span {
     color: red;
 }
 
+.end-of-line {
+    margin: 10px;
+    text-align: center;
+    color: gray;
+    font-weight: 100;
+    font-style: italic;
+}
+
+
+.content-panel {
+    padding: 0 10px;
+    width: 100%;
+    height: 100%;
+    left: 256px;
+    top: 0;
+    display: inline-block;
+    vertical-align: top;
+    background: darkgray;
+}
+
+
 /* pdf panel */
 
 .pdf-panel {
@@ -452,13 +530,19 @@ li.match-result > span {
 }
 
 .pdf-page {
+    width: calc(100% - 10px);
     position: relative;
     margin: 10px;
     margin-left: 0;
+    min-height: 50px;
     cursor: pointer;
     display: table;
     text-align: center;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
+}
+
+.pdf-unclickable {
+    cursor: not-allowed;
 }
 
 .pdf-timestamp {
@@ -558,7 +642,7 @@ video {
     margin-top: 10px;
     height: 100%;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
-    padding: 16px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -673,11 +757,30 @@ span.current-speed {
 }
 
 /******************************************************************************/
+/*************************      LOGOUT BUTTON      *****************************
+/******************************************************************************/
+li.logout-button {
+    position: fixed;
+    bottom: 0;
+    width: 256px;
+    text-align: left;
+    background: green;
+    z-index: 2;
+    display: none;
+}
+
+/******************************************************************************/
+/**********************************   404   ************************************
+/******************************************************************************/
+.not-found {
+}
+
+/******************************************************************************/
 /*************************     LOGIN    ANIMATION     *************************/
 /******************************************************************************/
 
 div.login-wrapper{
-    background: #252525;
+    background: #f7f7f7;
     height: 100%;
     width: 100%;
     position: fixed;
@@ -705,7 +808,7 @@ div.login-wrapper{
     display: block;
     width: 40px;
     height: 40px;
-    background-color: #353535;
+    background-color: #a3c883;
     bottom: 60px;
     -webkit-animation: square 25s infinite;
     animation: square 25s infinite;
@@ -717,7 +820,7 @@ div.login-wrapper{
     left: 3%;
     border-radius:50em;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(2) {
     left: 6%;
@@ -745,7 +848,7 @@ div.login-wrapper{
 .bg-bubbles li:nth-child(5) {
     left: 70%;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(6) {
     left: 90%;
@@ -755,7 +858,7 @@ div.login-wrapper{
     animation-delay: 3s;
     border-radius:50em;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(7) {
     left: 32%;
@@ -764,7 +867,7 @@ div.login-wrapper{
     -webkit-animation-delay: 7s;
     animation-delay: 7s;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(8) {
     left: 55%;
@@ -785,7 +888,7 @@ div.login-wrapper{
     animation-duration: 40s;
     border-radius:50em;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(10) {
     left: 90%;
@@ -809,7 +912,7 @@ div.login-wrapper{
     -webkit-animation-delay: 7s;
     animation-delay: 7s;
     background:transparent;
-    border:4px solid #353535;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(13) {
     left: 65%;
@@ -826,12 +929,12 @@ div.login-wrapper{
         opacity:0;
     }
     50% {
-        opacity:1;
+        opacity:0.2;
     }
     100% {
         -webkit-transform: translateY(-700px) rotate(600deg);
         transform: translateY(-700px) rotate(600deg);
-        opacity:1;
+        opacity:0.2;
     }
 }
 @keyframes square {
@@ -841,7 +944,7 @@ div.login-wrapper{
         opacity:0;
     }
     50% {
-        opacity:1;
+        opacity:0.2;
     }
     100% {
         -webkit-transform: translateY(-700px) rotate(600deg);
@@ -849,3 +952,5 @@ div.login-wrapper{
         opacity:0;
     }
 }
+
+

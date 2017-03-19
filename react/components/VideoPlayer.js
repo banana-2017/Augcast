@@ -1,5 +1,4 @@
 import React from 'react';
-import { database } from './../../database/database_init';
 import {ButtonGroup} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ElabRequest from './ElabRequest';
@@ -21,7 +20,7 @@ class VideoPlayer extends React.Component {
         this.state = {
             playbackRate: 1,
             status: 'Initialized',
-            playing: true
+            playing: true,
         };
 
         // Bind all functions so they can refer to "this" correctly
@@ -40,7 +39,6 @@ class VideoPlayer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('Recieving prop timestamp: ' + JSON.stringify(nextProps.timestamp));
 
         if (nextProps.timestamp == undefined ||
             isNaN(nextProps.timestamp) ||
@@ -101,7 +99,7 @@ class VideoPlayer extends React.Component {
     }
 
     render () {
-        console.log(this.props);
+        //console.log(this.props);
         var course = this.props.currentCourse;
         var lecture = this.props.currentLecture;
         var video_url = lecture.video_url;
@@ -116,8 +114,6 @@ class VideoPlayer extends React.Component {
                         <ButtonGroup className='video-button-group'>
                             <FA className="rewind video-control-button" name="backward"
                                 onClick={() => {this.refs.basicvideo.currentTime -= SKIP_VALUE;}}/>
-                            <FA className="toggle-play video-control-button" name={this.state.playing ? 'pause' : 'play'}
-                                onClick={this.togglePlay}/>
                             <FA className="fastforward video-control-button" name="forward"
                                 onClick={() => {this.refs.basicvideo.currentTime += SKIP_VALUE;}}/>
                             <FA className="speed-up video-control-button" name="minus"
@@ -145,7 +141,8 @@ class VideoPlayer extends React.Component {
 function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
-        currentLecture: state.currentLecture
+        currentLecture: state.currentLecture,
+        currentTIme: state.currentTime
     };
 }
 
