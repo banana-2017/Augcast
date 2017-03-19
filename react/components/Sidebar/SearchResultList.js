@@ -30,15 +30,13 @@ class SearchResultList extends React.Component {
         }
         */
 
-        console.log (this.props.currentLecture);
-
         updateSearchSlides(matchedSlides, slide);
         // change the podcast view;
         selectLecture();
     }
 
     render () {
-        var {resultList, currentLecture} = this.props;  // resultList is a list of matches foor one lecture
+        var {resultList, lecture} = this.props;  // resultList is a list of matches foor one lecture
         var that = this;
 
         var listItem = function (result) {
@@ -48,10 +46,11 @@ class SearchResultList extends React.Component {
             let indices = result.matches[0].indices[0];
             let queryStartIndex = indices[0];
             let queryEndIndex = indices[1] + 1;
-            let resultTimeStamp = 'N/A';
+            let formatTime = undefined;
 
-            if (currentLecture !== undefined && currentLecture.timestamps[slide] != -1) {
-                resultTimeStamp = currentLecture.timestamps[slide];
+            if (lecture !== undefined && lecture.timestamps[slide] != -1) {
+                let result = lecture.timestamps[slide];
+                formatTime = (result/60) + ':' + (result%60);
             }
 
             // no exact match
@@ -79,7 +78,7 @@ class SearchResultList extends React.Component {
 
             return (
                 <MenuItem onClick={() => {that.searchResultClicked(slide);}} className="match-result" key={slide}>
-                    <div className="match-slide">Slide {slide} Time {resultTimeStamp}</div>
+                    <div className="match-slide">Slide {slide} Time {(formatTime !== undefined)?formatTime:'N/A'}</div>
                     <div className="match-text">
                         {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
                     </div>
