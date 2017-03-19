@@ -13,7 +13,6 @@ class ElabRequest extends React.Component {
 
         // Initial state
         this.state = {
-            answerDraft: '',
             author:'',
             a_username:'',
             endorsed:'',
@@ -29,6 +28,7 @@ class ElabRequest extends React.Component {
             alertActive: false,
             alertText: "Nothing Wrong"
         };
+
         this.updatedID = 0;
 
         // Bind all functions so they can refer to "this" correctly
@@ -40,8 +40,6 @@ class ElabRequest extends React.Component {
         this.removeAnswer = this.removeAnswer.bind(this);
         this.removeQuestion = this.removeQuestion.bind(this);
         this.firebaseQuery = this.firebaseQuery.bind(this);
-        //this.showEntireList = this.showEntireList.bind(this);
-        //this.displayQuestion2 = this.displayQuestion2.bind(this);
     }
 
     // Grab initial data from database
@@ -116,6 +114,9 @@ class ElabRequest extends React.Component {
             database.ref().update(updates);
             //window.location.reload();
 
+            // Clear the question field after it has been submitted
+            this.setState({content: ''});
+
             // Firebase query once //
             this.firebaseQuery();
         }
@@ -130,6 +131,7 @@ class ElabRequest extends React.Component {
             this.setState({ alertText: 'You did not write any answer!', alertActive: true })
             return;
         }
+
         var updates = {};
         console.log('inputtedID is :' + inputtedID);
         var newPostKey = database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + inputtedID + '/' + 'answers').push().key;
@@ -140,6 +142,8 @@ class ElabRequest extends React.Component {
         updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
 
+        // Clear the answer field after it has been submitted
+        this.setState({draft: ''});
         // Firebase query once //
         this.firebaseQuery();
     }
@@ -216,15 +220,10 @@ class ElabRequest extends React.Component {
         return (
           <div className="elab-container">
               <div className="elab-list">
-                  { this.state.dataRetrieved && this.props.timestamp!=undefined && this.state.requestID!=undefined ? this.state.requestID.map(this.displayQuestion) : <div className="elab-empty">No questions yet</div> }
+                  { this.state.dataRetrieved && this.props.timestamp!=undefined && this.state.requestID!=undefined ?
+                      this.state.requestID.map(this.displayQuestion) : <div className="elab-empty">No questions yet</div> }
               </div>
-              {this.props.timestamp!=undefined&&
-              <Question content={this.state.content}
-                        handleEdit={this.handleEdit}
-                        endorsed={this.state.endorsed}
-                        author={this.state.author}
-                        handleSubmit={this.handleSubmit}
-                        dataRetrieved={this.state.dataRetrieved}/>}
+              {this.props.timestamp!=undefined && <Question handleEdit={this.handleEdit} handleSubmit={this.handleSubmit} />}
 
               <Dialog
                   actions={[ {label: "OK", onClick: handleToggle} ]}
@@ -248,97 +247,4 @@ function mapStateToProps (state) {
 
 const ElabRequestContainer = connect(mapStateToProps)(ElabRequest);
 
-
 export default ElabRequestContainer;
-
-/*
-    renderList(){
-        console.log('Showing full list of answers');
-        var that = this;
-        database.ref('/elaborations/' + that.props.course + '/' + that.props.lecture).once('value').then(function(snapshot) {
-            var wholeList =  snapshot.val();
-            console.log('allRequest in entireList: ' + JSON.stringify(wholeList));
-            if(wholeList!=null){
-                var requestID = Object.keys(snapshot.val());
-                console.log('requestID in renderList: ' + requestID);
-                return (
-                  <div>
-                    <div>
-                      <p> INSIDE RENDERLIST </p>
-                    </div>
-                      {requestID.map(that.showEntireList.bind(this,wholeList))}
-                  </div>
-                );
-            }
-        });
-    }
-
-    showEntireList(list, currTime, index){
-        console.log('list is: ' + JSON.stringify(list));
-        console.log('currTime is: ' + currTime);
-        console.log('index is: ' + index);
-        var that = this;
-        var requestID = Object.keys(list[currTime]);
-        console.log('requestID in showEntireList: ' + JSON.stringify(requestID));
-        return (
-          <div>
-            <p> inside showEntire LIST</p>
-            {requestID.map(that.displayQuestion2.bind(this,list))}
-          </div>
-        );
-    }
-
-    // Display ER to user
-    displayQuestion2(list, requestID, index) {
-        console.log('list in 2 is: ' + JSON.stringify(list));
-        console.log('requestID in 2 is: ' + requestID);
-        console.log('index in 2 is: ' + index);
-        var allRequests = list;
-        var that = this;
-        var questions = allRequests[requestID].content;
-        var question_owner = allRequests[requestID].author;
-        var answers = allRequests[requestID].answers;
-        var answer_owner = [];
-        var keys = undefined;
-        if (answers != null && answers != undefined){
-            keys = Object.keys(answers);
-        }
-        var answers2 = [];
-        if (answers != null && answers != undefined){
-            JSON.parse(JSON.stringify(answers), (key, value) => {
-                if(key=='content'){
-                    answers2 = answers2.concat(value);
-                }
-                if(key=='a_username'){
-                    answer_owner = answer_owner.concat(value);
-                }
-            });
-        }
-        var parts = requestID.split('_');
-        that.updatedID = parts[parts.length-1];
-        return(
-          <div>
-            <div>
-              <p> inside showEntire LIST</p>
-            </div>
-            <CurrentQuestion key={requestID}
-                             elaboration={requestID}
-                             question={questions}
-                             answers={answers2}
-                             answer_owner={answer_owner}
-                             parts={parts}
-                             keys={keys}
-                             removeAnswer={this.removeAnswer}
-                             removeQuestion={this.removeQuestion}
-                             submitAnswer={this.submitAnswer}
-                             editAnswer={this.editAnswer}
-                             question_owner={question_owner}
-                             user={this.props.username}
-                             course={this.props.course}
-                             lecture={this.props.lecture} />
-          </div>
-        );
-    }
-
-    {this.state.dataRetrieved&&this.props.timestamp==undefined ? this.renderList() : <div>No questions on this lecture yet</div>}
-*/
