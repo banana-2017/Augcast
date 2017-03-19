@@ -78,6 +78,12 @@ function appReducers (state, action) {
             });
         }
 
+        case SKIP_TO_TIME: {
+            return Object.assign({}, state, {
+                currentTime: action.currentTime
+            })
+        }
+
         case IS_INSTRUCTOR: {
             return Object.assign ({}, state, {
                 userType: 'INSTRUCTOR'
