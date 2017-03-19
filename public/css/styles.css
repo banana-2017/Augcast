@@ -222,7 +222,6 @@ li.course-item > div.selected-indicator {
 
 li.course-item.selected > div.selected-indicator {
     display: block;
-    background-color: black;
 }
 
 .course-button {
@@ -368,6 +367,19 @@ div.status-button {
 
 .lecture-item:hover {
     background: lightblue;
+}
+
+.form-button {
+    margin: 10px;
+}
+
+.form-button.close {
+    float: right;
+    opacity: 1;
+}
+
+.form-button.close:hover {
+    opacity: 1;
 }
 
 .snackbar {
@@ -761,12 +773,11 @@ span.current-speed {
 /******************************************************************************/
 li.logout-button {
     position: fixed;
+    font-weight: 100;
     bottom: 0;
     width: 256px;
-    text-align: left;
-    background: green;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     z-index: 2;
-    display: none;
 }
 
 /******************************************************************************/
