@@ -1,4 +1,7 @@
 .DS_Store
 test
-testing.py
+test.py
+stdoutTest.py
 *.pyc
+*.pdf
+*.mp4

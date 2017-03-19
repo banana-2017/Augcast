@@ -3,12 +3,34 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { navigateCourse, displayLecture } from '../../redux/actions';
+import { logout, navigateCourse, displayLecture } from '../../redux/actions';
 import { browserHistory } from 'react-router';
 import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
 import CourseListContainer from './CourseList.js';
 import LectureListContainer from './LectureList.js';
+import { MenuItem } from 'react-toolbox/lib/menu';
+
+// ui components
+import FA from 'react-fontawesome';
+
+class Logout extends React.Component {
+    constructor(props) {
+        super(props);
+        this.logout = this.logout.bind (this);
+    }
+
+    logout () {
+        this.props.logout();
+        browserHistory.push ('/login');
+    }
+
+    render() {
+        return (
+            <MenuItem onClick={this.logout} className="logout-button" icon="power_settings_new" caption="Logout" />
+        );
+    }
+}
 
 class Sidebar extends React.Component {
 
@@ -24,7 +46,7 @@ class Sidebar extends React.Component {
         this.back = this.back.bind(this);
         this.selectCourse = this.selectCourse.bind(this);
 
-        // course slection variable
+        // course selection variable
         this.courses = undefined;
 
         // database query
@@ -34,7 +56,6 @@ class Sidebar extends React.Component {
             that.setState({loading: false});
         });
     }
-
 
     /**
      * Routine before rendering LectureList.
@@ -51,10 +72,11 @@ class Sidebar extends React.Component {
                 var lecture = that.lectures[course.lectures[that.props.lectureNum]];
 
                 // if the link also contains lecture num
-                if (that.props.lectureNum) {
-                    that.props.displayLecture(course, lecture);
-                } else {
+                if (that.props.courseID) {
                     that.props.navigateCourse(that.courses[that.props.courseID]);
+                    if (that.props.lectureNum) {
+                        that.props.displayLecture(course, lecture);
+                    }
                 }
             });
         }
@@ -86,20 +108,21 @@ class Sidebar extends React.Component {
 
 
     render () {
+
         // loading
         if (this.state.loading) {
             return <Spinner className="sidebar-loading" spinnerName="three-bounce" />;
         }
 
         // render lecture list
-        else if (this.props.navCourse) {
-            return <LectureListContainer back={this.back}
-                                         lectures={this.lectures} />;
-        }
-        // render course list
         else {
-            return <CourseListContainer courses={this.courses}
-                                        selectCourse={this.selectCourse} />;
+            return (
+                <div className="sidebar">
+                    {this.props.navCourse ? <LectureListContainer back={this.back} lectures={this.lectures} />
+                                          : <CourseListContainer courses={this.courses} selectCourse={this.selectCourse} />}
+                    <LogoutContainer/>
+                </div>
+            );
         }
     }
 
@@ -107,6 +130,7 @@ class Sidebar extends React.Component {
 
 function mapStateToProps (state) {
     return {
+        userType:   state.userType,
         navCourse:  state.navCourse
     };
 }
@@ -118,9 +142,14 @@ function mapDispatchToProps (dispatch) {
         },
         displayLecture: (currentCourse, currentLecture) => {
             dispatch(displayLecture(currentCourse, currentLecture));
+        },
+
+        logout: () => {
+            dispatch (logout());
         }
     };
 }
 
+const LogoutContainer = connect (null, mapDispatchToProps)(Logout);
 const SidebarContainer = connect (mapStateToProps, mapDispatchToProps)(Sidebar);
 export default SidebarContainer;

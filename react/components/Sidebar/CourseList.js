@@ -2,13 +2,19 @@
 // List all podcast-enabled courses
 
 import React from 'react';
-import FA from 'react-fontawesome';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Fuse from 'fuse.js';
 
-import  CourseListItem from './CourseListItem';
+// ui elements
+import Drawer from 'material-ui/Drawer';
+import FA from 'react-fontawesome';
+
+// db library
 import {database} from '../../../database/database_init';
+
+// custom react components
+import CourseListItem from './CourseListItem';
 
 
 class CourseList extends React.Component {
@@ -18,7 +24,8 @@ class CourseList extends React.Component {
         // Initial state
         this.state = {
             visibleCourses: [],    // keys to visible courses
-            favoriteArray: []
+            favoriteArray: [],
+            instructorForArray: []
         };
 
         this.search = this.search.bind(this);
@@ -27,7 +34,7 @@ class CourseList extends React.Component {
         this.pushToFavorites = this.pushToFavorites.bind (this);
         this.removeFromFavorites = this.removeFromFavorites.bind(this);
 
-        // lecture slection variable
+        // lecture selection variable
         this.dataArray = [];
 
         // inherit all course data
@@ -44,10 +51,10 @@ class CourseList extends React.Component {
         }
     }
 
-    componentWillMount () {
-        // get the favorites array, set state for pinned courses
+    componentDidMount () {
         var that = this;
 
+        // get the favorites array, set state for pinned courses
         database.ref('users/'+this.props.username+'/favorites').once('value').then(function(snapshot) {
             let favoriteArray = snapshot.val();
 
@@ -60,6 +67,24 @@ class CourseList extends React.Component {
             let visibleCourses = that.state.visibleCourses;
             for (var course in visibleCourses) {
                 if (favoriteArray.includes(visibleCourses[course])) {
+                    that.moveToTop (visibleCourses[course]);
+                }
+            }
+        });
+
+        // get the instructorFor array, set state for instructor courses
+        database.ref('users/' + this.props.username + '/instructorFor').once('value').then(function(snapshot) {
+            let instructorForArray = snapshot.val();
+
+            if (snapshot.val() == null) {
+                instructorForArray = [];
+            }
+
+            that.setState({instructorForArray: instructorForArray});
+
+            let visibleCourses = that.state.visibleCourses;
+            for (var course in visibleCourses) {
+                if (instructorForArray.includes(visibleCourses[course])) {
                     that.moveToTop (visibleCourses[course]);
                 }
             }
@@ -78,6 +103,8 @@ class CourseList extends React.Component {
             keys: ['course', 'professor', 'subject']
         };
 
+        console.log ('searching in courselist');
+
         var fuse = new Fuse(this.dataArray, options);
         var result = fuse.search(query);
         return result;
@@ -88,7 +115,6 @@ class CourseList extends React.Component {
 
         // empty query
         if (query === '') {
-            console.log (this.courseIDs);
             this.setState({visibleCourses:this.courseIDs}, () => {
                 for (var pinned in this.state.favoriteArray) {
                     this.moveToTop(this.state.favoriteArray[pinned]);
@@ -171,6 +197,10 @@ class CourseList extends React.Component {
                 var favorite = that.state.favoriteArray.includes(id);
             }
 
+            if (that.state.instructorForArray.length > 0) {
+                var instructorFor = that.state.instructorForArray.includes(id);
+            }
+
             return (
                 <CourseListItem key={id}
                                 number={number}
@@ -180,6 +210,7 @@ class CourseList extends React.Component {
                                 course={course}
                                 selectCourse={that.props.selectCourse}
                                 favorite= {favorite}
+                                instructorFor={instructorFor}
                                 pushToFavorites = {that.pushToFavorites}
                                 removeFromFavorites = {that.removeFromFavorites}
                                 moveToTop={that.moveToTop}/>
@@ -187,19 +218,21 @@ class CourseList extends React.Component {
         };
 
         return (
-            <div className="nav">
-                <div className="search-bar">
-                    <div className="search-icon"><FA name='search' /></div>
-                    <FormControl type="text"
-                                 placeholder="Filter courses..."
-                                 onChange={this.searchInput}
-                                 className="search-box" />
-                </div>
-                <div className="course-wrapper">
-                    <ul className="unpinned-list">
-                        {this.state.visibleCourses.map(listItem)}
-                    </ul>
-                </div>
+            <div className="sidebar">
+                <Drawer className="sidebar-drawer">
+                    <div className="search-bar">
+                        <div className="search-icon"><FA name='search' /></div>
+                        <FormControl type="text"
+                                     placeholder="Filter courses..."
+                                     onChange={this.searchInput}
+                                     className="search-box" />
+                    </div>
+                    <div className="course-wrapper">
+                        <div className="unpinned-list">
+                            {this.state.visibleCourses.map(listItem)}
+                        </div>
+                    </div>
+                </Drawer>
             </div>
         );
     }

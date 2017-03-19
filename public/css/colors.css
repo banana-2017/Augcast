@@ -1,0 +1,104 @@
+:root {
+    --search-bar-bg: #a3c883;
+    --search-bar-text: white;
+    --list-item-bg: white;
+    --list-selected-bg:#fdf3d0;
+    --pinned: #ffd016;
+    --week-bg: #5b7641;
+    --week-text: white;
+    --input-text-highlight-color: #603D1E;
+
+    --logout-button-bg: #5b7641;
+
+    --main-background: #f7f7f7;
+}
+
+.lecture-list {
+    background: var(--list-item-bg);
+}
+
+.search-box {
+    background: var(--search-bar-bg);
+}
+
+.search-icon {
+    color: var(--search-bar-text);
+}
+
+/* Chrome/Opera/Safari */
+.search-box::-webkit-input-placeholder {
+    color: var(--search-bar-text);
+}
+
+/* Firefox 19+ */
+.search-box::-moz-placeholder {
+    color: var(--search-bar-text);
+}
+
+/* IE 10+ */
+.search-box:-ms-input-placeholder {
+    color: var(--search-bar-text);
+}
+/* Firefox 18- */
+.search-box:-moz-placeholder {
+    color: var(--search-bar-text);
+}
+
+li.course-item {
+    background: var(--list-item-bg);
+}
+
+.course-item.selected {
+    /* background: var(--list-selected-bg) */
+}
+
+.course-item.selected:hover {
+    background: #f1ca8c;
+}
+
+.pin-button .fa.pinned {
+    color: var(--pinned);
+}
+
+.pin-button .fa:hover {
+    color: var(--pinned);
+}
+
+.slides-status button {
+    color: #483401 !important;
+}
+
+li.lecture-item {
+    background: var(--list-item-bg);
+}
+
+.lecture-item.selected {
+    background: var(--list-selected-bg);
+}
+
+.lecture-item.selected:hover {
+    background: #f1ca8c;
+}
+
+.week-separator {
+    background: var(--week-bg);
+    color: var(--week-text);
+}
+
+.main {
+    background: var(--main-background);
+}
+
+li.logout-button {
+    background: var(--logout-button-bg);
+    color: white;
+}
+
+li.logout-button:hover {
+    background: var(--search-bar-bg)!important;
+    color: white;
+}
+
+li.course-item.selected > div.selected-indicator {
+    background: var(--week-bg);
+}

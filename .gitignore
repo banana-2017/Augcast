@@ -1,3 +1,5 @@
+.idea/
+*.log*
 node_modules
 bundle.js
 public/bundle.js
@@ -6,10 +8,15 @@ server.bundle.js
 .swo
 database/credentials.json
 database/serviceAccountKey.json
-*.log
+*.log*
 labeler/assets
 .DS_Store
 *.pyc
 labeler/*.pyc
 script/*.json
-utility/
+*.pem
+*.mp4
+*.pdf
+utility/input.json
+.idea/*
+utility/sshCredentials.js

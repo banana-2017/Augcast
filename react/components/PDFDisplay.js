@@ -27,8 +27,9 @@ class PDFDisplay extends React.Component {
     }
 
     skipToTime(timestamp) {
-        console.log('PDFDisplay skipToTime: ' + timestamp);
-        this.props.onSkipToTime(timestamp);
+        if (timestamp >= 0) {
+            this.props.onSkipToTime(timestamp);
+        }
     }
 
     prettyTimestamp(timestamp) {
@@ -43,25 +44,27 @@ class PDFDisplay extends React.Component {
         var that = this;
         var sentinelArray = Array.from(Array(this.state.pages));
         var PDFpages = sentinelArray.map(function(x, i){
-            var stamp = that.props.timestamps[i+1];
+            var j = i + 1;
+            var stamp = that.props.timestamps != undefined ?
+                that.props.timestamps[j] :
+                undefined;
             return (
-                <div key={'ButtonPageCombo' + i} className="pdf-page" onClick={() => {that.skipToTime(stamp);}}>
-                    <div className="pdf-timestamp">{'Skip to ' + that.prettyTimestamp(stamp)}</div>
+                <div key={'ButtonPageCombo' + i} className={(that.props.timestamps != undefined && !isNaN(stamp) && stamp != -1) ? 'pdf-page' : 'pdf-page pdf-unclickable'} onClick={() => {that.skipToTime(stamp);}}>
+                    {(that.props.timestamps != undefined && !isNaN(stamp) && stamp != -1) ?
+                        <div className="pdf-timestamp">{'Slide ' + j + ' (Skip to ' + that.prettyTimestamp(stamp) + ')'}</div>
+                            : <div></div>}
                     <PDF
                         key={'PDFPage' + i}
                         file={that.props.pdfURL}
                         onDocumentComplete={that.onDocumentComplete}
-                        scale={0.35}
+                        scale={1}
                         page= {i + 1} />
                 </div>
             );
         });
 
         return (
-            <div
-                className="pdf-panel">
-                {PDFpages}
-            </div>
+            <div className="pdf-pages">{PDFpages}</div>
         );
     }
 }

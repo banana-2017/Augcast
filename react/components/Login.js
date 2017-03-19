@@ -1,10 +1,12 @@
 import React from 'react';
-import {FormGroup, FormControl, Button} from 'react-bootstrap';
 import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {logIn} from '../redux/actions';
 import {auth} from '../../database/database_init';
 
+// UI components
+import Input from 'react-toolbox/lib/input';
+import { Button } from 'react-toolbox/lib/button';
 
 class Login extends React.Component {
 
@@ -12,90 +14,70 @@ class Login extends React.Component {
         super (props);
         this.emailChange = this.emailChange.bind(this);
         this.passwordChange = this.passwordChange.bind(this);
-        this.emailValidation = this.emailValidation.bind(this);
-        this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.emailValidation = this.emailValidation.bind(this);
         this.authenticate = this.authenticate.bind(this);
+        this.keyEvent = this.keyEvent.bind (this);
 
         this.state = {
             email: '',
             password: '',
             valid: false,
-            failureMessage: ''
+            error: ''
         };
 
-    }
-
-
-    handleEmailChange(e) {
-        this.setState({ email: e.target.value });
     }
 
     handlePasswordChange(e) {
         this.setState({ password: e.target.value });
     }
 
-    // TODO: needs styling
-    render () {
-        return (
-            <form>
-                <FormGroup
-                    controlId="email"
-                    validationState={this.emailValidation()}>
-                    <FormControl
-                        type="text"
-                        placeholder="@ucsd.edu"
-                        onChange={this.emailChange}
-                        value={this.state.email}
-                        style= {
-                        {   padding: '20px',
-                            margin: '20px',
-                            width: '400px'
-                        }}/>
-                    <FormControl.Feedback />
-                </FormGroup>
-                <FormGroup
-                    controlId="password">
-                    <FormControl
-                        type="password"
-                        onChange={this.passwordChange}
-                        value={this.state.password}
-                        style= {
-                        {   padding: '20px',
-                            margin: '20px',
-                            width: '400px'
-                        }}
-                        placeholder="password"/>
-                    <FormControl.Feedback />
-                    <div id="errorMessage">{this.state.failureMessage}</div>
-                    <Button style={{margin:'20px'}} bsStyle="success" onClick={this.authenticate}>Login</Button>
-                </FormGroup>
-            </form>
-        );
+    // handle enter key
+    keyEvent (e) {
+        if (e.key === 'Enter') {
+            this.authenticate();
+        }
     }
 
-    // return true if email id is a valid email
-    emailValidation () {
-        let email = this.state.email;
-        if (email.endsWith ('@ucsd.edu')) {
-            return 'success';
-        }
-        else {
-            return 'error';
-        }
+    render () {
+        document.title = 'Login - Augcast';
+        return (
+            <div className="login-wrapper" onKeyPress={this.keyEvent}>
+                <div className="animateme">
+                    <ul className="bg-bubbles">
+                        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+                    </ul>
+                </div>
+                <div className="login">
+                    <div className="login-title" />
+                    <div className="login-input">
+                        <Input className="email-input" type="email" label="Your UCSD Email" icon="email" value={this.state.email} onChange={this.emailChange} />
+                        <Input className="password-input" type="password" label="Password" icon="vpn_key" value={this.state.password} onChange={this.passwordChange} />
+                    </div>
+                    {this.props.isFetching ? <div className="login-info">Logging in...</div> : <div className="login-error">{this.state.error}</div>}
+                    <Button className="login-button"
+                            label="LOG IN" flat primary
+                            onClick={this.authenticate}/>
+                </div>
+            </div>
+        );
     }
 
     authenticate() {
         const email = this.state.email;
         const password = this.state.password;
         const {dispatch, router} = this.props;
+        var that = this;
+        this.setState ({
+            error: ''
+        });
+
         if (email.endsWith ('@ucsd.edu')) {
             dispatch (logIn (email, password, router)).then(
                 success => {
-                    console.log (success);
                     if (!success) {
-                        console.log ('Login Failure');
+                        that.setState ({
+                            error: 'Login failed. Please check your UCSD credentials'
+                        });
                     }
 
                     // if ad succeeds, add user to firebase (if doesn't exist)
@@ -111,23 +93,32 @@ class Login extends React.Component {
                 }
             );
         }
+        else {
+            this.setState ({
+                error: 'Please enter a valid ucsd.edu email'
+            });
+        }
     }
 
-    passwordChange (e) {
+    passwordChange (password) {
         this.setState ({
-            password: e.target.value
+            password: password
         });
     }
 
-    emailChange (e) {
+    emailChange (email) {
         this.setState ({
-            email: e.target.value
+            email: email
         });
     }
-
 
 }
 
-const LoginContainer = connect ()(withRouter(Login));
+function mapStateToProps (state) {
+    return {
+        isFetching: state.isFetching
+    };
+}
+const LoginContainer = connect (mapStateToProps)(withRouter(Login));
 
 export default LoginContainer;
