@@ -41,7 +41,7 @@ class Login extends React.Component {
 
     // handle enter key
     keyEvent (e) {
-        if (e.keyCode === 13) {
+        if (e.key === 'Enter') {
             this.authenticate();
         }
     }
@@ -50,7 +50,7 @@ class Login extends React.Component {
     render () {
         document.title = 'Login - Augcast';
         return (
-            <div className="login-wrapper">
+            <div className="login-wrapper" onKeyPress={this.keyEvent}>
                 <div className="animateme">
                     <ul className="bg-bubbles">
                         <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>

@@ -3,7 +3,6 @@ import App from './components/App';
 import HomeContainer from './components/Home';
 import Login from './components/Login';
 import {authenticate} from './index';
-import InstructorPanel from './components/InstructorPanel';
 import NotFound from './components/NotFound';
 
 // eslint-disable-next-line
@@ -14,7 +13,6 @@ module.exports = (
         <IndexRoute component = {HomeContainer} onEnter={authenticate}></IndexRoute>
         <Route path="/login" component = {Login}/>
         <Route path="/404" component={NotFound} />
-        <Route path="/instructor" component={InstructorPanel} onEnter={authenticate} />
         <Route path="/:courseID" component={HomeContainer} onEnter={authenticate}>
             <Route path="/:courseID/:lectureNum" component={HomeContainer} />
         </Route>
