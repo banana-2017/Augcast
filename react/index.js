@@ -30,8 +30,6 @@ let store = createStore (appReducers,
 auth.onAuthStateChanged(function(user) {
     if (user) {
 
-        console.log (user.displayName);
-
         // first log in
         var username = user.email.substring (0, user.email.length-9);
         if (user.displayName === null) {

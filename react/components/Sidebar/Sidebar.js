@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { navigateCourse, displayLecture } from '../../redux/actions';
+import { logout, navigateCourse, displayLecture } from '../../redux/actions';
 import { browserHistory } from 'react-router';
 import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
@@ -11,16 +11,23 @@ import CourseListContainer from './CourseList.js';
 import LectureListContainer from './LectureList.js';
 import { MenuItem } from 'react-toolbox/lib/menu';
 
+// ui components
+import FA from 'react-fontawesome';
+
 class Logout extends React.Component {
     constructor(props) {
         super(props);
+        this.logout = this.logout.bind (this);
+    }
+
+    logout () {
+        this.props.logout();
+        browserHistory.push ('/login');
     }
 
     render() {
         return (
-            <MenuItem className="logout-button">
-                Logout
-            </MenuItem>
+            <MenuItem onClick={this.logout} className="logout-button" icon="power_settings_new" caption="Logout" />
         );
     }
 }
@@ -113,7 +120,7 @@ class Sidebar extends React.Component {
                 <div className="sidebar">
                     {this.props.navCourse ? <LectureListContainer back={this.back} lectures={this.lectures} />
                                           : <CourseListContainer courses={this.courses} selectCourse={this.selectCourse} />}
-                    <Logout />
+                    <LogoutContainer/>
                 </div>
             );
         }
@@ -135,9 +142,14 @@ function mapDispatchToProps (dispatch) {
         },
         displayLecture: (currentCourse, currentLecture) => {
             dispatch(displayLecture(currentCourse, currentLecture));
+        },
+
+        logout: () => {
+            dispatch (logout());
         }
     };
 }
 
+const LogoutContainer = connect (null, mapDispatchToProps)(Logout);
 const SidebarContainer = connect (mapStateToProps, mapDispatchToProps)(Sidebar);
 export default SidebarContainer;
