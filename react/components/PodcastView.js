@@ -35,8 +35,6 @@ class PodcastView extends React.Component {
     // We create a new database listener here so we our state changes Whenever
     // something at our specified location in db changes.
     componentDidMount() {
-        this.setState({timestamp: this.props.currentTime});
-
         // Store reference to database listener so it can be removed
         var that = this;
         var course = this.props.currentCourse;
@@ -72,16 +70,11 @@ class PodcastView extends React.Component {
                 firstRender: true
             });
         }
-
     }
 
     // This method is called whenever the props are updated (i.e. a new lecture is selected in Sidebar)
     // It will remove the old database listener and add one for the new lecture
     componentWillReceiveProps(newProps) {
-        if (this.props.currentTime != newProps.currentTime) {
-            this.setState({timestamp: newProps.currentTime});
-        }
-
         // Only change the database listener if the lectureID has changed
         if (this.state.firstRender || (newProps.currentLecture.id != this.props.currentLecture.id)) {
 

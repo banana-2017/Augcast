@@ -94,6 +94,11 @@ li.logout-button {
     color: white;
 }
 
+li.logout-button:hover {
+    background: var(--search-bar-bg)!important;
+    color: white;
+}
+
 li.course-item.selected > div.selected-indicator {
     background: var(--week-bg);
 }
