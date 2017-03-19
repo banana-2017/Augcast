@@ -76,12 +76,16 @@ class PendingER extends React.Component {
                     }
                 }
 
-                let timestamp = {time: timestamp_key, ERs: ERsArray};
-                timestampsArray.push(timestamp);
+                if(ERsArray.length > 0) {
+                    let timestamp = {time: timestamp_key, ERs: ERsArray};
+                    timestampsArray.push(timestamp);
+                }
             }
 
-            let lecture = {lecture: this.lecturesObj[lecture_key], timestamps: timestampsArray};
-            lecturesArray.push(lecture);
+            if(timestampsArray.length > 0) {
+                let lecture = {lecture: this.lecturesObj[lecture_key], timestamps: timestampsArray};
+                lecturesArray.push(lecture);
+            }
         }
 
         this.setState({lecturesTimestampERsArray: lecturesArray});
