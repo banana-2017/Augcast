@@ -289,8 +289,7 @@ class DynamicDisplay extends React.Component {
                         active
                         now={this.props.currentLecture.labelProgress}
                         label={`${(this.props.currentLecture.labelProgress).toFixed(2)}%`} />
-                    <Button
-                        style={{margin:'10px'}}
+                    <Button className="form-button close"
                         onClick={this.props.onClose}>
                         Close
                     </Button>
@@ -408,6 +407,15 @@ class Upload extends React.Component {
     }
 
     render () {
+        // var title = this.props.navCourse.dept + ' '
+        //           + this.props.navCourse.num + ' ' + this.prop.navCourse.section;
+        // if (this.props.currentLecture) {
+        //     title += ' (' + this.props.currentLecture.day + ', Week ' + this.props.currentLecture.week;
+        // }
+        // console.log(title);
+        // if (this.props.currentLecture.timestamps != undefined) {
+        //     title = "
+        //
         return (
             <div>
                 <Dialog title="Upload a PDF file"
@@ -432,7 +440,7 @@ function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
         currentLecture:  state.currentLecture,
-        navCourse: state.navCourse,
+        navCourse: state.navCourse
     };
 }
 
