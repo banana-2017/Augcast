@@ -766,7 +766,6 @@ li.logout-button {
     text-align: left;
     background: green;
     z-index: 2;
-    display: none;
 }
 
 /******************************************************************************/
@@ -952,5 +951,3 @@ div.login-wrapper{
         opacity:0;
     }
 }
-
-

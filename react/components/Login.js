@@ -14,10 +14,7 @@ class Login extends React.Component {
         super (props);
         this.emailChange = this.emailChange.bind(this);
         this.passwordChange = this.passwordChange.bind(this);
-        this.emailValidation = this.emailValidation.bind(this);
-        this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.emailValidation = this.emailValidation.bind(this);
         this.authenticate = this.authenticate.bind(this);
         this.keyEvent = this.keyEvent.bind (this);
 
@@ -28,11 +25,6 @@ class Login extends React.Component {
             error: ''
         };
 
-    }
-
-
-    handleEmailChange(e) {
-        this.setState({ email: e.target.value });
     }
 
     handlePasswordChange(e) {
@@ -65,21 +57,10 @@ class Login extends React.Component {
                     <Button className="login-button"
                             label="LOG IN" flat primary
                             onClick={this.authenticate}/>
-                    <div id="login-error">{this.state.error}</div>
+                    <div id="login-error">{this.props.isFetching?'Logging in...':this.state.error}</div>
                 </div>
             </div>
         );
-    }
-
-    // return true if email id is a valid email
-    emailValidation () {
-        let email = this.state.email;
-        if (email.endsWith ('@ucsd.edu')) {
-            return 'success';
-        }
-        else {
-            return 'error';
-        }
     }
 
     authenticate() {
@@ -87,6 +68,9 @@ class Login extends React.Component {
         const password = this.state.password;
         const {dispatch, router} = this.props;
         var that = this;
+        this.setState ({
+            error: ''
+        });
 
         if (email.endsWith ('@ucsd.edu')) {
             dispatch (logIn (email, password, router)).then(
@@ -110,6 +94,11 @@ class Login extends React.Component {
                 }
             );
         }
+        else {
+            this.setState ({
+                error: 'Please enter a valid ucsd.edu email'
+            });
+        }
     }
 
     passwordChange (password) {
@@ -124,9 +113,13 @@ class Login extends React.Component {
         });
     }
 
-
 }
 
-const LoginContainer = connect ()(withRouter(Login));
+function mapStateToProps (state) {
+    return {
+        isFetching: state.isFetching
+    };
+}
+const LoginContainer = connect (mapStateToProps)(withRouter(Login));
 
 export default LoginContainer;
