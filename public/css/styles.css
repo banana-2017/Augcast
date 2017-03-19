@@ -222,7 +222,6 @@ li.course-item > div.selected-indicator {
 
 li.course-item.selected > div.selected-indicator {
     display: block;
-    background-color: black;
 }
 
 .course-button {

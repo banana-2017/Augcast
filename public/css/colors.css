@@ -93,3 +93,7 @@ li.logout-button {
     background: var(--logout-button-bg);
     color: white;
 }
+
+li.course-item.selected > div.selected-indicator {
+    background: var(--week-bg);
+}
