@@ -243,6 +243,7 @@ class LectureList extends React.Component {
 
 
     selectLecture(lecture) {
+        // updating redux course/lecture
         this.props.displayLecture(this.course, lecture);
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
     }
@@ -268,7 +269,7 @@ class LectureList extends React.Component {
         var result = fuse.search(query);
 
         let visibleLectures = [];
-        let resultArray = {};   
+        let resultArray = {};
 
         // for every result
         for (var lecture in result) {
