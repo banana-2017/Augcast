@@ -7,7 +7,6 @@ import {auth} from '../../database/database_init';
 // UI components
 import Input from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
-import { Card, CardTitle } from 'react-toolbox/lib/card';
 
 class Login extends React.Component {
 

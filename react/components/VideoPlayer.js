@@ -1,5 +1,4 @@
 import React from 'react';
-import { database } from './../../database/database_init';
 import {ButtonGroup} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ElabRequest from './ElabRequest';

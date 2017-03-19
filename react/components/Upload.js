@@ -6,7 +6,7 @@ import Dialog from 'react-toolbox/lib/dialog';
 import { connect } from 'react-redux';
 import Button from 'react-toolbox/lib/button';
 import { firebaseApp, storageRef, database } from './../../database/database_init';
-import { ProgressBar, Glyphicon } from 'react-bootstrap';
+import { ProgressBar } from 'react-bootstrap';
 
 
 class FileUploader extends React.Component {
@@ -190,14 +190,14 @@ class UploadComplete extends React.Component {
         // Get the pdfUrl
         this.lectureRef.once('value').then(function(snapshot){
             let lecture = snapshot.val();
-            that.setState({downloadURL: lecture.slides_url})
+            that.setState({downloadURL: lecture.slides_url});
         });
 
         // Get the user information for instructor validation
         database.ref('users/' + this.props.username + '/instructorFor').once('value').then(function(snapshot) {
             let instructorFor = snapshot.val();
             let isInstructor = instructorFor.includes(that.props.currentCourse.id);
-            that.setState({isInstructor: isInstructor})
+            that.setState({isInstructor: isInstructor});
         });
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -229,7 +229,7 @@ class UploadComplete extends React.Component {
                     Delete PDF file
                 </Button>
             </div>
-        )
+        );
     }
 }
 

@@ -6,7 +6,7 @@ import { displayLecture, skipToTime } from '../redux/actions';
 import { browserHistory } from 'react-router';
 
 import ProgressBar from 'react-toolbox/lib/progress_bar';
-import {Card, CardActions, CardHeader, CardText, CardTitle, CardMedia} from 'material-ui/Card';
+import {Card, CardActions, CardHeader, CardText, CardMedia} from 'material-ui/Card';
 
 import FlatButton from 'material-ui/FlatButton';
 
@@ -21,7 +21,7 @@ class PendingER extends React.Component {
                 timestamps: undefined,
                 pdf_url: undefined
             },
-        }
+        };
 
 
         // Instance Variable
@@ -58,7 +58,7 @@ class PendingER extends React.Component {
         let lecturesArray = [];
         for(let lecture_key in this.elaborationsObj) {
 
-            let timestampsArray = []
+            let timestampsArray = [];
             for(let timestamp_key in this.elaborationsObj[lecture_key]) {
 
                 let ERsArray = [];
@@ -105,7 +105,7 @@ class PendingER extends React.Component {
         // Update the database so that this ER will not be displayed
         let ERObj = database.ref('elaborations/' + this.props.course.id + '/' + ER.lecture_ref + '/' + ER.timestamp_ref + '/' + ER.id);
         let updates = {};
-        updates["ignore"] = true;
+        updates['ignore'] = true;
         ERObj.update(updates);
 
         // Remove it from array in state so that the page will be refreshed
@@ -132,8 +132,8 @@ class PendingER extends React.Component {
         let ERItem = function(ER, lecture, time) {
             if(ER != null) {
                 let author = ER.author;
-                let email = ER.email;
-                let content = ER.content;
+                // let email = ER.email;
+                // let content = ER.content;
                 let timestamp = ER.timestamp_ref;
                 let slides_url = lecture.slides_url;
                 let timestamps = lecture.timestamps;
@@ -142,7 +142,7 @@ class PendingER extends React.Component {
                     <div key={ER.id}>
                         <Card>
                             <CardHeader
-                                title={"Asked by " + author}
+                                title={'Asked by ' + author}
                                 actAsExpander={true}
                                 showExpandableButton={true}
                             />
@@ -169,7 +169,7 @@ class PendingER extends React.Component {
                             </CardActions>
                         </Card>
                     </div>
-                )
+                );
             }
         };
 
@@ -180,12 +180,12 @@ class PendingER extends React.Component {
 
                 return (
                     <div key={time}>
-                        <p>{"At time " + time}</p>
+                        <p>{'At time ' + time}</p>
                         {ERs.map(function (x) {
-                            return ERItem(x, lecture, time)
+                            return ERItem(x, lecture, time);
                         })}
                     </div>
-                )
+                );
             }
         };
 
@@ -203,10 +203,10 @@ class PendingER extends React.Component {
                 if(timestamps != null) {
                     return (
                         <div key={lectureId}>
-                            <p>{lectureId + "   Week " + week + " " + day}</p>
+                            <p>{lectureId + '   Week ' + week + ' ' + day}</p>
                             {timestamps.map( function(x) { return timestampItem(x, lectureObj); } )}
                         </div>
-                    )
+                    );
                 }
             }
         };

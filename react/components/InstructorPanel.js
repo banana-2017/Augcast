@@ -1,12 +1,9 @@
 import React from 'react';
-import { database } from './../../database/database_init';
 import { connect } from 'react-redux';
 
 import Tooltip from 'react-toolbox/lib/tooltip';
-import { Layout, AppBar, NavDrawer, Navigation, Panel } from 'react-toolbox';
-import { ListItem } from 'react-toolbox/lib/list';
 import {Tab, Tabs} from 'react-toolbox';
-import {Button, IconButton} from 'react-toolbox/lib/button';
+import {Button} from 'react-toolbox/lib/button';
 import Dialog from 'react-toolbox/lib/dialog';
 
 
@@ -29,7 +26,7 @@ class InstructorButton extends React.Component {
     }
 
     handleToggle() {
-        this.setState({dialogActive: !this.state.dialogActive})
+        this.setState({dialogActive: !this.state.dialogActive});
     }
 
     render() {
@@ -41,7 +38,7 @@ class InstructorButton extends React.Component {
             return (
                 <div>
 
-                    <Dialog title={this.props.course.dept + " " + this.props.course.num + " (" + this.props.course.section + "): Manage Course"}
+                    <Dialog title={this.props.course.dept + ' ' + this.props.course.num + ' (' + this.props.course.section + '): Manage Course'}
                             className="instructor-panel"
                             modal={true}
                             active={this.state.dialogActive}
@@ -49,7 +46,7 @@ class InstructorButton extends React.Component {
                             autoDetectWindowHeight={false}
                             onOverlayClick={this.handleToggle} >
 
-                        <Tabs className="instructor-panel-tabs" index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index})}} fixed>
+                        <Tabs className="instructor-panel-tabs" index={this.state.tabIndex} onChange={(index)=>{this.setState({tabIndex: index});}} fixed>
                             <Tab label='Instructor Management'>
                                 <AppointInstructor className="tab-content"course={this.props.course} username={this.props.username} />
                             </Tab>
@@ -60,7 +57,7 @@ class InstructorButton extends React.Component {
 
                     </Dialog>
                 </div>
-            )
+            );
         }
 
         // If the instructor panel has not been opened, display the button
@@ -71,9 +68,9 @@ class InstructorButton extends React.Component {
                     className="instructor-button"
                     tooltip="Open Instructor Panel"
                     tooltipPosition="right"
-                    onClick={()=>{that.setState({dialogActive: true})}}
+                    onClick={()=>{that.setState({dialogActive: true});}}
                 />
-            )
+            );
         }
     }
 }

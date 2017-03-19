@@ -8,7 +8,7 @@ class NotFound extends React.Component {
     }
 
     render () {
-        console.log("Peanut Butter Jelly Time!");
+        console.log('Peanut Butter Jelly Time!');
         return (
             <div className="not-found">
                 <div className="banana" />
