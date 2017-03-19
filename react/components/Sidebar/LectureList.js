@@ -36,7 +36,7 @@ class UploadButton extends React.Component {
     render() {
         var that = this;
         return (
-            <div className="slides-status">
+            <div className="status-button">
                 <TooltipButton icon='cloud_upload'
                                className="upload-button"
                                tooltip="Upload slides for this lecture"
@@ -53,12 +53,14 @@ class DoneMark extends React.Component {
     }
 
     render() {
+        var that = this;
         return (
-            <div className="slides-status">
+            <div className="status-button">
                 <TooltipButton icon="done"
                                className="done-mark"
-                               tooltip="Slides sucessfully synced!"
-                               tooltipPosition="right"/>
+                               tooltip="Slides successfully synced!"
+                               tooltipPosition="right"
+                               onClick={() => {that.props.onClick(that.props.iconLecture);}}/>
             </div>
         );
     }
@@ -72,7 +74,7 @@ class LabelingProgressChart extends React.Component {
     render() {
         var that = this;
         return (
-            <div className="slides-status">
+            <div className="status-button">
                 <TooltipButton icon='cached'
                                className="upload-button"
                                tooltip={'Progress: ' + that.props.progress + '%'}
@@ -144,7 +146,8 @@ class UploadIconController extends React.Component {
         //Remove the database listener
         if (this.state.firebaseListener != undefined) {
             this.state.firebaseListener.off('value', this.state.firebaseCallback);
-        }    }
+        }
+    }
 
     render() {
 
@@ -155,7 +158,11 @@ class UploadIconController extends React.Component {
 
         // If there are timestamps in DB, display check mark
         if (this.state.lectureInfo.timestamps != undefined) {
-            return (<DoneMark/>);
+            return (
+                <DoneMark
+                    onClick={this.props.uploadButtonOnClick}
+                    iconLecture={this.props.iconLecture}/>
+            );
         }
 
         // If there is progress in the database, display a progress pie chart
@@ -347,7 +354,7 @@ class LectureList extends React.Component {
             <div className="sidebar">
                 <Drawer className="sidebar-drawer">
                     <div className="search-bar">
-                        <div className="search-icon"><FA name='arrow-left' onClick={that.props.back}/></div>
+                        <div className="search-icon"><FA className="back-button" name='arrow-left' onClick={that.props.back}/></div>
                         <FormControl type="text"
                                      placeholder={'Search ' + this.course.dept + ' ' + this.course.num + '...'}
                                      onChange={this.searchInput}
@@ -356,10 +363,13 @@ class LectureList extends React.Component {
                     <div className="lectures-wrapper">
                         <div className="lecture-list">
                             {that.state.visibleLectures.map(listItem)}
+                            <div className="end-of-line">end of results</div>
                         </div>
                     </div>
                 </Drawer>
-                <UploadContainer lecture={this.state.upload} open={this.state.modal} close={this.closeModal}/>
+                <UploadContainer username={this.props.username}
+                                 lecture={this.state.upload}
+                                 open={this.state.modal} close={this.closeModal}/>
             </div>
         );
     }
@@ -370,7 +380,8 @@ function mapStateToProps (state) {
     return {
         navCourse:  state.navCourse,
         currentLecture:  state.currentLecture,
-        currentCourse: state.currentCourse
+        currentCourse: state.currentCourse,
+        username: state.username
     };
 }
 

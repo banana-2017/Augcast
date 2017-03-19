@@ -24,7 +24,8 @@ class CourseList extends React.Component {
         // Initial state
         this.state = {
             visibleCourses: [],    // keys to visible courses
-            favoriteArray: []
+            favoriteArray: [],
+            instructorForArray: []
         };
 
         this.search = this.search.bind(this);
@@ -51,9 +52,9 @@ class CourseList extends React.Component {
     }
 
     componentDidMount () {
-        // get the favorites array, set state for pinned courses
         var that = this;
 
+        // get the favorites array, set state for pinned courses
         database.ref('users/'+this.props.username+'/favorites').once('value').then(function(snapshot) {
             let favoriteArray = snapshot.val();
 
@@ -66,6 +67,24 @@ class CourseList extends React.Component {
             let visibleCourses = that.state.visibleCourses;
             for (var course in visibleCourses) {
                 if (favoriteArray.includes(visibleCourses[course])) {
+                    that.moveToTop (visibleCourses[course]);
+                }
+            }
+        });
+
+        // get the instructorFor array, set state for instructor courses
+        database.ref('users/' + this.props.username + '/instructorFor').once('value').then(function(snapshot) {
+            let instructorForArray = snapshot.val();
+
+            if (snapshot.val() == null) {
+                instructorForArray = [];
+            }
+
+            that.setState({instructorForArray: instructorForArray});
+
+            let visibleCourses = that.state.visibleCourses;
+            for (var course in visibleCourses) {
+                if (instructorForArray.includes(visibleCourses[course])) {
                     that.moveToTop (visibleCourses[course]);
                 }
             }
@@ -178,6 +197,10 @@ class CourseList extends React.Component {
                 var favorite = that.state.favoriteArray.includes(id);
             }
 
+            if (that.state.instructorForArray.length > 0) {
+                var instructorFor = that.state.instructorForArray.includes(id);
+            }
+
             return (
                 <CourseListItem key={id}
                                 number={number}
@@ -187,6 +210,7 @@ class CourseList extends React.Component {
                                 course={course}
                                 selectCourse={that.props.selectCourse}
                                 favorite= {favorite}
+                                instructorFor={instructorFor}
                                 pushToFavorites = {that.pushToFavorites}
                                 removeFromFavorites = {that.removeFromFavorites}
                                 moveToTop={that.moveToTop}/>

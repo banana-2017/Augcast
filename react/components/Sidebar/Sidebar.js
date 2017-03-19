@@ -9,6 +9,21 @@ import { database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
 import CourseListContainer from './CourseList.js';
 import LectureListContainer from './LectureList.js';
+import { MenuItem } from 'react-toolbox/lib/menu';
+
+class Logout extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <MenuItem className="logout-button">
+                Logout
+            </MenuItem>
+        );
+    }
+}
 
 class Sidebar extends React.Component {
 
@@ -24,7 +39,7 @@ class Sidebar extends React.Component {
         this.back = this.back.bind(this);
         this.selectCourse = this.selectCourse.bind(this);
 
-        // course slection variable
+        // course selection variable
         this.courses = undefined;
 
         // database query
@@ -98,6 +113,7 @@ class Sidebar extends React.Component {
                 <div className="sidebar">
                     {this.props.navCourse ? <LectureListContainer back={this.back} lectures={this.lectures} />
                                           : <CourseListContainer courses={this.courses} selectCourse={this.selectCourse} />}
+                    <Logout />
                 </div>
             );
         }

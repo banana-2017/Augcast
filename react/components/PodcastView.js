@@ -17,14 +17,14 @@ class PodcastView extends React.Component {
         // Initial state
         this.state = {
             firebaseListener: undefined,
+            timestamp: 0,
             lectureInfo : {
                 labelProgress: undefined,
                 timestamps: undefined,
                 pdf_url: undefined
-            }
+            },
+            randomSeed : 0
         };
-
-        //var that = this;
 
         // Update the state whenever this lecture is updated in DB by python script
 
@@ -35,6 +35,8 @@ class PodcastView extends React.Component {
     // We create a new database listener here so we our state changes Whenever
     // something at our specified location in db changes.
     componentDidMount() {
+        this.setState({timestamp: this.props.currentTime});
+
         // Store reference to database listener so it can be removed
         var that = this;
         var course = this.props.currentCourse;
@@ -76,6 +78,9 @@ class PodcastView extends React.Component {
     // This method is called whenever the props are updated (i.e. a new lecture is selected in Sidebar)
     // It will remove the old database listener and add one for the new lecture
     componentWillReceiveProps(newProps) {
+        if (this.props.currentTime != newProps.currentTime) {
+            this.setState({timestamp: newProps.currentTime});
+        }
 
         // Only change the database listener if the lectureID has changed
         if (this.state.firstRender || (newProps.currentLecture.id != this.props.currentLecture.id)) {
@@ -96,6 +101,7 @@ class PodcastView extends React.Component {
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
 
             var pdfRef = newRef.on('value', function(snapshot) {
+
                 let lectureInfo = snapshot.val();
                 let timestamp = undefined;
 
@@ -149,6 +155,11 @@ class PodcastView extends React.Component {
     // Callback function passed to and executed by VideoPlayer
     handleSkipToTime(time) {
         this.setState({timestamp: time});
+
+        // Hacky way to make videoplayer's props update even if state.timestamp didn't change
+        // We also give videoplayer this prop that will change every time, triggering rerender
+        this.setState({randomSeed: Math.random()});
+        console.log('forcing timestamp update');
     }
 
     render () {
@@ -171,7 +182,7 @@ class PodcastView extends React.Component {
                         </div> :
                         <div></div>}
                     <div className = "video-panel">
-                        <VideoPlayer timestamp={this.state.timestamp} />
+                        <VideoPlayer timestamp={this.state.timestamp} random={this.state.randomSeed}/>
                     </div>
                 </div>
             );
@@ -184,7 +195,9 @@ function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
         currentLecture: state.currentLecture,
-        jumpSlide: state.jumpSlide
+        currentTime: state.currentTime,
+        jumpSlide: state.jumpSlide,
+        randomSeed: state.randomSeed
     };
 }
 
