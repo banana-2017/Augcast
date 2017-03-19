@@ -159,7 +159,6 @@ class FileUploader extends React.Component {
                             onClick={this.handleClear}> Clear selection </Button>
                     <Button className="form-button close"
                             onClick={this.props.handleClose}> Close </Button>
-
                 </form>
 
                 {this.state.error}
@@ -222,14 +221,25 @@ class UploadComplete extends React.Component {
         let that = this;
         return (
             <div>
-                <div>Labeling Complete. <a target="_blank" href={that.state.downloadURL}>Open PDF file</a></div>
-                {that.state.isInstructor &&
-                <Button bsStyle="warning"
-                        bsSize="small"
-                        style={{margin:'10px'}}
-                        onClick={this.handleDelete}>
-                        Delete PDF file
-                </Button>}
+                <h3>PDF Analyzing complete!</h3>
+                <p>You can now click on the slides that have timestamps to jump to their occurences in the podcast.</p>
+                <a href={that.state.downloadURL}>Open PDF file</a>
+                <br/>
+                {!that.state.isInstructor ?
+                    <div>You need to be an instructor to delete this PDF file.</div> :
+                    <div></div>}
+                <Button
+                    style={{margin:'10px'}}
+                    disabled={!that.state.isInstructor}
+                    onClick={this.handleDelete}>
+                    Delete PDF file
+                </Button>
+                <Button
+                    className="form-button close"
+                    style={{margin:'10px'}}
+                    onClick={this.props.handleClose}>
+                    Close
+                </Button>
             </div>
         );
     }
@@ -252,6 +262,7 @@ class DynamicDisplay extends React.Component {
                 <UploadComplete
                     currentCourse={this.props.currentCourse}
                     currentLecture={this.props.currentLecture}
+                    handleClose={this.props.onClose}
                     username={this.props.username}/>
             );
         }
@@ -278,6 +289,11 @@ class DynamicDisplay extends React.Component {
                         active
                         now={this.props.currentLecture.labelProgress}
                         label={`${(this.props.currentLecture.labelProgress).toFixed(2)}%`} />
+                    <Button
+                        style={{margin:'10px'}}
+                        onClick={this.props.onClose}>
+                        Close
+                    </Button>
                 </div>
             );
         }
@@ -387,6 +403,7 @@ class Upload extends React.Component {
      * Handler for closing the dialog box.
      */
     handleClose() {
+        console.log('requested close');
         if (!this.state.uploadInProgress) this.props.close();
     }
 

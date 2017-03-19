@@ -376,6 +376,11 @@ div.status-button {
 
 .form-button.close {
     float: right;
+    opacity: 1;
+}
+
+.form-button.close:hover {
+    opacity: 1;
 }
 
 .snackbar {
