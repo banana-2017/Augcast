@@ -1,6 +1,6 @@
 import { DISPLAY_LECTURE, LOG_OUT, LOG_IN_SUCCESS,LOG_IN_FAILURE,
          LOG_IN_REQUEST, NAVIGATE_COURSE, IS_INSTRUCTOR, UPDATE_USER,
-         SKIP_TO_TIME, UPDATE_SEARCH_SLIDES} from './actions';
+         SKIP_TO_TIME, UPDATE_SEARCH_SLIDES, UPDATE_JUMP_SLIDE} from './actions';
 
 /**
 * state of the app
@@ -78,6 +78,12 @@ function appReducers (state, action) {
             });
         }
 
+        case SKIP_TO_TIME: {
+            return Object.assign({}, state, {
+                currentTime: action.currentTime
+            })
+        }
+
         case IS_INSTRUCTOR: {
             return Object.assign ({}, state, {
                 userType: 'INSTRUCTOR'
@@ -96,6 +102,12 @@ function appReducers (state, action) {
                 jumpSlide: action.slide
             });
         }
+
+    case UPDATE_JUMP_SLIDE: {
+        return Object.assign ({}, state, {
+            jumpSlide: action.slide
+        });
+    }
 
     }
 

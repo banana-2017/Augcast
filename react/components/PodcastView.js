@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import VideoPlayer from './VideoPlayer';
 import PDFDisplay from './PDFDisplay';
+import {updateJumpSlide} from '../redux/actions';
 import { database } from './../../database/database_init';
 
 /**
@@ -20,7 +22,8 @@ class PodcastView extends React.Component {
                 labelProgress: undefined,
                 timestamps: undefined,
                 pdf_url: undefined
-            }
+            },
+            randomSeed : 0
         };
 
         // Update the state whenever this lecture is updated in DB by python script
@@ -98,8 +101,22 @@ class PodcastView extends React.Component {
             var newRef = database.ref('lectures/' + newProps.currentCourse.id + '/' + newProps.currentLecture.id);
 
             var pdfRef = newRef.on('value', function(snapshot) {
+
+                let lectureInfo = snapshot.val();
+                let timestamp = undefined;
+
+                if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
+                    timestamp = lectureInfo.timestamps[newProps.jumpSlide];
+                }
+
                 that.setState({
-                    lectureInfo: snapshot.val()
+                    lectureInfo: snapshot.val(),
+                    timestamp: timestamp
+                }, () => {
+                    that.setState ({
+                        timestamp: undefined
+                    });
+                    that.props.updateJumpSlide (undefined);
                 });
 
             });
@@ -110,13 +127,20 @@ class PodcastView extends React.Component {
             });
         }
 
-        // getting lectureInfo and timestamp from the state
-        let {lectureInfo} = this.state;
-
-        if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
-            this.setState ({
-                timestamp: lectureInfo.timestamps[newProps.jumpSlide]
-            });
+        else {
+            // if jumpSlide is updated, update timestamp
+            let {lectureInfo} = this.state;
+            if (newProps.jumpSlide !== undefined && lectureInfo.timestamps !== undefined) {
+                let timestamp = lectureInfo.timestamps[newProps.jumpSlide];
+                this.setState ({
+                    timestamp: timestamp
+                }, () => {
+                    this.setState ({
+                        timestamp: undefined
+                    });
+                    this.props.updateJumpSlide (undefined);
+                });
+            }
         }
     }
 
@@ -131,6 +155,11 @@ class PodcastView extends React.Component {
     // Callback function passed to and executed by VideoPlayer
     handleSkipToTime(time) {
         this.setState({timestamp: time});
+
+        // Hacky way to make videoplayer's props update even if state.timestamp didn't change
+        // We also give videoplayer this prop that will change every time, triggering rerender
+        this.setState({randomSeed: Math.random()});
+        console.log('forcing timestamp update');
     }
 
     render () {
@@ -153,7 +182,7 @@ class PodcastView extends React.Component {
                         </div> :
                         <div></div>}
                     <div className = "video-panel">
-                        <VideoPlayer timestamp={this.state.timestamp} />
+                        <VideoPlayer timestamp={this.state.timestamp} random={this.state.randomSeed}/>
                     </div>
                 </div>
             );
@@ -167,9 +196,18 @@ function mapStateToProps (state) {
         currentCourse:  state.currentCourse,
         currentLecture: state.currentLecture,
         currentTime: state.currentTime,
-        jumpSlide: state.jumpSlide
+        jumpSlide: state.jumpSlide,
+        randomSeed: state.randomSeed
     };
 }
 
-const PodcastViewContainer = connect (mapStateToProps)(PodcastView);
+function mapDispatchToProps (dispatch) {
+    return {
+        updateJumpSlide : (slide) => {
+            dispatch (updateJumpSlide(slide));
+        }
+    };
+}
+
+const PodcastViewContainer = connect (mapStateToProps, mapDispatchToProps)(PodcastView);
 export default PodcastViewContainer;

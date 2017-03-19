@@ -23,20 +23,20 @@ class SearchResultList extends React.Component {
         let matchedSlides = [];
 
         // getting all matched slides
+        /*
         for (var item in resultList) {
             let result = resultList[item];
-            console.log (result);
             matchedSlides.push (result.item.slide);
         }
+        */
 
         updateSearchSlides(matchedSlides, slide);
-
         // change the podcast view;
         selectLecture();
     }
 
     render () {
-        var {resultList} = this.props;  // resultList is a list of matches foor one lecture
+        var {resultList, lecture} = this.props;  // resultList is a list of matches foor one lecture
         var that = this;
 
         var listItem = function (result) {
@@ -46,6 +46,12 @@ class SearchResultList extends React.Component {
             let indices = result.matches[0].indices[0];
             let queryStartIndex = indices[0];
             let queryEndIndex = indices[1] + 1;
+            let formatTime = undefined;
+
+            if (lecture !== undefined && lecture.timestamps[slide] != -1) {
+                let result = lecture.timestamps[slide];
+                formatTime = Math.floor(result/60) + ':' + (('0' + (result%60)).slice(-2));
+            }
 
             // no exact match
             if (queryStartIndex< 0) {
@@ -72,7 +78,7 @@ class SearchResultList extends React.Component {
 
             return (
                 <MenuItem onClick={() => {that.searchResultClicked(slide);}} className="match-result" key={slide}>
-                    <div className="match-slide">Slide {slide}</div>
+                    <div className="match-slide">Slide {slide} Time {(formatTime !== undefined)?formatTime:'N/A'}</div>
                     <div className="match-text">
                         {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
                     </div>
@@ -100,5 +106,11 @@ function mapDispatchToProps (dispatch) {
     };
 }
 
-const SearchResultContainer = connect (null, mapDispatchToProps)(SearchResultList);
+function mapStateToProps (state) {
+    return {
+        currentLecture: state.currentLecture
+    };
+}
+
+const SearchResultContainer = connect (mapStateToProps, mapDispatchToProps)(SearchResultList);
 export default SearchResultContainer;

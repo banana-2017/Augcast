@@ -6,7 +6,7 @@ import Dialog from 'react-toolbox/lib/dialog';
 import { connect } from 'react-redux';
 import Button from 'react-toolbox/lib/button';
 import { firebaseApp, storageRef, database } from './../../database/database_init';
-import { ProgressBar, Glyphicon } from 'react-bootstrap';
+import { ProgressBar } from 'react-bootstrap';
 
 
 class FileUploader extends React.Component {
@@ -48,49 +48,58 @@ class FileUploader extends React.Component {
             return;
         }
 
-        this.setState({
-            error: ''
-        });
-
-        this.updateUploadInProgress(true);
-
-        // Declare file to be PDF
-        var metadata = {
-            contentType: 'application/pdf'
-        };
-        // Upload the file and metadata to 'lectureid/file.pdf' in FB Storage
-        var uploadTask = storageRef.child(that.props.currentLecture.id + '/' + file.name).put(file, metadata);
-
-
-        // Listener for state changes, errors, and completion of the upload
-        uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED,
-            function(snapshot) {
-                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // Check if the server is busy with 2 other PDFs right now
+        database.ref('/server').once('value').then(function(server_snapshot) {
+            if (server_snapshot.val().processCount >= 2) {
                 that.setState({
-                    uploadProgress: progress
+                    error: 'There are 2 PDFs already being processed! \nPlease wait for them to complete and try again, our poor server is working really hard.'
                 });
-                // Get upload progress
-            }, function (error) {
-                // Handle errors in upload
-                console.log('Error in FBS upload: ' + error.code);
-            }, function () {
-                // Upload successful, get download URL
-                var url = uploadTask.snapshot.downloadURL;
+            } else {
                 that.setState({
-                    downloadURL: url,
                     error: ''
                 });
 
-                that.updateUploadInProgress(false);
+                that.updateUploadInProgress(true);
 
-                database.ref('lectures/' + that.props.currentCourse.id + '/' + that.props.currentLecture.id).update({
-                    slides_url: url
-                });
+                // Declare file to be PDF
+                var metadata = {
+                    contentType: 'application/pdf'
+                };
+                // Upload the file and metadata to 'lectureid/file.pdf' in FB Storage
+                var uploadTask = storageRef.child(that.props.currentLecture.id + '/' + file.name).put(file, metadata);
 
-                // Call the label API with the new download URL
-                that.callLabelAPI(url);
-            });
 
+                // Listener for state changes, errors, and completion of the upload
+                uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED,
+                    function(snapshot) {
+                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        that.setState({
+                            uploadProgress: progress
+                        });
+                        // Get upload progress
+                    }, function (error) {
+                        // Handle errors in upload
+                        console.log('Error in FBS upload: ' + error.code);
+                    }, function () {
+                        // Upload successful, get download URL
+                        var url = uploadTask.snapshot.downloadURL;
+                        that.setState({
+                            downloadURL: url,
+                            error: ''
+                        });
+
+                        that.updateUploadInProgress(false);
+
+                        database.ref('lectures/' + that.props.currentCourse.id + '/' + that.props.currentLecture.id).update({
+                            slides_url: url
+                        });
+
+                        // Call the label API with the new download URL
+                        that.callLabelAPI(url);
+                    }
+                );
+            }
+        });
     }
 
     updateUploadInProgress(evt) {
@@ -100,7 +109,7 @@ class FileUploader extends React.Component {
     callLabelAPI(url) {
         var that = this;
 
-        fetch('http://localhost:8080/api/label', {
+        fetch('http://138.197.233.34/api/label', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -136,20 +145,34 @@ class FileUploader extends React.Component {
                     Upload the PDF here for the system to automatically generate
                     timestamps for each slide!
                 </p>
-                <input className='pdf-upload'
-                       type='file'
-                       style={{margin:'10px'}}
-                       accept='application/pdf'/>
-                <Button onClick={this.handleFile} primary raised> Upload </Button>
-                <Button disabled={this.state.uploadProgress >= 0}
-                        onClick={this.handleClear} primary flat> Clear selection </Button>
-                <Button disabled={this.state.uploadProgress >= 0}
-                        onClick={this.props.handleClose}> Close </Button>
+                <form
+                    ref='inputForm'>
+                    <input className='pdf-upload'
+                            ref='inputBox'
+                           type='file'
+                           style={{margin:'10px'}}
+                           accept='application/pdf'/>
+                    <Button className="form-button upload"
+                            onClick={this.handleFile} primary raised> Upload </Button>
+                    <Button className="form-button clear"
+                            disabled={this.state.uploadProgress >= 0}
+                            onClick={this.handleClear}> Clear selection </Button>
+                    <Button className="form-button close"
+                            onClick={this.props.handleClose}> Close </Button>
+
+                </form>
+
                 {this.state.error}
                 {this.state.uploadProgress >= 0 ? <ProgressBar
                     active
                     now={this.state.uploadProgress}
-                    label={`${(this.state.uploadProgress).toFixed(2)}%`} /> : ''}
+                    label=
+                        {
+                            this.state.uploadProgress != 100 ?
+                            (this.state.uploadProgress).toFixed(2) + '%' :
+                            'Do not leave this page yet! Fetching video, please wait... (~30 seconds)'
+                        }
+                     /> : ''}
             </div>
         );
     }
@@ -172,14 +195,14 @@ class UploadComplete extends React.Component {
         // Get the pdfUrl
         this.lectureRef.once('value').then(function(snapshot){
             let lecture = snapshot.val();
-            that.setState({downloadURL: lecture.slides_url})
+            that.setState({downloadURL: lecture.slides_url});
         });
 
         // Get the user information for instructor validation
         database.ref('users/' + this.props.username + '/instructorFor').once('value').then(function(snapshot) {
             let instructorFor = snapshot.val();
             let isInstructor = instructorFor.includes(that.props.currentCourse.id);
-            that.setState({isInstructor: isInstructor})
+            that.setState({isInstructor: isInstructor});
         });
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -190,6 +213,7 @@ class UploadComplete extends React.Component {
         updates['/slides_url'] = null;
         updates['/timestamps'] = null;
         updates['/labelProgress'] = null;
+        updates['/contents'] = null;
 
         this.lectureRef.update(updates);
     }
@@ -198,20 +222,16 @@ class UploadComplete extends React.Component {
         let that = this;
         return (
             <div>
-                <p>Labeling Complete</p>
-                <a href={that.state.downloadURL}>Open PDF file</a>
-                <br/>
-
-                <Button
-                    bsStyle="warning"
-                    bsSize="small"
-                    style={{margin:'10px'}}
-                    disabled={!that.state.isInstructor}
-                    onClick={this.handleDelete}>
-                    Delete PDF file
-                </Button>
+                <div>Labeling Complete. <a target="_blank" href={that.state.downloadURL}>Open PDF file</a></div>
+                {that.state.isInstructor &&
+                <Button bsStyle="warning"
+                        bsSize="small"
+                        style={{margin:'10px'}}
+                        onClick={this.handleDelete}>
+                        Delete PDF file
+                </Button>}
             </div>
-        )
+        );
     }
 }
 
@@ -244,8 +264,13 @@ class DynamicDisplay extends React.Component {
                         Analyzing PDF
                     </h3>
                     <br/>
-                    <p>Your submitted PDF is being analyzed for matching text in the video podcast.
-                        This process will take around 20 minutes, feel free to browse away and check back later on the progress.</p>
+                    <p>
+                        Your submitted PDF is being analyzed for matching text in the video podcast.
+                        This process will take >40 minutes for a 50-minute lecture,
+                        depending on the text content of the podcast.
+                        <br />
+                        <b>Feel free to browse away and check back later on the progress!</b>
+                    </p>
                     <br/>
                     <h4>Progress: </h4>
                     <br/>
@@ -371,6 +396,7 @@ class Upload extends React.Component {
                 <Dialog title="Upload a PDF file"
                         modal={false}
                         active={this.props.open}
+                        onOverlayMouseDown={this.handleClose}
                         onRequestClose={this.handleClose} >
 
                     <DynamicDisplay

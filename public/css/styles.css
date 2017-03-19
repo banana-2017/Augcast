@@ -97,7 +97,7 @@ button.login-button {
 
 .blank > p {
     display: table-cell;
-    vertical-align: bottom;
+    vertical-align: middle;;
     color: lightgray;
 }
 
@@ -368,6 +368,14 @@ div.status-button {
 
 .lecture-item:hover {
     background: lightblue;
+}
+
+.form-button {
+    margin: 10px;
+}
+
+.form-button.close {
+    float: right;
 }
 
 .snackbar {
@@ -642,7 +650,7 @@ video {
     margin-top: 10px;
     height: 100%;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
-    padding: 16px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -808,7 +816,7 @@ div.login-wrapper{
     display: block;
     width: 40px;
     height: 40px;
-    background-color: #603D1E;
+    background-color: #a3c883;
     bottom: 60px;
     -webkit-animation: square 25s infinite;
     animation: square 25s infinite;
@@ -820,7 +828,7 @@ div.login-wrapper{
     left: 3%;
     border-radius:50em;
     background:transparent;
-    border:4px solid #603D1E;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(2) {
     left: 6%;
@@ -848,7 +856,7 @@ div.login-wrapper{
 .bg-bubbles li:nth-child(5) {
     left: 70%;
     background:transparent;
-    border:4px solid #603D1E;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(6) {
     left: 90%;
@@ -858,7 +866,7 @@ div.login-wrapper{
     animation-delay: 3s;
     border-radius:50em;
     background:transparent;
-    border:4px solid #603D1E;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(7) {
     left: 32%;
@@ -867,7 +875,7 @@ div.login-wrapper{
     -webkit-animation-delay: 7s;
     animation-delay: 7s;
     background:transparent;
-    border:4px solid #603D1E;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(8) {
     left: 55%;
@@ -888,7 +896,7 @@ div.login-wrapper{
     animation-duration: 40s;
     border-radius:50em;
     background:transparent;
-    border:4px solid #603D1E;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(10) {
     left: 90%;
@@ -912,7 +920,7 @@ div.login-wrapper{
     -webkit-animation-delay: 7s;
     animation-delay: 7s;
     background:transparent;
-    border:4px solid #603D1E;
+    border:4px solid #a3c883;
 }
 .bg-bubbles li:nth-child(13) {
     left: 65%;

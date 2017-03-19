@@ -250,6 +250,7 @@ class LectureList extends React.Component {
 
 
     selectLecture(lecture) {
+        // updating redux course/lecture
         this.props.displayLecture(this.course, lecture);
         browserHistory.push('/' + this.course.id + '/' + lecture.num);
     }
@@ -275,7 +276,7 @@ class LectureList extends React.Component {
         var result = fuse.search(query);
 
         let visibleLectures = [];
-        let resultArray = {};   
+        let resultArray = {};
 
         // for every result
         for (var lecture in result) {
@@ -340,7 +341,7 @@ class LectureList extends React.Component {
                         </div>
                         <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                     </MenuItem>
-                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} selectLecture={() => {that.selectLecture(lecture);}}/>
+                    <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} lecture={lecture} selectLecture={() => {that.selectLecture(lecture);}}/>
                 </div>
             );
         };

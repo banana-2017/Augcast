@@ -11,7 +11,7 @@ router.use(bodyParser.json());
 router.post ('/', function (req, res) {
 
 /**
- LDAB Authentication could go here instead of the SSHing
+ LDAP Authentication could go here instead of the SSHing
  */
 
     var ssh = new SSH({
@@ -46,14 +46,18 @@ module.exports = router;
 
 /*
 
-LDAB Authentication
+LDAP Authentication
 
     var config = {
         url: 'ldap://ad.ucsd.edu',
         baseDN: '',
     };
 
-    var ad = new ActiveDirectory(config);
+res.json({success:true});
+return;
+
+    
+var ad = new ActiveDirectory(config);
     console.log ('authenticating ' + req.body.email);
 
     ad.authenticate(req.body.email, req.body.password, function(err, adAuth) {

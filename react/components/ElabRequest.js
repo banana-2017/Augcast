@@ -3,10 +3,8 @@ import { database } from './../../database/database_init';
 import Question from './Question';
 import CurrentQuestion from './CurrentQuestion';
 import {connect} from 'react-redux';
+import Dialog from 'react-toolbox/lib/dialog';
 
-/**
-ElabRequest
-*/
 const NAME = 'elaboration_id_';
 
 class ElabRequest extends React.Component {
@@ -15,17 +13,22 @@ class ElabRequest extends React.Component {
 
         // Initial state
         this.state = {
-            answerDraft: '',
             author:'',
             a_username:'',
             endorsed:'',
-            content: 'Please write your question here...',
+            content: '',
+            draft: '',
             dataRetrieved: false,
             // Used to store all elab info from database
             allRequests: undefined,
             // All elab ID under it
-            requestID: undefined
+            requestID: undefined,
+
+            // UI state
+            alertActive: false,
+            alertText: 'Nothing Wrong'
         };
+
         this.updatedID = 0;
 
         // Bind all functions so they can refer to "this" correctly
@@ -35,6 +38,7 @@ class ElabRequest extends React.Component {
         this.editAnswer = this.editAnswer.bind(this);
         this.submitAnswer = this.submitAnswer.bind(this);
         this.removeAnswer = this.removeAnswer.bind(this);
+        this.removeQuestion = this.removeQuestion.bind(this);
         this.firebaseQuery = this.firebaseQuery.bind(this);
     }
 
@@ -96,25 +100,38 @@ class ElabRequest extends React.Component {
 
     // updating ER to database
     handleSubmit() {
-        console.log('In HandleSubmit');
-        var postData = {
-            content:this.state.content,
-            endorsed:this.state.endorsed,
-            author:this.props.username,
-        };
-        var updates = {};
-        this.updatedID = parseInt(this.updatedID)+1;
-        this.setState({updatedID: this.updatedID});
-        updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + (NAME + this.updatedID)] = postData;
-        database.ref().update(updates);
-        //window.location.reload();
+        if(this.state.content!=''){
+            console.log('In HandleSubmit');
+            var postData = {
+                content:this.state.content,
+                endorsed:this.state.endorsed,
+                author:this.props.username,
+            };
+            var updates = {};
+            this.updatedID = parseInt(this.updatedID)+1;
+            this.setState({updatedID: this.updatedID});
+            updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + (NAME + this.updatedID)] = postData;
+            database.ref().update(updates);
+            //window.location.reload();
 
-        // Firebase query once //
-        this.firebaseQuery();
+            // Clear the question field after it has been submitted
+            this.setState({content: ''});
+
+            // Firebase query once //
+            this.firebaseQuery();
+        }
+        else{
+            this.setState({ alertText: 'You did not include any text!', alertActive: true });
+        }
     }
 
     // Update answer to database
     submitAnswer(inputtedID) {
+        if(this.state.draft==''){
+            this.setState({ alertText: 'You did not write any answer!', alertActive: true });
+            return;
+        }
+
         var updates = {};
         console.log('inputtedID is :' + inputtedID);
         var newPostKey = database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + inputtedID + '/' + 'answers').push().key;
@@ -124,8 +141,9 @@ class ElabRequest extends React.Component {
         };
         updates['/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + inputtedID + '/answers/' + newPostKey] = answerObj;
         database.ref().update(updates);
-        //window.location.reload();
 
+        // Clear the answer field after it has been submitted
+        this.setState({draft: ''});
         // Firebase query once //
         this.firebaseQuery();
     }
@@ -145,6 +163,7 @@ class ElabRequest extends React.Component {
         console.log('inputtedID in removeQuestion is :' + inputtedID);
         database.ref('/elaborations/' + this.props.course + '/' + this.props.lecture + '/' + this.props.timestamp + '/' + inputtedID).remove();
         //window.location.reload();
+        this.firebaseQuery();
     }
 
 
@@ -152,7 +171,6 @@ class ElabRequest extends React.Component {
     displayQuestion(elaboration) {
         var allRequests = this.state.allRequests;
         var that = this;
-
         var questions = allRequests[elaboration].content;
         var question_owner = allRequests[elaboration].author;
         var answers = allRequests[elaboration].answers;
@@ -194,18 +212,27 @@ class ElabRequest extends React.Component {
     }
 
     render() {
+        let handleToggle = () => {
+            this.setState({alertActive: false});
+        };
+
+        console.log('timestamp is: ' + this.props.timestamp);
         return (
           <div className="elab-container">
               <div className="elab-list">
-                  { this.state.dataRetrieved && this.state.requestID!=undefined ?
+                  { this.state.dataRetrieved && this.props.timestamp!=undefined && this.state.requestID!=undefined ?
                       this.state.requestID.map(this.displayQuestion) : <div className="elab-empty">No questions yet</div> }
               </div>
-              <Question content={this.state.content}
-                        handleEdit={this.handleEdit}
-                        endorsed={this.state.endorsed}
-                        author={this.state.author}
-                        handleSubmit={this.handleSubmit}
-                        dataRetrieved={this.state.dataRetrieved}/>
+              {this.props.timestamp!=undefined && <Question handleEdit={this.handleEdit} handleSubmit={this.handleSubmit} />}
+
+              <Dialog
+                  actions={[ {label: 'OK', onClick: handleToggle} ]}
+                  active={this.state.alertActive}
+                  onEscKeyDown={handleToggle}
+                  onOverlayClick={handleToggle}
+              >
+                  <p>{this.state.alertText}</p>
+              </Dialog>
           </div>
         );
     }
@@ -219,4 +246,5 @@ function mapStateToProps (state) {
 }
 
 const ElabRequestContainer = connect(mapStateToProps)(ElabRequest);
+
 export default ElabRequestContainer;
