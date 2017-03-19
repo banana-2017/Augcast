@@ -43,6 +43,18 @@ button.login-button {
     width: 100%;
 }
 
+.login-error {
+    line-height: 1.5em;
+    text-align: center;
+    color: rgba(240,0,0,0.6);
+}
+
+.login-info {
+    line-height: 1.5em;
+    text-align: center;
+    color: rgba(0,0,0,0.6);
+}
+
 #app {
     position: fixed;
     height: 100%;
@@ -194,6 +206,7 @@ button.login-button {
     margin: 0px;
     width: inherit;
     display: block;
+    margin-bottom: 48px;
 }
 
 .unpinned-list {
@@ -222,7 +235,6 @@ li.course-item > div.selected-indicator {
 
 li.course-item.selected > div.selected-indicator {
     display: block;
-    background-color: black;
 }
 
 .course-button {
@@ -267,6 +279,7 @@ li.course-item.selected > div.selected-indicator {
     width: inherit;
     display: block;
     bottom: 0;
+    margin-bottom: 48px;
 }
 
 .week-separator {
@@ -774,18 +787,23 @@ span.current-speed {
 /******************************************************************************/
 li.logout-button {
     position: fixed;
+    font-weight: 100;
     bottom: 0;
+    height: 48px;
     width: 256px;
-    text-align: left;
-    background: green;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     z-index: 2;
-    display: none;
 }
 
 /******************************************************************************/
 /**********************************   404   ************************************
 /******************************************************************************/
 .not-found {
+    margin-top: 400px;
+    text-align: center;
+    font-size: 72pt;
+    opacity: .2;
+    z-index: -2;
 }
 
 /******************************************************************************/
@@ -965,5 +983,3 @@ div.login-wrapper{
         opacity:0;
     }
 }
-
-

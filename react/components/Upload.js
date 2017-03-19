@@ -185,6 +185,7 @@ class UploadComplete extends React.Component {
         this.state = {
             downloadURL: '',
             isInstructor: false,
+            deleteConfirm: false
         };
 
         let that = this;
@@ -205,6 +206,11 @@ class UploadComplete extends React.Component {
         });
 
         this.handleDelete = this.handleDelete.bind(this);
+        this.toggleConfirm = this.toggleConfirm.bind(this);
+    }
+
+    toggleConfirm() {
+        this.setState({deleteConfirm: !this.state.deleteConfirm});
     }
 
     handleDelete() {
@@ -215,25 +221,34 @@ class UploadComplete extends React.Component {
         updates['/contents'] = null;
 
         this.lectureRef.update(updates);
+        this.toggleConfirm();
     }
 
     render() {
         let that = this;
+        var deleteButton = (!this.state.deleteConfirm) ?
+            (<Button className="form-button" accent raised
+                 onClick={this.toggleConfirm}>
+                 Delete PDF file
+            </Button>) :
+            (<span className="delete-confirm">
+                <Button className="form-button" accent raised
+                    onClick={this.handleDelete}>
+                    Nuke it.
+                </Button>
+                <Button className="form-button"
+                    onClick={this.toggleConfirm}>
+                    Nah.
+                </Button>
+            </span>)
         return (
             <div>
                 <h3>PDF Analyzing complete!</h3>
-                <p>You can now click on the slides that have timestamps to jump to their occurences in the podcast.</p>
-                <a href={that.state.downloadURL}>Open PDF file</a>
-                <br/>
-                {!that.state.isInstructor ?
-                    <div>You need to be an instructor to delete this PDF file.</div> :
-                    <div></div>}
-                <Button
-                    style={{margin:'10px'}}
-                    disabled={!that.state.isInstructor}
-                    onClick={this.handleDelete}>
-                    Delete PDF file
-                </Button>
+                <div>
+                    <span>You can now click on the slides that have timestamps to jump to their occurences in the podcast.</span>
+                    <span> <a href={that.state.downloadURL}>Open PDF file</a></span>
+                </div>
+                {that.state.isInstructor && deleteButton}
                 <Button
                     className="form-button close"
                     style={{margin:'10px'}}

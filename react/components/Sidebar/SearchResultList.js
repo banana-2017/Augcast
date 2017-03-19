@@ -3,6 +3,9 @@ import {MenuItem} from 'react-toolbox/lib/menu';
 import {connect} from 'react-redux';
 import {updateSearchSlides} from '../../redux/actions';
 
+import Tooltip from 'react-toolbox/lib/tooltip';
+
+const TooltipMenuItem = Tooltip(MenuItem);
 class SearchResultList extends React.Component {
     constructor (props) {
         super (props);
@@ -19,7 +22,7 @@ class SearchResultList extends React.Component {
      * LectureList)
      */
     searchResultClicked (slide) {
-        let {updateSearchSlides, selectLecture, resultList} = this.props;
+        let {updateSearchSlides, selectLecture} = this.props;
         let matchedSlides = [];
 
         // getting all matched slides
@@ -48,7 +51,7 @@ class SearchResultList extends React.Component {
             let queryEndIndex = indices[1] + 1;
             let formatTime = undefined;
 
-            if (lecture !== undefined && lecture.timestamps[slide] != -1) {
+            if (lecture !== undefined && lecture.timestamps[slide] != -1 && lecture.timestamps[slide] !== undefined) {
                 let result = lecture.timestamps[slide];
                 formatTime = Math.floor(result/60) + ':' + (('0' + (result%60)).slice(-2));
             }
@@ -75,14 +78,20 @@ class SearchResultList extends React.Component {
 
             let suffix = contents.substring (queryEndIndex, suffixEnd);
 
+            let tooltip = (formatTime) ? "Skip to " + formatTime : "Slide not synced";
+
 
             return (
-                <MenuItem onClick={() => {that.searchResultClicked(slide);}} className="match-result" key={slide}>
-                    <div className="match-slide">Slide {slide} Time {(formatTime !== undefined)?formatTime:'N/A'}</div>
+                <TooltipMenuItem onClick={() => {that.searchResultClicked(slide);}}
+                                 tooltip={tooltip}
+                                 tooltipPosition="right"
+                                 className="match-result"
+                                 key={slide} >
+                    <div className="match-slide">Slide {slide} &nbsp; Time {(formatTime !== undefined)?formatTime:'N/A'}</div>
                     <div className="match-text">
                         {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
                     </div>
-                </MenuItem>
+                </TooltipMenuItem>
             );
         };
 
