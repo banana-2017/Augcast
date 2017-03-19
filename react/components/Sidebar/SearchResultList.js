@@ -28,8 +28,10 @@ class SearchResultList extends React.Component {
             matchedSlides.push (result.item.slide);
         }
 
-        updateSearchSlides(matchedSlides, slide);
 
+
+        updateSearchSlides(matchedSlides, slide);
+        
         // change the podcast view;
         selectLecture();
     }
