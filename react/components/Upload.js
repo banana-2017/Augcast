@@ -152,15 +152,13 @@ class FileUploader extends React.Component {
                            type='file'
                            style={{margin:'10px'}}
                            accept='application/pdf'/>
-                    <Button disabled={this.state.uploadProgress >= 0}
-                            style={{margin:'10px'}}
-                            onClick={this.props.handleClose}> Close </Button>
-                    <Button style={{margin:'10px'}}
+                    <Button className="form-button upload"
+                            onClick={this.handleFile} primary raised> Upload </Button>
+                    <Button className="form-button clear"
                             disabled={this.state.uploadProgress >= 0}
                             onClick={this.handleClear}> Clear selection </Button>
-                    <Button style={{margin:'10px'}}
-                            disabled={this.state.uploadProgress >= 0}
-                            onClick={this.handleFile}> Upload </Button>
+                    <Button className="form-button close"
+                            onClick={this.props.handleClose}> Close </Button>
                 </form>
 
                 {this.state.error}
@@ -232,14 +230,15 @@ class UploadComplete extends React.Component {
                     <div></div>}
                 <Button
                     style={{margin:'10px'}}
-                    onClick={this.props.handleClose}>
-                    Close
-                </Button>
-                <Button
-                    style={{margin:'10px'}}
                     disabled={!that.state.isInstructor}
                     onClick={this.handleDelete}>
                     Delete PDF file
+                </Button>
+                <Button
+                    className="form-button close"
+                    style={{margin:'10px'}}
+                    onClick={this.props.handleClose}>
+                    Close
                 </Button>
             </div>
         );
@@ -414,6 +413,7 @@ class Upload extends React.Component {
                 <Dialog title="Upload a PDF file"
                         modal={false}
                         active={this.props.open}
+                        onOverlayMouseDown={this.handleClose}
                         onRequestClose={this.handleClose} >
 
                     <DynamicDisplay
