@@ -11,6 +11,9 @@ import CourseListContainer from './CourseList.js';
 import LectureListContainer from './LectureList.js';
 import { MenuItem } from 'react-toolbox/lib/menu';
 
+// ui components
+import FA from 'react-fontawesome';
+
 class Logout extends React.Component {
     constructor(props) {
         super(props);
@@ -19,14 +22,12 @@ class Logout extends React.Component {
 
     logout () {
         this.props.logout();
-        browserHistory.push ('/login')
+        browserHistory.push ('/login');
     }
 
     render() {
         return (
-            <MenuItem onClick={this.logout} className="logout-button">
-                Logout
-            </MenuItem>
+            <MenuItem onClick={this.logout} className="logout-button" icon="power_settings_new" caption="Logout" />
         );
     }
 }

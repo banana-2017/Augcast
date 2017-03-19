@@ -8,6 +8,7 @@ import NotFound from './components/NotFound';
 // eslint-disable-next-line
 import React from 'react';      // used for jsx
 
+        // <IndexRoute component = {HomeContainer} onEnter={authenticate}></IndexRoute>
 module.exports = (
     <Route path="/" component = {App} >
         <IndexRoute component = {HomeContainer} onEnter={authenticate}></IndexRoute>

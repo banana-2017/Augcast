@@ -152,15 +152,13 @@ class FileUploader extends React.Component {
                            type='file'
                            style={{margin:'10px'}}
                            accept='application/pdf'/>
-                    <Button disabled={this.state.uploadProgress >= 0}
-                            style={{margin:'10px'}}
-                            onClick={this.props.handleClose}> Close </Button>
-                    <Button style={{margin:'10px'}}
+                    <Button className="form-button upload"
+                            onClick={this.handleFile} primary raised> Upload </Button>
+                    <Button className="form-button clear"
                             disabled={this.state.uploadProgress >= 0}
                             onClick={this.handleClear}> Clear selection </Button>
-                    <Button style={{margin:'10px'}}
-                            onClick={this.handleFile}> Upload </Button>
-
+                    <Button className="form-button close"
+                            onClick={this.props.handleClose}> Close </Button>
                 </form>
 
                 {this.state.error}
@@ -187,6 +185,7 @@ class UploadComplete extends React.Component {
         this.state = {
             downloadURL: '',
             isInstructor: false,
+            deleteConfirm: false
         };
 
         let that = this;
@@ -207,6 +206,11 @@ class UploadComplete extends React.Component {
         });
 
         this.handleDelete = this.handleDelete.bind(this);
+        this.toggleConfirm = this.toggleConfirm.bind(this);
+    }
+
+    toggleConfirm() {
+        this.setState({deleteConfirm: !this.state.deleteConfirm});
     }
 
     handleDelete() {
@@ -217,23 +221,39 @@ class UploadComplete extends React.Component {
         updates['/contents'] = null;
 
         this.lectureRef.update(updates);
+        this.toggleConfirm();
     }
 
     render() {
         let that = this;
+        var deleteButton = (!this.state.deleteConfirm) ?
+            (<Button className="form-button" accent raised
+                 onClick={this.toggleConfirm}>
+                 Delete PDF file
+            </Button>) :
+            (<span className="delete-confirm">
+                <Button className="form-button" accent raised
+                    onClick={this.handleDelete}>
+                    Nuke it.
+                </Button>
+                <Button className="form-button"
+                    onClick={this.toggleConfirm}>
+                    Nah.
+                </Button>
+            </span>)
         return (
             <div>
-                <p>Labeling Complete</p>
-                <a href={that.state.downloadURL}>Open PDF file</a>
-                <br/>
-
+                <h3>PDF Analyzing complete!</h3>
+                <div>
+                    <span>You can now click on the slides that have timestamps to jump to their occurences in the podcast.</span>
+                    <span> <a href={that.state.downloadURL}>Open PDF file</a></span>
+                </div>
+                {that.state.isInstructor && deleteButton}
                 <Button
-                    bsStyle="warning"
-                    bsSize="small"
+                    className="form-button close"
                     style={{margin:'10px'}}
-                    disabled={!that.state.isInstructor}
-                    onClick={this.handleDelete}>
-                    Delete PDF file
+                    onClick={this.props.handleClose}>
+                    Close
                 </Button>
             </div>
         );
@@ -257,6 +277,7 @@ class DynamicDisplay extends React.Component {
                 <UploadComplete
                     currentCourse={this.props.currentCourse}
                     currentLecture={this.props.currentLecture}
+                    handleClose={this.props.onClose}
                     username={this.props.username}/>
             );
         }
@@ -283,6 +304,10 @@ class DynamicDisplay extends React.Component {
                         active
                         now={this.props.currentLecture.labelProgress}
                         label={`${(this.props.currentLecture.labelProgress).toFixed(2)}%`} />
+                    <Button className="form-button close"
+                        onClick={this.props.onClose}>
+                        Close
+                    </Button>
                 </div>
             );
         }
@@ -392,15 +417,26 @@ class Upload extends React.Component {
      * Handler for closing the dialog box.
      */
     handleClose() {
+        console.log('requested close');
         if (!this.state.uploadInProgress) this.props.close();
     }
 
     render () {
+        // var title = this.props.navCourse.dept + ' '
+        //           + this.props.navCourse.num + ' ' + this.prop.navCourse.section;
+        // if (this.props.currentLecture) {
+        //     title += ' (' + this.props.currentLecture.day + ', Week ' + this.props.currentLecture.week;
+        // }
+        // console.log(title);
+        // if (this.props.currentLecture.timestamps != undefined) {
+        //     title = "
+        //
         return (
             <div>
                 <Dialog title="Upload a PDF file"
                         modal={false}
                         active={this.props.open}
+                        onOverlayMouseDown={this.handleClose}
                         onRequestClose={this.handleClose} >
 
                     <DynamicDisplay
@@ -419,7 +455,7 @@ function mapStateToProps (state) {
     return {
         currentCourse:  state.currentCourse,
         currentLecture:  state.currentLecture,
-        navCourse: state.navCourse,
+        navCourse: state.navCourse
     };
 }
 
