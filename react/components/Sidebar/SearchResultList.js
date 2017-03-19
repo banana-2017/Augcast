@@ -51,7 +51,7 @@ class SearchResultList extends React.Component {
             let queryEndIndex = indices[1] + 1;
             let formatTime = undefined;
 
-            if (lecture !== undefined && lecture.timestamps[slide] != -1) {
+            if (lecture !== undefined && lecture.timestamps[slide] != -1 && lecture.timestamps[slide] !== undefined) {
                 let result = lecture.timestamps[slide];
                 formatTime = Math.floor(result/60) + ':' + (('0' + (result%60)).slice(-2));
             }
@@ -87,7 +87,7 @@ class SearchResultList extends React.Component {
                                  tooltipPosition="right"
                                  className="match-result"
                                  key={slide} >
-                    <div className="match-slide">Slide {slide} Time {(formatTime !== undefined)?formatTime:'N/A'}</div>
+                    <div className="match-slide">Slide {slide} &nbsp; Time {(formatTime !== undefined)?formatTime:'N/A'}</div>
                     <div className="match-text">
                         {prefix}<span className="match-highlight">{queryMatch}</span>{suffix}
                     </div>
