@@ -43,6 +43,18 @@ button.login-button {
     width: 100%;
 }
 
+.login-error {
+    line-height: 1.5em;
+    text-align: center;
+    color: rgba(240,0,0,0.6);
+}
+
+.login-info {
+    line-height: 1.5em;
+    text-align: center;
+    color: rgba(0,0,0,0.6);
+}
+
 #app {
     position: fixed;
     height: 100%;
