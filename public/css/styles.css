@@ -774,12 +774,11 @@ span.current-speed {
 /******************************************************************************/
 li.logout-button {
     position: fixed;
+    font-weight: 100;
     bottom: 0;
     width: 256px;
-    text-align: left;
-    background: green;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     z-index: 2;
-    display: none;
 }
 
 /******************************************************************************/

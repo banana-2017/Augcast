@@ -8,6 +8,8 @@
     --week-text: white;
     --input-text-highlight-color: #603D1E;
 
+    --logout-button-bg: #5b7641;
+
     --main-background: #f7f7f7;
 }
 
@@ -85,4 +87,9 @@ li.lecture-item {
 
 .main {
     background: var(--main-background);
+}
+
+li.logout-button {
+    background: var(--logout-button-bg);
+    color: white;
 }

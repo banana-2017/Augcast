@@ -244,9 +244,10 @@ class UploadComplete extends React.Component {
         return (
             <div>
                 <h3>PDF Analyzing complete!</h3>
-                <p>You can now click on the slides that have timestamps to jump to their occurences in the podcast.</p>
-                <a href={that.state.downloadURL}>Open PDF file</a>
-                <br/>
+                <div>
+                    <span>You can now click on the slides that have timestamps to jump to their occurences in the podcast.</span>
+                    <span> <a href={that.state.downloadURL}>Open PDF file</a></span>
+                </div>
                 {that.state.isInstructor && deleteButton}
                 <Button
                     className="form-button close"
