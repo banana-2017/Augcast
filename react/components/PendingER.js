@@ -2,7 +2,7 @@ import React from 'react';
 import PDF from 'react-pdf-js';
 import { database } from './../../database/database_init';
 import { connect } from 'react-redux';
-import { displayLecture, skipToTime } from '../redux/actions';
+import { displayLecture, updateJumpSlide} from '../redux/actions';
 import { browserHistory } from 'react-router';
 
 import ProgressBar from 'react-toolbox/lib/progress_bar';
@@ -94,8 +94,8 @@ class PendingER extends React.Component {
     /*
      * Jump to certain lecture and timestamp of certain ER
      */
-    navigateER(lecture, timestamp) {
-        this.props.skipToTime(Number(timestamp));
+    navigateER(lecture, slide) {
+        this.props.updateJumpSlide(slide);
         this.props.displayLecture(this.props.course, lecture);
         browserHistory.push('/' + this.props.course.id + '/' + lecture.num);
     }
@@ -138,9 +138,9 @@ class PendingER extends React.Component {
                 let author = ER.author;
                 // let email = ER.email;
                 // let content = ER.content;
-                let timestamp = ER.timestamp_ref;
                 let slides_url = lecture.slides_url;
                 let timestamps = lecture.timestamps;
+                let slide = timestamps.indexOf(Number(ER.timestamp_ref));
 
                 return (
                     <div key={ER.id}>
@@ -165,7 +165,7 @@ class PendingER extends React.Component {
                             <CardActions>
                                 <FlatButton label="Detail" onClick={() => {
                                     that.props.handleToggle();
-                                    that.navigateER(lecture, timestamp);
+                                    that.navigateER(lecture, slide);
                                 }}/>
                                 <FlatButton label="Ignore" onClick={() => {
                                     that.ignoreER(ER);
@@ -229,8 +229,8 @@ function mapDispatchToProps (dispatch) {
         displayLecture: (currentCourse, currentLecture) => {
             dispatch (displayLecture(currentCourse, currentLecture));
         },
-        skipToTime: (currentTime) => {
-            dispatch (skipToTime(currentTime));
+        updateJumpSlide : (slide) => {
+            dispatch (updateJumpSlide(slide));
         }
     };
 }
