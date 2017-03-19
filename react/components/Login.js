@@ -25,7 +25,7 @@ class Login extends React.Component {
             email: '',
             password: '',
             valid: false,
-            failureMessage: ''
+            error: ''
         };
 
     }
@@ -65,6 +65,7 @@ class Login extends React.Component {
                     <Button className="login-button"
                             label="LOG IN" flat primary
                             onClick={this.authenticate}/>
+                    <div id="login-error">{this.state.error}</div>
                 </div>
             </div>
         );
@@ -85,12 +86,15 @@ class Login extends React.Component {
         const email = this.state.email;
         const password = this.state.password;
         const {dispatch, router} = this.props;
+        var that = this;
+
         if (email.endsWith ('@ucsd.edu')) {
             dispatch (logIn (email, password, router)).then(
                 success => {
-                    console.log (success);
                     if (!success) {
-                        console.log ('Login Failure');
+                        that.setState ({
+                            error: 'Login failed. Please check your UCSD credentials'
+                        });
                     }
 
                     // if ad succeeds, add user to firebase (if doesn't exist)
