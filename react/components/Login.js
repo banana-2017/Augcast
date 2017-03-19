@@ -38,7 +38,6 @@ class Login extends React.Component {
         }
     }
 
-    // TODO: needs styling
     render () {
         document.title = 'Login - Augcast';
         return (
