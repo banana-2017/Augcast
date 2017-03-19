@@ -1,9 +1,11 @@
 .banana {
+    position: fixed;
     animation: pbjtime 0.8s steps(1, start) infinite;
-    margin: 0 auto;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -80px;
     width: 0.3em;
     height: 0.3em;
-    position: relative;
 
     box-shadow:
     40px 120px #000,
