@@ -140,14 +140,11 @@ class FileUploader extends React.Component {
                        type='file'
                        style={{margin:'10px'}}
                        accept='application/pdf'/>
+                <Button onClick={this.handleFile} primary raised> Upload </Button>
                 <Button disabled={this.state.uploadProgress >= 0}
-                        style={{margin:'10px'}}
+                        onClick={this.handleClear} primary flat> Clear selection </Button>
+                <Button disabled={this.state.uploadProgress >= 0}
                         onClick={this.props.handleClose}> Close </Button>
-                <Button style={{margin:'10px'}}
-                        disabled={this.state.uploadProgress >= 0}
-                        onClick={this.handleClear}> Clear selection </Button>
-                <Button style={{margin:'10px'}}
-                        onClick={this.handleFile}> Upload </Button>
                 {this.state.error}
                 {this.state.uploadProgress >= 0 ? <ProgressBar
                     active
