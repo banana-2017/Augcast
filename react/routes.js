@@ -15,17 +15,12 @@ import React from 'react';      // used for jsx
 
 module.exports = (
     <Route path="/" component = {App} >
-        // <IndexRoute component = {HomeContainer} onEnter={authenticate}></IndexRoute>
-        <IndexRoute component={HomeContainer} /* onEnter={authenticate} */></IndexRoute>
+        <IndexRoute component = {HomeContainer} onEnter={authenticate}></IndexRoute>
+        //<IndexRoute component={HomeContainer} /* onEnter={authenticate} */></IndexRoute>
         <Route path="/login" component = {Login}/>
-        <Route path="/podcastview" component={PodcastView} />
-        <Route path="/upload" component = {Upload}/>
-        <Route path="/pdf" component={PDFDisplay} />
-        <Route path="/sidebar" component={Sidebar} />
         <Route path="/404" component={NotFound} />
-        <Route path="/pdfdisplay" component={PDFDisplay} />
-        <Route path="/instructor" component={InstructorPanel} />
-        <Route path="/:courseID" component={HomeContainer}>
+        <Route path="/instructor" component={InstructorPanel} onEnter={authenticate} />
+        <Route path="/:courseID" component={HomeContainer} onEnter={authenticate}>
             <Route path="/:courseID/:lectureNum" component={HomeContainer} />
         </Route>
     </Route>
