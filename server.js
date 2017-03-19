@@ -50,6 +50,9 @@ router.route('/label').post(function(req, res) {
         var arr = pythonStdout.split('#');
         var split = arr.splice(0,3);
         split.push(arr.join('#'));
+
+        console.log('\n\nSPLIT[0]: ' + split[0]);
+
         //console.log('Python stdout: ' + split);
 
         // If receiving progress updateLectures, upload the progress
