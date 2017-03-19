@@ -206,6 +206,7 @@ button.login-button {
     margin: 0px;
     width: inherit;
     display: block;
+    margin-bottom: 48px;
 }
 
 .unpinned-list {
@@ -278,6 +279,7 @@ li.course-item.selected > div.selected-indicator {
     width: inherit;
     display: block;
     bottom: 0;
+    margin-bottom: 48px;
 }
 
 .week-separator {
@@ -787,6 +789,7 @@ li.logout-button {
     position: fixed;
     font-weight: 100;
     bottom: 0;
+    height: 48px;
     width: 256px;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.5);
     z-index: 2;
@@ -796,6 +799,11 @@ li.logout-button {
 /**********************************   404   ************************************
 /******************************************************************************/
 .not-found {
+    margin-top: 400px;
+    text-align: center;
+    font-size: 72pt;
+    opacity: .2;
+    z-index: -2;
 }
 
 /******************************************************************************/
