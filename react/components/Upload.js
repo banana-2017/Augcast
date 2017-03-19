@@ -145,18 +145,24 @@ class FileUploader extends React.Component {
                     Upload the PDF here for the system to automatically generate
                     timestamps for each slide!
                 </p>
-                <input className='pdf-upload'
-                       type='file'
-                       style={{margin:'10px'}}
-                       accept='application/pdf'/>
-                <Button disabled={this.state.uploadProgress >= 0}
-                        style={{margin:'10px'}}
-                        onClick={this.props.handleClose}> Close </Button>
-                <Button style={{margin:'10px'}}
-                        disabled={this.state.uploadProgress >= 0}
-                        onClick={this.handleClear}> Clear selection </Button>
-                <Button style={{margin:'10px'}}
-                        onClick={this.handleFile}> Upload </Button>
+                <form
+                    ref='inputForm'>
+                    <input className='pdf-upload'
+                            ref='inputBox'
+                           type='file'
+                           style={{margin:'10px'}}
+                           accept='application/pdf'/>
+                    <Button disabled={this.state.uploadProgress >= 0}
+                            style={{margin:'10px'}}
+                            onClick={this.props.handleClose}> Close </Button>
+                    <Button style={{margin:'10px'}}
+                            disabled={this.state.uploadProgress >= 0}
+                            onClick={this.handleClear}> Clear selection </Button>
+                    <Button style={{margin:'10px'}}
+                            onClick={this.handleFile}> Upload </Button>
+
+                </form>
+
                 {this.state.error}
                 {this.state.uploadProgress >= 0 ? <ProgressBar
                     active
@@ -208,6 +214,7 @@ class UploadComplete extends React.Component {
         updates['/slides_url'] = null;
         updates['/timestamps'] = null;
         updates['/labelProgress'] = null;
+        updates['/contents'] = null;
 
         this.lectureRef.update(updates);
     }
