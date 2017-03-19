@@ -159,8 +159,8 @@ class FileUploader extends React.Component {
                             disabled={this.state.uploadProgress >= 0}
                             onClick={this.handleClear}> Clear selection </Button>
                     <Button style={{margin:'10px'}}
+                            disabled={this.state.uploadProgress >= 0}
                             onClick={this.handleFile}> Upload </Button>
-
                 </form>
 
                 {this.state.error}
@@ -223,13 +223,19 @@ class UploadComplete extends React.Component {
         let that = this;
         return (
             <div>
-                <p>Labeling Complete</p>
+                <h3>PDF Analyzing complete!</h3>
+                <p>You can now click on the slides that have timestamps to jump to their occurences in the podcast.</p>
                 <a href={that.state.downloadURL}>Open PDF file</a>
                 <br/>
-
+                {!that.state.isInstructor ?
+                    <div>You need to be an instructor to delete this PDF file.</div> :
+                    <div></div>}
                 <Button
-                    bsStyle="warning"
-                    bsSize="small"
+                    style={{margin:'10px'}}
+                    onClick={this.props.handleClose}>
+                    Close
+                </Button>
+                <Button
                     style={{margin:'10px'}}
                     disabled={!that.state.isInstructor}
                     onClick={this.handleDelete}>
@@ -257,6 +263,7 @@ class DynamicDisplay extends React.Component {
                 <UploadComplete
                     currentCourse={this.props.currentCourse}
                     currentLecture={this.props.currentLecture}
+                    handleClose={this.props.onClose}
                     username={this.props.username}/>
             );
         }
@@ -283,6 +290,11 @@ class DynamicDisplay extends React.Component {
                         active
                         now={this.props.currentLecture.labelProgress}
                         label={`${(this.props.currentLecture.labelProgress).toFixed(2)}%`} />
+                    <Button
+                        style={{margin:'10px'}}
+                        onClick={this.props.onClose}>
+                        Close
+                    </Button>
                 </div>
             );
         }
@@ -392,6 +404,7 @@ class Upload extends React.Component {
      * Handler for closing the dialog box.
      */
     handleClose() {
+        console.log('requested close');
         if (!this.state.uploadInProgress) this.props.close();
     }
 
