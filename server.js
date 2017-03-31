@@ -4,7 +4,6 @@ import path from 'path';
 import authentication from './routes/authentication';
 import { adminDatabase } from './database/admin_database_init';
 var bodyParser = require('body-parser');
-//import labelHandler from './labeler/labelHandler';
 
 // eslint-disable-next-line
 import React from 'react';     // jsx rendered as React.createElement
@@ -13,6 +12,7 @@ let __dirname = path.resolve();
 
 var app = express();
 var router = express.Router();  //Instance of Express Router
+
 // Configure app to use bodyParser()
 // This will let us get the data from a POST request
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,8 +27,11 @@ router.get('/', function(req, res) {
     res.json({ message: 'API works'});
 });
 
+/**
+ * Label POST API
+ * Requires mediaURL, pdfURL, courseID, lectureID in request body
+ */
 router.route('/label').post(function(req, res) {
-
 
     var spawn = require('child_process').spawn;
     var process = spawn('./labeler/labelLauncher.py',
@@ -119,7 +122,6 @@ router.route('/label').post(function(req, res) {
         + new Date().toLocaleString() + ': ' + JSON.stringify(req.body)});
 
 });
-//res.json({ message: 'Label API received request body at ' + new Date().toLocaleString() + ': ' + JSON.stringify(req.body)});
 
 app.use('/api', router);
 
