@@ -68,11 +68,18 @@ class Sidebar extends React.Component {
         if (this.props.courseID) {
             database.ref('lectures/' + this.props.courseID).once('value').then(function(snapshot) {
                 that.lectures = snapshot.val();
+
+                if (snapshot.val() === null) {
+                    browserHistory.push ('/404');
+                    return;
+                }
+
                 var course = that.courses[that.props.courseID];
                 var lecture = that.lectures[course.lectures[that.props.lectureNum]];
 
                 // if the link also contains lecture num
                 if (that.props.courseID) {
+                    // redux updates
                     that.props.navigateCourse(that.courses[that.props.courseID]);
                     if (that.props.lectureNum) {
                         that.props.displayLecture(course, lecture);
