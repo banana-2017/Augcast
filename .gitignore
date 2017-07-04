@@ -4,8 +4,8 @@ node_modules
 bundle.js
 public/bundle.js
 server.bundle.js
-.swp
-.swo
+*.swp
+*.swo
 database/credentials.json
 database/serviceAccountKey.json
 *.log*
@@ -20,3 +20,4 @@ script/*.json
 utility/input.json
 .idea/*
 utility/sshCredentials.js
+scraper/*.json
