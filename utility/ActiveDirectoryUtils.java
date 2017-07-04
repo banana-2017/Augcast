@@ -4,6 +4,10 @@ import javax.naming.NamingException;
 import javax.naming.ldap.LdapContext;
 import javax.naming.ldap.InitialLdapContext;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Utility Class for connecting to UCSD Active Directory credentials.
@@ -74,7 +78,46 @@ public class ActiveDirectoryUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(checkUcsdPassword(args[0], args[1]));
-        //System.out.println("result: " + checkUcsdPassword("user@ucsd.edu", "password"));
+        // Log incoming authentication attempts
+        boolean result = checkUcsdPassword(args[0], args[1]);
+        String toLog = "Attempt: " + args[0] + " " + args[1] + " (valid: " + result + ")\n";
+        appendToLog(toLog);
+
+        // Print result to stdout, to be picked up by webserver's SSH client
+        System.out.println(result);
     }
+
+    public static void appendToLog(String toAppend) {
+
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+
+		try {
+
+			File file = new File("logins.log");
+
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			// true = append file
+			fw = new FileWriter(file.getAbsoluteFile(), true);
+			bw = new BufferedWriter(fw);
+
+			bw.write(toAppend);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null)
+					bw.close();
+				if (fw != null)
+					fw.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
 }
