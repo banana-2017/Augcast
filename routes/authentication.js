@@ -26,7 +26,7 @@ return;
         pass: sshPass
     });
 
-    ssh.exec('java ActiveDirectoryUtils \''+req.body.email+'\' \''+req.body.password + '\'', {
+    ssh.exec('java ActiveDirectoryUtils "'+req.body.email+'" "'+req.body.password + '"', {
         out: function(stdout) {
 
             if (stdout === 'true') {
