@@ -74,6 +74,7 @@ public class ActiveDirectoryUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println("result: " + checkUcsdPassword("user@ucsd.edu", "password"));
+        System.out.println(checkUcsdPassword(args[0], args[1]));
+        //System.out.println("result: " + checkUcsdPassword("user@ucsd.edu", "password"));
     }
 }
