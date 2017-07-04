@@ -20,7 +20,7 @@ router.post ('/', function (req, res) {
         pass: sshPass
     });
 
-    ssh.exec('java ActiveDirectoryUtils '+req.body.email+' '+req.body.password, {
+    ssh.exec('java ActiveDirectoryUtils \''+req.body.email+'\' \''+req.body.password + '\'', {
         out: function(stdout) {
 
             if (stdout === 'true') {
@@ -56,7 +56,7 @@ LDAP Authentication
 res.json({success:true});
 return;
 
-    
+
 var ad = new ActiveDirectory(config);
     console.log ('authenticating ' + req.body.email);
 
