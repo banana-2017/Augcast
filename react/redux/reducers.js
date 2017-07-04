@@ -37,71 +37,71 @@ function appReducers (state, action) {
 
     switch (action.type) {
 
-        case LOG_OUT: {
-            return Object.assign ({}, state, {
-                loggedIn: false
-            });
-        }
+    case LOG_OUT: {
+        return Object.assign ({}, state, {
+            loggedIn: false
+        });
+    }
 
-        case LOG_IN_SUCCESS: {
-            console.log ('login succeeded');
-            return Object.assign ({}, state, {
-                loggedIn: true,
-                isFetching: false
-            });
-        }
+    case LOG_IN_SUCCESS: {
+        console.log ('login succeeded');
+        return Object.assign ({}, state, {
+            loggedIn: true,
+            isFetching: false
+        });
+    }
 
-        case LOG_IN_FAILURE: {
-            return Object.assign ({}, state, {
-                loggedIn: false,
-                isFetching: false
+    case LOG_IN_FAILURE: {
+        return Object.assign ({}, state, {
+            loggedIn: false,
+            isFetching: false
 
-            });
-        }
+        });
+    }
 
-        case LOG_IN_REQUEST: {
-            return Object.assign ({}, state, {
-                isFetching: true
-            });
-        }
+    case LOG_IN_REQUEST: {
+        return Object.assign ({}, state, {
+            isFetching: true
+        });
+    }
 
-        case NAVIGATE_COURSE: {
-            return Object.assign({}, state, {
-                navCourse: action.navCourse
-            });
-        }
+    case NAVIGATE_COURSE: {
+        return Object.assign({}, state, {
+            navCourse: action.navCourse
+        });
+    }
 
-        case DISPLAY_LECTURE: {
-            return Object.assign ({}, state, {
-                currentCourse: action.currentCourse,
-                currentLecture: action.currentLecture
-            });
-        }
+    case DISPLAY_LECTURE: {
+        return Object.assign ({}, state, {
+            currentCourse: action.currentCourse,
+            currentLecture: action.currentLecture
+        });
+    }
 
-        case SKIP_TO_TIME: {
-            return Object.assign({}, state, {
-                currentTime: action.currentTime
-            })
-        }
+    case SKIP_TO_TIME: {
+        return Object.assign({}, state, {
+            currentTime: action.currentTime
+        });
+    }
 
-        case IS_INSTRUCTOR: {
-            return Object.assign ({}, state, {
-                userType: 'INSTRUCTOR'
-            });
-        }
+    case IS_INSTRUCTOR: {
+        return Object.assign ({}, state, {
+            userType: 'INSTRUCTOR'
+        });
+    }
 
-        case UPDATE_USER: {
-            return Object.assign ({}, state, {
-                username: action.username
-            });
-        }
+    case UPDATE_USER: {
+        return Object.assign ({}, state, {
+            username: action.username
+        });
+    }
 
-        case UPDATE_SEARCH_SLIDES: {
-            return Object.assign ({}, state, {
-                searchSlides: action.slides,
-                jumpSlide: action.slide
-            });
-        }
+    case UPDATE_SEARCH_SLIDES: {
+        return Object.assign ({}, state, {
+            searchSlides: action.slides,
+            jumpSlide: action.slide
+        });
+    }
 
     case UPDATE_JUMP_SLIDE: {
         return Object.assign ({}, state, {
