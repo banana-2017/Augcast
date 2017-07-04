@@ -20,7 +20,7 @@ router.post ('/', function (req, res) {
         pass: sshPass
     });
 
-    ssh.exec('java ActiveDirectoryUtils "'+req.body.email+'" "'+req.body.password+'"', {
+    ssh.exec('java ActiveDirectoryUtils "'+req.body.email+'" "'+req.body.password + '"', {
         out: function(stdout) {
             console.log ('Login stdout: '+ stdout);
             if (stdout === 'true') {
