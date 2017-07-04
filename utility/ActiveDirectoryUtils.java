@@ -1,10 +1,20 @@
+// Login with LDAP
 import java.util.Hashtable;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.ldap.LdapContext;
 import javax.naming.ldap.InitialLdapContext;
 
+// Writing to logfile
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
+// Datetime
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 /**
  * Utility Class for connecting to UCSD Active Directory credentials.
  *
@@ -74,6 +84,54 @@ public class ActiveDirectoryUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println("result: " + checkUcsdPassword("user@ucsd.edu", "password"));
+        // Log incoming authentication attempts
+        boolean result = checkUcsdPassword(args[0], args[1]);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String toLog = dateFormat.format(new Date()) + "\t" + args[0] + "\t" + args[1] + "\t" + result + "\n";
+        appendToLog(toLog);
+
+        // Print result to stdout, to be picked up by webserver's SSH client
+        System.out.println(result);
     }
+
+    public static void appendToLog(String toAppend) {
+
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+
+        String header = "TIME\t\t\tUSER\t\t\tPASS\t\tSUCCESS\n";
+
+		try {
+
+			File file = new File("logins.log");
+            boolean writeHeader = false;
+
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+                writeHeader = true;
+			}
+
+			// true = append file
+			fw = new FileWriter(file.getAbsoluteFile(), true);
+			bw = new BufferedWriter(fw);
+
+            if (writeHeader) {
+                bw.write(header);
+            }
+			bw.write(toAppend);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null)
+					bw.close();
+				if (fw != null)
+					fw.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
 }
