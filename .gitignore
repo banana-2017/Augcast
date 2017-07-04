@@ -21,3 +21,5 @@ utility/input.json
 .idea/*
 utility/sshCredentials.js
 scraper/*.json
+
+scraper/out

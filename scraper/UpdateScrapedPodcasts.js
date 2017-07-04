@@ -1,4 +1,5 @@
 // Initialize and authenticate Firebase client
+var merge = require('deepmerge');
 var admin = require('firebase-admin');
 var serviceAccount = require('../database/serviceAccountKey.json');
 admin.initializeApp({
@@ -19,42 +20,36 @@ proc.stdout.on('data', function(buffer) {
 
     // Collect new json object created by the scraper
     let courses = require('./courses.json');
-    //let lectures = require('./lectures.json');
+    let lectures = require('./lectures.json');
 
-    // Update the /courses object
-    updateCourses(courses);
-    //updateLectures(lectures);
+    updateDatabaseObject('/courses', courses);
+    updateDatabaseObject('/lectures', lectures);
 
-    // Kill scraper's process and end script
+    // Kill scraper's process and end this script after 20 seconds.
     proc.kill('SIGINT');
+    setTimeout(function() {
+        console.log('Exiting UpdateScrapedPodcasts');
+        process.exit();
+    }, 20000);
 });
 
-function updateCourses(newCourses) {
-    console.log('UPDATING COURSES');
+/**
+ * Deep merges toMerge into the object at the Firebase path specified by
+ * objectKey and updates Firebase with the newly merged object.
+ *
+ * @param  {String} objectKey Path to JSON object in Firebase to merge into
+ * @param  {Object} toMerge   The JSON Object to merge
+ * @return {None}
+ */
+function updateDatabaseObject(objectKey, toMerge) {
+    adminDatabase.ref(objectKey).once('value').then(function(snapshot) {
+        let current = snapshot.val();
+        var result = merge(current, toMerge);
 
-    // The objects to add to the /courses object
-    let updates = {};
-
-    // Get current course list
-    adminDatabase.ref('/courses').once('value').then(function(snapshot) {
-        let currentCourses = snapshot.val();
-        let counter = 0;
-
-        // For each course in newly scraped list, if it does not exist in
-        // current list, add to the updates object.
-        for (var newCourse in newCourses) {
-            if (!currentCourses.hasOwnProperty(newCourse)) {
-                updates[newCourse] = newCourses[newCourse];
-                counter++;
-                console.log(newCourse + ' is a new entry.');
-            } else {
-                console.log(newCourse + ' already exists in /courses.');
-            }
-        }
-
-        // Push updates to /courses object in database
-        adminDatabase.ref('/courses/').update(updates);
-        console.log(counter + ' new courses added.');
-        console.log(JSON.stringify(updates, null, 2));
+        adminDatabase.ref(objectKey).update(result).then(function() {
+            console.log('Synchronization succeeded at ' + objectKey);
+        }).catch(function(error) {
+            console.log('Synchronization failed at ' + objectKey + ', error: ' + error);
+        });
     });
 }
