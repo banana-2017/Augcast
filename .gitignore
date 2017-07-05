@@ -14,12 +14,19 @@ labeler/assets
 *.pyc
 labeler/*.pyc
 script/*.json
+
 *.pem
 *.mp4
 *.pdf
-utility/input.json
 .idea/*
-utility/sshCredentials.js
-scraper/*.json
 
+utility/input.json
+utility/sshCredentials.js
+
+scraper/*.json
 scraper/out
+
+ocr/contents
+ocr/slides
+ocr/unique
+ocr/*.mp4

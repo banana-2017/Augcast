@@ -1,0 +1,3 @@
+[submodule "ocr"]
+	path = ocr
+	url = git@github.com:brene/slide-transition-detector.git
