@@ -22,7 +22,7 @@ router.post ('/', function (req, res) {
 
     ssh.exec('java ActiveDirectoryUtils "'+req.body.email+'" "'+req.body.password + '"', {
         out: function(stdout) {
-
+            console.log ('Login stdout: '+ stdout);
             if (stdout === 'true') {
                 console.log ('User authenticated!');
                 res.json ({

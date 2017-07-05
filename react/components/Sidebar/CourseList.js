@@ -1,9 +1,9 @@
 // CourseList.js
 // List all podcast-enabled courses
-
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import Fuse from 'fuse.js';
 
 // ui elements
