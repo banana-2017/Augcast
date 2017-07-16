@@ -30,3 +30,5 @@ ocr/contents
 ocr/slides
 ocr/unique
 ocr/*.mp4
+
+engine/ocr_output/
