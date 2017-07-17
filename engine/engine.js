@@ -3,6 +3,7 @@ var download = require ('download')
 var http = require('http');
 var fs = require('fs');
 var spawn = require ('child_process').spawn;
+var parseUtils = require ('./parseUtils.js');
 
 const VIDEO_DIR = "video_files";
 const OCR_DIR = "ocr_output";
@@ -13,15 +14,21 @@ const CONTENT_SCRIPT = "../ocr/extractor.py";
 // previous task still going on
 if (queue.inProgress) {
     console.log ("Video processing in progress.");
-    process.exit (1);
+}
+
+var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, timestampArray) {
+    // TODO
+    console.log ("Pushing data to firebase for "+ lectureName);
 }
 
 /**
  *  Parses the output of the ocr processing and uploads it to firebase
  */
 var processOcrOutput = function (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile) {
-    // TODO
-    process.exit (0);
+    parseUtils.parseTimetable (timetableFile, function (timestampArray) {
+        contentsArray = parseUtils.parseContents (contentsDir, timestampArray.length);
+        pushDataToFirebase (lectureName, contentsArray, timestampArray);
+    });
 }
 
 /**
@@ -40,6 +47,8 @@ var processVideo = function (lectureName, filename) {
     let extractionArgs = [CONTENT_SCRIPT, '-d', uniqueSlidesDir, '-o', contentsDir];
 
     fs.mkdirSync(OCR_DIR + '/' + lectureName);
+
+    //processOcrOutput (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile);
 
     const detection = spawn('python', detectionArgs);
     detection.on('close', (code) => {
@@ -74,21 +83,21 @@ var lectures = queue.lectures;
 /*
  * Script starts downloading and processing videos
  */
-for (course in lectures) {
+Object.keys(lectures).forEach (function (course) {
     console.log ("Processing course " + course);
     let currentCourse = lectures[course];
 
-    for (lecture in currentCourse) {
+    Object.keys(currentCourse).forEach (function (lecture) {
         console.log ("Processing lecture " + lecture);
 
         let video_url = currentCourse[lecture].video_url;
         let filename = VIDEO_DIR + "/" + lecture + ".mp4";
 
-        processVideo (lecture, filename);
-        console.log ("Statring download: " + filename);
+        //processVideo (lecture, filename);
+        console.log ("Starting download: " + filename);
         download(video_url).then(data => {
             fs.writeFileSync(filename, data);
             processVideo (lecture, filename);
         });
-    }
-}
+    });
+});
