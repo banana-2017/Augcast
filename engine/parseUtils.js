@@ -55,4 +55,5 @@ exports.parseContents = function (contentsDir, length) {
     }
 
     //console.log (contentsArray);
+    return contentsArray;
 }
