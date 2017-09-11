@@ -20,11 +20,11 @@ if (queue.inProgress) {
     console.log ("Video processing in progress.");
 }
 
-var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, timestampArray) {
+var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, timestampArray, currentCourse) {
 
     console.log ("Pushing data to firebase for "+ lectureName);
     var updates = {};
-    var ref = database.ref ('lectures/'+lectureName);
+    var ref = database.ref ('lectures/'+currentCourse+'/'+lectureName);
 
     updates['timestamps'] = timestampArray;
     updates['contents'] = contentsArray;
@@ -50,17 +50,17 @@ var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, 
 /**
  *  Parses the output of the ocr processing and uploads it to firebase
  */
-var processOcrOutput = function (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile) {
+var processOcrOutput = function (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile, currentCourse) {
     parseUtils.parseTimetable (timetableFile, function (timestampArray) {
         contentsArray = parseUtils.parseContents (contentsDir, timestampArray.length);
-        pushDataToFirebase (lectureName, uniqueSlidesDir, contentsArray, timestampArray);
+        pushDataToFirebase (lectureName, uniqueSlidesDir, contentsArray, timestampArray, currentCourse);
     });
 }
 
 /**
 * Handles video processing by starting python subprocesses
 */
-var processVideo = function (lectureName, filename) {
+var processVideo = function (lectureName, filename, currentCourse) {
     console.log ("Completed download: " + filename)
 
     let slidesDir = OCR_DIR + '/' + lectureName + '/' + "slides/";
@@ -97,7 +97,7 @@ var processVideo = function (lectureName, filename) {
                     process.exit (code);
                 }
 
-                processOcrOutput (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile);
+                processOcrOutput (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile, currentCourse);
             })
         })
 
@@ -126,7 +126,7 @@ Object.keys(lectures).forEach (function (course) {
         console.log ("Starting download: " + filename);
         download(video_url).then(data => {
             fs.writeFileSync(filename, data);
-            processVideo (lecture, filename);
+            processVideo (lecture, filename, course);
         });
     });
 });
