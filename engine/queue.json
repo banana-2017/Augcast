@@ -1,38 +1,179 @@
 {
-	"inProgress": false,
-	"lectures" : {
-        "ceng101a-a" : {
-          "ceng101a-a-0" : {
-            "date" : "3",
-            "day" : "Mon",
-            "id" : "ceng101a-a-0",
-            "month" : "7",
-            "num" : 0,
-            "video_url" : "https://podcast.ucsd.edu/Podcasts//ceng101a_s317/ceng101a_s317-07032017-1100.mp4",
-            "week" : "1"
-          }
-        },
-        "chem140c-a" : {
-          "chem140c-a-0" : {
-            "date" : "3",
-            "day" : "Mon",
-            "id" : "chem140c-a-0",
-            "month" : "7",
-            "num" : 0,
-            "video_url" : "https://podcast.ucsd.edu/Podcasts//chem140c_s117/chem140c_s117-07032017-1230.mp4",
-            "week" : "1"
-          }
-        },
-        "chem143b-a" : {
-          "chem140c-a-0" : {
-            "date" : "3",
-            "day" : "Mon",
-            "id" : "chem140c-a-0",
-            "month" : "7",
-            "num" : 0,
-            "video_url" : "https://podcast.ucsd.edu/Podcasts//chem140c_s117/chem140c_s117-07032017-1230.mp4",
-            "week" : "1"
-          }
+    "inProgress": false,
+    "lectures": {
+        "bibc100-a": {
+            "bibc100-a-0": {
+                "date": "7",
+                "day": "Mon",
+                "id": "bibc100-a-0",
+                "month": "8",
+                "num": 0,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08072017-1100.mp4",
+                "week": "1"
+            },
+            "bibc100-a-1": {
+                "date": "8",
+                "day": "Tue",
+                "id": "bibc100-a-1",
+                "month": "8",
+                "num": 1,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08082017-1100.mp4",
+                "week": "1"
+            },
+            "bibc100-a-10": {
+                "date": "23",
+                "day": "Wed",
+                "id": "bibc100-a-10",
+                "month": "8",
+                "num": 10,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08232017-1100.mp4",
+                "week": "3"
+            },
+            "bibc100-a-11": {
+                "date": "24",
+                "day": "Thu",
+                "id": "bibc100-a-11",
+                "month": "8",
+                "num": 11,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08242017-1100.mp3",
+                "week": "3"
+            },
+            "bibc100-a-12": {
+                "date": "28",
+                "day": "Mon",
+                "id": "bibc100-a-12",
+                "month": "8",
+                "num": 12,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08282017-1100.mp4",
+                "week": "4"
+            },
+            "bibc100-a-13": {
+                "date": "29",
+                "day": "Tue",
+                "id": "bibc100-a-13",
+                "month": "8",
+                "num": 13,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08292017-1100.mp4",
+                "week": "4"
+            },
+            "bibc100-a-14": {
+                "date": "30",
+                "day": "Wed",
+                "id": "bibc100-a-14",
+                "month": "8",
+                "num": 14,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08302017-1100.mp4",
+                "week": "4"
+            },
+            "bibc100-a-15": {
+                "date": "31",
+                "day": "Thu",
+                "id": "bibc100-a-15",
+                "month": "8",
+                "num": 15,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08312017-1100.mp4",
+                "week": "4"
+            },
+            "bibc100-a-16": {
+                "date": "5",
+                "day": "Tue",
+                "id": "bibc100-a-16",
+                "month": "9",
+                "num": 16,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-09052017-1100.mp4",
+                "week": "5"
+            },
+            "bibc100-a-17": {
+                "date": "6",
+                "day": "Wed",
+                "id": "bibc100-a-17",
+                "month": "9",
+                "num": 17,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-09062017-1100.mp4",
+                "week": "5"
+            },
+            "bibc100-a-18": {
+                "date": "7",
+                "day": "Thu",
+                "id": "bibc100-a-18",
+                "month": "9",
+                "num": 18,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-09072017-1100.mp4",
+                "week": "5"
+            },
+            "bibc100-a-2": {
+                "date": "9",
+                "day": "Wed",
+                "id": "bibc100-a-2",
+                "month": "8",
+                "num": 2,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08092017-1100.mp4",
+                "week": "1"
+            },
+            "bibc100-a-3": {
+                "date": "10",
+                "day": "Thu",
+                "id": "bibc100-a-3",
+                "month": "8",
+                "num": 3,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08102017-1100.mp4",
+                "week": "1"
+            },
+            "bibc100-a-4": {
+                "date": "14",
+                "day": "Mon",
+                "id": "bibc100-a-4",
+                "month": "8",
+                "num": 4,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08142017-1100.mp4",
+                "week": "2"
+            },
+            "bibc100-a-5": {
+                "date": "15",
+                "day": "Tue",
+                "id": "bibc100-a-5",
+                "month": "8",
+                "num": 5,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08152017-1100.mp4",
+                "week": "2"
+            },
+            "bibc100-a-6": {
+                "date": "16",
+                "day": "Wed",
+                "id": "bibc100-a-6",
+                "month": "8",
+                "num": 6,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08162017-1100.mp4",
+                "week": "2"
+            },
+            "bibc100-a-7": {
+                "date": "17",
+                "day": "Thu",
+                "id": "bibc100-a-7",
+                "month": "8",
+                "num": 7,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08172017-1100.mp4",
+                "week": "2"
+            },
+            "bibc100-a-8": {
+                "date": "21",
+                "day": "Mon",
+                "id": "bibc100-a-8",
+                "month": "8",
+                "num": 8,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08212017-1100.mp4",
+                "week": "3"
+            },
+            "bibc100-a-9": {
+                "date": "22",
+                "day": "Tue",
+                "id": "bibc100-a-9",
+                "month": "8",
+                "num": 9,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08222017-1100.mp4",
+                "week": "3"
+            }
         }
-	}
+    },
+    "modified": "2017-09-12 08:38:20"
 }

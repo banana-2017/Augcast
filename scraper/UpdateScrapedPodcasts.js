@@ -68,6 +68,8 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
             let delta = current == null ? merged : diff(current, merged);
             let toWrite = {inProgress: false};
             toWrite.lectures = delta;
+            toWrite.modified = new Date().toISOString().replace('T', ' ').replace(/\..*$/, '');
+
 
             // Create queue file on disk
             let queue = require(QUEUE);
