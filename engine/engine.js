@@ -139,14 +139,9 @@ Object.keys(lectures).forEach (function (course) {
                 processVideo (lecture, filename, course);
             });
     */
-            // save the response to file with a progress callback
+            // save the response to file
             http.get({
-                url: video_url,
-                progress: function (current, total) {
-                    if (current == total) {
-                        processVideo(lecture, filename, course);
-                    }
-                }
+                url: video_url
             },
             filename,
             function (err, res) {
@@ -155,7 +150,8 @@ Object.keys(lectures).forEach (function (course) {
                     return;
                 }
 
-                console.log(res.code, res.headers, res.file);
+                console.log(res.code, res.file);
+                processVideo(lecture, filename, course);
             });
 
         } else {
