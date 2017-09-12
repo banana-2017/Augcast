@@ -19,6 +19,14 @@ if (queue.inProgress) {
     console.log ('Video processing in progress.');
 }
 
+// Create video download nad OCR output dirs if they don't exist
+if (!fs.existsSync(VIDEO_DIR)){
+    fs.mkdirSync(VIDEO_DIR);
+}
+if (!fs.existsSync(OCR_DIR)){
+    fs.mkdirSync(OCR_DIR);
+}
+
 var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, timestampArray, currentCourse) {
 
     console.log ('Pushing data to firebase for '+ lectureName);
