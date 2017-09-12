@@ -8,4 +8,5 @@ var baseApp = admin.initializeApp({
 });
 
 exports.adminDatabase = baseApp.database();
+exports.adminStorage = baseApp.storage();
 exports.adminFirebaseApp = baseApp;

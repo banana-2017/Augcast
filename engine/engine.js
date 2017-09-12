@@ -36,7 +36,7 @@ var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, 
     updates['timestamps'] = timestampArray;
     updates['contents'] = contentsArray;
 
-    ref.update(updates).then (function() {
+    ref.update(updates).then(function() {
         console.log ('Successfully updated data for '+ lectureName);
         lecturesProcessed++;
 
@@ -52,6 +52,17 @@ var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, 
             process.exit (0);
         }
     });
+
+    let slidesUploadArgs = ['./slidesUpload.py', uniqueSlidesDir];
+    const slidesUpload = spawn('python3', slidesUploadArgs);
+
+    slidesUpload.on('close', (code) => {
+        console.log('Slides upload for ' + lectureName + ' completed with exit code ' + code);
+        if (code != 0) {
+            process.exit(code);
+        }
+    });
+
 };
 
 /**
@@ -60,7 +71,7 @@ var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, 
 var processOcrOutput = function (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile, currentCourse) {
     parseUtils.parseTimetable (timetableFile, function (timestampArray) {
         let contentsArray = parseUtils.parseContents (contentsDir, timestampArray.length);
-        pushDataToFirebase (lectureName, uniqueSlidesDir, contentsArray, timestampArray, currentCourse);
+        pushDataToFirebase(lectureName, uniqueSlidesDir, contentsArray, timestampArray, currentCourse);
     });
 };
 
@@ -104,7 +115,7 @@ var processVideo = function (lectureName, filename, currentCourse) {
                     process.exit (code);
                 }
 
-                processOcrOutput (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile, currentCourse);
+                processOcrOutput(lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile, currentCourse);
             });
         });
 
@@ -134,11 +145,7 @@ Object.keys(lectures).forEach (function (course) {
             //pushDataToFirebase (lecture)
 
             console.log ('Starting download: ' + filename);
-    /*        download(video_url).then(data => {
-                fs.writeFileSync(filename, data);
-                processVideo (lecture, filename, course);
-            });
-    */
+
             // save the response to file
             http.get({
                 url: video_url
