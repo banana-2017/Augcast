@@ -6,10 +6,10 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://augcast-465ef.firebaseio.com'
 });
-let adminDatabase = admin.database();
-
-// Open file on disk for writing
+var adminDatabase = admin.database();
 var fs = require('fs');
+
+const QUEUE = '../engine/queue.json';
 
 // Run the podcast.ucsd.edu scraper to generate the most updated json
 console.log('[SCRAPE] Scraping podcast.ucsd.edu...');
@@ -26,9 +26,9 @@ proc.stdout.on('data', function(buffer) {
     let lectures = require('./lectures.json');
 
     // Update the database with the merged objects
-    updateDatabaseObject('/courses', courses, false, null);
-    updateDatabaseObject('/lectures', lectures, true, function() {
-        process.exit();
+    updateDatabaseObject('courses', courses, false, null);
+    updateDatabaseObject('lectures', lectures, true, (status) => {
+        process.exit(status);
     });
 
 });
@@ -60,49 +60,54 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
         // console.log('MERGED' + objectKey);
         // console.log(JSON.stringify(merged, null, 4));
 
-        // Create queue for the OCR engine or not
+        let toUpdateDB = true;
+
+        // Create queue for the OCR engine if requested
         if (toCreateQueue) {
-            // Create delta
+            // Get difference between current DB and merged lectures
             let delta = current == null ? merged : diff(current, merged);
+            let toWrite = {inProgress: false};
+            toWrite.lectures = delta;
 
-            // Output delta to disk
-            fs.writeFile('./queue.json', JSON.stringify(delta, null, 4), 'utf8', function (err) {
-                if (err) {
-                    console.err('Error saving queue: ' + err);
-                    return console.log(err);
-                }
-                console.log('[UPDATE] Queue saved!');
-            });
+            // Create queue file on disk
+            let queue = require(QUEUE);
+            if (queue.inProgress == null || queue.inProgress == false) {
+                fs.writeFile(QUEUE, JSON.stringify(toWrite, null, 4), 'utf8', function (err) {
+                    if (err) {
+                        console.err('Error saving queue: ' + err);
+                        return console.log(err);
+                    }
+                    console.log('[UPDATE] Queue saved!');
+                });
+            }
 
-
-            // console.log('NEW' + objectKey);
-            // console.log(JSON.stringify(toMerge, null, 4));
+            // Queue is still being processed, do not overwrite queue or update DB
+            // (can't update DB because if we do, the current changes will not
+            // show up in the next run of this script (because they would exist
+            // in the DB), so OCR will never run on those lectures. DB will be
+            // updated the next time this script runs and the queue isn't busy.)
+            else {
+                toUpdateDB = false;
+                console.log('[UPDATE] Queue inProgress is true, not updating queue or DB!');
+            }
 
             console.log('[UPDATE] DELTA ' + objectKey);
             console.log(JSON.stringify(delta, null, 4));
         }
 
-        // Update db with merged object
-        adminDatabase.ref(objectKey).update(merged).then(function() {
-            console.log('[UPDATE] Synchronization succeeded at ' + objectKey);
-            if (callback != null) callback();
-        }).catch(function(error) {
-            console.log('[UPDATE] Synchronization failed at ' + objectKey + ', error: ' + error);
-            if (callback != null) callback();
-        });
-
-    });
-
-    return;
-}
-
-function isEmpty(o) {
-    for (var p in o) {
-        if (o.hasOwnProperty(p)) {
-            return false;
+        // Update DB with merged object if queue creation didn't fail
+        if (toUpdateDB) {
+            adminDatabase.ref(objectKey).update(merged).then(function() {
+                console.log('[UPDATE] Synchronization succeeded at ' + objectKey);
+                if (callback != null) callback(0);
+            }).catch(function(error) {
+                console.log('[UPDATE] Synchronization failed at ' + objectKey + ', error: ' + error);
+                if (callback != null) callback(0);
+            });
+        } else {
+            callback(1);
         }
-    }
-    return true;
+    });
 }
 
 /**
@@ -125,3 +130,12 @@ var diff = function(obj1, obj2) {
     }
     return ret;
 };
+
+function isEmpty(o) {
+    for (var p in o) {
+        if (o.hasOwnProperty(p)) {
+            return false;
+        }
+    }
+    return true;
+}
