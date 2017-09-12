@@ -53,11 +53,11 @@ var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, 
         }
     });
 
-    let slidesUploadArgs = ['./slidesUpload.py', uniqueSlidesDir];
+    let slidesUploadArgs = ['./slidesUpload.py', uniqueSlidesDir, lectureName, currentCourse];
     const slidesUpload = spawn('python3', slidesUploadArgs);
 
     slidesUpload.on('close', (code) => {
-        console.log('Slides upload for ' + lectureName + ' completed with exit code ' + code);
+        console.log('Slides uploaded for ' + lectureName + ' completed with exit code ' + code);
         if (code != 0) {
             process.exit(code);
         }
@@ -151,13 +151,11 @@ Object.keys(lectures).forEach (function (course) {
                 url: video_url
             },
             filename,
-            function (err, res) {
+            function (err) {
                 if (err) {
                     console.error(err);
                     return;
                 }
-
-                console.log(res.code, res.file);
                 processVideo(lecture, filename, course);
             });
 
