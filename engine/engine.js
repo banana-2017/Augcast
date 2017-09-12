@@ -41,7 +41,15 @@ var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, 
         lecturesProcessed++;
 
         if (lecturesQueued == lecturesProcessed) {
-            process.exit (1);
+            let slidesUploadArgs = ['./slidesUpload.py', uniqueSlidesDir, lectureName, currentCourse];
+            const slidesUpload = spawn('python3', slidesUploadArgs);
+
+            slidesUpload.on('close', (code) => {
+                console.log('Slides uploaded for ' + lectureName + ' completed with exit code ' + code);
+
+                process.exit(code);
+
+            });
         }
 
     }, function(err) {
@@ -49,19 +57,11 @@ var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, 
         lecturesProcessed++;
 
         if (lecturesQueued == lecturesProcessed) {
-            process.exit (0);
+            process.exit (1);
         }
     });
 
-    let slidesUploadArgs = ['./slidesUpload.py', uniqueSlidesDir, lectureName, currentCourse];
-    const slidesUpload = spawn('python3', slidesUploadArgs);
 
-    slidesUpload.on('close', (code) => {
-        console.log('Slides uploaded for ' + lectureName + ' completed with exit code ' + code);
-        if (code != 0) {
-            process.exit(code);
-        }
-    });
 
 };
 
@@ -118,7 +118,6 @@ var processVideo = function (lectureName, filename, currentCourse) {
                 processOcrOutput(lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile, currentCourse);
             });
         });
-
     });
 };
 
