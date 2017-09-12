@@ -1,0 +1,38 @@
+{
+	"inProgress": false,
+	"lectures" : {
+        "ceng101a-a" : {
+          "ceng101a-a-0" : {
+            "date" : "3",
+            "day" : "Mon",
+            "id" : "ceng101a-a-0",
+            "month" : "7",
+            "num" : 0,
+            "video_url" : "https://podcast.ucsd.edu/Podcasts//ceng101a_s317/ceng101a_s317-07032017-1100.mp4",
+            "week" : "1"
+          }
+        },
+        "chem140c-a" : {
+          "chem140c-a-0" : {
+            "date" : "3",
+            "day" : "Mon",
+            "id" : "chem140c-a-0",
+            "month" : "7",
+            "num" : 0,
+            "video_url" : "https://podcast.ucsd.edu/Podcasts//chem140c_s117/chem140c_s117-07032017-1230.mp4",
+            "week" : "1"
+          }
+        },
+        "chem143b-a" : {
+          "chem140c-a-0" : {
+            "date" : "3",
+            "day" : "Mon",
+            "id" : "chem140c-a-0",
+            "month" : "7",
+            "num" : 0,
+            "video_url" : "https://podcast.ucsd.edu/Podcasts//chem140c_s117/chem140c_s117-07032017-1230.mp4",
+            "week" : "1"
+          }
+        }
+	}
+}
