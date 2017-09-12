@@ -1,11 +1,6 @@
-// PDFDisplay.js
-// Responsible for displaying the PDF
-
 import React from 'react';
-import PDF from 'react-pdf-js';
-//import { database } from './../../database/database_init';
 
-class PDFDisplay extends React.Component {
+class SlidesDisplay extends React.Component {
 
     constructor(props) {
         super(props);
@@ -17,13 +12,7 @@ class PDFDisplay extends React.Component {
         };
 
         // Bind all functions so they can refer to "this" correctly
-        this.onDocumentComplete = this.onDocumentComplete.bind(this);
         this.skipToTime = this.skipToTime.bind(this);
-    }
-
-    onDocumentComplete(documentLength) {
-        this.setState({ pages: documentLength });
-
     }
 
     skipToTime(timestamp) {
@@ -42,23 +31,20 @@ class PDFDisplay extends React.Component {
 
     render() {
         var that = this;
-        var sentinelArray = Array.from(Array(this.state.pages));
-        var PDFpages = sentinelArray.map(function(x, i){
+        var PDFpages = this.props.slidesURLs.map(function(x, i){
             var j = i + 1;
             var stamp = that.props.timestamps != undefined ?
-                that.props.timestamps[j] :
+                that.props.timestamps[i] :
                 undefined;
+            console.log('On slide ' + j);
             return (
                 <div key={'ButtonPageCombo' + i} className={(that.props.timestamps != undefined && !isNaN(stamp) && stamp != -1) ? 'pdf-page' : 'pdf-page pdf-unclickable'} onClick={() => {that.skipToTime(stamp);}}>
                     {(that.props.timestamps != undefined && !isNaN(stamp) && stamp != -1) ?
                         <div className="pdf-timestamp">{'Slide ' + j + ' (Skip to ' + that.prettyTimestamp(stamp) + ')'}</div>
                             : <div></div>}
-                    <PDF
-                        key={'PDFPage' + i}
-                        file={that.props.pdfURL}
-                        onDocumentComplete={that.onDocumentComplete}
-                        scale={1}
-                        page= {i + 1} />
+
+                    <img src={that.props.slidesURLs[i]} key={'Slide' + i} className={'slide-img'}/>
+
                 </div>
             );
         });
@@ -67,6 +53,7 @@ class PDFDisplay extends React.Component {
             <div className="pdf-pages">{PDFpages}</div>
         );
     }
+
 }
 
-export default PDFDisplay;
+export default SlidesDisplay;
