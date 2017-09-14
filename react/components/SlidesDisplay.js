@@ -31,7 +31,7 @@ class SlidesDisplay extends React.Component {
 
     render() {
         var that = this;
-        var PDFpages = this.props.slidesURLs.map(function(slide, i){
+        var slides = this.props.slidesURLs.map(function(slide, i){
             var j = i + 1;
             var stamp = that.props.timestamps != undefined ?
                 that.props.timestamps[i] :
@@ -39,16 +39,16 @@ class SlidesDisplay extends React.Component {
             console.log('On slide ' + j);
             return (
                 <div
-                key={'ButtonPageCombo' + i}
-                className={(that.props.timestamps != undefined && !isNaN(stamp) && stamp != -1) ? 'pdf-page' : 'pdf-page pdf-unclickable'}
+                key={'ButtonSlideCombo' + i}
+                className={(that.props.timestamps != undefined && !isNaN(stamp) && stamp != -1) ? 'slide-page' : 'slide-page slide-unclickable'}
                 onClick={() => {that.skipToTime(stamp);}}>
                     {(that.props.timestamps != undefined && !isNaN(stamp) && stamp != -1) ?
-                        <div className="pdf-timestamp">{'Slide ' + j + ' (Skip to ' + that.prettyTimestamp(stamp) + ')'}</div>
+                        <div className="slide-timestamp">{'Slide ' + j + ' (Skip to ' + that.prettyTimestamp(stamp) + ')'}</div>
                             : <div></div>}
 
                     <img
                     src={slide}
-                    key={'Slide' + i} 
+                    key={'Slide' + i}
                     className={'slide-img'}/>
 
                 </div>
@@ -56,7 +56,7 @@ class SlidesDisplay extends React.Component {
         });
 
         return (
-            <div className="pdf-pages">{PDFpages}</div>
+            <div className="slide-pages">{slides}</div>
         );
     }
 

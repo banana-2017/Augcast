@@ -147,7 +147,7 @@ class FileUploader extends React.Component {
                 </p>
                 <form
                     ref='inputForm'>
-                    <input className='pdf-upload'
+                    <input className='slide-upload'
                             ref='inputBox'
                            type='file'
                            style={{margin:'10px'}}

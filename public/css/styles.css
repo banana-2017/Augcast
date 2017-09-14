@@ -1,4 +1,4 @@
-html, body, .podcast-container, .pdf-view, .video-view {
+html, body, .podcast-container, .slide-view, .video-view {
     height: 100%;
     font-family: Roboto, sans-serif;
     background: #f7f7f7;
@@ -537,10 +537,12 @@ li.match-result > span {
     background: darkgray;
 }
 
+/******************************************************************************/
+/*************************    SLIDES PANEL    *************************/
+/******************************************************************************/
 
-/* pdf panel */
 
-.pdf-panel {
+.slide-panel {
     position: relative;
     height: 100%;
     width: 25%;
@@ -550,12 +552,12 @@ li.match-result > span {
     float: left;
 }
 
-.pdf-pages {
+.slide-pages {
     height: 100%;
     overflow: scroll;
 }
 
-.pdf-page {
+.slide-page {
     width: calc(100% - 10px);
     position: relative;
     margin: 10px;
@@ -568,20 +570,20 @@ li.match-result > span {
 }
 
 .slide-img {
-    max-width: calc(100% - 10px);
+    max-width: calc(100%);
 }
 
-.pdf-unclickable {
+.slide-unclickable {
     cursor: not-allowed;
 }
 
-.pdf-timestamp {
+.slide-timestamp {
     position: absolute;
     bottom: 0;
     right: 0;
     z-index: 1;
     text-align: center;
-    background: rgba(42, 42, 42, 0.3);
+    background: rgba(42, 42, 42, 0.6);
     color: white;
     border: 0;
     width: 100%;
@@ -592,12 +594,12 @@ li.match-result > span {
     vertical-align: middle;
 }
 
-.pdf-page:hover .pdf-timestamp {
-    background: rgba(120, 120, 120, 0.3);
+.slide-page:hover .slide-timestamp {
+    background: rgba(42, 42, 42, 0.45);
     display: block;
 }
 
-.pdf-page canvas {
+.slide-page canvas {
     width: 100%;
     max-width: 100%;
     position: relative;
