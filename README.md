@@ -7,7 +7,7 @@ Augcast is a website that augments the functionality of [podcast.ucsd.edu](podca
 
 ## Usage
 
-Just visit [augcast.xyz](www.augcast.xyz). You will need a valid @ucsd.edu address to log in.
+Just visit [augcast.xyz](http://www.augcast.xyz). You will need a valid @ucsd.edu address to log in.
 
 ## Installation for Development
 
