@@ -13,6 +13,12 @@ router.post ('/', function (req, res) {
 /**
  LDAP Authentication could go here instead of the SSHing
  */
+/**
+                res.json ({
+                    success:true
+                });
+return;
+*/
 
     var ssh = new SSH({
         host: 'ieng6-202.ucsd.edu',
