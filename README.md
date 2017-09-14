@@ -1,12 +1,13 @@
 # Augcast
+#### (Augmented Podcasts)
 
 ## Synopsis
 
-Augcast is a website that augments the functionality of [podcast.ucsd.edu](podcast.ucsd.edu). Augcast improves upon traditional podcasts by offering a instant search through a podcast’s content, and skipping to the exact lecture and timestamp where a certain phrase is discussed. This is done by Optical Character Recognition on a given podcast’s video frames. Once the slides have been uploaded to our website, the contents will be indexed and mapped to the exact times where the words appear on the video podcast. Then, users can search any term that appears in their lecture notes and will be taken to the exact time their professor was discussing it in class, eliminating the need to skim through several podcasts trying to find the exact time a topic was covered.
+Augcast is a website that augments the functionality of [podcast.ucsd.edu](podcast.ucsd.edu). Augcast improves upon traditional podcasts by offering a instant search through a podcast’s content, and skipping to the exact lecture and timestamp where a certain phrase is discussed. This is done by Optical Character Recognition on a given podcast’s video frames. Augcast scrapes and OCR's newly added podcasts from podcast.ucsd.edu nightly. Then, users can search any term that appears in their lecture notes and will be taken to the exact time their professor was discussing it in class, eliminating the need to skim through several podcasts trying to find the exact time a topic was covered.
 
 ## Usage
 
-Just visit [augcast.ucsd.edu](augcast.ucsd.edu) (still in construction). You will need a valid @ucsd.edu address to log in.
+Just visit [augcast.xyz](augcast.xyz). You will need a valid @ucsd.edu address to log in.
 
 ## Installation for Development
 
@@ -16,7 +17,7 @@ npm install
 npm run prod
 ```
 
-You then need to create the project-specific ```credentials.json``` file in the ```database``` folder. See the internal Slack for the file.
+You then need to create the project-specific credential files in the ```database``` folder. See the internal Slack for the file.
 
 ## Built With
 
@@ -27,7 +28,6 @@ You then need to create the project-specific ```credentials.json``` file in the 
  * OpenCV
  * Beautiful Soup
  * Firebase
- * Many APIs! Check our package.json to view them all.
 
 ## Contributors
 Made at UCSD with ❤️
