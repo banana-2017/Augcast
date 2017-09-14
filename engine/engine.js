@@ -95,6 +95,9 @@ var processVideo = function (lectureName, filename, currentCourse) {
     //processOcrOutput (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile);
 
     const detection = spawn('python', detectionArgs);
+    detection.on('data', (data) => {
+        console.err('[DETECTION] ' + data.toString());
+    });
     detection.on('close', (code) => {
         console.log ('Detection for '+ lectureName + ' completed with exit code ' + code);
         if (code != 0) {
@@ -102,6 +105,9 @@ var processVideo = function (lectureName, filename, currentCourse) {
         }
 
         const sorting = spawn ('python', sortingArgs);
+        sorting.on('data', (data) => {
+            console.err('[SORTING] ' + data.toString());
+        });
         sorting.on ('close', (code) => {
             console.log('Sorting for '+ lectureName + ' completed with exit code ' + code);
             if (code != 0) {
@@ -109,6 +115,9 @@ var processVideo = function (lectureName, filename, currentCourse) {
             }
 
             const contentExtraction = spawn ('python', extractionArgs);
+            contentExtraction.on('data', (data) => {
+                console.err('[EXTRACTION] ' + data.toString());
+            });
             contentExtraction.on ('close', (code) => {
                 console.log('Content extraction for '+ lectureName + ' completed with exit code ' + code);
                 if (code != 0) {
