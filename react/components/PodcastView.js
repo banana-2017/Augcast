@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import VideoPlayer from './VideoPlayer';
-import PDFDisplay from './PDFDisplay';
+import SlidesDisplay from './SlidesDisplay';
 import {updateJumpSlide} from '../redux/actions';
 import { database } from './../../database/database_init';
 
@@ -166,12 +166,12 @@ class PodcastView extends React.Component {
 
             return (
                 <div className="content-panel">
-                    {this.props.currentLecture != undefined && this.state.lectureInfo.slides_url != undefined ?
+                    {this.props.currentLecture != undefined && this.state.lectureInfo.slides != undefined ?
                         <div className="pdf-panel">
-                            <PDFDisplay
+                            <SlidesDisplay
                                 onSkipToTime={this.handleSkipToTime}
                                 timestamps={this.state.lectureInfo.timestamps}
-                                pdfURL={this.state.lectureInfo.slides_url} />
+                                slidesURLs={this.state.lectureInfo.slides} />
                         </div> :
                         <div></div>}
                     <div className = "video-panel">

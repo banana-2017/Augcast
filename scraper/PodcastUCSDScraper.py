@@ -141,8 +141,9 @@ with open('lectures.json', 'w') as outfile:
         outfile.write('\n')
 
 
-print 'unauthenticated course: '
-print courseNumber
-print '\n'
-print 'total lecture: '
-print lectureNumber
+# print 'unauthenticated course: '
+# print courseNumber
+# print '\n'
+# print 'total lecture: '
+# print lectureNumber
+print 'Total lectures scraped: ', lectureNumber
