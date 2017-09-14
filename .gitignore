@@ -33,6 +33,9 @@ ocr/*.mp4
 
 engine/ocr_output/
 engine/video_files/
+engine/lectures.json
+engine/courses.json
+engine/table.json
 
 scraper/
 !scraper/*.js
