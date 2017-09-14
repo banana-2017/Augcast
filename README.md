@@ -9,16 +9,6 @@ Augcast is a website that augments the functionality of [podcast.ucsd.edu](podca
 
 Just visit [augcast.xyz](http://www.augcast.xyz). You will need a valid @ucsd.edu address to log in.
 
-## Installation for Development
-
-Clone the repository and run
-```
-npm install
-npm run prod
-```
-
-You then need to create the project-specific credential files in the ```database``` folder. See the internal Slack for the file.
-
 ## Built With
 
  * Node + Express
