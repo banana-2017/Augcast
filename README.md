@@ -1,5 +1,5 @@
 # Augcast
-Augmented Podcasts.
+Augmented Podcasts for UC San Diego.
 
 ## Synopsis
 
