@@ -1,11 +1,11 @@
-import * as admin from 'firebase-admin';
-import serviceAccount from './serviceAccountKey.json';
-import conf from './credentials.json';
+var admin = require('firebase-admin');
+var serviceAccount = require ('./serviceAccountKey.json');
+var conf = require ('./credentials.json');
 
 var baseApp = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: conf.databaseURL
 });
 
-export let adminDatabase = baseApp.database();
-export let adminFirebaseApp = baseApp;
+exports.adminDatabase = baseApp.database();
+exports.adminFirebaseApp = baseApp;

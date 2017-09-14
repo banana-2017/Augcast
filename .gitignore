@@ -30,3 +30,10 @@ ocr/contents
 ocr/slides
 ocr/unique
 ocr/*.mp4
+
+engine/ocr_output/
+engine/video_files/
+
+scraper/
+!scraper/*.js
+!scraper/*.py
