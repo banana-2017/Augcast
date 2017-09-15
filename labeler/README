@@ -1,9 +1,0 @@
-Libraries:
-        PIL
-        opencv
-        pytesseract
-        pdfminer
-
-Tesseract.py connect image from opencv with pytesseract.
-pdfparser.py parses a pdf into a list of strings.
-video.py takes a video and a pdf file and output a list of timestamp.

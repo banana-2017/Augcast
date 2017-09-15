@@ -9,12 +9,12 @@ admin.initializeApp({
 var adminDatabase = admin.database();
 var fs = require('fs');
 
-const QUEUE = '../engine/queue.json';
+const QUEUE = './queue.json';
 
 // Run the podcast.ucsd.edu scraper to generate the most updated json
 console.log('[SCRAPE] Scraping podcast.ucsd.edu...');
 let spawn = require('child_process').spawn;
-let proc = spawn('./PodcastUCSDScraper.py');
+let proc = spawn('./UCSDPodcastScraper.py');
 
 // Once python script finishes, update database with new lectures
 proc.stdout.on('data', function(buffer) {

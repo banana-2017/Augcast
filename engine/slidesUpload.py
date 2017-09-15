@@ -29,4 +29,4 @@ for file in listdir(SLIDES_PATH):
     # Upload the url to database
     nameNoExtension = str(int(file[:-4]) - 1) #Strip extension
     db.child('/lectures/' + COURSE_NAME + '/' + LEC_NAME + '/slides').child(nameNoExtension).set(url);
-    print("Uploaded " + filepath + " to " + url);
+    print("Uploaded " + nameNoExtension);

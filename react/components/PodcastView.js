@@ -167,7 +167,7 @@ class PodcastView extends React.Component {
             return (
                 <div className="content-panel">
                     {this.props.currentLecture != undefined && this.state.lectureInfo.slides != undefined ?
-                        <div className="pdf-panel">
+                        <div className="slide-panel">
                             <SlidesDisplay
                                 onSkipToTime={this.handleSkipToTime}
                                 timestamps={this.state.lectureInfo.timestamps}
