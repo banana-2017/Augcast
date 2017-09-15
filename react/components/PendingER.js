@@ -1,5 +1,4 @@
 import React from 'react';
-import PDF from 'react-pdf-js';
 import { database } from './../../database/database_init';
 import { connect } from 'react-redux';
 import { displayLecture, updateJumpSlide} from '../redux/actions';
@@ -156,10 +155,12 @@ class PendingER extends React.Component {
 
                             {timestamps != null ?
                                 (<CardMedia expandable={true}>
+/*
                                     <PDF file={slides_url}
                                          page={timestamps.indexOf(Number(time))}
                                          scale={1}
                                     />
+                                */
                                 </CardMedia>) : null}
 
                             <CardActions>
@@ -237,5 +238,3 @@ function mapDispatchToProps (dispatch) {
 
 const PendingERContainer = connect (null, mapDispatchToProps)(PendingER);
 export default PendingERContainer;
-
-
