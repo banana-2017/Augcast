@@ -94,32 +94,23 @@ var processVideo = function (lectureName, filename, currentCourse) {
     //processOcrOutput (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile);
 
     const detection = spawn('python', detectionArgs);
-    detection.on('data', (data) => {
-        console.err('[DETECTION] ' + data.toString());
-    });
     detection.on('close', (code) => {
         console.log ('Detection for '+ lectureName + ' completed with exit code ' + code);
-        if (code != 0) {
+        if (code != null && code != 0) {
             process.exit (code);
         }
 
         const sorting = spawn ('python', sortingArgs);
-        sorting.on('data', (data) => {
-            console.err('[SORTING] ' + data.toString());
-        });
-        sorting.on ('close', (code) => {
+	sorting.on ('close', (code) => {
             console.log('Sorting for '+ lectureName + ' completed with exit code ' + code);
-            if (code != 0) {
+            if (code != null && code != 0) {
                 process.exit (code);
             }
 
             const contentExtraction = spawn ('python', extractionArgs);
-            contentExtraction.on('data', (data) => {
-                console.err('[EXTRACTION] ' + data.toString());
-            });
-            contentExtraction.on ('close', (code) => {
+	    contentExtraction.on ('close', (code) => {
                 console.log('Content extraction for '+ lectureName + ' completed with exit code ' + code);
-                if (code != 0) {
+                if (code != null && code != 0) {
                     process.exit (code);
                 }
 
