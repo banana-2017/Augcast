@@ -5,6 +5,7 @@ var spawn = require ('child_process').spawn;
 var parseUtils = require ('./parseUtils.js');
 var database = require ('../database/admin_database_init').adminDatabase;
 
+// Creating a threadpool to # of cores available.
 const VIDEO_DIR = 'video_files';
 const OCR_DIR = 'ocr_output';
 const DETECTION_SCRIPT = '../ocr/detector.py';
@@ -66,8 +67,8 @@ var pushDataToFirebase = function (lectureName, uniqueSlidesDir, contentsArray, 
 };
 
 /**
- *  Parses the output of the ocr processing and uploads it to firebase
- */
+*  Parses the output of the ocr processing and uploads it to firebase
+*/
 var processOcrOutput = function (lectureName, slidesDir, uniqueSlidesDir, contentsDir, timetableFile, currentCourse) {
     parseUtils.parseTimetable (timetableFile, function (timestampArray) {
         let contentsArray = parseUtils.parseContents (contentsDir, timestampArray.length);
@@ -79,8 +80,6 @@ var processOcrOutput = function (lectureName, slidesDir, uniqueSlidesDir, conten
 * Handles video processing by starting python subprocesses
 */
 var processVideo = function (lectureName, filename, currentCourse) {
-    console.log ('Completed download: ' + filename);
-
     let slidesDir = OCR_DIR + '/' + lectureName + '/' + 'slides/';
     let uniqueSlidesDir = OCR_DIR + '/' + lectureName + '/' + 'unique/';
     let contentsDir = OCR_DIR + '/' + lectureName + '/' + 'contents/';
@@ -133,8 +132,8 @@ var processVideo = function (lectureName, filename, currentCourse) {
 var lectures = queue.lectures;
 
 /*
- * Script starts downloading and processing videos
- */
+* Script starts downloading and processing videos
+*/
 Object.keys(lectures).forEach (function (course) {
     console.log ('Processing course ' + course);
     let currentCourse = lectures[course];
@@ -149,9 +148,6 @@ Object.keys(lectures).forEach (function (course) {
             let filename = VIDEO_DIR + '/' + lecture + '.mp4';
             lecturesQueued++;
 
-            //processVideo (lecture, filename);
-            //pushDataToFirebase (lecture)
-
             console.log ('Starting download: ' + filename);
 
             // save the response to file
@@ -164,6 +160,7 @@ Object.keys(lectures).forEach (function (course) {
                     console.error(err);
                     return;
                 }
+                console.log ('Completed download: ' + filename);
                 processVideo(lecture, filename, course);
             });
 
