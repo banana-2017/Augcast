@@ -2,16 +2,34 @@
     "inProgress": false,
     "lectures": {
         "bibc100-a": {
-            "bibc100-a-1": {
-                "date": "8",
-                "day": "Tue",
-                "id": "bibc100-a-1",
+            "bibc100-a-2": {
+                "date": "9",
+                "day": "Wed",
+                "id": "bibc100-a-2",
                 "month": "8",
-                "num": 1,
-                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08082017-1100.mp4",
+                "num": 2,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08092017-1100.mp4",
                 "week": "1"
+            },
+            "bibc100-a-3": {
+                "date": "10",
+                "day": "Thu",
+                "id": "bibc100-a-3",
+                "month": "8",
+                "num": 3,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08102017-1100.mp4",
+                "week": "1"
+            },
+            "bibc100-a-4": {
+                "date": "14",
+                "day": "Mon",
+                "id": "bibc100-a-4",
+                "month": "8",
+                "num": 4,
+                "video_url": "https://podcast.ucsd.edu/Podcasts//bibc100_s217/bibc100_s217-08142017-1100.mp4",
+                "week": "2"
             }
         }
     },
-    "modified": "2017-09-14 21:04:04"
+    "modified": "2017-09-15 00:49:42"
 }
