@@ -103,7 +103,7 @@ public class ActiveDirectoryUtils {
 
         boolean result = checkUcsdPassword(decryptedEmail, decryptedPassword);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String toLog = dateFormat.format(new Date()) + "\t" + args[0] + "\t" + args[1] + "\t" + result + "\n";
+        String toLog = dateFormat.format(new Date()) + "\t" + args[0] + "\t" + result + "\n";
         appendToLog(toLog);
 
         // Print result to stdout, to be picked up by webserver's SSH client
@@ -132,7 +132,7 @@ public class ActiveDirectoryUtils {
 		BufferedWriter bw = null;
 		FileWriter fw = null;
 
-        String header = "TIME\t\t\tUSER\t\t\tPASS\t\tSUCCESS\n";
+        String header = "TIME\t\t\tUSER\t\t\tSUCCESS\n";
 
 		try {
 
