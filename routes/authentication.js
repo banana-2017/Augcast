@@ -2,11 +2,24 @@ import express from 'express';
 //import ActiveDirectory from 'activedirectory2';
 import bodyParser from 'body-parser';
 import SSH from 'simple-ssh';
+import CryptoJS from 'crypto-js';
 import {sshUser, sshPass} from '../utility/sshCredentials.js';
+import {encryptionKey, encryptionIv} from '../utility/encrpytion.js';
 var router = express.Router();
 
 // parse application/json
 router.use(bodyParser.json());
+
+var cryptEncryptionKey = CryptoJS.enc.Base64.parse(encryptionKey);
+var cryptEncryptionIv = CryptoJS.enc.Base64.parse(encryptionIv);
+
+var encryptString = function (stringToEncrypt) {
+    var utf8Stringified = CryptoJS.enc.Utf8.parse(stringToEncrypt);
+    var encrypted = CryptoJS.AES.encrypt(utf8Stringified.toString(), cryptEncryptionKey,
+        {mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7, iv: cryptEncryptionIv});
+    return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+};
+
 
 router.post ('/', function (req, res) {
 
@@ -20,7 +33,12 @@ router.post ('/', function (req, res) {
         pass: sshPass
     });
 
-    ssh.exec('java ActiveDirectoryUtils "'+req.body.email+'" "'+req.body.password + '"', {
+    let encryptedEmail = encryptString(req.body.email);
+    let encryptedPass = encryptString(req.body.password);
+
+    console.log ('Logging in ' + encryptedEmail + ' ' + encryptedPass);
+
+    ssh.exec('java ActiveDirectoryUtils "'+encryptedEmail+'" "'+encryptedPass+ '"', {
         out: function(stdout) {
             console.log ('Login stdout: '+ stdout);
             if (stdout === 'true') {
@@ -41,6 +59,7 @@ router.post ('/', function (req, res) {
     }).start();
 
 });
+
 
 module.exports = router;
 

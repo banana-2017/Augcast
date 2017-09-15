@@ -15,6 +15,15 @@ import java.io.IOException;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+// Crypto tools
+import org.apache.commons.codec.binary.Base64;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.Cipher;
+import java.security.spec.AlgorithmParameterSpec;
+
 /**
  * Utility Class for connecting to UCSD Active Directory credentials.
  *
@@ -23,6 +32,8 @@ import java.text.SimpleDateFormat;
 public class ActiveDirectoryUtils {
 
     private static final String UCSD_ACTIVE_DIRECTORY_DOMAIN = "ad.ucsd.edu";
+    private static final String ENCRYPTION_KEY = "chair";
+    private static final String ENCRYPTION_IV = "chair";
 
     private ActiveDirectoryUtils() {
     }
@@ -85,13 +96,35 @@ public class ActiveDirectoryUtils {
 
     public static void main(String[] args) {
         // Log incoming authentication attempts
-        boolean result = checkUcsdPassword(args[0], args[1]);
+
+        String decryptedEmail = decryptString(args[0]);
+        String decryptedPassword = decryptString(args[1]);
+        System.out.println ("Decrypted Input: " + decryptedEmail + " " + decryptedPassword);
+
+        boolean result = checkUcsdPassword(decryptedEmail, decryptedPassword);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String toLog = dateFormat.format(new Date()) + "\t" + args[0] + "\t" + args[1] + "\t" + result + "\n";
         appendToLog(toLog);
 
         // Print result to stdout, to be picked up by webserver's SSH client
         System.out.println(result);
+    }
+
+    public static String decryptString (String s) {
+        try {
+            SecretKey key = new SecretKeySpec(
+                        Base64.decodeBase64(ENCRYPTION_KEY), "AES");
+            AlgorithmParameterSpec iv = new IvParameterSpec(
+                        Base64.decodeBase64(ENCRYPTION_IV)); 
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+            return Base64.encodeBase64String(cipher.doFinal(s.getBytes("UTF-8")));
+        }
+
+        catch (Exception e) {
+            System.out.println ("Unable to decrypt string " + s);
+            return s;
+        }
     }
 
     public static void appendToLog(String toAppend) {
