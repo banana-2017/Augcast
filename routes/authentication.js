@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import SSH from 'simple-ssh';
 import CryptoJS from 'crypto-js';
 import {sshUser, sshPass} from '../utility/sshCredentials.js';
-import {encryptionKey, encryptionIv} from '../utility/encrpytion.js';
+import {encryptionKey, encryptionIv} from '../utility/encryption.js';
 var router = express.Router();
 
 // parse application/json
@@ -26,6 +26,7 @@ router.post ('/', function (req, res) {
 /**
  LDAP Authentication could go here instead of the SSHing
  */
+
 /**
                 res.json ({
                     success:true
@@ -44,7 +45,7 @@ return;
 
     console.log ('Logging in ' + encryptedEmail + ' ' + encryptedPass);
 
-    ssh.exec('java ActiveDirectoryUtils "'+encryptedEmail+'" "'+encryptedPass+ '"', {
+    ssh.exec('java -cp ./commons-codec-1.10.jar:. ActiveDirectoryUtils "'+encryptedEmail+'" "'+encryptedPass+ '"', {
         out: function(stdout) {
             console.log ('Login stdout: '+ stdout);
             if (stdout === 'true') {

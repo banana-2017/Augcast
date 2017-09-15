@@ -32,8 +32,10 @@ import java.security.spec.AlgorithmParameterSpec;
 public class ActiveDirectoryUtils {
 
     private static final String UCSD_ACTIVE_DIRECTORY_DOMAIN = "ad.ucsd.edu";
-    private static final String ENCRYPTION_KEY = "chair";
-    private static final String ENCRYPTION_IV = "chair";
+
+    // Enter key and iv below 
+    //private static final String ENCRYPTION_KEY = 
+    //private static final String ENCRYPTION_IV = 
 
     private ActiveDirectoryUtils() {
     }
@@ -99,7 +101,10 @@ public class ActiveDirectoryUtils {
 
         String decryptedEmail = decryptString(args[0]);
         String decryptedPassword = decryptString(args[1]);
-        System.out.println ("Decrypted Input: " + decryptedEmail + " " + decryptedPassword);
+
+        if (decryptedEmail.equals(args[0])) {
+            return;
+        }
 
         boolean result = checkUcsdPassword(decryptedEmail, decryptedPassword);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -116,15 +121,29 @@ public class ActiveDirectoryUtils {
                         Base64.decodeBase64(ENCRYPTION_KEY), "AES");
             AlgorithmParameterSpec iv = new IvParameterSpec(
                         Base64.decodeBase64(ENCRYPTION_IV)); 
+            byte[] decodeBase64 = Base64.decodeBase64(s);
+
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-            return Base64.encodeBase64String(cipher.doFinal(s.getBytes("UTF-8")));
+            cipher.init(Cipher.DECRYPT_MODE, key, iv);
+
+            return convertToAscii(new String(cipher.doFinal(decodeBase64), "UTF-8"));
         }
 
         catch (Exception e) {
-            System.out.println ("Unable to decrypt string " + s);
+            e.printStackTrace();
             return s;
         }
+    }
+
+    private static String convertToAscii(String hex) {
+        StringBuilder out = new StringBuilder("");
+
+        for (int i = 0; i < hex.length(); i += 2) {
+            String str = hex.substring(i, i + 2);
+            out.append((char) Integer.parseInt(str, 16));
+        }
+
+        return out.toString();
     }
 
     public static void appendToLog(String toAppend) {
