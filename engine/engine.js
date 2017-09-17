@@ -101,14 +101,14 @@ var processVideo = function (lectureName, filename, currentCourse) {
         }
 
         const sorting = spawn ('python', sortingArgs);
-	sorting.on ('close', (code) => {
+        sorting.on ('close', (code) => {
             console.log('Sorting for '+ lectureName + ' completed with exit code ' + code);
             if (code != null && code != 0) {
                 process.exit (code);
             }
 
             const contentExtraction = spawn ('python', extractionArgs);
-	    contentExtraction.on ('close', (code) => {
+            contentExtraction.on ('close', (code) => {
                 console.log('Content extraction for '+ lectureName + ' completed with exit code ' + code);
                 if (code != null && code != 0) {
                     process.exit (code);
