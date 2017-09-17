@@ -177,7 +177,6 @@ class LectureList extends React.Component {
                                 <span className="lecture-day">{that.calendar[lecture.day]}</span>
                             </div>
                         </div>
-                        <UploadIconController uploadButtonOnClick={that.openModal} iconLecture={lecture} iconCourse={that.props.navCourse}/>
                     </MenuItem>
                     <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} lecture={lecture} selectLecture={() => {that.selectLecture(lecture);}}/>
                 </div>

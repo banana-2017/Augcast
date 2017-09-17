@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
-import {logIn} from '../redux/actions';
+import {logIn, loginRequest} from '../redux/actions';
 import {auth} from '../../database/database_init';
 
 // UI components
@@ -72,26 +72,36 @@ class Login extends React.Component {
         });
 
         if (email.endsWith ('@ucsd.edu')) {
-            dispatch (logIn (email, password, router)).then(
-                success => {
-                    if (!success) {
-                        that.setState ({
-                            error: 'Login failed. Please check your UCSD credentials'
-                        });
-                    }
 
-                    // if ad succeeds, add user to firebase (if doesn't exist)
-                    else {
-                        auth.signInWithEmailAndPassword(email, password).catch(function(error) {
-                            console.log ('New user: '+error);
-                            // if user doesn't exist, add user to firebase
-                            auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
-                                console.log ('error creating account: '+ error.code + ' ' + error.message);
-                            });
-                        });
-                    }
+            dispatch (loginRequest());
+
+            // first try firebase auth
+            auth.signInWithEmailAndPassword(email, password).catch(function(err) {
+                if (err) {
+                    console.log ('New user, checking ucsd credentials');
+                    dispatch (logIn (email, password, router)).then(
+                        success => {
+                            if (!success) {
+                                that.setState({
+                                    error: 'Login failed. Please check your UCSD credentials'
+                                });
+                            }
+
+                            // if ad succeeds, add user to firebase (if doesn't exist)
+                            else {
+                                let user = email.substring(0, email.length - 9);
+                                that.setState({
+                                    error: 'Welcome to Augcast, ' + user + '. We are creating you an account.'
+                                });
+                                auth.createUserWithEmailAndPassword(email, password).catch(function (error) {
+                                    console.log('error creating account: ' + error.code + ' ' + error.message);
+                                });
+                            }
+                        }
+                    );
                 }
-            );
+            });
+
         }
         else {
             this.setState ({

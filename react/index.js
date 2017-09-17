@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import appReducers from './redux/reducers';
-import { updateUser } from './redux/actions';
+import { updateUser, loginSuccess } from './redux/actions';
 
 // routing
 import routes from './routes';
@@ -53,6 +53,7 @@ auth.onAuthStateChanged(function(user) {
 
         else {
             store.dispatch (updateUser(user.displayName));
+            store.dispatch (loginSuccess());
         }
     }
 });
@@ -80,6 +81,7 @@ class Augcast extends React.Component {
  */
 export function authenticate (nextState, replace, transition) {
     let {loggedIn} = store.getState();
+    console.log (store.getState());
     console.log (loggedIn);
     if (!loggedIn) {
         console.log ('replacing with login');
