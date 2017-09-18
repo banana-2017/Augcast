@@ -39,7 +39,7 @@ engine/video_files/
 engine/lectures.json
 engine/courses.json
 engine/table.json
-engine/queue.json
+engine/queue.*
 
 scraper/
 !scraper/*.js

@@ -3,7 +3,7 @@ from pprint import pprint
 import pyrebase
 from os import listdir
 
-def slidesUpload (slidesPath, lectureName, courseName): 
+def slidesUpload (slidesPath, lectureName, courseName):
 
     firebase = configureFirebase()
     storage = firebase.storage()
@@ -14,10 +14,11 @@ def slidesUpload (slidesPath, lectureName, courseName):
 
         # Get relative filepath to slide to upload
         filepath = slidesPath + file
+        location = lectureName + "/" + file
 
-        
         # Upload the slide and get the URL
-        storage.child(lectureName + "/" + file).put(filepath, "token")
+        print('Storing ', filepath, 'at ', location);
+        storage.child(location).put(filepath, "token")
         url = storage.child(lectureName + "/" + file).get_url("token")
 
         # Upload the url to database

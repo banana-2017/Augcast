@@ -56,6 +56,8 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
         // console.log(JSON.stringify(current, null, 4));
 
         var merged = current == null ? toMerge : merge(current, toMerge);
+        console.log('[UPDATE] Merged', objectKey);
+
 
         // console.log('MERGED' + objectKey);
         // console.log(JSON.stringify(merged, null, 4));
@@ -70,6 +72,7 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
             toWrite.lectures = delta;
             toWrite.modified = new Date().toISOString().replace('T', ' ').replace(/\..*$/, '');
 
+            console.log('[UPDATE] Ready to save queue', objectKey);
 
             // Create queue file on disk
             let queue = require(QUEUE);
@@ -99,6 +102,7 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
 
         // Update DB with merged object if queue creation didn't fail
         if (toUpdateDB) {
+            console.log('[UPDATE] Ready to update db', objectKey);
             adminDatabase.ref(objectKey).update(merged).then(function() {
                 console.log('[UPDATE] Synchronization succeeded at ' + objectKey);
                 if (callback != null) callback(0);
