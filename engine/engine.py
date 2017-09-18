@@ -19,7 +19,12 @@ def main():
         print ('Processing already in progress. Exiting..')
         sys.exit()
 
+
     pool = concurrent.futures.ProcessPoolExecutor(2);
+    newQueue = {'inProgress': 'true'}
+    with open(QUEUE_FILE, 'w') as outfile:
+            json.dump(newQueue, outfile)
+
 
     # iterating thru lectures
     courses = queue['lectures']

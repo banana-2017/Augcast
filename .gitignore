@@ -21,6 +21,8 @@ script/*.json
 *.pdf
 *.swo
 *.swp
+*.jar
+*.pyc
 
 utility/input.json
 utility/sshCredentials.js
