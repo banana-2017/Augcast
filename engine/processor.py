@@ -3,6 +3,7 @@ import urllib
 import subprocess
 
 import parseUtils
+import firebaseUtils
 
 OCR_DIR = 'ocr_output'
 DETECTION_SCRIPT = '../ocr/detector.py';
@@ -11,15 +12,20 @@ CONTENT_SCRIPT = '../ocr/extractor.py';
 
 def downloadAndProcessVideo(courseName, lectureName, fileName, video_url):
     downloadVideo (video_url, fileName)
-    processVideo (lectureName, fileName)
-    
+    uniqueSlidesDir, timestampArray, contentsArray = processVideo (lectureName, fileName)
+
+    firebaseUtils.slidesUpload (uniqueSlidesDir, lectureName, courseName)
+    firebaseUtils.contentUpload (lectureName, courseName, contentsArray, timestampArray)
     
 
+# Downloads the file
 def downloadVideo (url, name):
     print ('Downloading ' + name)
-    #urllib.urlretrieve (url, name)
+    urllib.urlretrieve (url, name)
     
 
+
+# Handles video processing by starting python subprocesses
 def processVideo (lectureName, fileName):
     outputDir = OCR_DIR + '/' + lectureName
 
@@ -48,3 +54,6 @@ def processVideo (lectureName, fileName):
 
     timestampArray = parseUtils.parseTimetable (timetableFile)
     contentsArray = parseUtils.parseContents (contentsDir, len(timestampArray))
+
+    return (uniqueSlidesDir, timestampArray, contentsArray)
+

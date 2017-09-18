@@ -5,7 +5,6 @@ import processor
 
 QUEUE_FILE = 'queue.json'
 VIDEO_DIR = 'video_files'
-OCR_DIR = 'ocr_output'
 
 
 def main(): 
@@ -13,8 +12,6 @@ def main():
     # read queue
     with open (QUEUE_FILE) as queue_file:
         queue = json.load(queue_file)
-
-    print queue 
 
     # exit if queue is in progress
     if queue['inProgress']:
