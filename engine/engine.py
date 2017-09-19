@@ -23,7 +23,7 @@ def main():
     pool = concurrent.futures.ProcessPoolExecutor(2);
     newQueue = {'inProgress': 'true'}
     with open(QUEUE_FILE, 'w') as outfile:
-            json.dump(newQueue, outfile)
+        json.dump(newQueue, outfile)
 
 
     # iterating thru lectures
@@ -48,7 +48,9 @@ def main():
     print ("Awaiting pool completion");
     pool.shutdown(wait=True);
 
-
+    newQueue = {'inProgress': 'false'}
+    with open(QUEUE_FILE, 'w') as outfile:
+        json.dump(newQueue, outfile)
 
 if __name__ == '__main__':
     main()
