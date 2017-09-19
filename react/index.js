@@ -54,6 +54,7 @@ auth.onAuthStateChanged(function(user) {
         else {
             store.dispatch (updateUser(user.displayName));
             store.dispatch (loginSuccess());
+            browserHistory.push ('/')
         }
     }
 });
