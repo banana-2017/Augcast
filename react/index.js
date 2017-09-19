@@ -56,6 +56,10 @@ auth.onAuthStateChanged(function(user) {
             store.dispatch (loginSuccess());
             browserHistory.push ('/')
         }
+
+        // Go home after login
+        //TODO: Go to the requested URL instead
+        browserHistory.push ('/');
     }
 });
 
