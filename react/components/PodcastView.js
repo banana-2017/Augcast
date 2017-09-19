@@ -147,12 +147,12 @@ class PodcastView extends React.Component {
 
     // Callback function passed to and executed by VideoPlayer
     handleSkipToTime(time) {
-        this.setState({timestamp: time});
+        this.setState({timestamp: (time+1)});
 
         // Hacky way to make videoplayer's props update even if state.timestamp didn't change
         // We also give videoplayer this prop that will change every time, triggering rerender
         this.setState({randomSeed: Math.random()});
-        console.log('forcing timestamp update');
+        console.log('Updating timestamp to ' + (time + 1));
     }
 
     render () {

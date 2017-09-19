@@ -13,7 +13,7 @@ class NotFound extends React.Component {
             <div className="404-wrapper">
                 <div className="banana" />
                 <div className="not-found">
-                    404 NOT FOUND
+                    404
                 </div>
             </div>
         );

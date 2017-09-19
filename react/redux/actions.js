@@ -36,8 +36,6 @@ export function logIn (email, password, router) {
     };
 
     return (dispatch) => {
-        dispatch (loginRequest());
-
         return fetch('/api/login', config)
         .then(response => {
             // this fucking returns a promise
@@ -46,7 +44,7 @@ export function logIn (email, password, router) {
 
             if (obj.success) {
                 dispatch(loginSuccess());
-                setTimeout(() => router.push('/'), 1000);
+                setTimeout(() => router.push('/'), 7000);
                 return true;
             }
 

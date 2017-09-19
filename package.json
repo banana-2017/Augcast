@@ -43,6 +43,8 @@
   "dependencies": {
     "activedirectory2": "^1.2.1",
     "body-parser": "^1.16.1",
+    "chai": "^4.1.2",
+    "crypto-js": "^3.1.9-1",
     "deepmerge": "^1.4.4",
     "express": "^4.14.1",
     "firebase": "^3.6.8",
