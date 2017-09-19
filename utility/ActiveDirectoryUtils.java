@@ -15,6 +15,15 @@ import java.io.IOException;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+// Crypto tools
+import org.apache.commons.codec.binary.Base64;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.Cipher;
+import java.security.spec.AlgorithmParameterSpec;
+
 /**
  * Utility Class for connecting to UCSD Active Directory credentials.
  *
@@ -23,6 +32,10 @@ import java.text.SimpleDateFormat;
 public class ActiveDirectoryUtils {
 
     private static final String UCSD_ACTIVE_DIRECTORY_DOMAIN = "ad.ucsd.edu";
+
+    // Enter key and iv below 
+    //private static final String ENCRYPTION_KEY = 
+    //private static final String ENCRYPTION_IV = 
 
     private ActiveDirectoryUtils() {
     }
@@ -85,13 +98,52 @@ public class ActiveDirectoryUtils {
 
     public static void main(String[] args) {
         // Log incoming authentication attempts
-        boolean result = checkUcsdPassword(args[0], args[1]);
+
+        String decryptedEmail = decryptString(args[0]);
+        String decryptedPassword = decryptString(args[1]);
+
+        if (decryptedEmail.equals(args[0])) {
+            return;
+        }
+
+        boolean result = checkUcsdPassword(decryptedEmail, decryptedPassword);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String toLog = dateFormat.format(new Date()) + "\t" + args[0] + "\t" + result + "\n";
         appendToLog(toLog);
 
         // Print result to stdout, to be picked up by webserver's SSH client
         System.out.println(result);
+    }
+
+    public static String decryptString (String s) {
+        try {
+            SecretKey key = new SecretKeySpec(
+                        Base64.decodeBase64(ENCRYPTION_KEY), "AES");
+            AlgorithmParameterSpec iv = new IvParameterSpec(
+                        Base64.decodeBase64(ENCRYPTION_IV)); 
+            byte[] decodeBase64 = Base64.decodeBase64(s);
+
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, key, iv);
+
+            return convertToAscii(new String(cipher.doFinal(decodeBase64), "UTF-8"));
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return s;
+        }
+    }
+
+    private static String convertToAscii(String hex) {
+        StringBuilder out = new StringBuilder("");
+
+        for (int i = 0; i < hex.length(); i += 2) {
+            String str = hex.substring(i, i + 2);
+            out.append((char) Integer.parseInt(str, 16));
+        }
+
+        return out.toString();
     }
 
     public static void appendToLog(String toAppend) {

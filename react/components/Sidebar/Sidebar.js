@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { logout, navigateCourse, displayLecture } from '../../redux/actions';
 import { browserHistory } from 'react-router';
-import { database } from './../../../database/database_init';
+import { auth, database } from './../../../database/database_init';
 import Spinner from 'react-spinkit';
 import CourseListContainer from './CourseList.js';
 import LectureListContainer from './LectureList.js';
@@ -22,7 +22,11 @@ class Logout extends React.Component {
 
     logout () {
         this.props.logout();
-        browserHistory.push ('/login');
+        auth.signOut().then(function() {
+            browserHistory.push ('/login');
+        }).catch(function() {
+            browserHistory.push ('/login');
+        });
     }
 
     render() {
@@ -70,7 +74,7 @@ class Sidebar extends React.Component {
                 that.lectures = snapshot.val();
 
                 if (snapshot.val() === null) {
-                    browserHistory.push ('/404');
+                    browserHistory.push ('/');
                     return;
                 }
 

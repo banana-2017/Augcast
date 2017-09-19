@@ -1,27 +1,32 @@
 .idea/
-*.log*
+.DS_Store
 node_modules
+
 bundle.js
 public/bundle.js
 server.bundle.js
-*.swp
-*.swo
 database/credentials.json
 database/serviceAccountKey.json
-*.log*
 labeler/assets
-.DS_Store
-*.pyc
+
 labeler/*.pyc
 script/*.json
 
-*.pem
-*.mp4
-*.pdf
+*.class
 .idea/*
+*.log*
+*.mp4
+*.pem
+*.pyc
+*.pdf
+*.swo
+*.swp
+*.jar
+*.pyc
 
 utility/input.json
 utility/sshCredentials.js
+utility/encryption.js
 
 scraper/*.json
 scraper/out
@@ -36,7 +41,7 @@ engine/video_files/
 engine/lectures.json
 engine/courses.json
 engine/table.json
-engine/queue.json
+engine/queue.*
 
 scraper/
 !scraper/*.js
