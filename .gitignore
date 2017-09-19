@@ -27,6 +27,8 @@ script/*.json
 utility/input.json
 utility/sshCredentials.js
 utility/encryption.js
+utility/scrapeOut
+utility/ocrOut
 
 scraper/*.json
 scraper/out
