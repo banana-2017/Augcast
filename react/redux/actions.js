@@ -1,3 +1,5 @@
+var $ = require ('jquery')
+
 /**
 * action types
 */
@@ -25,33 +27,27 @@ export const IS_FETCHING = 'IS_FETCHING';
 // async, returns function that takes a dispatch
 export function logIn (email, password, router) {
 
-    let config = {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            email,
-            password
-        })
-    };
-
     return (dispatch) => {
-        return fetch('/api/login', config)
-        .then(response => {
-            // this fucking returns a promise
-            return response.json();
-        }).then (obj => {
+        return $.ajax({
 
-            if (obj.success) {
+            url: '/api/login',
+            type: 'POST',
+            data: {
+                'email': email,
+                'password': password
+            },
+
+            success: function() {
                 dispatch(loginSuccess());
                 setTimeout(() => router.push('/'), 7000);
                 return true;
-            }
+            }.bind(this),
 
-            else {
+            error: function() {
                 dispatch(loginFailure());
                 return false;
-            }
+            }.bind(this)
+
         });
     };
 }
