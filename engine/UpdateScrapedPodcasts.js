@@ -132,7 +132,7 @@ var diff = function(current, merged) {
         // console.log("On course", course, " in merged");
         for (var lecture in merged[course]) {
             // console.log("On lecture", lecture, " in ", course);
-            if (merged[course][lecture].hasOwnProperty('timestamps')) {
+            if (merged[course][lecture].hasOwnProperty('timestamps') || merged[course][lecture].hasOwnProperty('attempted')) {
                 // console.log("Lecture", lecture, "has timestamps!");
             } else {
                 // console.log("Lecture", lecture, "has NO timestamp=!");
