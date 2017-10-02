@@ -1,7 +1,4 @@
-import Tooltip from 'react-toolbox/lib/tooltip';
-import Button from 'react-toolbox/lib/button';
 
-const TooltipButton = Tooltip(Button);
 
 class UploadButton extends React.Component {
     constructor(props) {

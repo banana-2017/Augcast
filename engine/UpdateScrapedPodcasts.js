@@ -68,6 +68,12 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
         if (toCreateQueue) {
             // Get difference between current DB and merged lectures
             let delta = current == null ? merged : diff(current, merged);
+
+            // console.log('Current', JSON.stringify(current, null, 4));
+            // console.log('Merged', JSON.stringify(merged, null, 4));
+            // console.log('Diff', JSON.stringify(delta, null, 4));
+
+
             let toWrite = {inProgress: false};
             toWrite.lectures = delta;
             toWrite.modified = new Date().toISOString().replace('T', ' ').replace(/\..*$/, '');
@@ -77,7 +83,7 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
             // Create queue file on disk
             let queue = require(QUEUE);
             if (queue.inProgress == null ||
-                queue.inProgress == false || 
+                queue.inProgress == false ||
                 queue.inProgress == 'false') {
                 fs.writeFile(QUEUE, JSON.stringify(toWrite, null, 4), 'utf8', function (err) {
                     if (err) {
@@ -118,32 +124,23 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
     });
 }
 
-/**
- * https://stackoverflow.com/a/13389935/4872908
- */
-var diff = function(obj1, obj2) {
-    var ret = {},rett;
-    for(var i in obj2) {
-        rett = {};
-        if (typeof obj2[i] === 'object'){
-            rett = diff(obj1[i], obj2[i]);
-            if (!isEmpty(rett) ){
-                ret[i]= rett;
-            }
-        } else {
-            if(!obj1 || !obj1.hasOwnProperty(i) || obj2[i] !== obj1[i]) {
-                ret[i] = obj2[i];
-            }
-        }
-    }
-    return ret;
-};
+var diff = function(current, merged) {
+    let delta = {};
+    for (var course in merged) {
+        // console.log("On course", course, " in merged");
+        for (var lecture in merged[course]) {
+            // console.log("On lecture", lecture, " in ", course);
+            if (merged[course][lecture].hasOwnProperty('timestamps')) {
+                // console.log("Lecture", lecture, "has timestamps!");
+            } else {
+                // console.log("Lecture", lecture, "has NO timestamp=!");
+                if (!delta.hasOwnProperty(course)) {
+                    delta[course] = {};
+                }
 
-function isEmpty(o) {
-    for (var p in o) {
-        if (o.hasOwnProperty(p)) {
-            return false;
+                delta[course][lecture] = merged[course][lecture];
+            }
         }
     }
-    return true;
-}
+    return delta;
+};

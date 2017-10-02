@@ -118,7 +118,7 @@ for thisCourse in currentCourse.find_all('tr'):
         courseNumber = courseNumber + 1
 
         # store the lecture information to the lecture dictionary
-        lectureDic[courseID][lectureID] = thisLecture
+        #lectureDic[courseID][lectureID] = thisLecture
 
 table['courses'] = courseDic
 table['lectures'] = lectureDic

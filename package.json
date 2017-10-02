@@ -50,6 +50,7 @@
     "firebase-admin": "^4.1.2",
     "fuse.js": "^2.6.2",
     "http-request": "^0.7.0",
+    "jquery": "^3.2.1",
     "ldapjs": "^1.0.1",
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.17.0",
