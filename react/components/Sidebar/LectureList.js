@@ -19,8 +19,37 @@ import SearchResultList from './SearchResultList';
 import { displayLecture } from '../../redux/actions';
 import Fuse from 'fuse.js';
 
+import Tooltip from 'react-toolbox/lib/tooltip';
+import Button from 'react-toolbox/lib/button';
+
 injectTapEventPlugin();
 
+
+const TooltipButton = Tooltip(Button);
+
+class DoneMark extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+
+        if (this.props.timestamps != undefined) {
+            return (
+                <div className="status-button">
+                    <TooltipButton icon="done"
+                                   className="done-mark"
+                                   tooltip="Slides successfully synced!"
+                                   tooltipPosition="right"/>
+                </div>
+            );
+        }
+
+        else {
+            return (<div></div>)
+        }
+    }
+}
 
 class LectureList extends React.Component {
     constructor(props) {
@@ -177,6 +206,7 @@ class LectureList extends React.Component {
                                 <span className="lecture-day">{that.calendar[lecture.day]}</span>
                             </div>
                         </div>
+                        <DoneMark timestamps={lecture.timestamps}/>
                     </MenuItem>
                     <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} lecture={lecture} selectLecture={() => {that.selectLecture(lecture);}}/>
                 </div>

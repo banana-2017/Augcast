@@ -80,7 +80,8 @@ class Login extends React.Component {
                 if (err) {
                     console.log ('New user, checking ucsd credentials');
                     dispatch (logIn (email, password, router)).then(
-                        success => {
+                        obj => {
+                            let success = obj.success;
                             if (!success) {
                                 that.setState({
                                     error: 'Login failed. Please check your UCSD credentials'
