@@ -81,8 +81,10 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
             console.log('[UPDATE] Ready to save queue', objectKey);
 
             // Create queue file on disk
-            let queue = require(QUEUE);
-            if (queue.inProgress == null ||
+            let queue = fs.existsSync(QUEUE) ? require(QUEUE) : null;
+            if (
+                queue == null ||
+                queue.inProgress == null ||
                 queue.inProgress == false ||
                 queue.inProgress == 'false') {
                 fs.writeFile(QUEUE, JSON.stringify(toWrite, null, 4), 'utf8', function (err) {
