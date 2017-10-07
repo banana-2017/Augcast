@@ -127,11 +127,11 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
     });
 }
 
-// Courses to skip
-const TO_SKIP = ['econ1'];
-
 var diff = function(current, merged) {
     let delta = {};
+    // Courses to skip
+    const TO_SKIP = ['chem6a'];
+
     for (var course in merged) {
         // console.log("On course", course, " in merged");
 
