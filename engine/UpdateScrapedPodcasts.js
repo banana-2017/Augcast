@@ -107,6 +107,7 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
             }
 
             console.log('[UPDATE] DELTA ' + objectKey);
+            console.log('[UPDATE] Queue has size ' + Object.keys(delta).length);
             console.log(JSON.stringify(delta, null, 4));
         }
 
@@ -128,8 +129,22 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
 
 var diff = function(current, merged) {
     let delta = {};
+    // Courses to skip
+    const TO_SKIP = ['chem6a'];
+
     for (var course in merged) {
         // console.log("On course", course, " in merged");
+
+        var skipThisCourse = false;
+        for (var skip in TO_SKIP) {
+            if (course.startsWith(skip)) {
+                skipThisCourse = true;
+                break;
+            }
+        }
+
+        if (skipThisCourse) continue;
+
         for (var lecture in merged[course]) {
             // console.log("On lecture", lecture, " in ", course);
             if (merged[course][lecture].hasOwnProperty('timestamps') || merged[course][lecture].hasOwnProperty('attempted')) {
