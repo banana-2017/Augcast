@@ -46,7 +46,7 @@ class DoneMark extends React.Component {
         }
 
         else {
-            return (<div></div>)
+            return (<div></div>);
         }
     }
 }
@@ -185,6 +185,12 @@ class LectureList extends React.Component {
 
         var listItem = function(lectureID) {
             var lecture = that.props.lectures[lectureID];
+
+            if (lecture == undefined) {
+                console.error('LectureID ', lectureID, ' not found in lecture array: ', that.props.lectures, ' Does this key exist in courses/ and not in lectures/ ?');
+                return (<div key={lectureID}></div>);
+            }
+
             var month = that.calendar[lecture.month];
 
             var weekSeparator = null;
