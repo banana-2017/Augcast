@@ -147,7 +147,8 @@ var diff = function(current, merged) {
 
         for (var lecture in merged[course]) {
             // console.log("On lecture", lecture, " in ", course);
-            if (merged[course][lecture].hasOwnProperty('timestamps') || merged[course][lecture].hasOwnProperty('attempted')) {
+            if (merged[course][lecture].hasOwnProperty('timestamps') ||
+                merged[course][lecture].video_url.endsWith('mp3')) {
                 // console.log("Lecture", lecture, "has timestamps!");
             } else {
                 // console.log("Lecture", lecture, "has NO timestamp=!");
