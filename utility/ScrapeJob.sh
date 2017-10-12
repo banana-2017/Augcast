@@ -1,4 +1,4 @@
 #!/bin/bash
-#node /root/Augcast/engine/UpdateScrapedPodcasts.js &> scrapeOut
-echo "[SCRAPE] Test nightly cron" > scrapeOut
-mailx -r "augcast@augcast.xyz" -s "Scrape completed!" nightlycronjobs@110banana.mailclark.ai < scrapeOut
+cd /root/Augcast/engine
+node /root/Augcast/engine/UpdateScrapedPodcasts.js &> /root/scrapeOut
+mailx -r "augcast@augcast.xyz" -s "Scrape completed!" a4o3u4q7a6t5z4h9@110banana.slack.com < /root/scrapeOut
