@@ -114,15 +114,41 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
         // Update DB with merged object if queue creation didn't fail
         if (toUpdateDB) {
             console.log('[UPDATE] Ready to update db', objectKey);
-            adminDatabase.ref(objectKey).update(merged).then(function() {
+
+/*
+            fs.writeFile("./merged_" + objectKey + ".json", JSON.stringify(merged, null, 4), 'utf8', function (err) {
+                if (err) {
+                    console.err('Error saving merged: ' + err);
+                    return console.log(err);
+                }
+                console.log('[UPDATE] Merged ' + objectKey + ' saved!');
+            });
+*/
+
+            for (var course in merged) {
+
+                adminDatabase.ref(objectKey + '/' + course).set(merged[course]).then(function() {
+                    console.log('[UPDATE] Pushed to DB: ' + course);
+                }).catch(function(error) {
+                    console.log('[UPDATE] Synchronization failed at ' + objectKey + ', error: ' + error);
+                });
+
+                setTimeout(function () {
+                    process.exit(0);
+                }, 30000);
+
+            }
+            /*
+            adminDatabase.ref(objectKey).set(merged).then(function() {
                 console.log('[UPDATE] Synchronization succeeded at ' + objectKey);
                 if (callback != null) callback(0);
             }).catch(function(error) {
                 console.log('[UPDATE] Synchronization failed at ' + objectKey + ', error: ' + error);
                 if (callback != null) callback(0);
             });
+            */
         } else {
-            callback(1);
+            process.exit(1);
         }
     });
 }
@@ -137,7 +163,7 @@ var diff = function(current, merged) {
 
         var skipThisCourse = false;
         for (var skip in TO_SKIP) {
-            if (course.startsWith(skip)) {
+            if (course.startsWith(TO_SKIP[skip])) {
                 skipThisCourse = true;
                 break;
             }
