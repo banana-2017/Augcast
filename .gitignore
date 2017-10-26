@@ -48,3 +48,7 @@ engine/queue.*
 scraper/
 !scraper/*.js
 !scraper/*.py
+
+engine/merged_courses.json
+
+engine/merged_lectures.json
