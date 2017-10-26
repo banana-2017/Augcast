@@ -27,26 +27,58 @@ injectTapEventPlugin();
 
 const TooltipButton = Tooltip(Button);
 
-class DoneMark extends React.Component {
+class LectureStatusIcon extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
+        let url = this.props.lecture.video_url;
+        let timestamps = this.props.lecture.timestamps;
+        let skip = this.props.lecture.skip;
 
-        if (this.props.timestamps != undefined) {
+        if (url.endsWith('.mp3')) {
+            return (
+                <div className="status-button">
+                    <TooltipButton icon="music_note"
+                                   className="done-mark"
+                                   tooltip="Audio only podcast, no slides or searching available."
+                                   tooltipPosition="right"/>
+                </div>
+            );
+        }
+
+        else if (timestamps != undefined) {
             return (
                 <div className="status-button">
                     <TooltipButton icon="done"
                                    className="done-mark"
-                                   tooltip="Slides successfully synced!"
+                                   tooltip="Slide extraction complete, contents are searchable!"
+                                   tooltipPosition="right"/>
+                </div>
+            );
+        }
+
+        else if (skip != undefined && (skip == true || skip == 'true')) {
+            return (
+                <div className="status-button">
+                    <TooltipButton icon="clear"
+                                   className="done-mark"
+                                   tooltip="This podcast could not be processed due to its non-slide contents."
                                    tooltipPosition="right"/>
                 </div>
             );
         }
 
         else {
-            return (<div></div>);
+            return (
+                <div className="status-button">
+                    <TooltipButton icon="cached"
+                                   className="done-mark"
+                                   tooltip="Processing podcast, slide extraction and content searching will soon be available!"
+                                   tooltipPosition="right"/>
+                </div>
+            );
         }
     }
 }
@@ -212,7 +244,7 @@ class LectureList extends React.Component {
                                 <span className="lecture-day">{that.calendar[lecture.day]}</span>
                             </div>
                         </div>
-                        <DoneMark timestamps={lecture.timestamps}/>
+                        <LectureStatusIcon lecture={lecture}/>
                     </MenuItem>
                     <SearchResultList resultList= {that.state.resultArray[lecture.id]} query = {that.state.query} lecture={lecture} selectLecture={() => {that.selectLecture(lecture);}}/>
                 </div>

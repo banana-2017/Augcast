@@ -40,6 +40,8 @@ for thisCourse in currentCourse.find_all('tr'):
     courseProf = thisCourse.find('td', {'class': 'prof'}).text
 
     # explode
+    if len(courseTitle.split(' - ')) < 3:
+        continue;
     number, subject, section = courseTitle.split(' - ')
     numberPattern = re.compile(r'([A-Z]+) ?(\d+[A-Z]?)+')
     sectionPattern = re.compile(r'([A-Z]+) \[([A-Z]\d+)\]')
