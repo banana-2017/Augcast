@@ -37,7 +37,7 @@ class LectureStatusIcon extends React.Component {
         let timestamps = this.props.lecture.timestamps;
         let skip = this.props.lecture.skip;
 
-        if (url.endsWith('.mp3')) {
+        if (url != undefined && url.endsWith('.mp3')) {
             return (
                 <div className="status-button">
                     <TooltipButton icon="music_note"
