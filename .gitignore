@@ -52,3 +52,5 @@ scraper/
 engine/merged_courses.json
 
 engine/merged_lectures.json
+
+*.js~
