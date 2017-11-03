@@ -10,10 +10,10 @@ var adminDatabase = admin.database();
 var fs = require('fs');
 
 const QUEUE = './queue.json';
+const {spawn} = require('child_process');
 
 // Run the podcast.ucsd.edu scraper to generate the most updated json
 console.log('[SCRAPE] Scraping podcast.ucsd.edu...');
-let spawn = require('child_process').spawn;
 let proc = spawn('./UCSDPodcastScraper.py');
 
 // Once python script finishes, update database with new lectures
@@ -106,49 +106,50 @@ function updateDatabaseObject(objectKey, toMerge, toCreateQueue, callback) {
                 console.log('[UPDATE] Queue inProgress is true, not updating queue or DB!');
             }
 
-            console.log('[UPDATE] DELTA ' + objectKey);
-            console.log('[UPDATE] Queue has size ' + Object.keys(delta).length);
-            console.log(JSON.stringify(delta, null, 4));
+            // console.log('[UPDATE] DELTA ' + objectKey);
+            // console.log('[UPDATE] Queue has size ' + Object.keys(delta).length);
+            // console.log(JSON.stringify(delta, null, 4));
         }
 
         // Update DB with merged object if queue creation didn't fail
         if (toUpdateDB) {
             console.log('[UPDATE] Ready to update db', objectKey);
 
-/*
-            fs.writeFile("./merged_" + objectKey + ".json", JSON.stringify(merged, null, 4), 'utf8', function (err) {
+
+            fs.writeFile('./merged_' + objectKey + '.json', JSON.stringify(merged, null, 4), 'utf8', function (err) {
                 if (err) {
                     console.err('Error saving merged: ' + err);
                     return console.log(err);
+                } else {
+                    console.log('[UPDATE] Merged ' + objectKey + ' saved to disk!');
+
+                    //firebase-import --database_url https://augcast-465ef.firebaseio.com/ --path /test/ --json merged_lectures.json --service_account ../database/serviceAccountKey.json
+                    const child = spawn('firebase-import',
+                        ['--database_url', 'https://augcast-465ef.firebaseio.com/',
+                            '--path', '/' + objectKey + '/',
+                            '--json', './merged_' + objectKey + '.json',
+                            '--force',
+                            '--service_account', '../database/serviceAccountKey.json']);
+
+                    child.stdout.on('data', (chunk) => {
+                        console.log(chunk.toString());
+                    });
+
+                    child.stderr.on('data', (chunk) => {
+                        console.error(chunk.toString());
+                    });
+
+                    child.on('close', (code) => {
+                        console.log(`child process exited with code ${code}`);
+
+                        if (callback) callback(code);
+                    });
+
                 }
-                console.log('[UPDATE] Merged ' + objectKey + ' saved!');
             });
-*/
 
-            for (var course in merged) {
-
-                adminDatabase.ref(objectKey + '/' + course).set(merged[course]).then(function() {
-                    console.log('[UPDATE] Pushed to DB: ' + course);
-                }).catch(function(error) {
-                    console.log('[UPDATE] Synchronization failed at ' + objectKey + ', error: ' + error);
-                });
-
-                setTimeout(function () {
-                    process.exit(0);
-                }, 30000);
-
-            }
-            /*
-            adminDatabase.ref(objectKey).set(merged).then(function() {
-                console.log('[UPDATE] Synchronization succeeded at ' + objectKey);
-                if (callback != null) callback(0);
-            }).catch(function(error) {
-                console.log('[UPDATE] Synchronization failed at ' + objectKey + ', error: ' + error);
-                if (callback != null) callback(0);
-            });
-            */
         } else {
-            process.exit(1);
+            if (callback) callback(0);
         }
     });
 }
