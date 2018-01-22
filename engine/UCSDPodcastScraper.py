@@ -33,7 +33,8 @@ for thisCourse in currentCourse.find_all('tr'):
 
     # get the course podcast url and course name
     courseInfo = thisCourse.find('a', {'class': 'PodcastLink'})
-    courseUrl = str('https://podcast.ucsd.edu' + courseInfo['href'])
+    # courseUrl = str('https://podcast.ucsd.edu' + courseInfo['href'])
+    courseUrl = courseInfo['href']
     courseTitle = str(courseInfo.text)
 
     # get the course professor
@@ -58,6 +59,9 @@ for thisCourse in currentCourse.find_all('tr'):
             continue
 
         courseID = (num + '-' + (sectionID[0] if sectionType == 'LE' else sectionID)).lower()
+        if (courseID.find("/") != -1):
+            courseID = courseID.replace("/", "-")
+
         courseDept, courseNum = re.sub(numberPattern, r'\1 \2', num).split()
 
         thisCourse['id']        = courseID
