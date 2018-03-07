@@ -122,6 +122,11 @@ class LectureList extends React.Component {
         let course = this.props.navCourse.id;
         var that = this;
 
+        if (this.props.navCourse.lectures === undefined) {
+            this.setState ({locked: true})
+            return;
+        }
+
         this.setState ({visibleLectures: this.props.navCourse.lectures});
 
         // getting array of lectures of this course
@@ -267,8 +272,8 @@ class LectureList extends React.Component {
                     </div>
                     <div className="lectures-wrapper">
                         <div className="lecture-list">
-                            {that.state.visibleLectures.map(listItem)}
-                            <div className="end-of-line">end of results</div>
+                            {(that.state.locked) ? (<div/>) : (that.state.visibleLectures.map(listItem)) }
+            {(that.state.locked) ? (<div className="locked-course"> This course is locked. Sorry for the inconvenience! </div>) : (<div className="end-of-line">end of results</div>)}
                         </div>
                     </div>
                 </Drawer>

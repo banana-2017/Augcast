@@ -517,6 +517,13 @@ li.match-result > span {
     color: red;
 }
 
+.locked-course {
+    margin: 10px;
+    text-align: center;
+    color: gray;
+    font-weight: 100;
+}
+
 .end-of-line {
     margin: 10px;
     text-align: center;
