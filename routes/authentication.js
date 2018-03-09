@@ -27,10 +27,10 @@ router.post ('/', function (req, res) {
      LDAP Authentication could go here instead of the SSHing
      */
 
-    /**
-                    res.json ({
-                        success:true
-                    });
+    /*
+    setTimeout(() => res.status(403).send({
+           message: 'This is an error!'
+    }));
     return;
     */
 
@@ -47,7 +47,7 @@ router.post ('/', function (req, res) {
 
     ssh.exec('java -cp ./commons-codec-1.10.jar:. ActiveDirectoryUtils "'+encryptedEmail+'" "'+encryptedPass+ '"', {
         out: function(stdout) {
-            console.log ('Login stdout: '+ stdout);
+            stdout = stdout.replace(/(\r\n|\n|\r)/gm,"");
             if (stdout === 'true') {
                 console.log ('User authenticated!');
                 res.json ({
@@ -56,8 +56,8 @@ router.post ('/', function (req, res) {
             }
             else {
                 console.log ('User authentication failed');
-                res.json ({
-                    success:false
+                res.status(403).send({
+                       message: 'Login failed!'
                 });
             }
 
