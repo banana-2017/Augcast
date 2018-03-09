@@ -82,14 +82,9 @@ class Login extends React.Component {
                     dispatch (logIn (email, password, router)).then(
                         obj => {
                             let success = obj.success;
-                            if (!success) {
-                                that.setState({
-                                    error: 'Login failed. Please check your UCSD credentials'
-                                });
-                            }
 
                             // if ad succeeds, add user to firebase (if doesn't exist)
-                            else {
+                            if (success) {
                                 let user = email.substring(0, email.length - 9);
                                 that.setState({
                                     error: 'Welcome to Augcast, ' + user + '. We are creating you an account.'
@@ -98,6 +93,12 @@ class Login extends React.Component {
                                     console.log('error creating account: ' + error.code + ' ' + error.message);
                                 });
                             }
+                        },
+                        
+                        err => {
+                            that.setState({
+                                error: 'Login failed. Please check your UCSD credentials'
+                            });
                         }
                     );
                 }
