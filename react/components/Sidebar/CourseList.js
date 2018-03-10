@@ -99,7 +99,7 @@ class CourseList extends React.Component {
             location: 0,
             distance: 70,
             maxPatternLength: 32,
-            minMatchCharLength: 1,
+            minMatchCharLength: query.length,
             keys: ['course', 'professor', 'subject']
         };
 
