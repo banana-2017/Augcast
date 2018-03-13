@@ -152,7 +152,6 @@ class PodcastView extends React.Component {
         // Hacky way to make videoplayer's props update even if state.timestamp didn't change
         // We also give videoplayer this prop that will change every time, triggering rerender
         this.setState({randomSeed: Math.random()});
-        console.log('Updating timestamp to ' + (time + 1));
     }
 
     render () {
