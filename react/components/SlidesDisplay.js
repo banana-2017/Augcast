@@ -36,7 +36,6 @@ class SlidesDisplay extends React.Component {
             var stamp = that.props.timestamps != undefined ?
                 that.props.timestamps[i] :
                 undefined;
-            console.log('On slide ' + j);
             return (
                 <div
                 key={'ButtonSlideCombo' + i}
