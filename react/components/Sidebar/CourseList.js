@@ -95,15 +95,14 @@ class CourseList extends React.Component {
     search (query) {
         var options = {
             shouldSort: true,
-            threshold: 0.6,
+            threshold: 0.0,
             location: 0,
             distance: 70,
             maxPatternLength: 32,
-            minMatchCharLength: 1,
+            minMatchCharLength: query.length,
             keys: ['course', 'professor', 'subject']
         };
 
-        console.log ('searching in courselist');
 
         var fuse = new Fuse(this.dataArray, options);
         var result = fuse.search(query);
