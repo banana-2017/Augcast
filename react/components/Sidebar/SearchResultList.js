@@ -46,13 +46,6 @@ class SearchResultList extends React.Component {
 
             let {slide, contents} = result.item;
 
-            /* get the longest match */
-            /*
-            let matchLengths = result.matches[0].indices.map(arr => arr[1] - arr[0]);
-            let maxMatchIndex = matchLengths.indexOf(Math.max(matchLengths));
-            let indices = result.matches[0].indices[maxMatchIndex];
-            */
-
             let indices = result.matches[0].indices[0];
             let queryStartIndex = indices[0];
             let queryEndIndex = indices[1] + 1;
@@ -85,7 +78,7 @@ class SearchResultList extends React.Component {
 
             let suffix = contents.substring (queryEndIndex, suffixEnd);
 
-            let tooltip = (formatTime) ? "Skip to " + formatTime : "Slide not synced";
+            let tooltip = (formatTime) ? 'Skip to ' + formatTime : 'Slide not synced';
 
 
             return (

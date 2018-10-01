@@ -11,9 +11,6 @@ import CourseListContainer from './CourseList.js';
 import LectureListContainer from './LectureList.js';
 import { MenuItem } from 'react-toolbox/lib/menu';
 
-// ui components
-import FA from 'react-fontawesome';
-
 class Logout extends React.Component {
     constructor(props) {
         super(props);

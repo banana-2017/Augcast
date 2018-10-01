@@ -240,7 +240,7 @@ class UploadComplete extends React.Component {
                     onClick={this.toggleConfirm}>
                     Nah.
                 </Button>
-            </span>)
+            </span>);
         return (
             <div>
                 <h3>PDF Analyzing complete!</h3>
